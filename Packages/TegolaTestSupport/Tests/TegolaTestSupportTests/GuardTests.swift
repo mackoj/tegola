@@ -139,21 +139,32 @@ import Testing
     let strings: [String: Entry]
   }
 
-  static let keyPatterns = [#"String\(localized:\s*"([^"\\]+)""#, #"Text\(\s*"([^"\\]+)",\s*bundle:"#]
+  /// A key's literal may interpolate (`"\\(count) objects"`): the catalog stores those as format specifiers.
+  static let keyPatterns = [
+    #"String\(localized:\s*"((?:[^"\\]|\\\((?:[^()"]|\([^()"]*\))*\))+)""#,
+    #"Text\(\s*"((?:[^"\\]|\\\((?:[^()"]|\([^()"]*\))*\))+)",\s*bundle:"#,
+  ]
+
+  /// One spelling for a source key and its catalog key: each interpolation (one level of nested calls allowed) and
+  /// each format specifier becomes `%_`.
+  static func normalized(_ key: String) -> String {
+    key.replacing(/\\\((?:[^()"]|\([^()"]*\))*\)/, with: "%_").replacing(/%(\d+\$)?(lld|ld|d|@|f|lf)/, with: "%_")
+  }
 
   @Test func everyKeyIsInItsCatalogWithFrenchAndNoneIsStale() throws {
     let catalogs = try Repository.stringCatalogs()
     #expect(!catalogs.isEmpty)
     for (target, url) in catalogs {
       let catalog = try JSONDecoder().decode(Catalog.self, from: Data(contentsOf: url))
-      let used = try Self.keys(in: target)
+      let used = Set(try Self.keys(in: target).map(Self.normalized))
       let name = target.lastPathComponent
+      let entries = Dictionary(catalog.strings.map { (Self.normalized($0.key), $0.value) }) { first, _ in first }
       for key in used.sorted() {
-        let entry = catalog.strings[key]
+        let entry = entries[key]
         #expect(entry != nil, "\(name): \"\(key)\" is used but not in the catalog")
         #expect(entry?.localizations?["fr"] != nil, "\(name): \"\(key)\" has no French")
       }
-      for key in Set(catalog.strings.keys).subtracting(used).sorted() {
+      for key in Set(entries.keys).subtracting(used).sorted() {
         Issue.record("\(name): \"\(key)\" is in the catalog but no longer used")
       }
     }

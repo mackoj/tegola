@@ -22,6 +22,9 @@ let package = Package(
     // Helpers shared by test targets, and the guard tests over the whole repo's sources (PLAN §2.6).
     .target(name: "TegolaTestSupport", dependencies: ["TegolaFixtures"], swiftSettings: swiftSettings),
     .testTarget(
-      name: "TegolaTestSupportTests", dependencies: ["TegolaTestSupport", "TegolaFixtures"], swiftSettings: swiftSettings),
+      name: "TegolaTestSupportTests",
+      dependencies: ["TegolaTestSupport", "TegolaFixtures"],
+      swiftSettings: swiftSettings
+    ),
   ]
 )

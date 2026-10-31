@@ -211,7 +211,109 @@ reused; a replaced decision stays, marked **superseded by D-n**.
 
 **Decision.** The signed string uses the method in upper case, the request target exactly as sent with `/v1` included, the timestamp header's text, and the body digest as 64 lower-case hex digits (an absent body hashes as empty). The attestation's client data is `SHA-256` of the challenge string's UTF-8 bytes, exactly as `GET /app-attest/challenge` returned it. Both are now in the contract's text; `AppAttestMiddleware` (M6) builds these bytes.
 
-### D-43 · A revoked App Attest key stays revoked
+### D-43 · What counts
+
+**Decision.** A count is the copies of what's owned and kept: a quantity object counts its quantity (12 enamel pins are 12), and wanted, borrowed and let-go objects count nothing (PD-061, PD-070, promise 4). The Shelf header, a collection's meta line and every stat use the one function, `count(_:)`. A collection line counts what's in it, so collection lines add up to the shelf's count.
+
+### D-44 · Settings before the settings screen
+
+**Decision.** `settings` arrives in M3 as its own migration, holding only what the collector changed (PD-161). Each known setting has a fixed row id, because `SyncEngine` allows no unique constraint on `key`. PLAN §5 reads settings through a custom `SharedKey`. Screens read settings with the shelf's own query (`ShelfSnapshot`), and write them through `SettingsClient`: M3 writes one, the last collection used (D-50). The money switch is written only by the You screen (M8), which brings the `SharedKey` with it.
+
+### D-45 · Type tints the palette doesn't name
+
+**Decision.** A type's `gradient` names two colours, and the theme maps each name to a colour (`TegolaTheme.tint(named:)`), so a type file stays data and a future theme can retint types. Six names have no hex anywhere in the archive, so each maps to the palette's nearest colour: indigo → cobalt, claret and plum → pink, oxide → rust, phosphor → yellow, verdigris → teal. An unknown name falls back to sand, so a new type file can't break a screen. If the owner wants those six as colours of their own, they're one line each in `Theme.swift`.
+
+### D-46 · Recording snapshots
+
+**Decision.** References live in `docs/snapshots/<suite>/`, outside every package, because writing into a package mid-run makes xcodebuild reload the package and hang. Separately, an `xcodebuild test` run with a failing test sometimes never exits on this Mac, so `scripts/test.sh ios:<Package>` gives up after ten minutes. A record run (`SNAPSHOTS=record`) records and passes rather than failing. A missing reference outside record mode is still recorded and fails, so CI can't pass on a snapshot nobody looked at.
+
+### D-47 · The Shelf home and the collection screen in M3
+
+**Decision.**
+- **Shelf home.** Collections are a 2-up grid of tiles as on board 01, since PLAN §4.0 puts tiles on the Shelf home. F3's "rows" is read as "the same shape for every type". With money off, the banner is board 01's `sellingOff` variant ("Catalogued · N objects" in cobalt); with money on, it's the value in green. The filter pills on board 01 ("For sale" is out of v1) and the header avatar (the You tab covers settings) aren't built.
+- **Empty shelf.** It keeps board 02's illustration and type scale, with **Type it** as its only action. The first-piece camera is M5 and **Bring your list** is M6, so each joins when it exists.
+- **Not tappable yet.** The wishlist tile shows its count but opens nothing until its screen (F16).
+- **Collection screen.** It filters by place, including the places inside it. Status filters wait for statuses (M4). A let-go object leaves the collection's list for the archive.
+- **Navigation.** The Shelf tab's stack is the first one, with `AppPath` holding the screens built so far. A route whose screen comes later in M3 does nothing yet. Tapping the Shelf tab while on it returns to its root.
+- **State equality.** A feature's `@Fetch` snapshot is the database's state, kept current outside any action, so it's left out of the state's `==`. Tests assert on it directly.
+
+### D-48 · The object screen in M3
+
+**Decision.** The seven slots follow board 04 under PD-013:
+- **Hero.** A dark stage with the type's flat hero; the photo joins with T3.9.
+- **Spine.** Chips for the subtype, year and grail, the title, the subtitle, then the type's labelled spine lines (paid and value only with money on).
+- **Status.** One chip. Clocks and their statuses arrive in M4, so in M3 the slot shows only what the collector should know now: lent to someone, unconfirmed, needs details, wanted, borrowed, let go. Otherwise it's empty.
+- **Signature.** The ladder (each part's grade as a bar on the type's scale, better grades longer) and the set (present parts filled, missing ones dashed). Gauge, panel, map and case render with the types that use them, none of which is a v1 type.
+- **Fields.** Each field with a value, labelled by the type, AUTO until touched.
+- **Actions.** Edit, Photo, and Might let go on what's owned and kept. Lend, Return and Let go join with their sheets (M7, M8).
+- **History.** Newest first, only the kinds a person reads (`ShelfEvent.Kind.readsAsHistory`).
+
+### D-49 · The edit form in M3
+
+**Decision.**
+- **Order.** The form follows board 13. First the spine, relabelled by the type, with paid and value only when money is on. Then the condition: one grade, or one per ladder part, on the type's own scale. Then every visible field, one control per kind, then the place as a typed path, the notes, and the item level behind "+ Add".
+- **Controls.** Text and dims get a text box, number a numeric box with its unit, choice single chips, set multiple chips, yes/no a pair that starts unset, date and event a date picker, year a year box, yearRange two year boxes, list and log an entries editor, money an amount in the object's currency or the reader's. Photo, composite and files show "not editable here yet": photos come with T3.9, and composite and files belong to types that aren't v1.
+- **Dates.** An empty date stays empty until the collector picks one, so the app never fills a date by itself (PD-165).
+- **Save.** Save sends one `edit` with exactly the changed keys, which is one `edited` history line. A new place is a second command, `setPlace`, and its own history line. A refused save says why and stays open.
+- **Value checks (D-40, done).** `plan` now checks every value against its field: the kind, a choice's or set's options (narrowed by the subtype), a scale's steps. `add` fills a subtype's preset values itself, `edit` refuses a hidden field, and a lookup skips one.
+
+### D-50 · Adding by hand in M3
+
+**Decision.**
+- **The sheet.** Scan presents Add by hand until the camera exists (M6): the middle slot still presents and never navigates (PD-117). The empty shelf's Type it opens the same sheet.
+- **Steps.** Pick one of the four v1 types, then the form: an optional subtype (a platform or format), Add to, and the edit form's fields (`ValuesForm`, shared). Changing the subtype clears the type's fields and grades, because another subtype has other fields and other presets.
+- **Add to** points at the last collection used if it takes the type, else the type's own collection, else a new one named by the type (PD-137). The last collection used is a `settings` row (D-44).
+- **Save, add another.** It keeps the type, subtype and collection and empties the form, for many objects in one sitting (the M3 exit test). Save closes the sheet.
+- **Thing's duplicates.** Thing asks how duplicates count (PD-151). By hand in M3, every Thing is one copy (rows); asking comes with the first-piece flow and the capture tray (M5, M6), where duplicates show up.
+
+### D-51 · Search without FTS5, for now
+
+**Decision.**
+- **Search is pure Swift.** It lives in `TegolaModel` (`search(_:in:catalogue:)`) and runs over the projection the screen already holds. Every word must appear somewhere on the object (case, accents and width ignored): the spine, a field, an entry of a list or log, the notes, the place, the subtype. Each hit says which labels matched. It's pure, so it's tested on Linux, and it needs no second copy of the data to keep in step. PLAN §3.2's `objects_fts` and `objectEntries` wait for M9's performance target (results under 150 ms on 2,000 objects): if pure search misses it, the FTS index arrives then, behind the same function.
+- **Saved views in M3.**
+  - Imperfect: any ladder part at Missing or at the bottom two steps of its scale.
+  - Duplicates: two owned, kept copies of one type, subtype and title.
+  - Signed.
+  - Might let go.
+  
+  "Digital" and "Also exists on" need works and digital games (M6's import), so they come with them.
+- **Filters.** Type, lent out, place, and the archive (let-go objects, so "did I ever own this?" has an answer). Condition and status chips wait for statuses (M4).
+
+### D-52 · Places in M3
+
+**Decision.**
+- **Merging.** A merge is one command, `mergePlaces(from, into:)`. Each object in `from` gets its own `placed` history line, then the place folds into the other, its children with it. The merged place stays in the projection, marked `mergedInto`, and leaves every list, so history that names it still reads.
+- **Near duplicates.** The app offers a merge for each pair of live places under the same parent whose names are near duplicates (`PlacePath.isNearDuplicate`, M1), and never merges alone (PD-151).
+- **When Places shows.** The Places line shows on the Shelf home once two live places exist (F10). A place's screen lists its objects and the places inside it, whatever their type.
+- **One target.** `PlacesFeature` holds both the list and one place's screen, which PLAN §5 names separately. They share every dependency and view, so one target saves a package of boilerplate.
+
+### D-53 · What the review of M3 changed
+
+**Decision.**
+- **Missing.** It's a ladder step only where the type says `allowMissing`. The form offers it there, `plan` refuses it elsewhere, and the ladder draws it as a dashed, empty rung.
+- **Duplicates.** A signed copy is one of a kind, never a duplicate (48, `item.yml`).
+- **Empty list entries.** A list or log keeps only entries with something in them. An empty one is no value, so "+ Add entry" then Save records nothing and doesn't make an object Signed.
+- **A lookup's bad value.** A value that doesn't fit its field is dropped from the lookup, not a reason to refuse the whole answer.
+- **Place merges.** A merge offers both directions; the collector says which name stays (PD-151).
+- **Partial saves.** Once Add by hand has saved the object, a place or the remembered collection failing afterwards is reported rather than reopening the save, so a second tap can't add a duplicate. Every error is caught.
+- **Money on, nothing valued.** The Shelf home shows the count rather than an empty figure.
+- **Search for the owner.** Pure Swift search instead of T3.10's `objects_fts` (D-51) changes that task's acceptance. That's the owner's call, and M9's performance target is where it's measured.
+
+
+### D-54 · The owner's answers to M2 and M3's readings, and clctn's schema as the reference
+
+> Owner (2026-11-01): "I agree with your decisions and keep in mind that the previous implementations have already fixed a lot of issues and answered a lot of questions regarding the data model, for example mackoj/clctn, which was pretty well advanced on the SQLite database modelling, and fast and accurate too."
+
+**Decision.**
+- **Approved.** D-35 (music's per-medium names), D-38 (imported rows confirmed), D-45 (type tints), D-50 (Thing by hand is one copy) and D-51 (pure Swift search for now) stand.
+- **clctn's schema first.** Before any storage or query work, read clctn's modelling and port what it already settled, rather than deriving it again. That covers new tables, indexes, search, migrations, import and performance:
+  - `docs/architecture/schema.sql`: spine columns plus JSONB fields, `objectEntries`, the FTS5 `objectSearch`, places with a normalised key, `historyEvents`, `typeMigrations`, `importBatches`, `counters`, and the indexes;
+  - its ADRs, 0006 to 0008;
+  - `docs/engineering/pointfree.md`;
+  - `Tests/DatabaseTests/SchemaTests.swift`.
+
+  A choice that departs from it gets a D-entry saying why. D-39's JSON `data` columns and D-51's search are the two departures so far. When M9 measures search, or earlier if a screen needs it, the starting point is clctn's `objectSearch`.
+### D-55 · A revoked App Attest key stays revoked
 
 **Gap.** The contract told the app to register again on `unknown-key` "if the key was revoked or the server lost it", while its `Forbidden` response, tegola-server's D-7 and its stores answer a revoked key with `403` on every call and refuse to register it again (found by tegola-server's M2 review).
 

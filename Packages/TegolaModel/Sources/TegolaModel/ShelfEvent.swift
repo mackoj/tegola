@@ -45,6 +45,9 @@ public struct ShelfEvent: Hashable, Sendable, Codable, Identifiable {
     case enriched(ObjectID, changes: [FieldKey: FieldValue])
     case confirmed(ObjectID)
     case placed(ObjectID, PlaceID?)
+    /// Two places were one: `from` folds into `into`, its children with it (story 109).
+    case placesMerged(from: PlaceID, into: PlaceID)
+    case photoAttached(Photo)
     case moved(ObjectID, to: CollectionID)
     case lent(Loan)
     case borrowed(Loan)
@@ -74,6 +77,8 @@ public struct ShelfEvent: Hashable, Sendable, Codable, Identifiable {
       case .enriched: "enriched"
       case .confirmed: "confirmed"
       case .placed: "placed"
+      case .placesMerged: "placesMerged"
+      case .photoAttached: "photo"
       case .moved: "moved"
       case .lent: "lent"
       case .borrowed: "borrowed"
@@ -90,15 +95,31 @@ public struct ShelfEvent: Hashable, Sendable, Codable, Identifiable {
       }
     }
 
+    /// Whether the History slot shows it: the kinds a person reads (PLAN §3.2). Flags that only steer screens
+    /// (grail, might let go, a wishlist priority, a count's adjustment) aren't history.
+    public var readsAsHistory: Bool {
+      switch self {
+      case .added, .edited, .enriched, .confirmed, .placed, .photoAttached, .moved, .lent, .borrowed, .returned,
+        .gaveBack, .logged,
+        .ownershipChanged, .letGo, .promoted:
+        true
+      case .collectionCreated, .collectionRenamed, .placeCreated, .personCreated, .workCreated, .placesMerged, .wanted,
+        .grailChanged,
+        .mightLetGoChanged, .quantityAdjusted:
+        false
+      }
+    }
+
     public var objectID: ObjectID? {
       switch self {
-      case .collectionCreated, .collectionRenamed, .placeCreated, .personCreated, .workCreated: nil
+      case .collectionCreated, .collectionRenamed, .placeCreated, .personCreated, .workCreated, .placesMerged: nil
       case .added(let object, _): object.id
       case .edited(let id, _), .enriched(let id, _), .confirmed(let id), .placed(let id, _), .moved(let id, _),
         .logged(let id, _, _), .ownershipChanged(let id, _), .wanted(let id, _, _), .grailChanged(let id, _),
         .mightLetGoChanged(let id, _), .letGo(let id, _), .quantityAdjusted(let id, _):
         id
       case .lent(let loan), .borrowed(let loan): loan.objectID
+      case .photoAttached(let photo): photo.objectID
       case .returned(_, let id, _), .gaveBack(_, let id): id
       case .promoted(let id, _): id
       }

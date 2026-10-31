@@ -46,9 +46,9 @@ fields:
     label: Format
     type: choice
     note: each subtype narrows it to its own formats
-    options: ["LP", "2×LP", "7\"", "10\"", "12\"", "Box set", CD, "2×CD", "3×CD", CD Single,
-              Maxi-single, Cassette, "2×Cassette", Single, Demo, MiniDisc, Reel-to-reel,
-              8-track, DAT, Other]
+    options: ["LP", "2×LP", "7\"", "10\"", "12\"", "Box set", "CD", "2×CD", "3×CD", "CD Single",
+              "Maxi-single", "Cassette", "2×Cassette", "Single", "Demo", "MiniDisc", "Reel-to-reel",
+              "8-track", "DAT", "Other"]
     sample: "2×LP"
     auto: true
   # Sleeve, case or J-card: one field, named by the medium. Collectors quote it
@@ -118,7 +118,7 @@ subtypes:
     label: CD
     presets:
       medium: CD
-      format: [CD, "2×CD", "3×CD", CD Single, Maxi-single, Box set]
+      format: ["CD", "2×CD", "3×CD", "CD Single", "Maxi-single", "Box set"]
       clock: discRot
     adds:
       - { key: discFormat, label: Disc format, type: choice, options: [CD, HDCD, SACD, Enhanced CD, CD-R, Shaped disc, Blu-spec CD, Other], auto: true }

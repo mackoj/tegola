@@ -51,6 +51,13 @@ public struct CommandGenerator {
     if chance(50) { values[.notes] = .text(pick(Self.notes)) }
     if chance(40) { values[.year] = .year(pick([1994, 1998, 2001])) }
     if let key = textField(shelf), chance(50) { values[key] = .text(pick(["A", "B", "C"])) }
+    // Money, so promise 5 has something to hide: paid and value, in two currencies.
+    if allowAcquired && chance(30) {
+      let currency = Currency(pick(["EUR", "JPY"]))!
+      values[pick([FieldKey.paid, .value])] = .money(
+        Money(minorUnits: Int.random(in: 100...90_000, using: &random), currency: currency)
+      )
+    }
     if allowAcquired && chance(30) {
       let date = pick(Self.acquired)
       if recordAcquired { suppliedAcquired.insert(date) }
@@ -81,7 +88,7 @@ public struct CommandGenerator {
       let source: ShelfEvent.Source = origin == .captured ? .capture : origin == .imported ? .import : .collector
       return (.add(draft, to: collection.map { .existing($0.id) } ?? .new(name: "Mine"), origin: origin), source)
     }
-    switch Int.random(in: 0..<15, using: &random) {
+    switch Int.random(in: 0..<17, using: &random) {
     case 0: return (.confirm([object]), pick([.collector, .lookup]))
     case 1:
       let edits = values(shelf, allowAcquired: true).mapValues { Optional($0) }
@@ -96,6 +103,11 @@ public struct CommandGenerator {
     case 6: return (loans.isEmpty ? .giveBack(object) : .returnLoan(pick(loans), condition: nil), .collector)
     case 7: return (.markBorrowed(object, from: .new(name: "Léa")), .collector)
     case 13: return (.edit(object, values: [pick([FieldKey.year, .notes]): nil]), .collector)
+    case 15:
+      let places = shelf.livePlaces.map(\.id).sorted()
+      guard places.count >= 2 else { return (.logEvent(object, kind: "cleaned", note: ""), .collector) }
+      return (.mergePlaces(pick(places), into: pick(places)), .collector)
+    case 14: return (.attachPhoto(object, fileName: pick(["a.jpg", "b.jpg"]), takenAt: Self.acquired[0]), .collector)
     case 8: return (.letGo(object, pick([.gifted, .lost, .sold(price: nil)])), .collector)
     case 9: return (.promote(object), .collector)
     case 10: return (.adjustQuantity(object, by: pick([-1, 1, 2])), .collector)

@@ -178,3 +178,22 @@ extension TegolaTheme {
     sheetBackdropOpacity: 0.28
   )
 }
+
+extension TegolaTheme {
+  /// A type's tint, by the colour name its file gives in `gradient` (`[teal, cobalt]`). Types are data, so their
+  /// colours are named, and the theme decides what each name looks like. Names the palette doesn't have map to the
+  /// nearest colour it does (D-45); an unknown name falls back to sand, so a new type file can't break a screen.
+  public func tint(named name: String) -> TegolaRGB {
+    switch name {
+    case "ink": TegolaPalette.ink
+    case "yellow", "phosphor": TegolaPalette.yellow
+    case "orange": TegolaPalette.orange
+    case "pink", "claret", "plum": TegolaPalette.pink
+    case "green": TegolaPalette.green
+    case "teal", "verdigris": TegolaPalette.teal
+    case "cobalt", "indigo": TegolaPalette.cobalt
+    case "rust", "oxide": TegolaPalette.rust
+    default: TegolaPalette.sand
+    }
+  }
+}

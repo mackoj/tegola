@@ -169,6 +169,8 @@ public enum TegolaRadius {
   public static let input: Double = 11
   public static let card: Double = 14
   public static let cardLarge: Double = 18
+  /// The dashed frame of an empty screen (board 02).
+  public static let emptyFrame: Double = 22
   public static let sheet: Double = 24
   /// Pills, buttons, avatars, toggles: fully round.
   public static let pill: Double = 999

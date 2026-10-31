@@ -15,6 +15,10 @@ let package = Package(
   products: [
     .library(name: "TegolaDesignTokens", targets: ["TegolaDesignTokens"]),
     .library(name: "TegolaDesignSystem", targets: ["TegolaDesignSystem"]),
+    .library(name: "TegolaSnapshotTesting", targets: ["TegolaSnapshotTesting"]),
+  ],
+  dependencies: [
+    .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", "1.18.0"..<"2.0.0")
   ],
   targets: [
     // Pure values: the palette, the roles, the themes, type, spacing, radii, borders, shadows. No SwiftUI, so the
@@ -28,7 +32,16 @@ let package = Package(
     .target(
       name: "TegolaDesignSystem",
       dependencies: ["TegolaDesignTokens"],
-      resources: [.copy("Resources/Fonts")],
+      resources: [.copy("Resources/Fonts"), .process("Resources/Localizable.xcstrings")],
+      swiftSettings: swiftSettings
+    ),
+    // Snapshot assertions at PLAN §2.6's settings, for every package's iOS snapshot tests. Linked by tests only.
+    .target(
+      name: "TegolaSnapshotTesting",
+      dependencies: [
+        "TegolaDesignSystem", "TegolaDesignTokens",
+        .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
+      ],
       swiftSettings: swiftSettings
     ),
     .testTarget(
@@ -38,7 +51,9 @@ let package = Package(
     ),
     .testTarget(
       name: "TegolaDesignSystemTests",
-      dependencies: ["TegolaDesignSystem", "TegolaDesignTokens"],
+      dependencies: [
+        "TegolaDesignSystem", "TegolaDesignTokens", "TegolaSnapshotTesting",
+      ],
       swiftSettings: swiftSettings
     ),
   ]
