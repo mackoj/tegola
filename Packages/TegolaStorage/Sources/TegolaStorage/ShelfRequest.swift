@@ -1,3 +1,4 @@
+import Foundation
 public import SQLiteData
 public import TegolaModel
 
@@ -7,10 +8,13 @@ public import TegolaModel
 public struct ShelfSnapshot: Hashable, Sendable {
   public var shelf: Shelf
   public var money: MoneyVisibility
+  /// Where the last object was added, if that collection still exists.
+  public var lastCollection: CollectionID?
 
-  public init(shelf: Shelf = Shelf(), money: MoneyVisibility = .off) {
+  public init(shelf: Shelf = Shelf(), money: MoneyVisibility = .off, lastCollection: CollectionID? = nil) {
     self.shelf = shelf
     self.money = money
+    self.lastCollection = lastCollection
   }
 }
 
@@ -19,7 +23,14 @@ public struct ShelfRequest: FetchKeyRequest {
 
   public func fetch(_ db: Database) throws -> ShelfSnapshot {
     let money = try SettingRow.find(SettingKey.money.id).fetchOne(db).flatMap { MoneyVisibility(rawValue: $0.value) }
-    return ShelfSnapshot(shelf: try ShelfStore.loadShelf(db), money: money ?? .off)
+    let shelf = try ShelfStore.loadShelf(db)
+    let last = try SettingRow.find(SettingKey.lastCollection.id).fetchOne(db)
+      .flatMap { UUID(uuidString: $0.value) }.map(CollectionID.init)
+    return ShelfSnapshot(
+      shelf: shelf,
+      money: money ?? .off,
+      lastCollection: last.flatMap { shelf.collections[$0] == nil ? nil : $0 }
+    )
   }
 }
 

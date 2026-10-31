@@ -1,3 +1,4 @@
+public import AddByHandFeature
 public import CollectionFeature
 public import ComposableArchitecture
 public import ObjectFeature
@@ -23,20 +24,20 @@ public struct AppFeature {
     public var tabs: TabBarLayout = .default
     public var shelf = ShelfFeature.State()
     public var shelfPath = StackState<AppPath.State>()
-    /// Scan presents the add sheet instead of selecting a tab (PD-117). It becomes the camera with M6.
-    public var isCapturePresented = false
+    /// Scan presents instead of selecting a tab (PD-117): Add by hand in M3, the camera from M6.
+    @Presents public var addByHand: AddByHandFeature.State?
 
     public init() {}
   }
 
   public enum Action: ViewAction {
+    case addByHand(PresentationAction<AddByHandFeature.Action>)
     case shelf(ShelfFeature.Action)
     case shelfPath(StackActionOf<AppPath>)
     case view(View)
 
     @CasePathable
     public enum View: Equatable, Sendable {
-      case captureDismissed
       case tabTapped(AppTab)
     }
   }
@@ -51,7 +52,9 @@ public struct AppFeature {
         Self.push(route, onto: &state.shelfPath)
         return .none
       case .shelf(.delegate(.addByHand)):
-        state.isCapturePresented = true
+        state.addByHand = AddByHandFeature.State()
+        return .none
+      case .addByHand:
         return .none
       case .shelf:
         return .none
@@ -60,12 +63,9 @@ public struct AppFeature {
         return .none
       case .shelfPath:
         return .none
-      case .view(.captureDismissed):
-        state.isCapturePresented = false
-        return .none
       case .view(.tabTapped(let tab)):
         if tab.presents {
-          state.isCapturePresented = true
+          state.addByHand = AddByHandFeature.State()
         } else if tab == state.selectedTab, tab == .shelf {
           // Tapping the tab you're on goes back to its root.
           state.shelfPath.removeAll()
@@ -76,6 +76,7 @@ public struct AppFeature {
       }
     }
     .forEach(\.shelfPath, action: \.shelfPath)
+    .ifLet(\.$addByHand, action: \.addByHand) { AddByHandFeature() }
   }
 
   /// The one place a route becomes a screen. Routes whose screen arrives later in M3 do nothing yet.

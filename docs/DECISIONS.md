@@ -256,3 +256,12 @@ reused; a replaced decision stays, marked **superseded by D-n**.
 - **Dates.** An empty date stays empty until the collector picks one, so the app never fills a date by itself (PD-165).
 - **Save.** Save sends one `edit` with exactly the changed keys, which is one `edited` history line. A new place is a second command, `setPlace`, and its own history line. A refused save says why and stays open.
 - **Value checks (D-40, done).** `plan` now checks every value against its field: the kind, a choice's or set's options (narrowed by the subtype), a scale's steps. `add` fills a subtype's preset values itself, `edit` refuses a hidden field, and a lookup skips one.
+
+### D-50 · Adding by hand in M3
+
+**Decision.**
+- **The sheet.** Scan presents Add by hand until the camera exists (M6): the middle slot still presents and never navigates (PD-117). The empty shelf's Type it opens the same sheet.
+- **Steps.** Pick one of the four v1 types, then the form: an optional subtype (a platform or format), Add to, and the edit form's fields (`ValuesForm`, shared). Changing the subtype clears the type's fields and grades, because another subtype has other fields and other presets.
+- **Add to** points at the last collection used if it takes the type, else the type's own collection, else a new one named by the type (PD-137). The last collection used is a `settings` row (D-44).
+- **Save, add another.** It keeps the type, subtype and collection and empties the form, for many objects in one sitting (the M3 exit test). Save closes the sheet.
+- **Thing's duplicates.** Thing asks how duplicates count (PD-151). By hand in M3, every Thing is one copy (rows); asking comes with the first-piece flow and the capture tray (M5, M6), where duplicates show up.

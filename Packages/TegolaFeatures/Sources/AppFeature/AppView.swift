@@ -1,4 +1,5 @@
 #if canImport(SwiftUI)
+  import AddByHandFeature
   import CollectionFeature
   import ObjectFeature
   public import ComposableArchitecture
@@ -33,12 +34,8 @@
       }
       .background(theme[.surface].color)
       .ignoresSafeArea(.container, edges: .bottom)
-      .sheet(isPresented: Binding(get: { store.isCapturePresented }, set: { if !$0 { send(.captureDismissed) } })) {
-        Text(String(localized: "Scan", bundle: .module))
-          .tegolaTextStyle(TegolaType.displayTitle)
-          .foregroundStyle(.textOnStage)
-          .frame(maxWidth: .infinity, maxHeight: .infinity)
-          .background(theme[.surfaceCamera].color)
+      .sheet(item: $store.scope(state: \.addByHand, action: \.addByHand)) { add in
+        AddByHandView(store: add)
       }
     }
 

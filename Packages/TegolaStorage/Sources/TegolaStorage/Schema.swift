@@ -114,10 +114,13 @@ public struct SettingRow: Identifiable, Sendable {
 public enum SettingKey: String, CaseIterable, Sendable {
   /// `MoneyVisibility`: off by default (PD-138).
   case money
+  /// The collection the last object was added to: where Add to points next (F6).
+  case lastCollection
 
   public var id: UUID {
     switch self {
     case .money: UUID(uuidString: "5E771965-0000-4000-8000-000000000001")!
+    case .lastCollection: UUID(uuidString: "5E771965-0000-4000-8000-000000000002")!
     }
   }
 }
