@@ -186,3 +186,16 @@ struct StoreHarness {
     #expect(apply(try harness.store.log(), to: Shelf()) == shelf)
   }
 }
+
+@Suite struct SettingsTests {
+  @Test func moneyIsOffUntilTheCollectorTurnsItOn() throws {
+    let harness = try StoreHarness()
+    #expect(try harness.store.money() == .off)
+    try harness.store.set(.money, to: MoneyVisibility.on.rawValue)
+    #expect(try harness.store.money() == .on)
+    try harness.store.set(.money, to: MoneyVisibility.off.rawValue)
+    #expect(try harness.store.money() == .off)
+    let rows = try harness.store.database.read { db in try SettingRow.fetchCount(db) }
+    #expect(rows == 1)
+  }
+}

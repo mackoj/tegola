@@ -100,6 +100,28 @@ struct LoanRow: Identifiable {
   var data: String
 }
 
+/// A setting the collector changed (PD-161, ADR-0008): only those are stored, so a missing row is the default. Not a
+/// shelf change, so not an event. Each setting has a fixed id, because `SyncEngine` allows no unique constraint on
+/// `key` (D-44).
+@Table("settings")
+public struct SettingRow: Identifiable, Sendable {
+  public let id: UUID
+  public var key: String
+  public var value: String
+}
+
+/// The settings the app knows, each with its fixed row id.
+public enum SettingKey: String, CaseIterable, Sendable {
+  /// `MoneyVisibility`: off by default (PD-138).
+  case money
+
+  public var id: UUID {
+    switch self {
+    case .money: UUID(uuidString: "5E771965-0000-4000-8000-000000000001")!
+    }
+  }
+}
+
 extension ShelfStore {
   /// The migrations, under `SyncEngine`'s rules from the first one, so iCloud sync can be switched on later without a
   /// migration (Q4, ADR-0006): a `TEXT` UUID key, `NOT NULL ON CONFLICT REPLACE DEFAULT (uuid())`, soft deletes, and
@@ -233,6 +255,18 @@ extension ShelfStore {
       )
       .execute(db)
       try #sql(#"CREATE INDEX "index_loans_on_objectID" ON "loans"("objectID")"#).execute(db)
+    }
+    migrator.registerMigration("Create settings") { db in
+      try #sql(
+        """
+        CREATE TABLE "settings" (
+          "id" TEXT PRIMARY KEY NOT NULL ON CONFLICT REPLACE DEFAULT (uuid()),
+          "key" TEXT NOT NULL,
+          "value" TEXT NOT NULL
+        ) STRICT
+        """
+      )
+      .execute(db)
     }
     return migrator
   }

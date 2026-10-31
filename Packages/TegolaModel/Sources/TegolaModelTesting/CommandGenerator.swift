@@ -51,6 +51,13 @@ public struct CommandGenerator {
     if chance(50) { values[.notes] = .text(pick(Self.notes)) }
     if chance(40) { values[.year] = .year(pick([1994, 1998, 2001])) }
     if let key = textField(shelf), chance(50) { values[key] = .text(pick(["A", "B", "C"])) }
+    // Money, so promise 5 has something to hide: paid and value, in two currencies.
+    if allowAcquired && chance(30) {
+      let currency = Currency(pick(["EUR", "JPY"]))!
+      values[pick([FieldKey.paid, .value])] = .money(
+        Money(minorUnits: Int.random(in: 100...90_000, using: &random), currency: currency)
+      )
+    }
     if allowAcquired && chance(30) {
       let date = pick(Self.acquired)
       if recordAcquired { suppliedAcquired.insert(date) }

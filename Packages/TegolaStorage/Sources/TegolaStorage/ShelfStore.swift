@@ -71,6 +71,20 @@ public struct ShelfStore: Sendable {
     try database.read { db in try Self.loadLog(db) }
   }
 
+  /// Whether money shows: off unless the collector turned it on (PD-138).
+  public func money() throws -> MoneyVisibility {
+    try database.read { db in
+      try SettingRow.find(SettingKey.money.id).fetchOne(db).flatMap { MoneyVisibility(rawValue: $0.value) } ?? .off
+    }
+  }
+
+  /// Stores a setting the collector changed.
+  public func set(_ key: SettingKey, to value: String) throws {
+    try database.write { db in
+      try SettingRow.upsert { SettingRow(id: key.id, key: key.rawValue, value: value) }.execute(db)
+    }
+  }
+
   /// An object's events, oldest first: what the History slot reads, before it filters by kind.
   public func history(of object: ObjectID) throws -> [ShelfEvent] {
     try database.read { db in

@@ -210,3 +210,11 @@ reused; a replaced decision stays, marked **superseded by D-n**.
 **Gap.** The contract said `SHA-256(body)` inside the signed string without saying how the digest is written, `path-with-query` without saying whether the base path counts, and `SHA-256(challenge)` without saying which bytes of the challenge (found while writing tegola-server's verifier, its D-5 and D-6).
 
 **Decision.** The signed string uses the method in upper case, the request target exactly as sent with `/v1` included, the timestamp header's text, and the body digest as 64 lower-case hex digits (an absent body hashes as empty). The attestation's client data is `SHA-256` of the challenge string's UTF-8 bytes, exactly as `GET /app-attest/challenge` returned it. Both are now in the contract's text; `AppAttestMiddleware` (M6) builds these bytes.
+
+### D-43 · What counts
+
+**Decision.** A count is the copies of what's owned and kept: a quantity object counts its quantity (12 enamel pins are 12), and wanted, borrowed and let-go objects count nothing (PD-061, PD-070, promise 4). The Shelf header, a collection's meta line and every stat use the one function, `count(_:)`. A collection line counts what's in it, so collection lines add up to the shelf's count.
+
+### D-44 · Settings before the settings screen
+
+**Decision.** `settings` arrives in M3 as its own migration, holding only what the collector changed (PD-161). Each known setting has a fixed row id, because `SyncEngine` allows no unique constraint on `key`. PLAN §5 reads settings through a custom `SharedKey`. Nothing writes a setting until the You screen (M8), so M3's screens read the row through a query, `ShelfStore.money()`, and the `SharedKey` arrives with M8.
