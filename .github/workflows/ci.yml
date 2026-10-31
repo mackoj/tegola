@@ -1,6 +1,6 @@
 # Two jobs.
-# linux-core runs on every push and PR: the pure packages (PLAN §2.4), the guard tests and the API lint. It's free,
-# and it's the independent check on main that telaio's REVIEW asked for.
+# linux-core runs on every push and PR: the pure packages (PLAN §2.4), the guard tests, the API lint and the type
+# schema check. It's free, and it's the independent check on main that telaio's REVIEW asked for.
 # macos runs only when started by hand: hosted macOS minutes cost money and hosted runners have no Xcode 27. It
 # checks the iOS 26 SDK build with Xcode 26.6. Everything else runs on the Mac (scripts/test.sh, scripts/ci.sh).
 name: CI
@@ -23,6 +23,8 @@ jobs:
           node-version: 22
       - name: API lint
         run: scripts/lint-api.sh
+      - name: Type files against the schema
+        run: scripts/validate-types.sh
       - name: Secret scan
         run: git config --global --add safe.directory "$GITHUB_WORKSPACE" && scripts/secret-scan.sh
       - uses: actions/upload-artifact@v4

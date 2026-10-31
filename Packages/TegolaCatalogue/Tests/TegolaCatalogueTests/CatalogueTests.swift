@@ -38,7 +38,46 @@ import Testing
   @Test func videoMediaHasItsEightSubtypes() throws {
     let media = try #require(try Catalogue.bundled().manifest("video-media"))
     #expect(media.subtypes.map(\.key) == ["vhs", "betamax", "laserdisc", "ced", "dvd", "hd-dvd", "blu-ray", "uhd"])
-    #expect(media.subtypes.allSatisfy { $0.presetKeys.contains("packaging") })
+    #expect(media.subtypes.allSatisfy { $0.presets["packaging"] != nil })
+  }
+
+  @Test func videoMediaPresetsReadAsHiddenValuesOptionsPartsAndClocks() throws {
+    let media = try #require(try Catalogue.bundled().manifest("video-media"))
+    let vhs = try #require(media.subtypes.first { $0.key == "vhs" })
+    #expect(vhs.label == "VHS")
+    #expect(vhs.presets["regionCode"] == .hidden)
+    #expect(vhs.presets["packaging"] == .options(["slipcase", "clamshell", "big box"]))
+    #expect(vhs.parts == ["sleeve", "shell", "tape", "insert"])
+    #expect(vhs.clocks == ["mediaRot"])
+    #expect(vhs.adds.map(\.key) == ["tapeSpeed", "printMark"])
+    let bluRay = try #require(media.subtypes.first { $0.key == "blu-ray" })
+    #expect(bluRay.lookup == ["barcode", "spineNo"])
+    #expect(bluRay.presets["regionCode"] == .options(["A", "B", "C", "free"]))
+  }
+
+  @Test func signaturesLookupAndSupersessionDecode() throws {
+    let games = try #require(try Catalogue.bundled().manifest("video-game"))
+    #expect(games.signatures.map(\.renderer) == ["ladder", "set"])
+    #expect(games.signatures[0].axes == ["mediaCondition", "boxCondition", "manualCondition"])
+    #expect(games.signatures[1].binds == "inserts")
+    #expect(games.lookup?.identifier == nil)
+    #expect(games.lookup?.identifierPattern == "per-platform")
+    #expect(games.supersedes.first?.fields["cib"] == "derived")
+    #expect(games.allowMissing)
+    let music = try #require(try Catalogue.bundled().manifest("music"))
+    #expect(music.supersedes.first?.sets == ["medium": "Vinyl"])
+    #expect(try Catalogue.bundled().manifest("wine")?.isConsumable == true)
+    #expect(try Catalogue.bundled().manifest("thing")?.allowsOwnFields == true)
+  }
+
+  @Test func aScalarPresetFillsAndHides() throws {
+    let yaml =
+      ValidationTests.base
+      + "\nconditions: [Good, Bad]\nfields:\n  - {key: media, label: Media, type: choice, options: [Disc, Cart]}"
+      + "\nsubtypes:\n  - {key: a, label: A, presets: {media: Disc, clock: none}}"
+    let subtype = try #require(try ValidationTests.manifest(yaml).subtypes.first)
+    #expect(subtype.presets["media"] == .value("Disc"))
+    #expect(subtype.clocks.isEmpty)
   }
 
   @Test func thingAsksAboutDuplicates() throws {
@@ -84,7 +123,7 @@ import Testing
   }
 
   @Test func malformedPresetsAreAnErrorNotAnEmptySet() {
-    let yaml = Self.base + "\nconditions: [Good, Bad]\nfields: []\nsubtypes:\n  - {key: a, presets: [shape]}"
+    let yaml = Self.base + "\nconditions: [Good, Bad]\nfields: []\nsubtypes:\n  - {key: a, label: A, presets: [shape]}"
     #expect(throws: CatalogueError.self) { try Self.manifest(yaml) }
   }
 
@@ -104,9 +143,10 @@ import Testing
     let field = "\nconditions: [Good, Bad]\nfields:\n  - {key: shape, label: Shape, type: choice}"
     #expect(try Self.manifest(Self.base + field).problems.count == 1)
     let presetByAll =
-      field + "\nsubtypes:\n  - {key: a, presets: {shape: [round]}}\n  - {key: b, presets: {shape: [square]}}"
+      field + "\nsubtypes:\n  - {key: a, label: A, presets: {shape: [round]}}"
+      + "\n  - {key: b, label: B, presets: {shape: [square]}}"
     #expect(try Self.manifest(Self.base + presetByAll).problems.isEmpty)
-    let presetBySome = field + "\nsubtypes:\n  - {key: a, presets: {shape: [round]}}\n  - {key: b}"
+    let presetBySome = field + "\nsubtypes:\n  - {key: a, label: A, presets: {shape: [round]}}\n  - {key: b, label: B}"
     #expect(try Self.manifest(Self.base + presetBySome).problems.count == 1)
   }
 

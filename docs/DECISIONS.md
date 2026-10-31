@@ -127,7 +127,7 @@ reused; a replaced decision stays, marked **superseded by D-n**.
 
 ### D-30 · Field kinds the type files spell differently
 
-**Decision.** `int` reads as number and `bool` as yes/no, declared in one alias table (`FieldKind.aliases`). Any other unknown kind is a decoding error, not a silent fallback to text as in clctn, which hid typos.
+**Decision.** `int` reads as number, `bool` as yes/no and `enum` (page 48's spelling) as choice, declared in one alias table (`FieldKind.aliases`). Any other unknown kind is a decoding error, not a silent fallback to text as in clctn, which hid typos.
 
 ### D-31 · Packages that would be empty in M1
 
@@ -140,3 +140,8 @@ reused; a replaced decision stays, marked **superseded by D-n**.
 ### D-33 · The lookup contract's search request
 
 **Decision.** `SearchRequest` needs one of `title`, `text` or `catalogueNumber`. That rule is in the description, and the server answers `400`, rather than as a schema `anyOf` of required lists, which swift-openapi-generator turns into three empty payload types (it warns, and the client gets worse).
+
+### D-34 · What a subtype's preset means
+
+**Decision.** Page 48 writes presets three ways, and each has one meaning. The word `hidden` hides the field. One value fills the field and hides it (Saturn → media: disc, "the media picker is hidden"). A list narrows a choice to those options (DVD's region codes). `parts`, `clock` and `lookup` aren't parent fields: they are the subtype's set-signature parts, its clocks from the library (`none` for none) and the identifiers its capture reads. Every added field has a label, like a type's own fields, so `video-media.yml`'s additions got theirs.
+

@@ -29,9 +29,13 @@ extension TypeManifest {
     // A choice with no options of its own is valid only when every subtype presets them (page 48: a subtype may
     // narrow a choice). Without subtypes, nobody could ever pick a value.
     for field in fields where field.kind == .choice && field.options.isEmpty {
-      let presetEverywhere = !subtypes.isEmpty && subtypes.allSatisfy { $0.presetKeys.contains(field.key) }
+      let presetEverywhere =
+        !subtypes.isEmpty
+        && subtypes.allSatisfy {
+          if case .options = $0.presets[field.key] { true } else { false }
+        }
       if !presetEverywhere {
-        problems.append("choice field \"\(field.key)\" has no options and isn't preset by every subtype")
+        problems.append("choice field \"\(field.key)\" has no options and isn't narrowed by every subtype")
       }
     }
     return problems.map { ManifestProblem(type: id, message: $0) }

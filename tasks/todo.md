@@ -19,7 +19,7 @@ Plan: `tasks/plan.md`, M1. Report: `docs/milestones/M1.md`.
 
 Plan: `tasks/plan.md`, M2. Report: `docs/milestones/M2.md`.
 
-- [ ] T2.1 Type schema v1 and its JSON Schema
+- [x] T2.1 Type schema v1 and its JSON Schema
 - [ ] T2.2 Type files move to subtypes (video games, music)
 - [ ] T2.3 Resolver and the subtype rules (exit test: 13 subtypes)
 - [ ] T2.4 Item level, clock library, signature kit
