@@ -7,7 +7,7 @@ it short and current.
 
 ## Where things stand
 
-- **Spec:** approved (`docs/PLAN.md`, answers in §10). Decisions: `docs/DECISIONS.md`, D-1 to D-54.
+- **Spec:** approved (`docs/PLAN.md`, answers in §10). Decisions: `docs/DECISIONS.md`, D-1 to D-55.
 - **M1 (foundation):** merged (PR #5, `docs/milestones/M1.md`).
 - **M2 (catalogue, model, storage):** merged (PR #8, `docs/milestones/M2.md`). The type files are on schema v1 with
   subtypes. The pure `plan`/`apply` sit over an event log and its projection (`TegolaStorage`, sqlite-data).
