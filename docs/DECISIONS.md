@@ -172,9 +172,13 @@ reused; a replaced decision stays, marked **superseded by D-n**.
 ### D-38 · How `plan` reads the rules it isn't told
 
 **Decision.**
+- **Origin and source.** An origin must come from its source: typed and first piece from the collector, a capture from the camera, an import from the importer. Without that, a lookup could add an object "typed" and confirmed (review of M2, finding 6).
 - **Identity on add.** An object typed by the collector, their first piece and an imported row are confirmed. The import is the collector's own list, mapped by them. A capture is unconfirmed, or needs details when nothing was identified, until the collector confirms it (PD-042). M6 can make imported rows unconfirmed if the review queue needs them to be.
 - **Titles.** Every object needs a title, except a capture with nothing identified. Confirming one still needs a title.
-- **A lookup** fills a key only when it's empty, or when the lookup filled it before and the collector hasn't touched it since. Its values are AUTO until then (PD-042, PD-045). Editing a key makes it the collector's.
+- **A lookup** fills a key only when it's empty, or when the lookup filled it before and the collector hasn't touched it since. Its values are AUTO until then (PD-042, PD-045). Editing a key makes it the collector's, and so does clearing one: an object keeps the set of keys the collector typed or cleared, and a lookup never fills those. A lookup never writes `acquired`, money, the condition or a ladder axis, and never an empty title.
+- **Grades.** A scale field is set only through its ladder axis (`.axis`), never as a plain field, so the rule that a wanted object has no condition sees every grade.
+- **Borrowing.** Only an object added as borrowed can be marked borrowed from someone. Marking one of the collector's own would silently drop it from the counts.
+- **When a wanted object arrives,** its priority and price cap are cleared.
 - **Places.** Typing a path reuses a place with the same name (ignoring case) under the same parent, and makes the rest. Duplicates made on two devices are merged by the collector, never by `plan` (§3.2).
 - **Counts.** Promoting takes one copy off a count, down to zero. A typed collection only takes its own type; a mixed collection takes any.
 - **Loans.** Only the collector closes a loan (D-2). Giving back a borrowed object closes the loan and leaves the object marked borrowed, so it still never counts.
@@ -184,5 +188,14 @@ reused; a replaced decision stays, marked **superseded by D-n**.
 **Decision.**
 - **Tables.** The first migration creates the tables M2's commands write: `events`, `collections`, `objects`, `works`, `places`, `persons` and `loans`. They follow `SyncEngine`'s rules: a `TEXT` UUID key `NOT NULL ON CONFLICT REPLACE DEFAULT (uuid())`, a `deletedAt` column, and no unique constraint beyond the key. The rest of PLAN §3.2 (`photos`, `objectEntries`, `ownFields`, `importBatches`, `lookupQueue`, `settings`, `objects_fts`) arrives with the milestone that writes it, each as a new, additive migration, which `SyncEngine` allows. A migration that has shipped is never edited.
 - **Rows.** Each projection row keeps its model value as JSON in `data`, and that's what's read back. The other columns (title, ownership, collection, place, dates) are copies for queries and indexes, written from the same value in the same statement. Reading `data` is exact, where SQLite's text dates round to the millisecond.
+- **Exactness.** `data` holds JSON written by Foundation's coders, which keep a date's every digit. SQLite's text dates and StructuredQueries' JSON coders keep milliseconds, which made a rebuilt projection drift from the live one on a real clock (review of M2, finding 1). Events keep their whole value in `data` too.
+- **Order.** The log replays by `seq`, the order commands ran on this device, whatever the clock did (finding 2). Merging logs from several devices by `at` waits for sync and a device column.
+- **Append-only, enforced.** Triggers make SQLite refuse any `UPDATE` or `DELETE` on `events`.
+- **`uuid()`** is registered on every connection (`ShelfStore.configuration`), backed by the `uuid` dependency. Apple's SQLite has a `uuid()` of its own, which hid the gap; Linux's doesn't.
 - **Writing.** `perform` loads the projection, plans, appends the events, and upserts every row that changed, all in one write transaction. Nothing is ever deleted except by `rebuildProjection`, which empties the projection tables and replays the log. Loading the whole projection per command is fine for v1's shelves; an import batch is one command.
 - **Linux.** Whether sqlite-data and GRDB build on Linux is checked by a non-blocking `linux-core` step. Until it's green, storage is verified on the Mac only.
+
+### D-40 · What `plan` doesn't check yet
+
+**Decision.** `plan` checks that a key belongs to the object's type, subtype and item level, but not that its value fits the field. It doesn't check the kind (a yes/no in a choice field), a narrowed choice's options, or whether the field is hidden or preset (an edit could set `platform` on a Saturn game). M3's edit form renders `EffectiveType` and only offers valid values, and M3 adds the value checks to `plan`, so an import (M6) can't bypass them either. The review of M2 raised it (finding 11).
+

@@ -92,11 +92,11 @@ A type a collector builds on their device, field by field. It works immediately 
 A custom type another collector published to the type board and that others download and use. It is credited and has a dashed edge.
 
 **Music**:
-The single type for recorded music on any physical format (vinyl, CD, cassette, other). Its object is a **Release**. The format decides the second graded part and the mark.
+The single type for recorded music on any physical format. Its object is a **Release**. Each format (vinyl, CD, cassette, other) is a **Subtype**, which narrows the formats and adds its own fields (D-35).
 _Avoid_: Vinyl type, CD type, Records (as the type name)
 
 **Vehicles**:
-The single type for cars and motorbikes.
+The single type for cars and motorbikes, which are its two subtypes.
 
 **Thing**:
 The generic type that accepts anything. Only a name is required. It has no scale and no signature, and it is the route toward a real type.
@@ -107,6 +107,14 @@ The public place where custom types are published, downloaded, adopted and propo
 
 **Type proposal**:
 A published custom type on its way to becoming an official type: Proposed → Gathering → Drafting → Shipped. It sends the shape, never the shelf.
+
+**Subtype**:
+One level below a type, keyed on platform for games and format for music and film: a Saturn game, a vinyl release, a Blu-ray. It inherits everything and can only add nouns: fields of its own, a preset or hidden field, a narrowed choice, the parts its set counts, clocks from the library. It can't remove or rename a parent field, and has no subtypes of its own (page 48).
+_Avoid_: Platform type, format type, variant
+
+**Item level**:
+The fields every type inherits because they mean the same everywhere: who **Signed** it (by, dedication, date, proof) and what it's a **Bundle of** (the works inside; two or more makes a bundle). They stay hidden until the object has a value, and "+ Add" reveals them.
+_Avoid_: Common fields, base type
 
 **Migration**:
 Moving a collection from one type to another, e.g. custom → official or Thing → a real type. It is offered, never imposed, loses no value, and can be undone for 30 days.

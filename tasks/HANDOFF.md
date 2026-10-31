@@ -3,16 +3,23 @@
 The state of the work for whoever picks it up next: a new session, another agent, or the owner. Read this first, keep
 it short and current.
 
-**Updated:** 2026-10-31, M1 merged into `main` and green on the Mac. M2 is next.
+**Updated:** 2026-10-31, M2 done on `m2-catalogue-model-storage`, open as a PR into `main`. M3 is next.
 
 ## Where things stand
 
-- **Spec:** approved (`docs/PLAN.md`, answers in §10). Decisions: `docs/DECISIONS.md`, D-1 to D-33.
-- **M1 (foundation):** merged into `main` (PR #5). A separate review found 14 problems, all fixed
-  (`docs/milestones/M1.md`, "Review").
-- **Verified:** on Linux (Swift 6.4.2), the six pure packages. On the Mac (Xcode 27.1), the full gate,
-  `scripts/ci.sh`: every package, the app's unit and UI tests, the lints and the secret scan
-  (`docs/milestones/M1.md`).
+- **Spec:** approved (`docs/PLAN.md`, answers in §10). Decisions: `docs/DECISIONS.md`, D-1 to D-40.
+- **M1 (foundation):** merged (PR #5), green on the Mac (`docs/milestones/M1.md`).
+- **M2 (catalogue, model, storage):** done on `m2-catalogue-model-storage` (`docs/milestones/M2.md`). Exit test
+  green: the 13 subtypes resolve to their written-out field lists. `scripts/ci.sh` is green on Xcode 27.1, and
+  `linux-core` is green.
+- **What exists now:**
+  - type files on schema v1, with subtypes, the item level, and the clock and signature libraries;
+  - the resolver (`Catalogue.resolve`);
+  - the pure `plan` and `apply`, with property tests for six of the eight promises;
+  - `TegolaStorage` (event log and projection in one transaction, with a replay test);
+  - `ShelfClient` and the seed shelf;
+  - the app opens its database at launch.
+- **No screens yet** beyond M1's placeholder. They start in M3.
 
 ## Run it locally (Mac)
 
@@ -22,7 +29,8 @@ Needs Xcode 27.1 (Swift 6.4) with an iOS 26 or 27 simulator runtime. Node is opt
 git clone https://github.com/mackoj/tegola.git && cd tegola
 
 scripts/test.sh TegolaDesignSystem   # tokens + the font tests that only run on Apple platforms
-scripts/test.sh TegolaFeatures       # AppFeature's TestStore tests (first run resolves TCA: a few minutes)
+scripts/test.sh TegolaStorage        # the event log, the projection and the replay test (sqlite-data)
+scripts/test.sh TegolaFeatures       # AppFeature and ShelfClient (first run resolves TCA: a few minutes)
 scripts/test.sh app                  # builds the app, runs TegolaTests and TegolaUITests on a simulator
 scripts/ci.sh                        # the full gate → build/ci-summary.md
 ```
@@ -33,39 +41,37 @@ scripts/ci.sh                        # the full gate → build/ci-summary.md
   team in the target's Signing settings.
 - If `swift` on your PATH is swiftly's toolchain, the scripts are unaffected, because they use `xcrun`. Don't run
   `swift test` directly.
-- **What you should see:** a paper-coloured screen titled "Shelf" in Bricolage Grotesque, and a row of five tab
-  labels. Tapping one changes the title; Scan opens a dark sheet. That's the whole of M1's UI. The real tab bar and
-  screens arrive in M3.
+- **What you should see:** still M1's placeholder: a paper-coloured screen titled "Shelf" and a row of five tab
+  labels. M2 has no UI; the database it opens at launch is empty unless the app is launched with `--seed` (debug
+  builds). The real tab bar and screens arrive in M3.
 
 **If anything fails:** paste `build/ci-summary.md`, and the failing log it names, into a session.
 
 ## What's next
 
-1. **M2, catalogue + model + storage** (page 52 P0; exit test: the 13 subtypes of `video-game.yml` and
-   `video-media.yml` resolve to the right field lists). Break it down in `tasks/plan.md` first. Roughly:
-   1. The type schema in full, plus a JSON Schema that CI validates every type file against.
-   2. Subtypes and the resolver. Write page 48's five video-game subtypes into `video-game.yml`, and turn music's
-      `mediumRules` into format subtypes (D-18).
-   3. The item level (Signed, Bundle of), the clock library, and the signature kit.
-   4. Domain values: `ShelfObject`, `Work`, `ShelfEvent`, `ShelfCommand`, and the pure
-      `plan(command) -> [ShelfEvent]`.
-   5. `TegolaStorage` on sqlite-data:
-      - the schema under `SyncEngine`'s rules (D-24);
-      - `ShelfClient.perform`, with the event log and its projection written in one transaction;
-      - the replay test;
-      - the seed shelf.
+1. **Merge M2.** The review's findings are fixed or deferred with a reason (`docs/milestones/M2.md`, "Review").
+2. **M3, the core loop** (exit test: 30 objects added across Video games and Thing in one sitting without asking how).
+   Break it down in `tasks/plan.md` first. Roughly:
+   - the design-system components and their catalog snapshots;
+   - Shelf home with `ShelfSummary`, and promises 4 and 5 as properties over screen state;
+   - Collection, Object (seven slots), and the edit form, rendering `EffectiveType.visibleFields` with "+ Add" for
+     `addableFields`;
+   - Add by hand, and Find and search (`objects_fts` arrives here);
+   - photos (the `photos` table and `attachPhoto`).
 
-   Items 1 to 4 build and test on Linux. Whether sqlite-data and GRDB build on Linux is the first thing to check in
-   item 5. If they don't, storage tests are Mac-only, like the features.
-2. **In parallel, tegola-server:** the contract it implements is `api/tegola-lookup.openapi.yaml`, including App Attest.
+   Add `plan`'s value checks (D-40) with the edit form. Every write is a `ShelfCommand` through `ShelfClient`; screens read through queries on the projection's columns,
+   and decode `data` for the full value.
+3. **In parallel, tegola-server:** the contract it implements is `api/tegola-lookup.openapi.yaml`, including App Attest.
    The app's client only needs the server from M6 on, so there's no rush.
 
 ## How the work is run
 
 - **Branch:** one milestone branch, started from `main`, with one commit per task and one PR per milestone into `main`
   (PLAN §10, answer 7).
-- **Package.resolved:** resolving on a Mac drops OpenCombine, which TCA needs only on Linux. Don't commit that
-  change.
+- **Package.resolved:** resolving on a Mac drops OpenCombine, which TCA needs only on Linux. Commit new pins, but
+  put OpenCombine's pin back (M2 did this for `TegolaFeatures` and the Xcode project).
+- **Type files:** `scripts/validate-types.sh` checks them against `schema/type.schema.json`; the decoder and
+  `Catalogue.problems` check the rest. A new key goes in both the decoder and the schema.
 - **Toolchain in a cloud session:** there's no Xcode and no Swift by default.
   - download.swift.org and GitHub release downloads are blocked, and Docker Hub and AWS ECR rate-limit the shared
     address.
@@ -86,9 +92,13 @@ scripts/ci.sh                        # the full gate → build/ci-summary.md
 
 - TCA doesn't build on Linux with Swift 6.4 (swift-navigation's `TextState`), so feature tests only run on the Mac
   (D-32).
+- `TegolaStorage` on Linux is a non-blocking `linux-core` step (D-39). GRDB needs `sqlite3.h`, so the step installs
+  `libsqlite3-dev`. Once it's green, make it blocking and add `TegolaStorage` to `test-linux.sh`'s list.
 - SwiftUI can't set line spacing below a font's natural leading, so the 0.96 line height of the two-line display
   titles needs the DisplayTitle component (M3). Until then, display titles render with default leading.
 
 ## Owner questions
 
-None open. The twelve spec questions are answered (PLAN §10).
+None blocking. Two readings in M2 are worth a look (`docs/milestones/M2.md`, "For the owner"):
+- D-35: music lost its per-medium field names (Sleeve, Case, J-card);
+- D-38: imported rows are confirmed.

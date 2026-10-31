@@ -26,7 +26,7 @@ Plan: `tasks/plan.md`, M2. Report: `docs/milestones/M2.md`.
 - [x] T2.5 Domain values and `ShelfCommand`
 - [x] T2.6 `plan` and `apply`, with the promise property tests
 - [x] T2.7 `TegolaStorage`: schema, `perform`, projection, replay test
-- [ ] T2.8 `ShelfClient`, seed shelf, docs, review
+- [x] T2.8 `ShelfClient`, seed shelf, docs, review
 
 ## Open follow-ups
 
