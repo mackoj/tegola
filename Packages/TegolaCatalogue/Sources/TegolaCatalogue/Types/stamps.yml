@@ -1,0 +1,68 @@
+id: stamps
+name:
+  hobby: Stamps
+  singular: Stamp
+  plural: Stamps
+  collection: Stamps
+mark: PHIL
+icon: seal
+gradient: [teal, yellow]
+
+# Bulk hobby: a duplicate is a count, not a new object. Cannot be lent
+# or sold as an individual object — see README.
+duplicates: quantity
+
+spine:
+  title: Denomination
+  subtitle: Country
+  year: Issued
+  acquired: Acquired on
+  paid: Paid
+  value: Value
+
+conditions: [MNH, MLH, MH, Unused no gum, Fine used, Used, Damaged]
+
+lookup:
+  identifier: none
+  symbologies: []
+  providers: [colnect]
+
+searchable: [title, subtitle, year, catalogNumber, series]
+
+# Scanning in a shop answers \"do I already own something like this?\"
+related: [subtitle, series]
+
+fields:
+  - key: catalogNumber
+    label: Catalogue number
+    type: text
+    sample: Yvert 216
+  - key: series
+    label: Series
+    type: text
+    sample: Semeuse
+  - key: perforation
+    label: Perforation
+    type: text
+    sample: 14 × 13½
+  - key: watermark
+    label: Watermark
+    type: text
+    sample: None
+  - key: colour
+    label: Colour
+    type: text
+    sample: Carmine
+  - key: printing
+    label: Printing
+    type: choice
+    options: [Typography, Engraved, Lithography, Photogravure, Offset]
+    sample: Engraved
+  - key: postmarked
+    label: Postmarked
+    type: yesNo
+    sample: "No"
+  - key: certificate
+    label: Certificate
+    type: photo
+    sample: 1 photo

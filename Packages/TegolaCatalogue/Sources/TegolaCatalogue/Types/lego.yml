@@ -1,0 +1,76 @@
+id: lego
+name:
+  hobby: LEGO
+  singular: Set
+  plural: Sets
+  collection: LEGO
+mark: BRICK
+icon: cube
+gradient: [cobalt, yellow]
+
+# Every copy is its own object: its own condition, price and history.
+duplicates: rows
+
+spine:
+  title: Set name
+  subtitle: Theme
+  year: Released
+  acquired: Acquired on
+  paid: Paid
+  value: Value
+
+conditions: [Sealed, Built complete, Built incomplete, Parted out, Damaged box]
+
+# The set number on the box is the identifier, not the barcode — every database
+# is keyed on it, and collectors know it by heart. Scanning the barcode should
+# resolve to a set number first.
+lookup:
+  identifier: setNumber
+  symbologies: [ean13, upc-a]
+  providers: [rebrickable, brickset]
+
+searchable: [title, subtitle, setNumber, year]
+
+# Scanning in a shop answers \"do I already own something like this?\"
+related: [subtitle]
+
+fields:
+  - key: setNumber
+    label: Set number
+    type: text
+    sample: "10497"
+    auto: true
+  - key: pieces
+    label: Pieces
+    type: number
+    unit: pcs
+    sample: "1365"
+    auto: true
+  - key: minifigs
+    label: Minifigures
+    type: number
+    sample: "4"
+    auto: true
+  - key: sealed
+    label: Sealed
+    type: yesNo
+    sample: "No"
+  - key: instructions
+    label: Instructions
+    type: choice
+    options: [Original, Reprint, Digital only, None]
+    sample: Original
+  - key: boxCondition
+    label: Box condition
+    type: choice
+    options: [Mint, Good, Creased, Damaged, No box]
+    sample: Good
+  - key: builtOn
+    label: Built on
+    type: event
+    sample: 26 Dec 2025
+  - key: missingParts
+    label: Missing parts
+    type: list
+    entry: [part, quantity]
+    sample: 0 entries

@@ -1,0 +1,69 @@
+id: action-figures
+name:
+  hobby: Action figures
+  singular: Figure
+  plural: Figures
+  collection: Action Figures
+mark: "1/12"
+icon: figure.stand
+gradient: [orange, pink]
+
+# Every copy is its own object: its own condition, price and history.
+duplicates: rows
+
+spine:
+  title: Character
+  subtitle: Line
+  year: Released
+  acquired: Acquired on
+  paid: Paid
+  value: Value
+
+conditions: [MISB, MIB, Loose complete, Loose incomplete, Played with, Damaged]
+
+lookup:
+  identifier: barcode
+  symbologies: [ean13, upc-a]
+  providers: []
+
+searchable: [title, subtitle, manufacturer, year]
+
+# Scanning in a shop answers \"do I already own something like this?\"
+related: [subtitle, manufacturer]
+
+fields:
+  - key: manufacturer
+    label: Manufacturer
+    type: text
+    sample: Hasbro
+  - key: scale
+    label: Scale
+    type: choice
+    options: ["1/6", "1/9", "1/12", "1/18", "Other"]
+    sample: "1/12"
+  - key: articulation
+    label: Points of articulation
+    type: number
+    sample: "30"
+  - key: sealed
+    label: Sealed
+    type: yesNo
+    sample: "No"
+  - key: accessoriesComplete
+    label: Accessories complete
+    type: yesNo
+    sample: "Yes"
+  - key: accessories
+    label: Accessories
+    type: list
+    entry: [name]
+    sample: 5 entries
+  - key: exclusive
+    label: Exclusive to
+    type: text
+    sample: SDCC 2019
+  - key: boxCondition
+    label: Box condition
+    type: choice
+    options: [Mint, Good, Creased, Damaged, No box]
+    sample: Good

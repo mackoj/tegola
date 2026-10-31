@@ -1,0 +1,20 @@
+{
+  "candidates": [
+    {
+      "releaseID": "igdb:release:1182",
+      "workID": "wikidata:Q1062386",
+      "typeID": "video-game",
+      "subtype": "ps1",
+      "title": "Ridge Racer",
+      "subtitle": "Namco",
+      "year": 1995,
+      "region": "PAL",
+      "fields": { "publisher": "Namco", "catalogueNumber": "SCES-00001", "media": "disc" },
+      "images": [{ "role": "front", "url": "https://images.example/ridge-racer-front.jpg", "width": 600, "height": 600 }],
+      "confidence": 0.97,
+      "reasons": [{ "kind": "barcode", "detail": "Barcode matched exactly" }],
+      "sources": [{ "name": "IGDB", "url": "https://www.igdb.com", "attribution": "Data from IGDB" }],
+      "externalIDs": { "igdb": "1182", "wikidata": "Q1062386" }
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+id: books
+name:
+  hobby: Books
+  singular: Book
+  plural: Books
+  collection: Books
+mark: ISBN
+icon: books.vertical
+gradient: [pink, rust]
+
+# Every copy is its own object: its own condition, price and history.
+duplicates: rows
+
+spine:
+  title: Title
+  subtitle: Author
+  year: Published
+  acquired: Acquired on
+  paid: Paid
+  value: Value
+
+conditions: [As new, Fine, Very good, Good, Fair, Poor, Ex-library]
+
+lookup:
+  identifier: isbn
+  symbologies: [ean13]
+  providers: [openlibrary, googlebooks]
+
+searchable: [title, subtitle, isbn, publisher]
+
+# Scanning in a shop answers \"do I already own something like this?\"
+related: [subtitle, publisher]
+
+fields:
+  - key: isbn
+    label: ISBN
+    type: text
+    sample: "9780571334650"
+    auto: true
+  - key: publisher
+    label: Publisher
+    type: text
+    sample: Faber & Faber
+    auto: true
+  - key: format
+    label: Format
+    type: choice
+    options: [Hardcover, Trade paperback, Paperback, Leather bound, Boxed set]
+    sample: Hardcover
+    auto: true
+  - key: edition
+    label: Edition
+    type: text
+    sample: First edition
+  - key: printing
+    label: Printing
+    type: text
+    sample: First printing
+  - key: pages
+    label: Pages
+    type: number
+    unit: pages
+    sample: "384"
+    auto: true
+  - key: language
+    label: Language
+    type: text
+    sample: English
+    auto: true
+  - key: dustJacket
+    label: Dust jacket
+    type: choice
+    options: [Present, Present but torn, Price clipped, None, Not issued]
+    sample: Present
+  - key: signed
+    label: Signed
+    type: yesNo
+    sample: "No"
+  - key: readOn
+    label: Finished on
+    type: event
+    sample: 8 Jan 2026

@@ -1,0 +1,20 @@
+{
+  "results": [
+    {
+      "ref": "r1",
+      "bucket": "matched",
+      "candidates": [
+        {
+          "releaseID": "igdb:release:2201",
+          "typeID": "video-game",
+          "subtype": "snes",
+          "title": "Donkey Kong Country 2: Diddy's Kong Quest",
+          "confidence": 0.93,
+          "reasons": [{ "kind": "typoCorrected", "detail": "Read \"Donckey\" as \"Donkey\"" }, { "kind": "subtype" }],
+          "sources": [{ "name": "IGDB", "attribution": "Data from IGDB" }]
+        }
+      ]
+    },
+    { "ref": "r2", "bucket": "unknown", "candidates": [] }
+  ]
+}

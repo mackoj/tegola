@@ -1,0 +1,165 @@
+id: vehicles
+version: 1
+name:
+  hobby: Cars and bikes
+  singular: Vehicle
+  plural: Vehicles
+  collection: The Garage
+mark: VIN              # overridden per kind below
+icon: car
+gradient: [rust, cobalt]
+
+# Every vehicle is its own object: its own condition, price and history.
+duplicates: rows
+
+spine:
+  title: Model
+  subtitle: Make
+  year: Year
+  acquired: Acquired on
+  paid: Paid
+  value: Value
+
+# The trade's own ladder, best first. "Project" rather than "Poor": the bottom
+# of this market is the busiest part of it, and a project is something people
+# want.
+conditions: [Concours, Excellent, Good, Driver, Project, Parts only]
+
+lookup:
+  identifier: vin
+  symbologies: [code39, qr]
+  # The VIN decodes for free through NHTSA vPIC, no key needed. It is
+  # US-centric, but the manufacturer prefix is global, so a European car still
+  # resolves its make.
+  providers: [nhtsa]
+
+searchable: [title, subtitle, year, vin, plate]
+
+# In a shop, holding a part: "what else do I own by this make?"
+related: [subtitle]
+
+# One type, two kinds of vehicle. The kind decides the mark on the shelf tile,
+# what the identifier is called, and which fields are worth showing — the same
+# move music makes with its medium and video-game with its media.
+kindRules:
+  car:
+    mark: VIN
+    identifierLabel: VIN
+    fields: [engine, transmission, fuel, doors]
+  motorbike:
+    mark: CC
+    identifierLabel: Frame number
+    fields: [style, strokes]
+
+fields:
+  - key: kind
+    label: Kind
+    type: choice
+    options: [Car, Motorbike]
+    note: drives kindRules
+    required: true
+    sample: Car
+  - key: vin
+    label: VIN
+    type: text
+    note: called the frame number on a motorbike
+    sample: WP0ZZZ99ZTS392124
+    auto: true
+  - key: plate
+    label: Registration
+    type: text
+    sample: AB-123-CD
+  - key: mileage
+    label: Mileage
+    type: number
+    unit: km
+    sample: "142500"
+  - key: capacity
+    label: Capacity
+    type: number
+    unit: cc
+    sample: "3600"
+    auto: true
+  - key: power
+    label: Power
+    type: number
+    unit: hp
+    sample: "285"
+    auto: true
+  - key: colour
+    label: Colour
+    type: text
+    sample: Guards Red
+  - key: firstRegistered
+    label: First registered
+    type: date
+    sample: 12 Apr 1996
+  - key: previousOwners
+    label: Previous owners
+    type: number
+    sample: "3"
+  - key: lastServiced
+    label: Serviced
+    type: event
+    sample: 4 Mar 2026
+  - key: inspection
+    label: Roadworthiness
+    type: event
+    sample: 18 Sep 2025
+  # What was done to it, dated and costed. A documented restoration is worth
+  # real money; an undocumented one is a story.
+  - key: work
+    label: Work done
+    type: list
+    entry: [date, what, cost]
+    sample: 6 entries
+
+  # Car
+  - key: engine
+    label: Engine
+    type: text
+    sample: 3.6 flat-six
+    auto: true
+  - key: transmission
+    label: Transmission
+    type: choice
+    options: [Manual, Automatic, Semi-automatic, Sequential]
+    sample: Manual
+  - key: fuel
+    label: Fuel
+    type: choice
+    options: [Petrol, Diesel, Electric, Hybrid, LPG]
+    sample: Petrol
+    auto: true
+  - key: doors
+    label: Doors
+    type: number
+    sample: "2"
+
+  # Motorbike
+  - key: style
+    label: Style
+    type: choice
+    options: [Roadster, Sport, Trail, Custom, Café racer, Scrambler, Touring, Enduro, Classic]
+    sample: Roadster
+  - key: strokes
+    label: Engine
+    type: choice
+    options: [Two-stroke, Four-stroke, Electric]
+    sample: Four-stroke
+    auto: true
+
+# The two types this one replaces. Old key -> new key; anything absent survives
+# as the collector's own field, so a merge can never lose a value. "sets" fills
+# the kind, which the old types expressed by being separate.
+supersedes:
+  - type: official/cars@1
+    sets:
+      kind: Car
+    fields:
+      restoration: work
+  - type: official/motos@1
+    sets:
+      kind: Motorbike
+    fields:
+      modifications: work

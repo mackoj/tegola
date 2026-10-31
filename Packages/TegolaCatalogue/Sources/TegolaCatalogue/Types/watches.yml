@@ -1,0 +1,75 @@
+id: watches
+name:
+  hobby: Watches
+  singular: Watch
+  plural: Watches
+  collection: Watches
+mark: AUTO
+icon: clock
+gradient: [teal, rust]
+
+# Every copy is its own object: its own condition, price and history.
+duplicates: rows
+
+spine:
+  title: Model
+  subtitle: Brand
+  year: Year
+  acquired: Acquired on
+  paid: Paid
+  value: Value
+
+conditions: [Unworn, Mint, Excellent, Good, Fair, For parts]
+
+lookup:
+  identifier: none
+  symbologies: []
+  providers: []
+
+searchable: [title, subtitle, reference, year]
+
+# Scanning in a shop answers \"do I already own something like this?\"
+related: [subtitle]
+
+fields:
+  - key: reference
+    label: Reference
+    type: text
+    sample: "16610"
+  - key: movement
+    label: Movement
+    type: choice
+    options: [Automatic, Manual, Quartz, Spring drive, Solar]
+    sample: Automatic
+  - key: caliber
+    label: Caliber
+    type: text
+    sample: "3135"
+  - key: caseDiameter
+    label: Case diameter
+    type: number
+    unit: mm
+    sample: "40"
+  - key: caseMaterial
+    label: Case material
+    type: choice
+    options: [Stainless steel, Gold, Two-tone, Titanium, Ceramic, Bronze, Platinum]
+    sample: Stainless steel
+  - key: waterResistance
+    label: Water resistance
+    type: number
+    unit: m
+    sample: "300"
+  - key: fullSet
+    label: Box and papers
+    type: choice
+    options: [Full set, Box only, Papers only, Watch only]
+    sample: Full set
+  - key: serial
+    label: Serial number
+    type: text
+    sample: P914372
+  - key: lastServiced
+    label: Last serviced
+    type: event
+    sample: 19 Mar 2024

@@ -1,0 +1,140 @@
+id: retro-computer
+name:
+  hobby: Retro computers
+  singular: Machine
+  plural: Machines
+  collection: The Workshop
+mark: "64K"
+icon: crt
+gradient: [phosphor, oxide]
+
+# Same model, different board revision = different object, like a pressing.
+duplicates: rows
+
+# A machine can own a monitor, a drive, an expansion. One level, no trees.
+composite: true
+
+spine:
+  title: Model
+  subtitle: Manufacturer
+  year: Built                # this unit, decoded from the serial
+  acquired: Acquired on
+  paid: Paid
+  value: Value
+
+# Cosmetic only, best first. "Project" rather than "Poor" — the bottom of
+# this market is the busiest part of it.
+conditions:
+  - Mint
+  - Near mint
+  - Excellent
+  - Good
+  - Fair
+  - Project
+
+# The second axis, and the one that sets the price. Untested is the default.
+workingState:
+  - Boots and passes
+  - Boots with faults
+  - Untested
+  - Dead
+
+lookup:
+  identifier: serial
+  identifierPattern: per-manufacturer   # decodes build week + year
+  symbologies: []          # these machines predate retail barcodes
+  providers: []            # no live API, and none needed
+  localCorpus: models.json # ~3,400 entries · the complete universe
+  ocrFields: [model, serial]
+
+searchable: [title, subtitle, year, platform, revision, region, chipset, place]
+
+placeLabel: Where it is    # shelf, loft, on the bench
+
+# In a shop, holding a peripheral: "do I own anything this plugs into?"
+related: [manufacturer, platform]
+
+# Signature renderers — see One Roof, section 03. Two is the maximum.
+signatures:
+  - renderer: panel        # last power-on test as LEDs
+    binds: serviceLog
+    entryKind: test
+  - renderer: map          # the machine and what hangs off it
+    binds: parts
+
+fields:
+  - key: manufacturer
+    label: Manufacturer
+    type: text
+    sample: Commodore
+    auto: true
+  - key: platform
+    label: Platform
+    type: text
+    sample: Amiga
+    auto: true
+  - key: revision
+    label: Board rev
+    type: text
+    sample: Rev 6A
+  - key: region
+    label: Region
+    type: choice
+    options: [PAL, NTSC, SECAM, JP]
+    sample: PAL
+  - key: serial
+    label: Serial
+    type: text
+    sample: CA1234567
+    auto: true
+  - key: built
+    label: Built
+    type: date
+    precision: week
+    sample: Week 14, 1989
+    auto: true
+  - key: cpu
+    label: Processor
+    type: text
+    sample: MC68000 @ 7.09 MHz
+    auto: true
+  - key: ram
+    label: Memory
+    type: text
+    note: as fitted, not as shipped
+    sample: 1 MB (A501)
+  - key: completeness
+    label: Completeness
+    type: choice
+    options: [Loose, Boxed, Complete, Sealed]
+    sample: Boxed
+  - key: workingState
+    label: Working
+    type: choice
+    options: [Boots and passes, Boots with faults, Untested, Dead]
+    sample: Boots with faults
+  - key: mods
+    label: Modified
+    type: list
+    entry: [mod, date, reversible]
+    sample: 2 entries
+  - key: psu
+    label: Power supply
+    type: choice
+    options: [Original, Replaced, Missing]
+    sample: Original
+  - key: voltage
+    label: Voltage
+    type: choice
+    options: [110V, 220V, Universal]
+    sample: 220V
+  - key: parts
+    label: In this system
+    type: composite
+    depth: 1
+    sample: A501 · 1084S monitor
+  - key: serviceLog
+    label: Service history
+    type: log
+    entry: [date, work, parts, by]
+    sample: 3 entries
