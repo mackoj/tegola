@@ -7,7 +7,7 @@ it short and current.
 
 ## Where things stand
 
-- **Spec:** approved (`docs/PLAN.md`, answers in §10). Decisions: `docs/DECISIONS.md`, D-1 to D-42.
+- **Spec:** approved (`docs/PLAN.md`, answers in §10). Decisions: `docs/DECISIONS.md`, D-1 to D-43.
 - **M1 (foundation):** merged (PR #5), green on the Mac (`docs/milestones/M1.md`).
 - **M2 (catalogue, model, storage):** done on `m2-catalogue-model-storage` (`docs/milestones/M2.md`). Exit test
   green: the 13 subtypes resolve to their written-out field lists. `scripts/ci.sh` is green on Xcode 27.1, and

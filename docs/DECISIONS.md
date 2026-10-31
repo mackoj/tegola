@@ -210,3 +210,9 @@ reused; a replaced decision stays, marked **superseded by D-n**.
 **Gap.** The contract said `SHA-256(body)` inside the signed string without saying how the digest is written, `path-with-query` without saying whether the base path counts, and `SHA-256(challenge)` without saying which bytes of the challenge (found while writing tegola-server's verifier, its D-5 and D-6).
 
 **Decision.** The signed string uses the method in upper case, the request target exactly as sent with `/v1` included, the timestamp header's text, and the body digest as 64 lower-case hex digits (an absent body hashes as empty). The attestation's client data is `SHA-256` of the challenge string's UTF-8 bytes, exactly as `GET /app-attest/challenge` returned it. Both are now in the contract's text; `AppAttestMiddleware` (M6) builds these bytes.
+
+### D-43 · A revoked App Attest key stays revoked
+
+**Gap.** The contract told the app to register again on `unknown-key` "if the key was revoked or the server lost it", while its `Forbidden` response, tegola-server's D-7 and its stores answer a revoked key with `403` on every call and refuse to register it again (found by tegola-server's M2 review).
+
+**Decision.** `unknown-key` (401) means the server lost the key: register it again. A revoked key gets `403` and stays revoked; the app generates a new App Attest key and registers that one. The contract's `registerAttestKey` description says so; `AppAttestMiddleware` (M6) follows it.
