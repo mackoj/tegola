@@ -2,6 +2,7 @@ import ComposableArchitecture
 import DependenciesTestSupport
 import FeatureTestSupport
 import Foundation
+import ObjectEditFeature
 import SQLiteData
 import TegolaCatalogue
 import TegolaModel
@@ -50,11 +51,13 @@ struct ObjectFeatureTests {
     #expect(store.state.object?.mightLetGo == true)
   }
 
-  @Test func editAndPhotoAskTheRoot() async throws {
+  @Test func editOpensTheFormAndPhotoAsksTheRoot() async throws {
     let id = try seededObject("Kid A")
     let store = TestStore(initialState: ObjectFeature.State(id: id)) { ObjectFeature() }
-    await store.send(.view(.editTapped))
-    await store.receive(\.delegate.edit, id)
+    let object = try #require(store.state.object)
+    await store.send(.view(.editTapped)) {
+      $0.edit = ObjectEditFeature.State(object: object, placePath: nil, money: .off)
+    }
     await store.send(.view(.photoTapped))
     await store.receive(\.delegate.photo, id)
   }

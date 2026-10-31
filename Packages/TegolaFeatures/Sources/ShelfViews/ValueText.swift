@@ -46,7 +46,7 @@
         Text("Details filled in · \(Self.labels(changes.keys, type: type))", bundle: .module)
       case .confirmed: Text("Confirmed", bundle: .module)
       case .placed(_, let place):
-        if let place, let path = shelf.path(of: place) {
+        if let place, let path = shelf.placePath(of: place) {
           Text("Placed · \(path)", bundle: .module)
         } else {
           Text("Unplaced", bundle: .module)
@@ -87,16 +87,4 @@
     }
   }
 
-  extension Shelf {
-    /// A place's path, outermost first: "Office › Shelf 2".
-    public func path(of id: PlaceID) -> String? {
-      var names: [String] = []
-      var next: PlaceID? = id
-      while let current = next, let place = places[current], names.count < 32 {
-        names.insert(place.name, at: 0)
-        next = place.parentID
-      }
-      return names.isEmpty ? nil : names.joined(separator: " \(PlacePath.separator) ")
-    }
-  }
 #endif

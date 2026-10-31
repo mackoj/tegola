@@ -141,7 +141,8 @@ import Testing
 
   /// A key's literal may interpolate (`"\\(count) objects"`): the catalog stores those as format specifiers.
   static let keyPatterns = [
-    #"String\(localized:\s*"((?:[^"\\]|\\\((?:[^()"]|\([^()"]*\))*\))+)""#, #"Text\(\s*"((?:[^"\\]|\\\((?:[^()"]|\([^()"]*\))*\))+)",\s*bundle:"#,
+    #"String\(localized:\s*"((?:[^"\\]|\\\((?:[^()"]|\([^()"]*\))*\))+)""#,
+    #"Text\(\s*"((?:[^"\\]|\\\((?:[^()"]|\([^()"]*\))*\))+)",\s*bundle:"#,
   ]
 
   /// One spelling for a source key and its catalog key: each interpolation (one level of nested calls allowed) and

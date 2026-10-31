@@ -247,3 +247,12 @@ reused; a replaced decision stays, marked **superseded by D-n**.
 - **Fields.** Each field with a value, labelled by the type, AUTO until touched.
 - **Actions.** Edit, Photo, and Might let go on what's owned and kept. Lend, Return and Let go join with their sheets (M7, M8).
 - **History.** Newest first, only the kinds a person reads (`ShelfEvent.Kind.readsAsHistory`).
+
+### D-49 · The edit form in M3
+
+**Decision.**
+- **Order.** The form follows board 13. First the spine, relabelled by the type, with paid and value only when money is on. Then the condition: one grade, or one per ladder part, on the type's own scale. Then every visible field, one control per kind, then the place as a typed path, the notes, and the item level behind "+ Add".
+- **Controls.** Text and dims get a text box, number a numeric box with its unit, choice single chips, set multiple chips, yes/no a pair that starts unset, date and event a date picker, year a year box, yearRange two year boxes, list and log an entries editor, money an amount in the object's currency or the reader's. Photo, composite and files show "not editable here yet": photos come with T3.9, and composite and files belong to types that aren't v1.
+- **Dates.** An empty date stays empty until the collector picks one, so the app never fills a date by itself (PD-165).
+- **Save.** Save sends one `edit` with exactly the changed keys, which is one `edited` history line. A new place is a second command, `setPlace`, and its own history line. A refused save says why and stays open.
+- **Value checks (D-40, done).** `plan` now checks every value against its field: the kind, a choice's or set's options (narrowed by the subtype), a scale's steps. `add` fills a subtype's preset values itself, `edit` refuses a hidden field, and a lookup skips one.

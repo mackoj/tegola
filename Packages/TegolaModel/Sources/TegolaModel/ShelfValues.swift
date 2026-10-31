@@ -146,6 +146,17 @@ public struct Shelf: Hashable, Sendable, Codable {
 
   public init() {}
 
+  /// A place's path as a collector types it, outermost first: "Office › Shelf 2".
+  public func placePath(of id: PlaceID) -> String? {
+    var names: [String] = []
+    var next: PlaceID? = id
+    while let current = next, let place = places[current], names.count < 32 {
+      names.insert(place.name, at: 0)
+      next = place.parentID
+    }
+    return names.isEmpty ? nil : names.joined(separator: " \(PlacePath.separator) ")
+  }
+
   /// The open loan on an object, if it's lent out or borrowed in.
   public func openLoan(on object: ObjectID) -> Loan? {
     loans.values.first { $0.objectID == object && $0.isOpen }

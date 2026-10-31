@@ -320,6 +320,47 @@ struct Harness {
     #expect(harness.shelf.objects[id]?.counts == true)
   }
 
+  /// D-40: a value must fit its field.
+  @Test func valuesMustFitTheirField() throws {
+    var harness = Harness()
+    #expect(throws: ShelfRuleViolation.invalidValue(.field("region"))) {
+      try harness.add(values: [.field("region"): .text("Mars")])
+    }
+    #expect(throws: ShelfRuleViolation.invalidValue(.field("region"))) {
+      try harness.add(values: [.field("region"): .flag(true)])
+    }
+    #expect(throws: ShelfRuleViolation.invalidValue(.year)) { try harness.add(values: [.year: .text("1998")]) }
+    #expect(throws: ShelfRuleViolation.invalidValue(.axis("boxCondition"))) {
+      try harness.add(values: [.axis("boxCondition"): .text("Shiny")])
+    }
+    // Saturn narrows the region to three: PAL fits, Region-free doesn't.
+    _ = try harness.add(subtype: "saturn", values: [.field("region"): .text("PAL")])
+    #expect(throws: ShelfRuleViolation.invalidValue(.field("region"))) {
+      try harness.add(subtype: "saturn", values: [.field("region"): .text("Region-free")])
+    }
+    let id = try harness.add()
+    #expect(throws: ShelfRuleViolation.invalidValue(.field("inserts"))) {
+      try harness.perform(.edit(id, values: [.field("inserts"): .options(["map"])]))
+    }
+  }
+
+  /// D-34: a subtype's preset fills its field on add, and nobody sets a hidden field by hand.
+  @Test func presetsFillOnAddAndHiddenFieldsStayHidden() throws {
+    var harness = Harness()
+    let id = try harness.add(subtype: "saturn")
+    #expect(harness.shelf.objects[id]?.values[.field("media")] == .text("Optical disc"))
+    #expect(harness.shelf.objects[id]?.values[.field("platform")] == .text("Sega Saturn"))
+    #expect(throws: ShelfRuleViolation.hiddenField(.field("media"))) {
+      try harness.perform(.edit(id, values: [.field("media"): .text("Cartridge")]))
+    }
+    #expect(throws: ShelfRuleViolation.hiddenField(.field("platform"))) {
+      try harness.add(subtype: "saturn", values: [.field("platform"): .text("Dreamcast")])
+    }
+    #expect(
+      try harness.perform(.applyLookup(id, values: [.field("platform"): .text("Dreamcast")]), as: .lookup).isEmpty
+    )
+  }
+
   @Test func theSameCommandOnTheSameShelfPlansTheSameEvents() throws {
     var first = Harness()
     var second = Harness()

@@ -38,7 +38,7 @@ Plan: `tasks/plan.md`, M3. Report: `docs/milestones/M3.md`.
 - [x] T3.4 Shelf home and the empty shelf
 - [x] T3.5 Collection
 - [x] T3.6 Object: seven slots, ladder and set, history
-- [ ] T3.7 Edit form, and `plan`'s value checks
+- [x] T3.7 Edit form, and `plan`'s value checks
 - [ ] T3.8 Add by hand
 - [ ] T3.9 Photos
 - [x] T3.10 Find and saved views

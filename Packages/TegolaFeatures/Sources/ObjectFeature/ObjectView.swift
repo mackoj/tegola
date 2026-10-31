@@ -1,5 +1,6 @@
 #if canImport(SwiftUI)
   public import ComposableArchitecture
+  import ObjectEditFeature
   import ShelfViews
   public import SwiftUI
   import TegolaCatalogue
@@ -11,7 +12,7 @@
 
   @ViewAction(for: ObjectFeature.self)
   public struct ObjectView: View {
-    public let store: StoreOf<ObjectFeature>
+    @Bindable public var store: StoreOf<ObjectFeature>
     @Dependency(\.catalogue) var catalogue
     @Environment(\.tegolaTheme) private var theme
 
@@ -69,6 +70,9 @@
         }
       }
       .background(theme[.surfaceStage].color)
+      .sheet(item: $store.scope(state: \.edit, action: \.edit)) { edit in
+        ObjectEditView(store: edit)
+      }
     }
 
     // 1. Hero: the photo, or the type's flat hero (PD-145).

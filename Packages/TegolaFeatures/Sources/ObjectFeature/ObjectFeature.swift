@@ -1,5 +1,6 @@
 public import ComposableArchitecture
 import Foundation
+public import ObjectEditFeature
 public import SQLiteData
 import TegolaCatalogue
 import TegolaClients
@@ -16,6 +17,7 @@ public struct ObjectFeature {
     public let id: ObjectID
     @ObservationStateIgnored
     @Fetch public var snapshot: ObjectSnapshot
+    @Presents public var edit: ObjectEditFeature.State?
 
     public init(id: ObjectID) {
       self.id = id
@@ -30,16 +32,16 @@ public struct ObjectFeature {
     }
 
     /// The reducer's own state; the snapshot is the database's (D-47).
-    public static func == (lhs: Self, rhs: Self) -> Bool { lhs.id == rhs.id }
+    public static func == (lhs: Self, rhs: Self) -> Bool { lhs.id == rhs.id && lhs.edit == rhs.edit }
   }
 
   public enum Action: ViewAction {
     case delegate(Delegate)
+    case edit(PresentationAction<ObjectEditFeature.Action>)
     case view(View)
 
     @CasePathable
     public enum Delegate: Equatable {
-      case edit(ObjectID)
       case photo(ObjectID)
     }
 
@@ -59,8 +61,14 @@ public struct ObjectFeature {
       switch action {
       case .delegate:
         return .none
+      case .edit:
+        return .none
       case .view(.editTapped):
-        return .send(.delegate(.edit(state.id)))
+        guard let object = state.object else { return .none }
+        let shelf = state.snapshot.shelf.shelf
+        let path = object.placeID.flatMap { shelf.placePath(of: $0) }
+        state.edit = ObjectEditFeature.State(object: object, placePath: path, money: state.snapshot.shelf.money)
+        return .none
       case .view(.mightLetGoTapped):
         guard let object = state.object else { return .none }
         let id = state.id
@@ -73,5 +81,6 @@ public struct ObjectFeature {
         return .send(.delegate(.photo(state.id)))
       }
     }
+    .ifLet(\.$edit, action: \.edit) { ObjectEditFeature() }
   }
 }
