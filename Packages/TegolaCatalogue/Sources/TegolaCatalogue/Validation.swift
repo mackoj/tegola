@@ -45,6 +45,10 @@ extension TypeManifest {
         problems.append("set field \"\(field.key)\" has no slots and isn't given parts by every subtype")
       }
     }
+    let named = clocks + subtypes.flatMap(\.clocks)
+    for name in Set(named).sorted() where ClockReference(name).definition == nil {
+      problems.append("clock \"\(name)\" isn't in the app's library: a type can't define its own")
+    }
     problems += signatureProblems
     problems += subtypeProblems
     return problems.map { ManifestProblem(type: id, message: $0) }
@@ -64,6 +68,9 @@ extension TypeManifest {
       problems.append("a type has at most two signatures (PD-017)")
     }
     let byKey = Dictionary(fields.map { ($0.key, $0) }) { first, _ in first }
+    for signature in signatures where SignatureRenderer(rawValue: signature.renderer) == nil {
+      problems.append("signature renderer \"\(signature.renderer)\" isn't in the app's kit")
+    }
     for signature in signatures {
       if signature.renderer == "ladder" {
         if signature.axes.isEmpty { problems.append("a ladder signature needs its axes") }
@@ -131,6 +138,22 @@ extension TypeManifest {
       }
       if !subtype.parts.isEmpty && !hasSetSignature {
         problems.append("\(name) names parts, but the type has no set signature to count them")
+      }
+    }
+    return problems
+  }
+}
+
+extension Catalogue {
+  /// Every manifest's problems, plus the rules across files: a type's field can't take an item-level key, because
+  /// the item level means the same on every type (page 48).
+  public var problems: [ManifestProblem] {
+    let itemKeys = Set(item.fields.map(\.key))
+    var problems = manifests.flatMap(\.problems)
+    for manifest in manifests {
+      let keys = manifest.fields.map(\.key) + manifest.subtypes.flatMap { $0.adds.map(\.key) }
+      for key in Set(keys).intersection(itemKeys).sorted() {
+        problems.append(ManifestProblem(type: manifest.id, message: "field \"\(key)\" is an item-level field"))
       }
     }
     return problems

@@ -72,10 +72,6 @@ fields:
     type: choice
     options: [Present, Present but torn, Price clipped, None, Not issued]
     sample: Present
-  - key: signed
-    label: Signed
-    type: yesNo
-    sample: "No"
   - key: readOn
     label: Finished on
     type: event

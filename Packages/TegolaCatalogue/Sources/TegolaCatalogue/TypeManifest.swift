@@ -148,13 +148,15 @@ public struct TypeManifest: Decodable, Hashable, Sendable, Identifiable {
   /// Whether a collector may add own fields to this type's objects (PD-130).
   public let allowsOwnFields: Bool
   public let signatures: [Signature]
+  /// Clocks from the app's library every object of the type runs, whatever its subtype.
+  public let clocks: [String]
   public let subtypes: [Subtype]
   public let supersedes: [Supersession]
 
   enum CodingKeys: String, CodingKey {
     case id, version, name, mark, icon, gradient, duplicates, consumable, composite, spine, conditions, allowMissing,
       workingState, attribution, lookup, searchable, related, placeLabel, fields, requiredFields, customFields,
-      signatures, subtypes, supersedes
+      signatures, clocks, subtypes, supersedes
   }
 
   public init(from decoder: any Decoder) throws {
@@ -182,6 +184,7 @@ public struct TypeManifest: Decodable, Hashable, Sendable, Identifiable {
     requiredFields = try container.decodeIfPresent([String].self, forKey: .requiredFields) ?? []
     allowsOwnFields = try container.decodeIfPresent(Bool.self, forKey: .customFields) ?? false
     signatures = try container.decodeIfPresent([Signature].self, forKey: .signatures) ?? []
+    clocks = try container.decodeIfPresent([String].self, forKey: .clocks) ?? []
     subtypes = try container.decodeIfPresent([Subtype].self, forKey: .subtypes) ?? []
     supersedes = try container.decodeIfPresent([Supersession].self, forKey: .supersedes) ?? []
   }
@@ -334,6 +337,18 @@ public enum FieldKind: String, CaseIterable, Hashable, Sendable, Codable {
     }
     self = kind
   }
+}
+
+/// The item level (`Item/item.yml`): the fields every type inherits, hidden until the object has a value (page 48,
+/// section 00).
+public struct ItemLevel: Decodable, Hashable, Sendable {
+  public let fields: [TypeManifest.Field]
+
+  public init(fields: [TypeManifest.Field]) {
+    self.fields = fields
+  }
+
+  public static let none = ItemLevel(fields: [])
 }
 
 /// Fails decoding when a mapping has a key outside `known`: `requried: true` must not decode as an optional field.

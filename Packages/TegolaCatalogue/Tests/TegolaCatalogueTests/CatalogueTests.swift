@@ -8,9 +8,7 @@ import Testing
   @Test func everyManifestDecodesAndValidates() throws {
     let catalogue = try Catalogue.bundled()
     #expect(catalogue.manifests.count == 18)
-    for manifest in catalogue.manifests {
-      #expect(manifest.problems.isEmpty, "\(manifest.problems)")
-    }
+    #expect(catalogue.problems.isEmpty, "\(catalogue.problems)")
   }
 
   /// PLAN §2.9 F1, D-23.

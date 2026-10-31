@@ -22,7 +22,7 @@ let package = Package(
     .target(
       name: "TegolaCatalogue",
       dependencies: [.product(name: "Yams", package: "Yams")],
-      resources: [.copy("Types")],
+      resources: [.copy("Types"), .copy("Item")],
       swiftSettings: swiftSettings
     ),
     .testTarget(

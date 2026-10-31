@@ -69,12 +69,17 @@
         "additionalProperties": false,
         "required": ["renderer"],
         "properties": {
-          "renderer": { "enum": ["ladder", "set", "gauge", "panel", "map", "case"] },
+          "renderer": { "enum": ["ladder", "set", "gauge", "panel", "map", "case"], "description": "TegolaCatalogue's SignatureRenderer." },
           "axes": { "$ref": "#/$defs/strings" },
           "binds": { "type": "string" },
           "entryKind": { "type": "string" }
         }
       }
+    },
+    "clocks": {
+      "description": "Clocks from the app's library (TegolaCatalogue's ClockLibrary). A -pending suffix holds one back until there's evidence.",
+      "type": "array",
+      "items": { "type": "string", "pattern": "^(saveBattery|discRot|mediaRot|codeExpiry|drinkingWindow|serviceRisk)(-pending)?$" }
     },
     "subtypes": { "type": "array", "items": { "$ref": "#/$defs/subtype" } },
     "supersedes": {

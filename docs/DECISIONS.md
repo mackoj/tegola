@@ -156,3 +156,15 @@ reused; a replaced decision stays, marked **superseded by D-n**.
 ### D-36 · A subtype's replacement field, and sets with no slots
 
 **Decision.** CED's caddy `replaces` the case (`video-media.yml`), which sits against page 48's "can't remove or rename a parent field". The reading: the addition takes the parent field's place in the form and on the ladder, and the parent field is hidden for that subtype, keeping its own key and any value. Nothing is renamed, so a CED that later changes subtype loses nothing. The replacement must be of the same kind. A set field whose slots come from the subtype (`slotsFrom: subtype`) needs slots of its own unless every subtype names parts, the same rule D-29 makes for choices. Video Media's DVD, HD DVD, Blu-ray and 4K UHD name no parts on page 51, so its `inserts` has four generic slots (case, disc, booklet, insert).
+
+### D-37 · The item level, and the clock and signature libraries
+
+**Decision.**
+- **Item level.** `item.yml` (in `TegolaCatalogue/Item`, not with the type files) holds the fields that mean the same on every type and are hidden until set (48, section 00):
+  - `signed`: a list of by, dedication, date and proof, because a band signs once each;
+  - `contains` (Bundle of): the works inside the object;
+  - `bundleSealed`.
+  
+  Title, acquired, price, place and story are the item level too, but they're the spine and the slots. No type field may take an item-level key, so music's and books' yes/no `signed` go. Artwork's `signed` records where the signature sits (recto, verso, stamped), so it's renamed `signaturePosition` rather than dropped. Action figures' and Lego's `sealed` means "unopened", so the item level's is `bundleSealed`.
+- **Clocks.** The library is `saveBattery`, `discRot`, `mediaRot`, `codeExpiry`, `drinkingWindow` and `serviceRisk`, each with what it reads and its default parameters. The functions arrive with signals in M4. A type names clocks at the top level (`clocks:`) or per subtype, and the subtype's come after the type's. `-pending` (page 51's `discRot-pending`) is the same clock held back until there's evidence, not a clock of its own. Wine names `drinkingWindow`.
+- **Signatures.** The kit is ladder, set, gauge, panel, map and case (48's "existing case signature" for bundles).

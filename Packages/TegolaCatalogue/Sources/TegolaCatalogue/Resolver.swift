@@ -9,14 +9,17 @@ public struct EffectiveType: Hashable, Sendable {
   public let fields: [EffectiveField]
   /// The signatures, with an axis a subtype replaced swapped for its replacement.
   public let signatures: [TypeManifest.Signature]
-  /// The clocks from the library this object runs.
-  public let clocks: [String]
+  /// The clocks from the library this object runs: the type's, then the subtype's.
+  public let clocks: [ClockReference]
   /// The identifiers a capture reads, in order of preference.
   public let lookup: [String]
   public let conditions: [String]
 
-  /// The fields a collector sees and edits.
-  public var visibleFields: [EffectiveField] { fields.filter { !$0.isHidden } }
+  /// The fields a collector sees and edits on an object with no item-level values.
+  public var visibleFields: [EffectiveField] { fields.filter { !$0.isHidden && !$0.revealsOnAdd } }
+
+  /// The item-level fields "+ Add" offers until the object has a value for them.
+  public var addableFields: [EffectiveField] { fields.filter(\.revealsOnAdd) }
 
   public func field(_ key: String) -> EffectiveField? { fields.first { $0.key == key } }
 }
@@ -37,24 +40,29 @@ public struct EffectiveField: Hashable, Sendable {
   public let isHidden: Bool
   /// The value a preset fills in.
   public let presetValue: String?
+  /// An item-level field: hidden until the object has a value, and revealed by "+ Add" (page 48).
+  public var revealsOnAdd: Bool { origin == .item }
 
   public var key: String { field.key }
 }
 
 public enum ResolveError: Error, Equatable, Sendable {
+  case unknownType(TypeManifest.ID)
   case unknownSubtype(type: TypeManifest.ID, subtype: String)
 }
 
 extension TypeManifest {
-  /// The type as an object of `subtype` (or of the parent alone, when nil) sees it.
-  public func resolve(subtype key: String?) throws(ResolveError) -> EffectiveType {
+  /// The type as an object of `subtype` (or of the parent alone, when nil) sees it, with the item level's fields
+  /// after its own.
+  public func resolve(subtype key: String?, item: ItemLevel = .none) throws(ResolveError) -> EffectiveType {
+    let itemFields = item.fields.map { EffectiveField(field: $0, origin: .item, isHidden: false, presetValue: nil) }
     guard let key else {
       return EffectiveType(
         type: id,
         subtype: nil,
-        fields: fields.map { EffectiveField(field: $0, origin: .type, isHidden: false, presetValue: nil) },
+        fields: fields.map { EffectiveField(field: $0, origin: .type, isHidden: false, presetValue: nil) } + itemFields,
         signatures: signatures,
-        clocks: [],
+        clocks: clocks.map(ClockReference.init),
         lookup: lookup?.identifier.map { [$0] } ?? [],
         conditions: conditions
       )
@@ -91,13 +99,16 @@ extension TypeManifest {
     resolved += subtype.adds.filter { $0.replaces == nil }.map {
       EffectiveField(field: $0, origin: .subtype, isHidden: false, presetValue: nil)
     }
+    resolved += itemFields
+    var clockNames = clocks
+    for name in subtype.clocks where !clockNames.contains(name) { clockNames.append(name) }
     let identifiers = subtype.lookup.isEmpty ? (lookup?.identifier.map { [$0] } ?? []) : subtype.lookup
     return EffectiveType(
       type: id,
       subtype: subtype.key,
       fields: resolved,
       signatures: signatures.map { $0.replacingAxes(replaced) },
-      clocks: subtype.clocks,
+      clocks: clockNames.map(ClockReference.init),
       lookup: identifiers,
       conditions: conditions
     )

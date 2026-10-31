@@ -78,10 +78,6 @@ fields:
     type: text
     sample: US
     auto: true
-  - key: signed
-    label: Signed
-    type: yesNo
-    sample: "No"
   - key: tracklist
     label: Tracklist
     type: list

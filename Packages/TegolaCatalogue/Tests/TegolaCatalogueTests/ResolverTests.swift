@@ -159,7 +159,7 @@ import Testing
     #expect(effective.visibleFields.map(\.key) == expected.visible)
     let hidden = Dictionary(uniqueKeysWithValues: effective.fields.filter(\.isHidden).map { ($0.key, $0.presetValue) })
     #expect(hidden == expected.hidden)
-    #expect(effective.clocks == expected.clocks)
+    #expect(effective.clocks == expected.clocks.map(ClockReference.init))
     #expect(effective.signatures.first?.axes == expected.ladder)
   }
 
