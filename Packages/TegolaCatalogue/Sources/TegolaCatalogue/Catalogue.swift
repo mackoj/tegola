@@ -28,7 +28,14 @@ public struct Catalogue: Sendable {
     }
     let files = try FileManager.default.contentsOfDirectory(at: folder, includingPropertiesForKeys: nil)
       .filter { $0.pathExtension == "yml" }
-    let manifests = try files.map { try decode(Data(contentsOf: $0), file: $0.lastPathComponent) }
+    let manifests = try files.map { file in
+      let manifest = try decode(Data(contentsOf: file), file: file.lastPathComponent)
+      // The file name is how a type is found on disk and in reviews; it must say which type it holds.
+      guard manifest.id.rawValue + ".yml" == file.lastPathComponent else {
+        throw CatalogueError.fileNameMismatch(file: file.lastPathComponent, id: manifest.id.rawValue)
+      }
+      return manifest
+    }
     return Catalogue(manifests: manifests.sorted { $0.id.rawValue < $1.id.rawValue })
   }
 
@@ -44,4 +51,5 @@ public struct Catalogue: Sendable {
 public enum CatalogueError: Error, Equatable, Sendable {
   case missingTypesFolder
   case undecodable(file: String, reason: String)
+  case fileNameMismatch(file: String, id: String)
 }

@@ -19,9 +19,14 @@ public struct DelimitedText: Hashable, Sendable {
   public init(data: Data) throws {
     let (text, encoding) = try Self.decode(data)
     let separator = Self.guessSeparator(in: text)
+    let parsed = Self.parse(text, separator: separator)
+    if let line = parsed.unterminatedQuoteLine {
+      // Reading on would put the rest of the file in one cell; the import says where instead (PD-047: never invent).
+      throw DelimitedTextError.unterminatedQuote(line: line)
+    }
     self.encoding = encoding
     self.separator = separator
-    self.rows = Self.parse(text, separator: separator)
+    self.rows = parsed.rows
   }
 
   /// UTF-8 (with or without a byte-order mark), UTF-16 with a byte-order mark, then Windows-1252 and Latin-1, which
@@ -44,7 +49,7 @@ public struct DelimitedText: Hashable, Sendable {
     let sample = text.split(whereSeparator: \.isNewline).prefix(20).map(String.init)
     var best: (separator: Character, score: Int) = (",", 0)
     for separator in candidateSeparators {
-      let counts = sample.map { line in parse(line, separator: separator).first.map { $0.count - 1 } ?? 0 }
+      let counts = sample.map { line in parse(line, separator: separator).rows.first.map { $0.count - 1 } ?? 0 }
       guard let first = counts.first, first > 0 else { continue }
       // Lines that agree with the first line's count, times the number of columns.
       let score = counts.filter { $0 == first }.count * (first + 1)
@@ -53,14 +58,18 @@ public struct DelimitedText: Hashable, Sendable {
     return best.separator
   }
 
-  /// RFC 4180, leniently: quotes may wrap a cell, `""` is a quote inside one, quoted cells may span lines, and
-  /// CRLF, LF and CR all end a row. A quote in the middle of an unquoted cell is kept as text.
-  static func parse(_ text: String, separator: Character) -> [[String]] {
+  /// RFC 4180, leniently: quotes may wrap a cell, `""` is a quote inside one, quoted cells may span lines, spaces
+  /// around a quoted cell are dropped, and CRLF, LF and CR all end a row. A quote in the middle of an unquoted cell is
+  /// kept as text. A blank line is skipped; a line holding only `""` is a row with one empty cell.
+  static func parse(_ text: String, separator: Character) -> (rows: [[String]], unterminatedQuoteLine: Int?) {
     var rows: [[String]] = []
     var row: [String] = []
     var cell = ""
     var inQuotes = false
     var cellWasQuoted = false
+    var rowHadQuotes = false
+    var line = 1
+    var quoteOpenedOnLine = 1
     var characters = text.makeIterator()
     var pending: Character? = nil
 
@@ -71,8 +80,9 @@ public struct DelimitedText: Hashable, Sendable {
     }
     func endRow() {
       endCell()
-      if !(row.count == 1 && row[0].isEmpty) { rows.append(row) }
+      if rowHadQuotes || !(row.count == 1 && row[0].isEmpty) { rows.append(row) }
       row = []
+      rowHadQuotes = false
     }
 
     while let character = pending ?? characters.next() {
@@ -85,6 +95,7 @@ public struct DelimitedText: Hashable, Sendable {
             inQuotes = false
           }
         } else {
+          if character.isNewline { line += 1 }
           cell.append(character)
         }
         continue
@@ -94,19 +105,27 @@ public struct DelimitedText: Hashable, Sendable {
         cell = ""
         inQuotes = true
         cellWasQuoted = true
+        rowHadQuotes = true
+        quoteOpenedOnLine = line
       case separator:
         endCell()
       case "\r\n", "\n", "\r":
         endRow()
+        line += 1
+      case _ where cellWasQuoted && character.isWhitespace:
+        continue  // spaces between a closing quote and the separator
       default:
         cell.append(character)
       }
     }
-    if !cell.isEmpty || !row.isEmpty { endRow() }
-    return rows
+    if inQuotes { return (rows, quoteOpenedOnLine) }
+    if !cell.isEmpty || !row.isEmpty || cellWasQuoted { endRow() }
+    return (rows, nil)
   }
 }
 
 public enum DelimitedTextError: Error, Equatable, Sendable {
   case unreadable
+  /// A quote opened on this line (1-based) never closes.
+  case unterminatedQuote(line: Int)
 }

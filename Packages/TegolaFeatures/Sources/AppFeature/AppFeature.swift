@@ -7,7 +7,7 @@ public import TegolaModel
 public struct AppFeature {
   @ObservableState
   public struct State: Equatable {
-    public var selectedTab: Tab = .shelf
+    public var selectedTab: AppTab = .shelf
     public var tabs: TabBarLayout = .default
     /// Scan presents the camera instead of selecting a tab (PD-117). It becomes `@Presents var capture` with M6.
     public var isCapturePresented = false
@@ -20,7 +20,7 @@ public struct AppFeature {
 
     @CasePathable
     public enum View: Equatable, Sendable {
-      case tabTapped(Tab)
+      case tabTapped(AppTab)
       case captureDismissed
     }
   }

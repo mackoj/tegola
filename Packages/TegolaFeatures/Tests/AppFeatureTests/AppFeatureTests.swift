@@ -1,4 +1,5 @@
 import ComposableArchitecture
+import TegolaModel
 import Testing
 
 @testable import AppFeature

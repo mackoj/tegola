@@ -54,12 +54,19 @@ public struct TypeManifest: Decodable, Hashable, Sendable, Identifiable {
     public let presetKeys: Set<String>
 
     enum CodingKeys: String, CodingKey { case key, presets }
+    static let knownKeys: Set<String> = ["key", "label", "presets", "adds"]
 
     public init(from decoder: any Decoder) throws {
+      try rejectUnknownKeys(in: decoder, known: Self.knownKeys)
       let container = try decoder.container(keyedBy: CodingKeys.self)
       key = try container.decode(String.self, forKey: .key)
-      let presets = try? container.nestedContainer(keyedBy: AnyKey.self, forKey: .presets)
-      presetKeys = Set(presets?.allKeys.map(\.stringValue) ?? [])
+      // Absent presets are fine; malformed ones are an error, not an empty set.
+      if container.contains(.presets) {
+        let presets = try container.nestedContainer(keyedBy: AnyKey.self, forKey: .presets)
+        presetKeys = Set(presets.allKeys.map(\.stringValue))
+      } else {
+        presetKeys = []
+      }
     }
   }
 
@@ -67,7 +74,16 @@ public struct TypeManifest: Decodable, Hashable, Sendable, Identifiable {
     case id, version, name, mark, icon, duplicates, spine, conditions, fields, subtypes
   }
 
+  /// Every top-level key a type file may use. M1 reads some of them; the rest are read from M2 on, but a key outside
+  /// this list is a typo and fails decoding (D-30).
+  static let knownKeys: Set<String> = [
+    "id", "version", "name", "mark", "icon", "gradient", "duplicates", "consumable", "composite", "spine", "conditions",
+    "allowMissing", "workingState", "attribution", "lookup", "searchable", "related", "placeLabel", "fields",
+    "requiredFields", "customFields", "signatures", "subtypes", "mediumRules", "mediaRules", "kindRules", "supersedes",
+  ]
+
   public init(from decoder: any Decoder) throws {
+    try rejectUnknownKeys(in: decoder, known: Self.knownKeys)
     let container = try decoder.container(keyedBy: CodingKeys.self)
     id = try container.decode(ID.self, forKey: .id)
     version = try container.decodeIfPresent(Int.self, forKey: .version) ?? 1
@@ -79,6 +95,16 @@ public struct TypeManifest: Decodable, Hashable, Sendable, Identifiable {
     conditions = try container.decode([LossyString].self, forKey: .conditions).map(\.value)
     fields = try container.decode([Field].self, forKey: .fields)
     subtypes = try container.decodeIfPresent([Subtype].self, forKey: .subtypes) ?? []
+  }
+}
+
+/// Fails decoding when a mapping has a key outside `known`: `requried: true` must not decode as an optional field.
+func rejectUnknownKeys(in decoder: any Decoder, known: Set<String>) throws {
+  let keys = try decoder.container(keyedBy: AnyKey.self).allKeys.map(\.stringValue)
+  if let unknown = keys.filter({ !known.contains($0) }).sorted().first {
+    throw DecodingError.dataCorrupted(
+      .init(codingPath: decoder.codingPath, debugDescription: "unknown key \"\(unknown)\"")
+    )
   }
 }
 
@@ -105,8 +131,13 @@ extension TypeManifest {
     enum CodingKeys: String, CodingKey {
       case key, label, type, options, unit, auto, required
     }
+    static let knownKeys: Set<String> = [
+      "key", "label", "type", "note", "sample", "options", "default", "showIf", "multiline", "unit", "entry", "auto",
+      "required", "unlocks", "ladderAxis", "slotsFrom", "precision", "depth", "allowNV", "peak",
+    ]
 
     public init(from decoder: any Decoder) throws {
+      try rejectUnknownKeys(in: decoder, known: Self.knownKeys)
       let container = try decoder.container(keyedBy: CodingKeys.self)
       key = try container.decode(String.self, forKey: .key)
       label = try container.decode(String.self, forKey: .label)

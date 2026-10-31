@@ -10,8 +10,8 @@ extension TypeManifest {
   /// The M1 rules: the ones that hold for every file whatever later milestones add.
   public var problems: [ManifestProblem] {
     var problems: [String] = []
-    if id.rawValue.isEmpty || id.rawValue.contains(where: { !($0.isLowercase || $0.isNumber || $0 == "-") }) {
-      problems.append("id must be kebab-case")
+    if id.rawValue.wholeMatch(of: /[a-z0-9]+(-[a-z0-9]+)*/) == nil {
+      problems.append("id must be kebab-case ASCII: lowercase letters and digits, single hyphens between words")
     }
     let keys = fields.map(\.key)
     for key in Set(keys) where keys.filter({ $0 == key }).count > 1 {

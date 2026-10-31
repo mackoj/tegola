@@ -56,6 +56,22 @@ import Testing
     #expect(table.rows.last == ["Mario 64", "boîte endommagée"])
   }
 
+  @Test func anUnterminatedQuoteSaysWhereItOpened() {
+    #expect(throws: DelimitedTextError.unterminatedQuote(line: 2)) {
+      try DelimitedText(data: Data("title;note\nTetris;\"cartouche\nmanuel\nDoom;ok\n".utf8))
+    }
+  }
+
+  @Test func spacesAroundAQuotedCellAreDropped() throws {
+    let table = try DelimitedText(data: Data("title;platform\n \"Doom\" ;PC\n".utf8))
+    #expect(table.rows == [["title", "platform"], ["Doom", "PC"]])
+  }
+
+  @Test func aLineHoldingOnlyAnEmptyQuotedCellIsARow() throws {
+    let table = try DelimitedText(data: Data("title\n\"\"\n\nDoom\n".utf8))
+    #expect(table.rows == [["title"], [""], ["Doom"]])
+  }
+
   @Test func raggedRowsStayRagged() throws {
     let table = try DelimitedText(data: Data("a,b,c\n1,2\n1,2,3,4\n".utf8))
     #expect(table.rows.map(\.count) == [3, 2, 4])

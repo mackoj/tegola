@@ -39,6 +39,7 @@ let package = Package(
       dependencies: [
         "AppFeature",
         .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+        .product(name: "TegolaModel", package: "TegolaModel"),
       ],
       swiftSettings: swiftSettings
     ),

@@ -46,7 +46,7 @@
     }
   }
 
-  extension Tab {
+  extension AppTab {
     var title: String {
       switch self {
       case .shelf: String(localized: "Shelf", bundle: .module)

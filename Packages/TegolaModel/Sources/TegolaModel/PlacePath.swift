@@ -34,12 +34,20 @@ public struct PlacePath: Hashable, Sendable, CustomStringConvertible {
     self.components = components
   }
 
-  /// Two names that are probably the same place typed twice ("Rack 3" and "rack3"): equal once case, spaces and
-  /// punctuation are ignored, or one edit apart. The app offers a merge, never does it (story 109, PD-151).
+  /// Two names that are probably the same place typed twice ("Rack 3" and "rack3", "Livng room"): equal once case,
+  /// spaces and punctuation are ignored, or one edit apart with the same numbers. Numbers must match exactly: "Rack 3"
+  /// and "Rack 4", or "Box 1" and "Box 12", are siblings, not typos. The app offers a merge and never does it alone
+  /// (story 109, PD-151).
   public static func isNearDuplicate(_ a: String, _ b: String) -> Bool {
     let (x, y) = (normalised(a), normalised(b))
     guard x != y else { return true }
+    guard numbers(in: x) == numbers(in: y) else { return false }
     return editDistanceAtMostOne(x, y)
+  }
+
+  /// The runs of digits in a name, in order: "Rack 3 Bin 12" gives ["3", "12"].
+  static func numbers(in characters: [Character]) -> [String] {
+    String(characters).split(whereSeparator: { !$0.isNumber }).map(String.init)
   }
 
   static func normalised(_ name: String) -> [Character] {

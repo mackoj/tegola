@@ -8,7 +8,7 @@ it short and current.
 ## Where things stand
 
 - The spec is approved (`docs/PLAN.md`, answers in §10). Decisions: `docs/DECISIONS.md`, D-1 to D-33.
-- M1 (foundation) is done and verified on Linux: 55 tests in the six pure packages, zero warnings, zero swift-format
+- M1 (foundation) is done and verified on Linux: 68 tests in the six pure packages, zero warnings, zero swift-format
   findings, API lint clean. The app, `AppFeature` and the font registration are written but **not yet built**: they
   need the Mac (see `docs/milestones/M1.md`, "Not verified").
 - Next: M2, catalogue + model + storage (page 52 P0). Break it down in `tasks/plan.md` first.

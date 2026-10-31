@@ -56,6 +56,9 @@ import Testing
     #expect(PlacePath.isNearDuplicate("Rack 3", "rack3"))
     #expect(PlacePath.isNearDuplicate("Living room", "Livng room"))
     #expect(!PlacePath.isNearDuplicate("Rack 3", "Rack 4 left"))
+    #expect(!PlacePath.isNearDuplicate("Rack 3", "Rack 4"))
+    #expect(!PlacePath.isNearDuplicate("Box 1", "Box 12"))
+    #expect(PlacePath.isNearDuplicate("Rack 3", "Rak 3"))
     #expect(!PlacePath.isNearDuplicate("Loft", "Cellar"))
   }
 }

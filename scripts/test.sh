@@ -41,6 +41,8 @@ package_totals() { # $1 log
 
 run_package() { # $1 package, $2 optional filter
   local pkg="$1" filter="${2:-}" log="build/test-$1${2:+-$2}.log"
+  # A package listed for a later milestone (TegolaStorage before M2, D-31) is skipped until it exists.
+  [[ -f "Packages/$pkg/Package.swift" ]] || { echo "- ⏭️ \`$pkg\` doesn't exist yet" >> "$SUMMARY"; return 0; }
   echo "▶ $pkg ${filter:+($filter)}"
   if xcrun swift test --package-path "Packages/$pkg" ${filter:+--filter "$filter"} >"$log" 2>&1; then
     echo "- ✅ \`$pkg\` ${filter:+\`$filter\`} — $(package_totals "$log")" >> "$SUMMARY"
@@ -150,7 +152,7 @@ else
   # TegolaFeatures: per changed target, or everything if the manifest or a shared target changed.
   FEAT=$(grep -E "^Packages/TegolaFeatures/" <<<"$CHANGED" || true)
   if [[ -n "$FEAT" || ${#TARGETS[@]} -gt 0 ]]; then
-    if grep -qE "Package.swift|/TegolaClients/|FeatureTestSupport" <<<"$FEAT" || [[ ${#TARGETS[@]} -gt 0 && -z "$FEAT" ]]; then
+    if grep -qE "Package.swift|/Tests/FeatureTestSupport/" <<<"$FEAT" || [[ ${#TARGETS[@]} -gt 0 && -z "$FEAT" ]]; then
       run_package TegolaFeatures
     else
       for t in $(grep -Eo "^Packages/TegolaFeatures/(Sources|Tests)/[A-Za-z]+/" <<<"$FEAT" | sed -E 's#^Packages/TegolaFeatures/(Sources|Tests)/##; s#/$##; s#Tests$##' | sort -u); do

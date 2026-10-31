@@ -51,3 +51,31 @@ import Testing
     #expect(TegolaMetrics.minimumHitTarget >= 44)
   }
 }
+
+@Suite struct FontFaceTests {
+  /// The faces come from the files' name tables (review of M1, item 7).
+  @Test func variableFacesOpenTheirDefaultInstanceAndSetWeight() {
+    #expect(TegolaFontFamily.text.face(weight: 700, size: 14).postScriptName == "Archivo-SemiBold")
+    #expect(TegolaFontFamily.text.face(weight: 700, size: 14).axes == [.weight: 700])
+    let display = TegolaFontFamily.display.face(weight: 800, size: 34)
+    #expect(display.postScriptName == "BricolageGrotesque-96ptExtraBold")
+    #expect(display.axes == [.weight: 800, .opticalSize: 34])
+  }
+
+  @Test func opticalSizeStaysInsideTheFontsRange() {
+    #expect(TegolaFontFamily.display.face(weight: 800, size: 140).axes[.opticalSize] == 96)
+    #expect(TegolaFontFamily.display.face(weight: 800, size: 8).axes[.opticalSize] == 12)
+  }
+
+  @Test func monoPicksTheFileForTheWeight() {
+    #expect(TegolaFontFamily.mono.face(weight: 400, size: 10).postScriptName == "DMMono-Regular")
+    #expect(TegolaFontFamily.mono.face(weight: 500, size: 10).postScriptName == "DMMono-Medium")
+  }
+
+  /// Only Regular and Medium of DM Mono are bundled, so no mono style may ask for more (PLAN §4.0: mono is 500).
+  @Test func monoStylesUseABundledWeight() {
+    for (name, style) in TegolaType.all where style.family == .mono {
+      #expect([400, 500].contains(style.weight), "\(name)")
+    }
+  }
+}

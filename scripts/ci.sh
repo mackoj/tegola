@@ -6,6 +6,7 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 STATUS=0
 for pkg in TegolaDesignSystem TegolaTestSupport TegolaCatalogue TegolaModel TegolaInterchange TegolaLookupAPI TegolaStorage TegolaFeatures; do
+  [[ -f "Packages/$pkg/Package.swift" ]] || continue  # listed for a later milestone (D-31)
   scripts/test.sh "$pkg" || STATUS=1
   cp build/test-summary.md "build/summary-$pkg.md"
 done

@@ -131,7 +131,7 @@ reused; a replaced decision stays, marked **superseded by D-n**.
 
 ### D-31 · Packages that would be empty in M1
 
-**Decision.** None is created (telaio's REVIEW §2 found five empty feature targets inflating its counts). `TegolaStorage` arrives with M2, and each feature target with its milestone. M1's `TegolaFeatures` has `AppFeature` only.
+**Decision.** None is created (telaio's REVIEW §2 found five empty feature targets inflating its counts). `TegolaStorage` arrives with M2, and each feature target with its milestone. M1's `TegolaFeatures` has `AppFeature` only; `TegolaClients` (PLAN §2.4) arrives with its first client (`ShelfClient`'s interface, M2).
 
 ### D-32 · Where the pure core is tested
 

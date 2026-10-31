@@ -72,6 +72,29 @@ import Testing
     #expect(try Self.manifest(yaml).fields.map(\.kind) == [.number, .yesNo])
   }
 
+  @Test func aMisspelledKeyIsAnError() {
+    #expect(throws: CatalogueError.self) {
+      try Self.manifest(
+        Self.base + "\nconditions: [Good, Bad]\nfields:\n  - {key: a, label: A, type: text, requried: true}"
+      )
+    }
+    #expect(throws: CatalogueError.self) {
+      try Self.manifest(Self.base + "\nconditions: [Good, Bad]\nfeilds: []\nfields: []")
+    }
+  }
+
+  @Test func malformedPresetsAreAnErrorNotAnEmptySet() {
+    let yaml = Self.base + "\nconditions: [Good, Bad]\nfields: []\nsubtypes:\n  - {key: a, presets: [shape]}"
+    #expect(throws: CatalogueError.self) { try Self.manifest(yaml) }
+  }
+
+  @Test(arguments: ["Sample", "café", "-sample", "sam--ple", "sample-"])
+  func idsMustBeKebabCaseASCII(_ id: String) throws {
+    let yaml =
+      Self.base.replacingOccurrences(of: "id: sample", with: "id: \"\(id)\"") + "\nconditions: [Good, Bad]\nfields: []"
+    #expect(try Self.manifest(yaml).problems.count == 1)
+  }
+
   @Test func missingMustComeLast() throws {
     let yaml = Self.base + "\nconditions: [Good, Missing, Bad]\nfields: []"
     #expect(try Self.manifest(yaml).problems.map(\.message) == ["\"Missing\" must be the last condition step (PD-014)"])

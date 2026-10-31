@@ -14,6 +14,7 @@ public enum TegolaRole: String, CaseIterable, Hashable, Sendable {
   case textMuted  // secondary body text
   case textMeta  // mono eyebrows, counts, spine labels
   case textOnStage  // text on the stage and the camera
+  case textMetaOnStage  // mono labels on the stage and the camera
 
   // Lines and shadows
   case edge  // every solid border
@@ -71,6 +72,7 @@ public struct TegolaContrastPair: Hashable, Sendable, CustomStringConvertible {
     pairs += [
       .init(.text, on: .surfaceHeader), .init(.textMeta, on: .surfaceHeader),
       .init(.textOnStage, on: .surfaceStage), .init(.textOnStage, on: .surfaceCamera),
+      .init(.textMetaOnStage, on: .surfaceStage), .init(.textMetaOnStage, on: .surfaceCamera),
       .init(.onAccentAction, on: .accentAction),
       .init(.onAccentHighlight, on: .accentHighlight), .init(.textMeta, on: .accentHighlight),
       .init(.onAccentGrail, on: .accentGrail),
@@ -141,6 +143,8 @@ extension TegolaTheme {
       .textMuted: TegolaPalette.muted,
       .textMeta: TegolaPalette.metaText,
       .textOnStage: TegolaPalette.paper,
+      // The archive's own meta grey: 4.71:1 on ink, where the darker light-surface metaText would be 2.74:1.
+      .textMetaOnStage: TegolaPalette.meta,
       .edge: TegolaPalette.ink,
       .edgeNotYours: TegolaPalette.ruleDark,
       .hairline: TegolaPalette.rule,

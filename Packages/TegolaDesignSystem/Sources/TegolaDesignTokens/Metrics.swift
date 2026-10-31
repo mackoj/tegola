@@ -7,7 +7,8 @@ public enum TegolaFontFamily: String, CaseIterable, Sendable {
   /// DM Mono: eyebrows, counts, spine labels, prices in tables.
   case mono
 
-  /// The PostScript family name registered from `Resources/Fonts`.
+  /// The typographic family name a resolved font reports (name id 16 where the file has one). A font that falls
+  /// back to the system face won't contain it, which is how `FontResolutionTests` catches a silent fallback.
   public var familyName: String {
     switch self {
     case .display: "Bricolage Grotesque"
@@ -24,6 +25,35 @@ public enum TegolaFontFamily: String, CaseIterable, Sendable {
     case .mono: ["DMMono-Regular.ttf", "DMMono-Medium.ttf"]
     }
   }
+
+  /// The face to open for a weight, and the variation axes to set on it. Read from the files' name tables: the variable
+  /// fonts register under their default instance ("Archivo SemiBold", "Bricolage Grotesque 96pt ExtraBold"), so asking
+  /// for the family plus a weight isn't reliable; opening that instance and setting `wght` (and Bricolage's `opsz`) is.
+  /// DM Mono isn't variable: Regular (400) and Medium (500) are separate files.
+  public func face(weight: Int, size: Double) -> TegolaFontFace {
+    switch self {
+    case .display:
+      TegolaFontFace(
+        postScriptName: "BricolageGrotesque-96ptExtraBold",
+        axes: [.weight: Double(min(max(weight, 200), 800)), .opticalSize: min(max(size, 12), 96)]
+      )
+    case .text:
+      TegolaFontFace(postScriptName: "Archivo-SemiBold", axes: [.weight: Double(min(max(weight, 100), 900))])
+    case .mono:
+      TegolaFontFace(postScriptName: weight >= 500 ? "DMMono-Medium" : "DMMono-Regular", axes: [:])
+    }
+  }
+}
+
+/// A concrete face: a PostScript name and the variation axis values to apply.
+public struct TegolaFontFace: Hashable, Sendable {
+  public enum Axis: UInt32, Hashable, Sendable, CaseIterable {
+    case weight = 0x7767_6874  // 'wght'
+    case opticalSize = 0x6F70_737A  // 'opsz'
+  }
+
+  public let postScriptName: String
+  public let axes: [Axis: Double]
 }
 
 /// One text style from the boards, in points at the default Dynamic Type size. Tracking is in em, as the boards
@@ -101,7 +131,7 @@ public enum TegolaType {
   public static let bodySmall = TegolaTextStyle(.text, size: 11, weight: 400, lineHeight: 1.4)
   public static let meta = TegolaTextStyle(.mono, size: 10, weight: 500, tracking: 0.14, uppercased: true)
   public static let metaSmall = TegolaTextStyle(.mono, size: 9, weight: 500, tracking: 0.12, uppercased: true)
-  public static let numeric = TegolaTextStyle(.mono, size: 15, weight: 600)
+  public static let numeric = TegolaTextStyle(.mono, size: 15, weight: 500)
 
   public static let all: [(name: String, style: TegolaTextStyle)] = [
     ("displayTitle", displayTitle), ("displaySmall", displaySmall), ("bigNumber", bigNumber), ("typeMark", typeMark),

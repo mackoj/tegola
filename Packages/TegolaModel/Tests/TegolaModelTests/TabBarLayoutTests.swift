@@ -9,7 +9,7 @@ import Testing
   }
 
   @Test func onlyScanPresents() {
-    #expect(Tab.allCases.filter(\.presents) == [.scan])
+    #expect(AppTab.allCases.filter(\.presents) == [.scan])
   }
 
   @Test func movingKeepsShelfAndScanInPlace() {
@@ -34,6 +34,9 @@ import Testing
   @Test func aStoredOrderThatBreaksTheRulesFallsBackToTheDefault() throws {
     let stored = try JSONEncoder().encode(["find", "shelf", "scan", "activity", "you"])
     #expect(try JSONDecoder().decode(TabBarLayout.self, from: stored) == .default)
+    let renamed = try JSONEncoder().encode(["shelf", "search", "scan", "activity", "you"])
+    #expect(try JSONDecoder().decode(TabBarLayout.self, from: renamed) == .default)
+    #expect(try JSONDecoder().decode(TabBarLayout.self, from: Data("42".utf8)) == .default)
     var layout = TabBarLayout.default
     layout.move(.activity, toMovablePosition: 0)
     #expect(try JSONDecoder().decode(TabBarLayout.self, from: JSONEncoder().encode(layout)) == layout)
