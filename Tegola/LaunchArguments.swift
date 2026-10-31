@@ -1,9 +1,10 @@
 #if DEBUG
+  import AppFeature
   import Foundation
 
   /// Arguments the UI tests launch the app with (PLAN §2.6): `--reset` starts from an empty catalogue, `--seed` from
-  /// the seed shelf, `--screen <name>` opens one screen directly. Debug builds only. The catalogue and the seed arrive
-  /// in M2; until then the arguments are parsed and remembered.
+  /// the seed shelf, `--screen <name>` opens one screen directly. Debug builds only. `--screen` is read once the
+  /// screens exist (M3).
   struct LaunchArguments: Equatable {
     var reset = false
     var seed = false
@@ -21,6 +22,9 @@
       }
     }
 
-    func apply() {}
+    /// Opens the database as the arguments ask.
+    func apply() {
+      AppBootstrap.prepare(reset: reset, seed: seed)
+    }
   }
 #endif

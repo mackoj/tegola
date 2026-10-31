@@ -16,6 +16,7 @@ let package = Package(
   ],
   dependencies: [
     .package(url: "https://github.com/pointfreeco/sqlite-data", "1.0.0"..<"2.0.0"),
+    .package(url: "https://github.com/pointfreeco/swift-dependencies", "1.17.0"..<"2.0.0"),
     .package(path: "../TegolaModel"),
     .package(path: "../TegolaCatalogue"),
   ],
@@ -25,6 +26,7 @@ let package = Package(
       name: "TegolaStorage",
       dependencies: [
         .product(name: "SQLiteData", package: "sqlite-data"),
+        .product(name: "Dependencies", package: "swift-dependencies"),
         .product(name: "TegolaModel", package: "TegolaModel"),
         .product(name: "TegolaCatalogue", package: "TegolaCatalogue"),
       ],

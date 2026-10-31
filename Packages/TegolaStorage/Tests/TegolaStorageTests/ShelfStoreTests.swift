@@ -116,3 +116,23 @@ struct StoreHarness {
     }
   }
 }
+
+@Suite struct SeedTests {
+  @Test func theSeedPlantsThroughPerform() throws {
+    let harness = try StoreHarness()
+    let ids = harness.ids
+    try Seed.plant(in: harness.store, at: harness.clock, makeID: { ids.next() })
+    let shelf = try harness.store.shelf()
+    #expect(Set(shelf.objects.values.map(\.typeID)) == Set(Catalogue.enabledInV1))
+    #expect(shelf.objects.count == 16)
+    #expect(shelf.collections.count == 4)
+    #expect(shelf.objects.values.contains { $0.identity == .unconfirmed })
+    #expect(shelf.objects.values.contains { $0.identity == .needsDetails })
+    #expect(shelf.objects.values.contains { $0.ownership == .wanted })
+    #expect(shelf.objects.values.contains { $0.ownership == .borrowed })
+    #expect(shelf.objects.values.contains { $0.letGo != nil })
+    #expect(shelf.objects.values.contains { $0.bulk == .quantity })
+    #expect(shelf.loans.values.contains { $0.isOpen && $0.direction == .out })
+    #expect(apply(try harness.store.log(), to: Shelf()) == shelf)
+  }
+}
