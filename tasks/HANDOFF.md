@@ -3,7 +3,7 @@
 The state of the work for whoever picks it up next: a new session, another agent, or the owner. Read this first, keep
 it short and current.
 
-**Updated:** 2026-11-01, M3 done on `m3-core-loop`, open as PR #9 into `main`. M4 is next.
+**Updated:** 2026-11-01, M3 merged into `main` (PR #9). M4 is next.
 
 ## Where things stand
 
@@ -11,7 +11,7 @@ it short and current.
 - **M1 (foundation):** merged (PR #5, `docs/milestones/M1.md`).
 - **M2 (catalogue, model, storage):** merged (PR #8, `docs/milestones/M2.md`). The type files are on schema v1 with
   subtypes. The pure `plan`/`apply` sit over an event log and its projection (`TegolaStorage`, sqlite-data).
-- **M3 (core loop):** done, PR #9 open (`docs/milestones/M3.md`). The screens are:
+- **M3 (core loop):** merged (PR #9, `docs/milestones/M3.md`). The screens are:
   - Shelf home, Collection, Object (seven slots), the edit form, Add by hand (Scan), photos, Find with saved views,
     Places;
   - screenshots in `docs/snapshots/`.
@@ -22,7 +22,7 @@ it short and current.
 
 ## What's next
 
-1. **Owner:** merge PR #9. Then run M3's exit test with people: 30 objects across Video games and Thing in one
+1. **Owner:** run M3's exit test with people: 30 objects across Video games and Thing in one
    sitting, without asking how.
 2. **M4, signals** (page 52 P2; exit test: a 200-object shelf gives a signal list a collector agrees with on 8 of 10).
    Start a branch `m4-signals` from `main`, and break M4 down in `tasks/plan.md` and `tasks/todo.md` first. Roughly:
