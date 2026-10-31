@@ -72,6 +72,23 @@
       if !summary.today.lines.isEmpty {
         TodayStripView(lines: summary.today.lines)
       }
+      if summary.showsPlaces {
+        Button {
+          send(.placesTapped)
+        } label: {
+          HStack {
+            Text("Places", bundle: .module).tegolaTextStyle(TegolaType.heading).foregroundStyle(TegolaRole.text)
+            Spacer()
+            Text(store.snapshot.shelf.livePlaces.count, format: .number)
+              .tegolaTextStyle(TegolaType.meta).foregroundStyle(TegolaRole.textMeta)
+          }
+          .padding(TegolaSpace.m)
+          .frame(minHeight: TegolaMetrics.minimumHitTarget)
+          .printed(radius: TegolaRadius.card)
+        }
+        .buttonStyle(.plain)
+        .accessibilityIdentifier("shelf.places")
+      }
       LazyVGrid(
         columns: [GridItem(.flexible(), spacing: TegolaSpace.m), GridItem(.flexible(), spacing: TegolaSpace.m)],
         spacing: TegolaSpace.l

@@ -236,6 +236,39 @@ struct Harness {
     #expect(harness.shelf.objects[first]?.placeID == nil)
   }
 
+  /// Story 109: near-duplicate places are offered for merging, and a merge keeps everything.
+  @Test func nearDuplicatePlacesMergeIntoTheOneKept() throws {
+    var harness = Harness()
+    let first = try harness.add()
+    let second = try harness.add("video-game", "Guardian Heroes")
+    try harness.perform(.setPlace([first], PlacePath(typed: "Living room › Shelf 1")))
+    try harness.perform(.setPlace([second], PlacePath(typed: "Livng room")))
+    let pairs = harness.shelf.nearDuplicatePlaces()
+    #expect(pairs.map { [$0.0.name, $0.1.name] } == [["Living room", "Livng room"]])
+    let (kept, typo) = (pairs[0].0, pairs[0].1)
+    let events = try harness.perform(.mergePlaces(typo.id, into: kept.id))
+    #expect(events.map(\.kind.name) == ["placed", "placesMerged"])
+    #expect(harness.shelf.objects[second]?.placeID == kept.id)
+    #expect(harness.shelf.places[typo.id]?.mergedInto == kept.id)
+    #expect(harness.shelf.livePlaces.count == 2)
+    #expect(harness.shelf.nearDuplicatePlaces().isEmpty)
+    // Typing the typo again makes a new place: merged places are out of every list.
+    try harness.perform(.setPlace([second], PlacePath(typed: "Livng room")))
+    #expect(harness.shelf.livePlaces.count == 3)
+  }
+
+  @Test func aPlaceCantMergeIntoItselfOrWhatsInsideIt() throws {
+    var harness = Harness()
+    let id = try harness.add()
+    try harness.perform(.setPlace([id], PlacePath(typed: "Office › Shelf 2")))
+    let office = try #require(harness.shelf.places.values.first { $0.name == "Office" })
+    let shelf = try #require(harness.shelf.places.values.first { $0.name == "Shelf 2" })
+    #expect(throws: ShelfRuleViolation.mergeIntoItself) { try harness.perform(.mergePlaces(office.id, into: shelf.id)) }
+    #expect(throws: ShelfRuleViolation.mergeIntoItself) {
+      try harness.perform(.mergePlaces(office.id, into: office.id))
+    }
+  }
+
   @Test func aTypedCollectionTakesOnlyItsType() throws {
     var harness = Harness()
     let game = try harness.add()

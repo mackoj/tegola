@@ -48,6 +48,7 @@ public struct ShelfFeature {
     public enum View: Equatable {
       case collectionTapped(CollectionID)
       case onAppear
+      case placesTapped
       case typeItTapped
     }
   }
@@ -66,6 +67,8 @@ public struct ShelfFeature {
       case .view(.onAppear):
         state.now = now
         return .none
+      case .view(.placesTapped):
+        return .send(.delegate(.open(.places)))
       case .view(.typeItTapped):
         return .send(.delegate(.addByHand))
       }

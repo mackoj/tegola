@@ -70,7 +70,7 @@ public struct ShelfSummary: Hashable, Sendable {
       }
       .sorted { ($0.sortKey, $0.name) < ($1.sortKey, $1.name) }
     wanted = objects.filter { $0.ownership == .wanted && $0.letGo == nil }.count
-    showsPlaces = shelf.places.count >= 2
+    showsPlaces = shelf.livePlaces.count >= 2
   }
 }
 

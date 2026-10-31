@@ -45,6 +45,8 @@ public struct ShelfEvent: Hashable, Sendable, Codable, Identifiable {
     case enriched(ObjectID, changes: [FieldKey: FieldValue])
     case confirmed(ObjectID)
     case placed(ObjectID, PlaceID?)
+    /// Two places were one: `from` folds into `into`, its children with it (story 109).
+    case placesMerged(from: PlaceID, into: PlaceID)
     case photoAttached(Photo)
     case moved(ObjectID, to: CollectionID)
     case lent(Loan)
@@ -75,6 +77,7 @@ public struct ShelfEvent: Hashable, Sendable, Codable, Identifiable {
       case .enriched: "enriched"
       case .confirmed: "confirmed"
       case .placed: "placed"
+      case .placesMerged: "placesMerged"
       case .photoAttached: "photo"
       case .moved: "moved"
       case .lent: "lent"
@@ -100,7 +103,8 @@ public struct ShelfEvent: Hashable, Sendable, Codable, Identifiable {
         .gaveBack, .logged,
         .ownershipChanged, .letGo, .promoted:
         true
-      case .collectionCreated, .collectionRenamed, .placeCreated, .personCreated, .workCreated, .wanted, .grailChanged,
+      case .collectionCreated, .collectionRenamed, .placeCreated, .personCreated, .workCreated, .placesMerged, .wanted,
+        .grailChanged,
         .mightLetGoChanged, .quantityAdjusted:
         false
       }
@@ -108,7 +112,7 @@ public struct ShelfEvent: Hashable, Sendable, Codable, Identifiable {
 
     public var objectID: ObjectID? {
       switch self {
-      case .collectionCreated, .collectionRenamed, .placeCreated, .personCreated, .workCreated: nil
+      case .collectionCreated, .collectionRenamed, .placeCreated, .personCreated, .workCreated, .placesMerged: nil
       case .added(let object, _): object.id
       case .edited(let id, _), .enriched(let id, _), .confirmed(let id), .placed(let id, _), .moved(let id, _),
         .logged(let id, _, _), .ownershipChanged(let id, _), .wanted(let id, _, _), .grailChanged(let id, _),

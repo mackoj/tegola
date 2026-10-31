@@ -19,24 +19,6 @@
     },
     "%lld need attention" : {
       "localizations" : {
-        "fr" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld demande de l’attention"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld demandent de l’attention"
-                }
-              }
-            }
-          }
-        },
         "en" : {
           "variations" : {
             "plural" : {
@@ -54,29 +36,29 @@
               }
             }
           }
-        }
-      }
-    },
-    "%lld objects" : {
-      "localizations" : {
+        },
         "fr" : {
           "variations" : {
             "plural" : {
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld objet"
+                  "value" : "%lld demande de l’attention"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld objets"
+                  "value" : "%lld demandent de l’attention"
                 }
               }
             }
           }
-        },
+        }
+      }
+    },
+    "%lld objects" : {
+      "localizations" : {
         "en" : {
           "variations" : {
             "plural" : {
@@ -90,6 +72,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld objects"
+                }
+              }
+            }
+          }
+        },
+        "fr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld objet"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld objets"
                 }
               }
             }
@@ -219,6 +219,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "objets"
+          }
+        }
+      }
+    },
+    "Places" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Emplacements"
           }
         }
       }

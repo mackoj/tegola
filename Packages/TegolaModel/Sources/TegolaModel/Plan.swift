@@ -64,6 +64,9 @@ public enum ShelfRuleViolation: Error, Hashable, Sendable {
   /// An origin from the wrong source: only the collector types, only a capture captures, only an import imports.
   case originMismatch
   case notBorrowed
+  case unknownPlace(PlaceID)
+  /// A place can't merge into itself, or into a place inside it.
+  case mergeIntoItself
 }
 
 /// Turns a command into the events that carry it out, or refuses it. Pure: the same command on the same shelf with
@@ -207,6 +210,15 @@ struct Planner {
       let name = name.trimmingCharacters(in: .whitespacesAndNewlines)
       guard !name.isEmpty else { throw .emptyName }
       emit(.collectionRenamed(id, name: name))
+    case .mergePlaces(let from, let into):
+      guard let source = shelf.places[from], source.mergedInto == nil else { throw .unknownPlace(from) }
+      guard let target = shelf.places[into], target.mergedInto == nil else { throw .unknownPlace(into) }
+      guard !shelf.placeAndInside(from).contains(target.id) else { throw .mergeIntoItself }
+      // Each object moves with a history line of its own; then the place folds, its children with it.
+      for object in shelf.objects.values.filter({ $0.placeID == from }).sorted(by: { $0.id < $1.id }) {
+        emit(.placed(object.id, into))
+      }
+      emit(.placesMerged(from: from, into: into))
     case .moveObjects(let ids, let collectionID):
       guard let collection = shelf.collections[collectionID] else { throw .unknownCollection(collectionID) }
       for id in ids {
@@ -500,7 +512,7 @@ struct Planner {
   mutating func place(at path: PlacePath) -> PlaceID {
     var parent: PlaceID?
     for name in path.components {
-      let existing = shelf.places.values
+      let existing = shelf.livePlaces
         .filter { $0.parentID == parent && $0.name.localizedCaseInsensitiveCompare(name) == .orderedSame }
         .min { $0.createdAt == $1.createdAt ? $0.id < $1.id : $0.createdAt < $1.createdAt }
       if let existing {
@@ -551,6 +563,9 @@ extension Shelf {
       }
     case .confirmed(let id): touch(id) { $0.identity = .confirmed }
     case .placed(let id, let place): touch(id) { $0.placeID = place }
+    case .placesMerged(let from, let into):
+      places[from]?.mergedInto = into
+      for child in places.values where child.parentID == from { places[child.id]?.parentID = into }
     case .photoAttached(let photo):
       photos[photo.id] = photo
       touch(photo.objectID) { _ in }

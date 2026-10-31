@@ -3,6 +3,7 @@
   import CollectionFeature
   import FindFeature
   import ObjectFeature
+  import PlacesFeature
   public import ComposableArchitecture
   import ShelfFeature
   public import SwiftUI
@@ -53,6 +54,10 @@
           CollectionView(store: store)
         case .object(let store):
           ObjectView(store: store)
+        case .place(let store):
+          PlaceView(store: store)
+        case .places(let store):
+          PlacesView(store: store)
         }
       }
     }
@@ -67,6 +72,8 @@
         switch path.case {
         case .collection(let store): CollectionView(store: store)
         case .object(let store): ObjectView(store: store)
+        case .place(let store): PlaceView(store: store)
+        case .places(let store): PlacesView(store: store)
         }
       }
     }

@@ -3,6 +3,7 @@ public import CollectionFeature
 public import ComposableArchitecture
 public import FindFeature
 public import ObjectFeature
+public import PlacesFeature
 public import ShelfFeature
 public import TegolaModel
 
@@ -11,6 +12,8 @@ public import TegolaModel
 public enum AppPath {
   case collection(CollectionFeature)
   case object(ObjectFeature)
+  case place(PlaceFeature)
+  case places(PlacesFeature)
 }
 
 extension AppPath.State: Equatable {}
@@ -67,14 +70,18 @@ public struct AppFeature {
         return .none
       case .find:
         return .none
-      case .findPath(.element(_, .collection(.delegate(.open(let route))))):
+      case .findPath(.element(_, .collection(.delegate(.open(let route))))),
+        .findPath(.element(_, .places(.delegate(.open(let route))))),
+        .findPath(.element(_, .place(.delegate(.open(let route))))):
         Self.push(route, onto: &state.findPath)
         return .none
       case .findPath:
         return .none
       case .shelf:
         return .none
-      case .shelfPath(.element(_, .collection(.delegate(.open(let route))))):
+      case .shelfPath(.element(_, .collection(.delegate(.open(let route))))),
+        .shelfPath(.element(_, .places(.delegate(.open(let route))))),
+        .shelfPath(.element(_, .place(.delegate(.open(let route))))):
         Self.push(route, onto: &state.shelfPath)
         return .none
       case .shelfPath:
@@ -105,7 +112,11 @@ public struct AppFeature {
       path.append(.collection(CollectionFeature.State(id: id)))
     case .object(let id):
       path.append(.object(ObjectFeature.State(id: id)))
-    case .places, .place, .wishlist:
+    case .places:
+      path.append(.places(PlacesFeature.State()))
+    case .place(let id):
+      path.append(.place(PlaceFeature.State(id: id)))
+    case .wishlist:
       break
     }
   }

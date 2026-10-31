@@ -278,3 +278,11 @@ reused; a replaced decision stays, marked **superseded by D-n**.
   
   "Digital" and "Also exists on" need works and digital games (M6's import), so they come with them.
 - **Filters.** Type, lent out, place, and the archive (let-go objects, so "did I ever own this?" has an answer). Condition and status chips wait for statuses (M4).
+
+### D-52 · Places in M3
+
+**Decision.**
+- **Merging.** A merge is one command, `mergePlaces(from, into:)`. Each object in `from` gets its own `placed` history line, then the place folds into the other, its children with it. The merged place stays in the projection, marked `mergedInto`, and leaves every list, so history that names it still reads.
+- **Near duplicates.** The app offers a merge for each pair of live places under the same parent whose names are near duplicates (`PlacePath.isNearDuplicate`, M1), and never merges alone (PD-151).
+- **When Places shows.** The Places line shows on the Shelf home once two live places exist (F10). A place's screen lists its objects and the places inside it, whatever their type.
+- **One target.** `PlacesFeature` holds both the list and one place's screen, which PLAN §5 names separately. They share every dependency and view, so one target saves a package of boilerplate.

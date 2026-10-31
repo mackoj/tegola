@@ -95,6 +95,16 @@ public struct Place: Hashable, Sendable, Codable, Identifiable {
   public var name: String
   public var parentID: PlaceID?
   public let createdAt: Date
+  /// Set when the collector merged this place into another: it stays in the projection, out of every list.
+  public var mergedInto: PlaceID?
+
+  public init(id: PlaceID, name: String, parentID: PlaceID?, createdAt: Date, mergedInto: PlaceID? = nil) {
+    self.id = id
+    self.name = name
+    self.parentID = parentID
+    self.createdAt = createdAt
+    self.mergedInto = mergedInto
+  }
 }
 
 /// Someone you lend to or borrow from, created by typing a name (CONTEXT: Person).
@@ -175,6 +185,22 @@ public struct Shelf: Hashable, Sendable, Codable {
       next = place.parentID
     }
     return names.isEmpty ? nil : names.joined(separator: " \(PlacePath.separator) ")
+  }
+
+  /// The places a collector sees: every place not merged into another.
+  public var livePlaces: [Place] { places.values.filter { $0.mergedInto == nil } }
+
+  /// Pairs of live places that are probably the same place typed twice, under the same parent (story 109). The app
+  /// offers the merge; it never merges alone (PD-151).
+  public func nearDuplicatePlaces() -> [(Place, Place)] {
+    let live = livePlaces.sorted { ($0.createdAt, $0.id) < ($1.createdAt, $1.id) }
+    var pairs: [(Place, Place)] = []
+    for (index, a) in live.enumerated() {
+      for b in live[(index + 1)...] where a.parentID == b.parentID && PlacePath.isNearDuplicate(a.name, b.name) {
+        pairs.append((a, b))
+      }
+    }
+    return pairs
   }
 
   /// An object's photos, hero first.

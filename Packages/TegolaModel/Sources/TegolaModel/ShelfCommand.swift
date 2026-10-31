@@ -41,7 +41,9 @@ public enum ShelfCommand: Hashable, Sendable {
   /// Stories 83, 109.
   case renameCollection(CollectionID, name: String)
   case moveObjects([ObjectID], to: CollectionID)
-  // Not yet: openBottle (wine isn't a v1 type), mergePlaces (M8),
+  /// Story 109: a near-duplicate place folds into the one the collector keeps.
+  case mergePlaces(PlaceID, into: PlaceID)
+  // Not yet: openBottle (wine isn't a v1 type),
   // importBatch and undoBatch (M6). `plan` doesn't know them, so a screen can't send them.
 }
 

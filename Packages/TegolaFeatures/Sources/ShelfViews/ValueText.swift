@@ -70,7 +70,7 @@
         case .broken: Text("Let go · broken", bundle: .module)
         }
       case .promoted: Text("One copy taken out", bundle: .module)
-      case .collectionCreated, .collectionRenamed, .placeCreated, .personCreated, .workCreated, .wanted,
+      case .collectionCreated, .collectionRenamed, .placeCreated, .personCreated, .workCreated, .placesMerged, .wanted,
         .grailChanged, .mightLetGoChanged, .quantityAdjusted:
         Text(verbatim: kind.name)
       }
