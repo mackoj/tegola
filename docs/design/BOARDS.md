@@ -989,3 +989,18 @@ a guide to what's canonical.
 | `sparkPop` / `sparkGlow` | 900ms ease-out, cleared at 950ms (not built, PD-145) |
 | Item idle rotation | ±34°, 0.18°/frame (not built, PD-145) |
 | Segment / tab switch | instant, no animation |
+
+## Theme adjustments for contrast
+
+PLAN §10 answer 8: keep every fill colour and use text colours that pass WCAG AA (4.5:1). The Board theme
+(`TegolaTheme.board`) differs from the boards in exactly these places, checked by `ContrastTests`:
+
+| Boards draw | Ratio | Tegola draws | Ratio | Where |
+|---|---|---|---|---|
+| Meta grey `#8A7F70` text (mono eyebrows, counts, spine labels) | 3.34:1 on paper | `metaText` `#645A4E` | 5.74:1 on paper, 4.51:1 on paper deep | every board with a mono label |
+| Paper text on orange (e.g. "Sell it", orange CTAs) | 2.63:1 | ink text | 5.97:1 | 04, 12, 18 and any orange button |
+| Paper text on pink (the ★ GRAIL sticker) | 3.27:1 | ink text | 4.81:1 | 04, 23 |
+| Paper text on teal `#12A594` | 2.62:1 | ink text | 6.01:1 | type tints carrying text |
+
+Muted body text (`#6E6458`) keeps the archive's value. It passes on paper, sand and card. On paper deep (3.88:1) and
+yellow (4.02:1), components use `metaText` instead.
