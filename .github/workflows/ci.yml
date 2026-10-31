@@ -1,0 +1,49 @@
+# Two jobs.
+# linux-core runs on every push and PR: the pure packages (PLAN §2.4), the guard tests and the API lint. It's free,
+# and it's the independent check on main that telaio's REVIEW asked for.
+# macos runs only when started by hand: hosted macOS minutes cost money and hosted runners have no Xcode 27. It
+# checks the iOS 26 SDK build with Xcode 26.6. Everything else runs on the Mac (scripts/test.sh, scripts/ci.sh).
+name: CI
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+jobs:
+  linux-core:
+    runs-on: ubuntu-latest
+    container: swift:6.4-noble
+    steps:
+      - uses: actions/checkout@v4
+      - name: Toolchain
+        run: swift --version
+      - name: Pure packages and guard tests
+        run: scripts/test-linux.sh
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: API lint
+        run: scripts/lint-api.sh
+      - name: Secret scan
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE" && scripts/secret-scan.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: linux-logs
+          path: build/*.log
+  macos:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: macos-26
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.6.app/Contents/Developer
+      DESTINATION: platform=iOS Simulator,name=iPhone 16
+    steps:
+      - uses: actions/checkout@v4
+      - name: Toolchain
+        run: xcodebuild -version && xcrun swift --version
+      - name: Full suite
+        run: scripts/ci.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ci-logs
+          path: build/*.log

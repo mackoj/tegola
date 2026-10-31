@@ -1,0 +1,19 @@
+# Dead-code search: run scripts/periphery.sh, never `periphery scan` directly (the script puts Xcode's toolchain first
+# on PATH; swiftly's `swift` breaks swift-snapshot-testing). The app scheme builds the app and every local package it
+# links, so one scan covers Tegola/ and Packages/*/Sources.
+project: Tegola.xcodeproj
+schemes:
+  - Tegola
+# The scheme's test targets are indexed, so code that only tests use counts as used; findings inside test code are
+# left out of the report.
+report_exclude:
+  - "**/Tests/**"
+  - "TegolaTests/**"
+  - "TegolaUITests/**"
+retain_swift_ui_previews: true
+retain_codable_properties: true
+relative_results: true
+# periphery picks its own derived data (~/Library/Caches/periphery.pro), so no -derivedDataPath here.
+build_arguments:
+  - -destination
+  - generic/platform=iOS Simulator
