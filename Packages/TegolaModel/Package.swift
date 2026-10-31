@@ -18,8 +18,8 @@ let package = Package(
     .package(path: "../TegolaCatalogue")
   ],
   targets: [
-    // Domain values and rules. Pure: builds on Linux (PLAN §2.4). M1 holds the values every later milestone needs;
-    // objects, events and ShelfCommand arrive in M2.
+    // Domain values and rules: objects, events, ShelfCommand, and the pure plan and apply. Pure: builds on Linux
+    // (PLAN §2.4).
     .target(
       name: "TegolaModel",
       dependencies: [.product(name: "TegolaCatalogue", package: "TegolaCatalogue")],
@@ -27,7 +27,7 @@ let package = Package(
     ),
     .testTarget(
       name: "TegolaModelTests",
-      dependencies: ["TegolaModel"],
+      dependencies: ["TegolaModel", .product(name: "TegolaCatalogue", package: "TegolaCatalogue")],
       swiftSettings: swiftSettings
     ),
   ]
