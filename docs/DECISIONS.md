@@ -265,3 +265,16 @@ reused; a replaced decision stays, marked **superseded by D-n**.
 - **Add to** points at the last collection used if it takes the type, else the type's own collection, else a new one named by the type (PD-137). The last collection used is a `settings` row (D-44).
 - **Save, add another.** It keeps the type, subtype and collection and empties the form, for many objects in one sitting (the M3 exit test). Save closes the sheet.
 - **Thing's duplicates.** Thing asks how duplicates count (PD-151). By hand in M3, every Thing is one copy (rows); asking comes with the first-piece flow and the capture tray (M5, M6), where duplicates show up.
+
+### D-51 · Search without FTS5, for now
+
+**Decision.**
+- **Search is pure Swift.** It lives in `TegolaModel` (`search(_:in:catalogue:)`) and runs over the projection the screen already holds. Every word must appear somewhere on the object (case, accents and width ignored): the spine, a field, an entry of a list or log, the notes, the place, the subtype. Each hit says which labels matched. It's pure, so it's tested on Linux, and it needs no second copy of the data to keep in step. PLAN §3.2's `objects_fts` and `objectEntries` wait for M9's performance target (results under 150 ms on 2,000 objects): if pure search misses it, the FTS index arrives then, behind the same function.
+- **Saved views in M3.**
+  - Imperfect: any ladder part at Missing or at the bottom two steps of its scale.
+  - Duplicates: two owned, kept copies of one type, subtype and title.
+  - Signed.
+  - Might let go.
+  
+  "Digital" and "Also exists on" need works and digital games (M6's import), so they come with them.
+- **Filters.** Type, lent out, place, and the archive (let-go objects, so "did I ever own this?" has an answer). Condition and status chips wait for statuses (M4).

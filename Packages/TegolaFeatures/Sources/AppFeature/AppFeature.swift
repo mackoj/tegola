@@ -1,6 +1,7 @@
 public import AddByHandFeature
 public import CollectionFeature
 public import ComposableArchitecture
+public import FindFeature
 public import ObjectFeature
 public import ShelfFeature
 public import TegolaModel
@@ -24,6 +25,8 @@ public struct AppFeature {
     public var tabs: TabBarLayout = .default
     public var shelf = ShelfFeature.State()
     public var shelfPath = StackState<AppPath.State>()
+    public var find = FindFeature.State()
+    public var findPath = StackState<AppPath.State>()
     /// Scan presents instead of selecting a tab (PD-117): Add by hand in M3, the camera from M6.
     @Presents public var addByHand: AddByHandFeature.State?
 
@@ -32,6 +35,8 @@ public struct AppFeature {
 
   public enum Action: ViewAction {
     case addByHand(PresentationAction<AddByHandFeature.Action>)
+    case find(FindFeature.Action)
+    case findPath(StackActionOf<AppPath>)
     case shelf(ShelfFeature.Action)
     case shelfPath(StackActionOf<AppPath>)
     case view(View)
@@ -46,6 +51,7 @@ public struct AppFeature {
 
   public var body: some ReducerOf<Self> {
     Scope(state: \.shelf, action: \.shelf) { ShelfFeature() }
+    Scope(state: \.find, action: \.find) { FindFeature() }
     Reduce { state, action in
       switch action {
       case .shelf(.delegate(.open(let route))):
@@ -55,6 +61,16 @@ public struct AppFeature {
         state.addByHand = AddByHandFeature.State()
         return .none
       case .addByHand:
+        return .none
+      case .find(.delegate(.open(let route))):
+        Self.push(route, onto: &state.findPath)
+        return .none
+      case .find:
+        return .none
+      case .findPath(.element(_, .collection(.delegate(.open(let route))))):
+        Self.push(route, onto: &state.findPath)
+        return .none
+      case .findPath:
         return .none
       case .shelf:
         return .none
@@ -69,6 +85,8 @@ public struct AppFeature {
         } else if tab == state.selectedTab, tab == .shelf {
           // Tapping the tab you're on goes back to its root.
           state.shelfPath.removeAll()
+        } else if tab == state.selectedTab, tab == .find {
+          state.findPath.removeAll()
         } else {
           state.selectedTab = tab
         }
@@ -76,6 +94,7 @@ public struct AppFeature {
       }
     }
     .forEach(\.shelfPath, action: \.shelfPath)
+    .forEach(\.findPath, action: \.findPath)
     .ifLet(\.$addByHand, action: \.addByHand) { AddByHandFeature() }
   }
 

@@ -1,6 +1,7 @@
 #if canImport(SwiftUI)
   import AddByHandFeature
   import CollectionFeature
+  import FindFeature
   import ObjectFeature
   public import ComposableArchitecture
   import ShelfFeature
@@ -26,6 +27,7 @@
         Group {
           switch store.selectedTab {
           case .shelf: shelfStack
+          case .find: findStack
           default: placeholder(store.selectedTab)
           }
         }
@@ -51,6 +53,20 @@
           CollectionView(store: store)
         case .object(let store):
           ObjectView(store: store)
+        }
+      }
+    }
+
+    var findStack: some View {
+      NavigationStack(path: $store.scope(state: \.findPath, action: \.findPath)) {
+        FindView(store: store.scope(state: \.find, action: \.find))
+          #if os(iOS)
+            .toolbar(.hidden, for: .navigationBar)
+          #endif
+      } destination: { path in
+        switch path.case {
+        case .collection(let store): CollectionView(store: store)
+        case .object(let store): ObjectView(store: store)
         }
       }
     }
