@@ -135,7 +135,8 @@ struct Planner {
       let object = try object(id)
       try checkKeys(values.keys, on: object)
       let type = try effectiveType(object.typeID, object.subtype)
-      try checkValues(values, type: type)
+      // A lookup's answer is a guess: a value that doesn't fit its field is dropped, not the whole answer (D-53).
+      let values = values.filter { key, value in (try? checkValues([key: value], type: type)) != nil }
       // Promise 1: a lookup fills empty keys and keys it filled itself, never one the collector typed or cleared
       // (PD-045). It never writes `acquired` (promise 7), money, or a grade: those are the collector's.
       let changes = values.filter { key, value in
@@ -283,7 +284,7 @@ struct Planner {
       case (.condition, .text(let step)):
         fits = type.conditions.contains(step)
       case (.axis, .text(let step)):
-        fits = type.conditions.contains(step) || step == "Missing"
+        fits = type.ladderSteps.contains(step)
       case (.field(let name), _):
         guard let field = type.field(name)?.field else { throw .unknownField(key) }
         fits = Self.fits(value, field)
@@ -339,6 +340,8 @@ struct Planner {
   }
 
   mutating func add(_ draft: ObjectDraft, to choice: CollectionChoice, origin: AddOrigin) throws(ShelfRuleViolation) {
+    var draft = draft
+    draft.values = draft.values.compactMapValues(\.normalized)
     let type = try effectiveType(draft.type, draft.subtype)
     try checkKeys(draft.values.keys, type: type)
     try checkValues(draft.values, type: type)
@@ -419,6 +422,7 @@ struct Planner {
 
   mutating func edit(_ id: ObjectID, values: [FieldKey: FieldValue?]) throws(ShelfRuleViolation) {
     try requireCollector()
+    let values = values.mapValues { $0?.normalized }
     let object = try object(id)
     try checkKeys(values.keys, on: object)
     let type = try effectiveType(object.typeID, object.subtype)

@@ -111,8 +111,11 @@ run_ios_package() { # $1 package
   local pkg="$1" log="build/test-ios-$1.log" result="$ROOT/build/$1-ios-$(date +%s).xcresult"
   acquire_app_lock
   echo "▶ $pkg (iOS simulator)"
-  # A failing xcodebuild run sometimes never exits on this Mac (D-46): give up after ten minutes.
-  (cd "Packages/$pkg" && TEST_RUNNER_SNAPSHOTS="${SNAPSHOTS:-}" timeout 600 xcodebuild test -scheme "$pkg-Package" -destination "${DESTINATION:-$(default_destination)}" \
+  # A failing xcodebuild run sometimes never exits on this Mac (D-46): give up after ten minutes where `timeout`
+  # exists (GNU coreutils; not on a stock Mac or the macOS runner, where the run is simply unbounded).
+  local limit=""
+  command -v timeout >/dev/null && limit="timeout 600"
+  (cd "Packages/$pkg" && TEST_RUNNER_SNAPSHOTS="${SNAPSHOTS:-}" $limit xcodebuild test -scheme "$pkg-Package" -destination "${DESTINATION:-$(default_destination)}" \
     -testLanguage en -derivedDataPath "$ROOT/build/DerivedData-packages" -resultBundlePath "$result") >"$log" 2>&1
   local code=$?
   local line

@@ -58,6 +58,12 @@
         }
         Pill(Text("Lent out", bundle: .module), isActive: store.query.lentOut) { send(.lentOutTapped) }
         Pill(Text("Archive too", bundle: .module), isActive: store.query.includeArchive) { send(.archiveTapped) }
+        // Find searches by place once there are places to choose from (F10).
+        if store.snapshot.shelf.livePlaces.count >= 2 {
+          ForEach(store.snapshot.shelf.livePlaces.filter { $0.parentID == nil }.sorted { $0.name < $1.name }) { place in
+            Pill(Text(verbatim: place.name), isActive: store.query.place == place.id) { send(.placeTapped(place.id)) }
+          }
+        }
       }
     }
 

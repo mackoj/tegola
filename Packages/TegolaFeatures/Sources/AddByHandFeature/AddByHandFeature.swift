@@ -28,7 +28,11 @@ public struct AddByHandFeature {
     public init() {}
 
     public var canSave: Bool {
-      if case .text(let title) = draft[.title] { !title.trimmingCharacters(in: .whitespaces).isEmpty } else { false }
+      if case .text(let title) = draft[.title] {
+        !title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+      } else {
+        false
+      }
     }
 
     /// The reducer's own state; the snapshot is the database's (D-47).
@@ -136,11 +140,19 @@ public struct AddByHandFeature {
                 if case .added(let object, _) = event.kind { object.collectionID } else { nil }
               }).first
             else { return }
-            if let place { _ = try shelf.perform(.setPlace([id], place)) }
-            try settings.set(.lastCollection, added.rawValue.uuidString)
+            // The object is saved. A place or the remembered collection failing after that is reported, never a reason
+            // to save again (a second tap would add a duplicate).
+            do {
+              if let place { _ = try shelf.perform(.setPlace([id], place)) }
+              try settings.set(.lastCollection, added.rawValue.uuidString)
+            } catch {
+              reportIssue(error)
+            }
             await send(.saveSucceeded(id, added, addAnother: addAnother))
           } catch let violation as ShelfRuleViolation {
             await send(.saveRefused(violation))
+          } catch {
+            reportIssue(error)
           }
         }
       case .view(.subtypeTapped(let subtype)):
@@ -154,6 +166,8 @@ public struct AddByHandFeature {
         state.type = type
         state.subtype = nil
         state.draft = [:]
+        state.place = ""
+        state.revealed = []
         state.collection = state.defaultCollection(for: type, catalogue: catalogue)
         return .none
       case .view(.valueChanged(let key, let value)):

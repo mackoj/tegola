@@ -32,6 +32,7 @@ public struct SearchQuery: Hashable, Sendable {
   /// Nothing asked yet: Find shows its saved views instead of every object.
   public var isEmpty: Bool {
     text.trimmingCharacters(in: .whitespaces).isEmpty && types.isEmpty && !lentOut && place == nil && view == nil
+      && !includeArchive
   }
 }
 
@@ -137,11 +138,18 @@ extension ShelfObject {
     case .duplicates:
       return duplicates.contains(id)
     case .signed:
-      if case .entries(let signatures) = values[.field("signed")] { return !signatures.isEmpty }
-      return false
+      return isSigned
     case .mightLetGo:
       return mightLetGo && counts
     }
+  }
+}
+
+extension ShelfObject {
+  /// Signed by someone: an item-level signature with a name in it.
+  public var isSigned: Bool {
+    guard case .entries(let signatures) = values[.field("signed")] else { return false }
+    return signatures.contains { !($0["by"] ?? "").trimmingCharacters(in: .whitespaces).isEmpty }
   }
 }
 
@@ -173,9 +181,10 @@ extension Shelf {
     return found
   }
 
-  /// Owned, kept objects that share a type, subtype and title with another one.
+  /// Owned, kept objects that share a type, subtype and title with another one. A signed object is one of a kind,
+  /// never a duplicate (48, item.yml).
   func duplicateObjects() -> Set<ObjectID> {
-    let groups = Dictionary(grouping: objects.values.filter(\.counts)) { object in
+    let groups = Dictionary(grouping: objects.values.filter { $0.counts && !$0.isSigned }) { object in
       "\(object.typeID.rawValue)|\(object.subtype ?? "")|\(normalize(object.title))"
     }
     return Set(groups.values.filter { $0.count > 1 }.flatMap { $0.map(\.id) })

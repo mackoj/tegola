@@ -9,12 +9,18 @@
   public struct LadderSignature: View {
     public struct Rung: Hashable, Sendable {
       public let label: String
-      /// The part's step on the scale, from 0 (best); nil when ungraded.
+      /// The part's step on the scale, from 0 (best); nil when ungraded or missing.
       public let step: Int?
+      /// The grade as written, read by VoiceOver.
+      public let grade: String?
+      /// The part isn't there at all: drawn as a dashed, empty rung.
+      public let isMissing: Bool
 
-      public init(label: String, step: Int?) {
+      public init(label: String, step: Int?, grade: String? = nil, isMissing: Bool = false) {
         self.label = label
         self.step = step
+        self.grade = grade
+        self.isMissing = isMissing
       }
     }
 
@@ -36,23 +42,33 @@
             Text(verbatim: rung.label)
               .tegolaTextStyle(TegolaType.metaSmall)
               .foregroundStyle(TegolaRole.textMeta)
-              .frame(width: 84, alignment: .leading)
-              .lineLimit(1)
+              .frame(minWidth: 84, alignment: .leading)
+              .fixedSize(horizontal: false, vertical: true)
             HStack(spacing: 3) {
               ForEach(0..<steps, id: \.self) { index in
                 // Filled up to the grade, counted from the worst end: a better grade is a longer bar.
                 let filled = rung.step.map { index < steps - $0 } ?? false
                 RoundedRectangle(cornerRadius: 2)
                   .fill(theme[filled ? accent : .surfaceSunken].color)
-                  .overlay(RoundedRectangle(cornerRadius: 2).strokeBorder(theme[.edge].color, lineWidth: 1.5))
+                  .overlay {
+                    if rung.isMissing {
+                      RoundedRectangle(cornerRadius: 2).strokeBorder(
+                        theme[.edgeNotYours].color,
+                        style: StrokeStyle(lineWidth: 1.5, dash: [3, 3])
+                      )
+                    } else {
+                      RoundedRectangle(cornerRadius: 2).strokeBorder(theme[.edge].color, lineWidth: 1.5)
+                    }
+                  }
                   .frame(height: 12)
               }
             }
+            .accessibilityHidden(true)
           }
+          .accessibilityElement(children: .combine)
+          .accessibilityValue(Text(verbatim: rung.grade ?? "—"))
         }
       }
-      .frame(maxHeight: 64)
-      .accessibilityElement(children: .combine)
     }
   }
 

@@ -103,6 +103,7 @@
               .frame(minWidth: TegolaMetrics.minimumHitTarget, minHeight: TegolaMetrics.minimumHitTarget)
           }
           .buttonStyle(.plain)
+          .accessibilityIdentifier("modal.dismiss")
           Spacer()
           if let save, let saveLabel {
             Button(action: save) {
@@ -110,6 +111,7 @@
                 .frame(minWidth: TegolaMetrics.minimumHitTarget, minHeight: TegolaMetrics.minimumHitTarget)
             }
             .buttonStyle(.plain)
+            .accessibilityIdentifier("modal.save")
             .disabled(!canSave)
             .opacity(canSave ? 1 : 0.45)
           }

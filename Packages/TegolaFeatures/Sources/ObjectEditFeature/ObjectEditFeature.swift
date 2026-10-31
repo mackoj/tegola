@@ -55,7 +55,11 @@ public struct ObjectEditFeature {
     }
 
     public var canSave: Bool {
-      if case .text(let title) = draft[.title] { !title.trimmingCharacters(in: .whitespaces).isEmpty } else { false }
+      if case .text(let title) = draft[.title] {
+        !title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+      } else {
+        false
+      }
     }
   }
 
@@ -106,6 +110,8 @@ public struct ObjectEditFeature {
             await send(.saveSucceeded)
           } catch let violation as ShelfRuleViolation {
             await send(.saveRefused(violation))
+          } catch {
+            reportIssue(error)
           }
         }
       case .view(.valueChanged(let key, let value)):

@@ -41,12 +41,18 @@
           VStack(spacing: 0) {
             hero(manifest, photo: store.snapshot.shelf.shelf.photos(of: object.id).first)
             VStack(alignment: .leading, spacing: TegolaSpace.l) {
-              spine(object, manifest: manifest, slots: slots)
-              status(object)
-              signature(slots, type: type)
-              fields(slots)
-              actions(object)
-              history(type)
+              // The product's order, never the type's (PD-013): the hero is drawn above the panel.
+              ForEach(ObjectSlots.order.filter { $0 != .hero }, id: \.self) { slot in
+                switch slot {
+                case .hero: EmptyView()
+                case .spine: spine(object, manifest: manifest, slots: slots)
+                case .status: status(object)
+                case .signature: signature(slots, type: type)
+                case .fields: fields(slots)
+                case .actions: actions(object)
+                case .history: history(type)
+                }
+              }
             }
             .padding(.horizontal, TegolaSpace.gutter)
             .padding(.top, TegolaSpace.xl)
@@ -171,7 +177,12 @@
       if !slots.ladder.isEmpty {
         LadderSignature(
           rungs: slots.ladder.map { rung in
-            LadderSignature.Rung(label: rung.label, step: rung.grade.flatMap { type.conditions.firstIndex(of: $0) })
+            LadderSignature.Rung(
+              label: rung.label,
+              step: rung.grade.flatMap { type.conditions.firstIndex(of: $0) },
+              grade: rung.grade,
+              isMissing: rung.grade == "Missing"
+            )
           },
           steps: type.conditions.count
         )

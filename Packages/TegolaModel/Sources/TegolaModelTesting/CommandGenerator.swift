@@ -88,7 +88,7 @@ public struct CommandGenerator {
       let source: ShelfEvent.Source = origin == .captured ? .capture : origin == .imported ? .import : .collector
       return (.add(draft, to: collection.map { .existing($0.id) } ?? .new(name: "Mine"), origin: origin), source)
     }
-    switch Int.random(in: 0..<16, using: &random) {
+    switch Int.random(in: 0..<17, using: &random) {
     case 0: return (.confirm([object]), pick([.collector, .lookup]))
     case 1:
       let edits = values(shelf, allowAcquired: true).mapValues { Optional($0) }
@@ -103,6 +103,10 @@ public struct CommandGenerator {
     case 6: return (loans.isEmpty ? .giveBack(object) : .returnLoan(pick(loans), condition: nil), .collector)
     case 7: return (.markBorrowed(object, from: .new(name: "Léa")), .collector)
     case 13: return (.edit(object, values: [pick([FieldKey.year, .notes]): nil]), .collector)
+    case 15:
+      let places = shelf.livePlaces.map(\.id).sorted()
+      guard places.count >= 2 else { return (.logEvent(object, kind: "cleaned", note: ""), .collector) }
+      return (.mergePlaces(pick(places), into: pick(places)), .collector)
     case 14: return (.attachPhoto(object, fileName: pick(["a.jpg", "b.jpg"]), takenAt: Self.acquired[0]), .collector)
     case 8: return (.letGo(object, pick([.gifted, .lost, .sold(price: nil)])), .collector)
     case 9: return (.promote(object), .collector)

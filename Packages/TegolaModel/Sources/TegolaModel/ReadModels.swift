@@ -48,12 +48,11 @@ public struct ShelfSummary: Hashable, Sendable {
   public init(shelf: Shelf, money: MoneyVisibility, now: Date, statuses: [ObjectID: ObjectStatus] = [:]) {
     let objects = Array(shelf.objects.values)
     count = TegolaModel.count(objects)
-    value =
-      money == .on
-      ? Money.totals(
-        objects.filter(\.counts).compactMap { if case .money(let m) = $0.values[.value] { m } else { nil } }
-      )
-      : nil
+    let totals = Money.totals(
+      objects.filter(\.counts).compactMap { if case .money(let m) = $0.values[.value] { m } else { nil } }
+    )
+    // With money on but nothing valued yet, there's no figure to show: the count stands instead.
+    value = money == .on && !totals.isEmpty ? totals : nil
     today = TodayStrip(shelf: shelf, now: now, statuses: statuses)
     let lentOut = Set(shelf.loans.values.filter { $0.isOpen && $0.direction == .out }.map(\.objectID))
     collections = shelf.collections.values

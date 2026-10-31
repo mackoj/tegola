@@ -377,6 +377,30 @@ struct Harness {
     }
   }
 
+  /// Review of M3, finding 2: Missing is a ladder step only where the type allows it.
+  @Test func missingIsAStepOnlyWhereTheTypeAllowsIt() throws {
+    var harness = Harness()
+    _ = try harness.add(values: [.axis("boxCondition"): .text("Missing")])
+    let board = try Harness.catalogue.resolve("board-games", subtype: nil)
+    #expect(!board.allowMissing)
+    #expect(board.ladderSteps == board.conditions)
+  }
+
+  /// Review of M3, findings 5 and 14: an empty entry records nothing, and a lookup drops a value that doesn't fit.
+  @Test func emptyEntriesAreNoValueAndALookupDropsWhatDoesntFit() throws {
+    var harness = Harness()
+    let id = try harness.add(values: [.field("signed"): .entries([[:], ["by": "  "]])])
+    #expect(harness.shelf.objects[id]?.values[.field("signed")] == nil)
+    try harness.perform(.edit(id, values: [.field("signed"): .entries([[:]])]))
+    #expect(harness.shelf.objects[id]?.values[.field("signed")] == nil)
+    let events = try harness.perform(
+      .applyLookup(id, values: [.field("region"): .text("Mars"), .field("publisher"): .text("Treasure")]),
+      as: .lookup
+    )
+    #expect(events.count == 1)
+    #expect(harness.shelf.objects[id]?.values[.field("publisher")] == .text("Treasure"))
+  }
+
   /// D-34: a subtype's preset fills its field on add, and nobody sets a hidden field by hand.
   @Test func presetsFillOnAddAndHiddenFieldsStayHidden() throws {
     var harness = Harness()

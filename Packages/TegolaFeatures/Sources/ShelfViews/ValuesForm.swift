@@ -95,7 +95,7 @@
       } else {
         ForEach(axes, id: \.self) { axis in
           labelled(Text(verbatim: type.field(axis)?.field.label ?? axis), key: .axis(axis)) {
-            scaleChips(.axis(axis), steps: steps)
+            scaleChips(.axis(axis), steps: type.ladderSteps)
           }
         }
       }

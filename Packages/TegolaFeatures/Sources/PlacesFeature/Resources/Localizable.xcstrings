@@ -17,12 +17,12 @@
         }
       }
     },
-    "Merge into %@" : {
+    "Keep %@" : {
       "localizations" : {
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Fusionner dans %@"
+            "value" : "Garder %@"
           }
         }
       }

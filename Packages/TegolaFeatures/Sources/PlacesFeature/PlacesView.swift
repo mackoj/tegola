@@ -28,21 +28,30 @@
               Text("Same place?", bundle: .module).tegolaTextStyle(TegolaType.meta).foregroundStyle(TegolaRole.textMeta)
               Text("“\(typo.name)” looks like “\(kept.name)”.", bundle: .module)
                 .tegolaTextStyle(TegolaType.heading).foregroundStyle(TegolaRole.onAccentHighlight)
-              Button {
-                send(.mergeTapped(typo.id, into: kept.id))
-              } label: {
-                Text("Merge into \(kept.name)", bundle: .module)
+              // The collector says which name stays (PD-151): both are offered.
+              ButtonPair {
+                Button {
+                  send(.mergeTapped(typo.id, into: kept.id))
+                } label: {
+                  Text("Keep \(kept.name)", bundle: .module)
+                }
+                .buttonStyle(.tegola(.primary))
+                .accessibilityIdentifier("places.merge")
+              } trailing: {
+                Button {
+                  send(.mergeTapped(kept.id, into: typo.id))
+                } label: {
+                  Text("Keep \(typo.name)", bundle: .module)
+                }
+                .buttonStyle(.tegola(.secondary))
               }
-              .buttonStyle(.tegola(.primary))
-              .accessibilityIdentifier("places.merge")
             }
             .padding(TegolaSpace.l)
             .printed(fill: .accentHighlight, radius: TegolaRadius.card)
           }
           ForEach(shelf.livePlaces.filter { $0.parentID == nil }.sorted { $0.name < $1.name }) { place in
-            let count = shelf.objects.values.filter { object in
-              object.letGo == nil && (object.placeID.map(shelf.placeAndInside(place.id).contains) ?? false)
-            }.count
+            let inside = shelf.placeAndInside(place.id)
+            let count = TegolaModel.count(shelf.objects.values.filter { $0.placeID.map(inside.contains) ?? false })
             Button {
               send(.placeTapped(place.id))
             } label: {

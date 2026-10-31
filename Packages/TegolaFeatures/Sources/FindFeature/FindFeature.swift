@@ -35,6 +35,7 @@ public struct FindFeature {
       case archiveTapped
       case clearTapped
       case lentOutTapped
+      case placeTapped(PlaceID?)
       case resultTapped(ObjectID)
       case textChanged(String)
       case typeTapped(TypeManifest.ID)
@@ -57,6 +58,9 @@ public struct FindFeature {
         return .none
       case .view(.lentOutTapped):
         state.query.lentOut.toggle()
+        return .none
+      case .view(.placeTapped(let place)):
+        state.query.place = state.query.place == place ? nil : place
         return .none
       case .view(.resultTapped(let id)):
         return .send(.delegate(.open(.object(id))))

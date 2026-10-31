@@ -217,7 +217,7 @@ reused; a replaced decision stays, marked **superseded by D-n**.
 
 ### D-44 · Settings before the settings screen
 
-**Decision.** `settings` arrives in M3 as its own migration, holding only what the collector changed (PD-161). Each known setting has a fixed row id, because `SyncEngine` allows no unique constraint on `key`. PLAN §5 reads settings through a custom `SharedKey`. Nothing writes a setting until the You screen (M8), so M3's screens read the row through a query, `ShelfStore.money()`, and the `SharedKey` arrives with M8.
+**Decision.** `settings` arrives in M3 as its own migration, holding only what the collector changed (PD-161). Each known setting has a fixed row id, because `SyncEngine` allows no unique constraint on `key`. PLAN §5 reads settings through a custom `SharedKey`. Screens read settings with the shelf's own query (`ShelfSnapshot`), and write them through `SettingsClient`: M3 writes one, the last collection used (D-50). The money switch is written only by the You screen (M8), which brings the `SharedKey` with it.
 
 ### D-45 · Type tints the palette doesn't name
 
@@ -286,3 +286,16 @@ reused; a replaced decision stays, marked **superseded by D-n**.
 - **Near duplicates.** The app offers a merge for each pair of live places under the same parent whose names are near duplicates (`PlacePath.isNearDuplicate`, M1), and never merges alone (PD-151).
 - **When Places shows.** The Places line shows on the Shelf home once two live places exist (F10). A place's screen lists its objects and the places inside it, whatever their type.
 - **One target.** `PlacesFeature` holds both the list and one place's screen, which PLAN §5 names separately. They share every dependency and view, so one target saves a package of boilerplate.
+
+### D-53 · What the review of M3 changed
+
+**Decision.**
+- **Missing.** It's a ladder step only where the type says `allowMissing`. The form offers it there, `plan` refuses it elsewhere, and the ladder draws it as a dashed, empty rung.
+- **Duplicates.** A signed copy is one of a kind, never a duplicate (48, `item.yml`).
+- **Empty list entries.** A list or log keeps only entries with something in them. An empty one is no value, so "+ Add entry" then Save records nothing and doesn't make an object Signed.
+- **A lookup's bad value.** A value that doesn't fit its field is dropped from the lookup, not a reason to refuse the whole answer.
+- **Place merges.** A merge offers both directions; the collector says which name stays (PD-151).
+- **Partial saves.** Once Add by hand has saved the object, a place or the remembered collection failing afterwards is reported rather than reopening the save, so a second tap can't add a duplicate. Every error is caught.
+- **Money on, nothing valued.** The Shelf home shows the count rather than an empty figure.
+- **Search for the owner.** Pure Swift search instead of T3.10's `objects_fts` (D-51) changes that task's acceptance. That's the owner's call, and M9's performance target is where it's measured.
+

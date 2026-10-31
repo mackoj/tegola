@@ -66,6 +66,11 @@ import Testing
     #expect(search(SearchQuery(place: office.id), in: harness.shelf, catalogue: catalogue).map(\.object) == [silvergun])
   }
 
+  /// Review of M3, finding 8: the archive chip alone is a query.
+  @Test func theArchiveChipAloneIsAQuery() {
+    #expect(!SearchQuery(includeArchive: true).isEmpty)
+  }
+
   @Test func theArchiveAnswersDidIEverOwnThis() throws {
     var (harness, _, silvergun) = try shelf()
     try harness.perform(.letGo(silvergun, .sold(price: nil)))

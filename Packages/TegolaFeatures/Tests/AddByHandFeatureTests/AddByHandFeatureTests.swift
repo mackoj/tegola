@@ -4,6 +4,7 @@ import FeatureTestSupport
 import Foundation
 import SQLiteData
 import TegolaCatalogue
+import TegolaClients
 import TegolaModel
 import TegolaStorage
 import Testing
@@ -79,6 +80,22 @@ struct AddByHandFeatureTests {
     await next.send(.view(.typeTapped("thing"))) {
       $0.type = "thing"
       $0.collection = .existing(things.id)
+    }
+  }
+
+  /// Review of M3, finding 11: last-used wins over the type's own collection, here a mixed one.
+  @Test func aMixedCollectionUsedLastWinsOverTheTypesOwn() async throws {
+    @Dependency(\.shelf) var shelf
+    @Dependency(\.settings) var settings
+    let mixed = try #require(
+      try shelf.perform(.createCollection(name: "Everything", type: nil)).createdCollections.first
+    )
+    try settings.set(.lastCollection, mixed.rawValue.uuidString)
+    let store = TestStore(initialState: AddByHandFeature.State()) { AddByHandFeature() }
+    try await store.state.$snapshot.load()
+    await store.send(.view(.typeTapped("thing"))) {
+      $0.type = "thing"
+      $0.collection = .existing(mixed)
     }
   }
 

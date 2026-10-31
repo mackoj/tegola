@@ -23,6 +23,13 @@ import Testing
     _ = kept
   }
 
+  /// Review of M3, finding 4: money on with nothing valued shows the count, not an empty figure.
+  @Test func moneyOnWithNoValuesHasNoFigure() throws {
+    var harness = Harness()
+    _ = try harness.add()
+    #expect(ShelfSummary(shelf: harness.shelf, money: .on, now: Harness.start).value == nil)
+  }
+
   @Test func theTodayStripShowsOnlyItsNonEmptyLines() throws {
     var harness = Harness()
     #expect(TodayStrip(shelf: harness.shelf, now: Harness.start, statuses: [:]).lines.isEmpty)

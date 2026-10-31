@@ -28,7 +28,7 @@ public struct CollectionFeature {
     /// The rows, sorted and filtered. A let-go object leaves the collection's list for the archive (F16).
     public var objects: [ShelfObject] {
       let shelf = snapshot.shelf
-      let places = place.map { shelf.descendants(of: $0) }
+      let places = place.map { shelf.placeAndInside($0) }
       let members = shelf.objects.values.filter { object in
         object.collectionID == id && object.letGo == nil
           && (places.map { object.placeID.map($0.contains) ?? false } ?? true)
@@ -38,7 +38,9 @@ public struct CollectionFeature {
 
     /// The places objects here sit in: the filter's choices, once there are two.
     public var placeChoices: [Place] {
-      let used = Set(snapshot.shelf.objects.values.filter { $0.collectionID == id }.compactMap(\.placeID))
+      let used = Set(
+        snapshot.shelf.objects.values.filter { $0.collectionID == id && $0.letGo == nil }.compactMap(\.placeID)
+      )
       let places = used.compactMap { snapshot.shelf.places[$0] }.sorted { $0.name < $1.name }
       return places.count >= 2 ? places : []
     }
@@ -123,20 +125,5 @@ public struct CollectionFeature {
         return .none
       }
     }
-  }
-}
-
-extension Shelf {
-  /// A place and every place inside it, for a filter that includes what's in the shelves of a room.
-  public func descendants(of id: PlaceID) -> Set<PlaceID> {
-    var found: Set<PlaceID> = [id]
-    var frontier = [id]
-    while let next = frontier.popLast() {
-      for place in places.values where place.parentID == next && !found.contains(place.id) {
-        found.insert(place.id)
-        frontier.append(place.id)
-      }
-    }
-    return found
   }
 }
