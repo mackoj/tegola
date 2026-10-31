@@ -1,8 +1,7 @@
 # Tegola: plan and specification (Milestone 1, for review)
 
-**Status:** draft, waiting for your review. No code yet. Nothing in Phase 2 (scaffolding) starts until you approve
-this document. §10 lists the questions where your answer would change what I build; each has a default that I'll use
-if you don't answer.
+**Status:** revised on 2026-10-31 with your answers (§10). No code yet. Phase 2 (scaffolding) starts when you
+approve this revision.
 
 **What Tegola is.** A from-scratch rebuild of the collection app that `mackoj/clctn` and `mackoj/the-collection` both
 attempted: a private catalogue for iPhone, for people who own things on purpose. It answers four questions about every
@@ -59,7 +58,7 @@ exact repo skeleton and dev-ops ecosystem of telaio").
 | 12 | Navigation "as in telaio" | Same navigation patterns | telaio has no `StackState` and no `NavigationStack`: a document window never drills down, so every presentation is a `@Presents` optional (or an `IdentifiedArray` for step windows), and children ask the root through `.delegate`. An iPhone tab app needs drill-down. | Keep telaio's rules (`@Presents` for every sheet, children ask the root by delegate, only the root changes navigation) and add one `StackState<Path.State>` per tab, owned by the root (§5). |
 | 13 | telaio contradicts itself | — | Its `CLAUDE.md` and PLAN say squash merges and a review agent per PR, while its HANDOFF and agent brief say merge commits and no review agents. `ci.sh` lints less than the briefs say. PLAN names a non-existent `TelaioDesignSystemSystem`. | I copy the files as they are actually used: merge commits, the lint scope written once in `ci.sh` and covering every Swift directory, and real package names. The review step is in §9. |
 | 14 | What the legacy code teaches | — | The clctn survey found these, among others: every `TestStore` non-exhaustive (68 of 68); Edit, Lend and Let go routed only from the Shelf tab; import undo hard-deleting objects the collector had since edited; imported rows stamped *acquired* (against PD-165); the seed shelf compiled into Release; the design system used by one screen, with no fonts bundled; three different dashed edges; status swatches as system colours. the-collection is a static prototype with no persistence. | Each one becomes a rule or a test here: exhaustive `TestStore`s by default (§2.6); one `Path` with routing tested from every tab (§5); batch undo that keeps what was touched (D-12); no `acquired` written by the app (§3.4 promise 7); `Seed` behind `#if DEBUG` (§2.4); every screen built from `TegolaDesignSystem` and checked against its board (§2.7); one `notYours()` modifier (§4.0). |
-| 15 | October pages vs the PD log | — | Pages 46–53 (October 2026) are newer than the PD log (confirmed 2026-09-23), and most are marked **PROPOSAL**. Some refine the product without contradicting it: subtypes (48), item-level Signed and Bundle of (48), a work layer above the object (47), the event log as truth, money in cents (52), the first-piece flow (46), and the import pipeline's shape (49). **Three conflict with confirmed decisions:** a backend for matching and cover art (49, 52 P4) vs no backend in v1 (PD-160); accounts, sync and a €50/year subscription as v1's last phase (52 P5, 50) vs no account (ADR-0001) and a deferred payment shape (PD-112, PD-113); and a Stripe marketplace (53, v2) vs "no checkout, escrow or take rate, ever" (PD-084). | Adopt the refinements (§3, F1, F2, F9, D-16 to D-22). Follow page 52's phase order and exit tests for the milestones (§1). For the three conflicts, keep the PD log in v1 until you say otherwise (Q9). The marketplace is v2 either way, so it changes nothing now. |
+| 15 | October pages vs the PD log | — | Pages 46–53 (October 2026) are newer than the PD log (confirmed 2026-09-23), and most are marked **PROPOSAL**. Some refine the product without contradicting it: subtypes (48), item-level Signed and Bundle of (48), a work layer above the object (47), the event log as truth, money in cents (52), the first-piece flow (46), and the import pipeline's shape (49). **Three conflict with confirmed decisions:** a backend for matching and cover art (49, 52 P4) vs no backend in v1 (PD-160); accounts, sync and a €50/year subscription as v1's last phase (52 P5, 50) vs no account (ADR-0001) and a deferred payment shape (PD-112, PD-113); and a Stripe marketplace (53, v2) vs "no checkout, escrow or take rate, ever" (PD-084). | Adopt the refinements (§3, F1, F2, F9, D-16 to D-22). Follow page 52's phase order and exit tests for the milestones (§1). Answered (Q3, Q9): v1 has **one** backend, `mackoj/tegola-server`, for lookups and import matching, through `api/tegola-lookup.openapi.yaml`, secured with App Attest. There are no accounts, no sync service, no subscription and no cover-art CDN in v1. The marketplace is v2 either way. |
 
 ---
 
@@ -75,11 +74,11 @@ These module ids are stable. Branch names, PR titles and the task list all use t
 | `storage` | SQLite schema and migrations, `ShelfClient` (one write path), queries, the full-text index, photo storage, the launch migration screen's runner | model |
 | `design-system` | Tokens, the three fonts, every shared component, the "not yours" rule, a snapshot catalog | foundation |
 | `shelf` | Shelf home, Collection, Object (seven slots), Edit form, Places, History, Archive | storage, design-system |
-| `adding` | First piece (onboarding), Add by hand, Capture (photo and barcode), lookup, look-alike choice, the review queue, enrichment, the offline lookup queue | shelf |
+| `adding` | First piece (onboarding), Add by hand, Capture (photo and barcode), lookup through the generated tegola-server client, look-alike choice, the review queue, enrichment, the offline lookup queue | shelf |
 | `interchange` | CSV and Discogs import (mapping, batch undo); CSV and JSON export; the inventory document (PDF) | storage, design-system |
 | `find` | Search over every field and entry, filter chips, "what matched", Stats | storage, shelf |
 | `people` | Persons, lending, returns, borrowed objects, Activity, share cards (sent from the collector's side only) | shelf |
-| `keeping` | Wishlist, grail, Might let go, Let go and the archive, quantity and promote, wine (open a bottle, Drunk, the drinking-window clock) | shelf |
+| `keeping` | Wishlist, grail, Might let go, Let go and the archive, saved views | shelf |
 | `you` | Settings, the money switch, the tab editor, language, nudges and notifications, shape-only analytics, the hidden debug screen | all features |
 | `polish` | French, VoiceOver, Dynamic Type, the journeys as UI tests, performance on a 2,000-object shelf, empty states | all |
 
@@ -92,13 +91,14 @@ its exit tests as the milestone's gate. The v1-roadmap features that page doesn'
 | M2 | catalogue, model, storage | P0 Foundations | Loading `video-game.yml` and `video-media.yml` gives the right field list for all 13 subtypes, with tests |
 | M3 | design-system components, shelf, adding by hand, find | P1 Core loop | Someone adds 30 objects across Video games and Thing in one sitting without asking how |
 | M4 | clocks, signatures, the signal feed (Today) | P2 Signals | A 200-object test shelf gives a signal list a collector agrees with on 8 of 10 |
-| M5 | the five launch types, first piece | P3 Launch types + onboarding | 5 of 6 testers finish onboarding with one complete object and can say what the app will tell them |
+| M5 | the four launch types, first piece | P3 Launch types + onboarding | 5 of 6 testers finish onboarding with one complete object and can say what the app will tell them |
 | M6 | capture, lookup, review queue, interchange | P4 Lookup and import | `Jeux collection.csv` (485 games) imports in under 3 minutes, with under 5% of rows needing a fix |
 | M7 | people, places, Activity | none (roadmap v1) | The lend-at-the-door journey passes |
 | M8 | keeping, you (export, inventory, money, nudges) | none (roadmap v1); P5's export | Export → import gives the same shelf |
 | M9 | polish | none | All six journeys pass; performance targets met |
 
-P5 (accounts, sync, pricing) waits for Q9.
+P5 (accounts, sync, pricing) is not in v1 (Q9). iCloud sync through SQLiteData comes after v1 (Q4); the schema is
+ready for it from M2.
 
 `catalogue`, `model` and `interchange`'s parsers have no UI and build on Linux, so they can run ahead of the UI
 milestones in their own worktree. Each module still merges in milestone order.
@@ -145,6 +145,11 @@ Packages beyond TCA, one line each:
 | pointfreeco swift-sharing, swift-identified-collections, swift-case-paths, swift-custom-dump, swift-issue-reporting, swift-clocks | They come with TCA. They are listed so targets can import them directly. |
 | pointfreeco swift-snapshot-testing | Board fidelity and the design-system catalog. Test targets only. |
 | apple swift-async-algorithms | Debouncing the search field and the lookup queue |
+| apple swift-openapi-generator, swift-openapi-runtime, swift-openapi-urlsession | The lookup client and its types are generated from `api/tegola-lookup.openapi.yaml`, the contract `mackoj/tegola-server` implements (Q3). One file decides both sides, so they can't drift. |
+
+**On-device model.** Apple's Foundation Models framework (iOS 26), through an `ExtractionClient`, for the import's
+shape and cell extraction and for inferring the first piece's type (§4, F2 and F9). It runs on the phone: nothing it
+reads leaves it.
 
 **Fonts.** Bricolage Grotesque (variable), Archivo (variable) and DM Mono (Regular and Medium), all SIL OFL. The
 files are already in `the-collection/Packages/Sources/CollectorKit/Resources/Fonts`, with their licences. They go into
@@ -177,7 +182,8 @@ scripts/test.sh app | app-unit | ui            # the app
 scripts/ci.sh                                  # → build/ci-summary.md
 
 # The pure core on Linux (this container, and the automatic CI job)
-scripts/test-linux.sh                          # TegolaCatalogue, TegolaModel, TegolaInterchange
+scripts/test-linux.sh                          # TegolaCatalogue, TegolaModel, TegolaInterchange, TegolaLookupAPI
+scripts/lint-api.sh                            # Redocly lint of api/tegola-lookup.openapi.yaml (also in CI)
 
 # Lint and format
 xcrun swift-format lint --strict --recursive Packages Tegola
@@ -203,13 +209,15 @@ Packages/
   TegolaCatalogue/             TypeManifest, FieldKind, ConditionScale, Subtype, the resolver, the clock library, the manifests as resources
   TegolaModel/                 domain values, ShelfCommand, rules (lifecycle, loans, status, clocks, money, places)
   TegolaStorage/               schema, migrations, ShelfClient (+Live), queries, full-text index, PhotoStore
-  TegolaInterchange/           CSV reader, Discogs mapping, column guesser, exporters (CSV, JSON), inventory model
+  TegolaInterchange/           the Importer API and its v1 importers, CSV reader, exporters (CSV, JSON), inventory model
+  TegolaLookupAPI/             the client and types generated from api/tegola-lookup.openapi.yaml (build plugin)
   TegolaDesignSystem/          tokens, fonts, components, the DesignSystemCatalog snapshot suite
   TegolaFeatures/              one target per reducer (§5) plus TegolaClients
   TegolaTestSupport/           fixtures (CSV files, a Discogs export, lookup payloads), Golden, StringCatalogCoverage,
                                helpers; linked by test targets only
 scripts/                       test.sh, ci.sh, test-linux.sh, secret-scan.sh, periphery.sh, sync-strings.sh,
                                xcresult-summary.py, xcstrings-*.py, ui-screenshots.sh
+api/tegola-lookup.openapi.yaml the lookup contract with tegola-server (OpenAPI 3.1)
 docs/PLAN.md                   this file
 docs/DECISIONS.md              how Tegola reads the spec where it is unclear (D-1 …)
 docs/design/BOARDS.md          the prototype's screens as images with text descriptions; boards/*.png
@@ -243,7 +251,8 @@ TegolaCatalogue ──► TegolaModel ──► TegolaStorage            │
 TegolaTestSupport ──► TegolaCatalogue, TegolaModel, TegolaStorage, TegolaInterchange (test targets only)
 ```
 
-- **Linux-buildable:** `TegolaCatalogue`, `TegolaModel` and `TegolaInterchange`. They import Foundation, Yams and
+- **Linux-buildable:** `TegolaCatalogue`, `TegolaModel`, `TegolaInterchange` and `TegolaLookupAPI` (generated code
+  plus `swift-openapi-runtime`; the URLSession transport is attached in `TegolaClients`). They import Foundation, Yams and
   StructuredQueriesCore only, never SwiftUI, UIKit, `os` or SQLite. A guard test enforces it.
 - **Where clients live:** as in telaio, a `TegolaClients` target inside `TegolaFeatures` holds every client's interface
   with its test and preview values. Live values that touch the system are in files named `*+Live.swift`.
@@ -414,7 +423,7 @@ Each feature's "Done when" has a named test. The milestone report lists each tes
 | F12 | `StatsTests.groupedByTypeNeverAveragedAcrossTypes` |
 | F13 | `LendingIntegrationTests.lendAtTheDoorInThreeTapsThenOneSidedReturnIsInHistory`, `TegolaUITests.testLendAtTheDoor` |
 | F14 | `ShareCardTests.paidIsNeverOnACard` (both kinds, money on and off) |
-| F15 | `WineTests.openingTheLastBottleMovesItToDrunkAndKeepsIt`, `QuantityTests.promotedCopyIsItsOwnObjectAndLendable` |
+| F15 | `SaveBatteryClockTests.dueCartridgeShowsWatchWithItsReasonAndEstimate`, `.loggingASwapClearsIt` |
 | F16 | `LetGoTests.archivedObjectsStillAnswerDidIEverOwnThis`, `WishlistTests.flippingOwnedKeepsHistory` |
 | F17 | `ExportTests.exportThenImportGivesTheSameShelf`, `InventoryDocumentTests.saysItIsNotAnAppraisalAndHasNoValuesWithMoneyOff`, `MoneyPropertyTests.moneyOffShowsNoValueOnAnyScreen` |
 
@@ -490,17 +499,19 @@ importBatch(ImportPlan) · undoBatch(BatchID)                                   
 
 ### 3.2 Schema (first migration)
 
-Every synced table uses a TEXT primary key holding a **ULID** and `deletedAt` soft deletes from the first migration, so
-CloudKit or another sync can be turned on later without retrofitting keys (ADR-0006). ULIDs sort by creation time,
-which the event log needs, and come from a `ulid` dependency so tests are deterministic (page 52). No unique constraints
+Every table follows SQLiteData's `SyncEngine` rules from the first migration, so iCloud sync through
+`pointfreeco/sqlite-data` can be switched on later without a migration (Q4, ADR-0006): a `TEXT` UUID primary key
+declared `NOT NULL ON CONFLICT REPLACE DEFAULT (uuid())`, `uuid()` backed by the `uuid` dependency so tests are
+deterministic, and `deletedAt` soft deletes. Page 52 suggests ULIDs; UUIDs are what `SyncEngine` is proven with
+(clctn), so events are ordered by `at` and then `seq`, a per-device counter, instead of by id (D-24). No unique constraints
 beyond the key: two devices can create the same place offline, so the app detects duplicates and offers a merge.
 **Money** is always integer minor units plus an ISO currency (`paid`, `value`, `priceCap`, `letGo.price`), never a
 float and never without its currency (page 52).
 
 | Table | Columns (abridged) |
 |---|---|
-| `events` | id (ULID), objectID?, batchID?, kind, payload JSON, at, source (`collector`/`capture`/`lookup`/`import`/`app`). **Append-only; the source of truth.** |
-| `works` | id, title, typeID, externalIDs JSON (Wikidata, IGDB, MusicBrainz, Open Library): one work, many objects (Doom on six platforms, a film on three formats) |
+| `events` | id, seq, objectID?, batchID?, kind, payload JSON, at, source (`collector`/`capture`/`lookup`/`import`/`app`). **Append-only; the source of truth.** |
+| `works` | id, title, typeID, externalIDs JSON (Wikidata, IGDB, MusicBrainz, BoardGameGeek, Discogs): one work, many objects (Doom on six platforms, a film on three formats) |
 | `collections` | id, name, typeID? (nil = mixed), purpose? (story 196), sortKey, createdAt |
 | `objects` | id, collectionID, typeID, **subtype?**, **workID?**, **contains** JSON (work ids; two or more makes a bundle), **signed** JSON? (by, dedication, date, proof photo), **spine:** title, subtitle?, year?, acquiredAt?, paid?, value?; condition?, axes JSON, placeID?, notes; quantity (1 for rows), ownership (`owned`/`wanted`/`borrowed`), identity (`confirmed`/`unconfirmed`/`needsDetails`), grail, mightLetGo, priority?, priceCap?, letGo JSON?, parentID? (parts, v1.x), `fields` JSON (type and own fields), `auto` JSON (keys filled by a lookup, PD-042), createdAt, updatedAt |
 | `objectEntries` | id, objectID, fieldKey, position, values JSON, searchText (list and log fields flattened, so one track is findable, ADR-0007) |
@@ -548,8 +559,8 @@ options, unit, auto, required}`, `clocks` (names from the app's library), `verb`
   `serviceRisk` and so on, each a named, parameterised function over an object's events and fields. A type names the
   ones it uses and can't define its own. Every signal shows its reason and can be dismissed, and dismissals are logged
   (risk R2).
-- **v1 enables Music, Books, Video games, Wine and Thing** (PD-164; Q10 asks whether a fifth real type joins). The
-  rest ship as test fixtures, and enabling one is the release-train step (PD-111). Video Media is the candidate for the
+- **v1 enables Music, Video games, Board games and Thing** (your answer to Q10, which supersedes PD-164's Books and
+  Wine; D-23). A piece of any other kind lands as a Thing with the tester offer (F2). The rest ship as test fixtures, and enabling one is the release-train step (PD-111). Video Media is the candidate for the
   community's sixth type (51 Q3). No screen changes for a new type.
 - Field kinds a type can use: `text`, `number`, `choice`, `yesNo`, `date`, `year`, `yearRange`, `event`, `list`,
   `log`, `photo`, `scale`. Kinds a collector can use for own fields: text, number, choice, yes/no, date, event, photo
@@ -593,6 +604,15 @@ final"), 00_Design System and 42_One Roof. The exact values are in `BOARDS.md` �
   dashed styles. A dashed slot that *invites* ("+ Add a detail") uses the same dash, and the design system names both
   uses.
 - **Status:** one chip from five swatches (fine · good · watch · act · gone), defined once as tokens.
+- **Themes** (Q5). Views never name a palette colour. They use **roles** (`surface`, `surfaceRaised`, `ink`,
+  `inkMuted`, `edge`, `shadow`, `accent`, `status.watch`, …), and a `TegolaTheme` value in the SwiftUI environment
+  maps each role to a colour, along with the shadow colour, edge widths and halftone. v1 ships one theme, **Board**,
+  which is exactly the boards. A dark theme or an event theme (a festival, a launch) is a new `TegolaTheme` value with no
+  view changes. The guard test fails on a palette colour used outside a theme. The contrast test runs for every theme,
+  and the catalog snapshots render every component in every theme.
+- **Shelf layouts** (Q12). How a collection draws its objects is a `ShelfLayout` (`tiles`, `rows`) chosen per
+  collection, so a new layout later is one more case and one more component. v1 uses tiles on the Shelf home and rows
+  inside a collection.
 - **Chrome:** inside a modal, the way out is **Close** or **Cancel**, never Back. Bottom sheets have a 24 pt top
   radius, a 46×5 grabber and a 0.28–0.32 ink backdrop. The tab bar's middle slot is a raised 40 pt scan button that
   presents. Every hit target is 44×44 or larger.
@@ -608,15 +628,21 @@ final"), 00_Design System and 42_One Roof. The exact values are in `BOARDS.md` �
 
 ### 4.1 v1 features
 
-**F1 · Types (catalogue).** Stories 48–51, 55–61, 69–73, 82, 87. Five enabled types; condition with up to three axes on
-one scale and "Missing" (Music's packaging follows the medium, ADR-0002); the spine relabelled per type; signatures
-from the kit. *v1 signatures:* the **ladder** (condition axes) for every graded type, the **case** (bottles left) for
-Wine, the **gauge** (drinking window) for Wine. *Done when* all 17 manifests decode and validate, and the five v1
-types are the ones enabled.
+**F1 · Types (catalogue).** Stories 48–51, 55–60, 82, 87.
+
+- **Four enabled types:** Music (format subtypes: vinyl, CD, cassette, other), Video games (platform subtypes), Board
+  games and Thing.
+- **Condition** has up to three ladder parts on one scale, plus "Missing" (Music's packaging follows the format,
+  ADR-0002).
+- **The spine** is relabelled per type.
+- **Signatures** come from the kit. In v1 that's the **ladder** for every graded type and the **set** for the
+  video-game inserts.
+
+*Done when* every type file decodes and validates, and the four v1 types are the ones enabled.
 
 **F2 · First piece and the empty shelf.** Stories 1–6, 9; PD-166, PD-137, PD-102, PD-165; page 46. Four screens:
 
-1. **One question.** *Welcome to CLCTN · Show us something you love. Just one thing, the one with a story. Hold it
+1. **One question.** *Welcome to Tegola · Show us something you love. Just one thing, the one with a story. Hold it
    up.* The camera is already live, with **Type it**, **Library** and **Just look around first**. There are no
    categories and no account.
 2. **Recognise, then ask why.** The photo, the inferred type and name as a guess with **That's it** / **Not quite**.
@@ -650,7 +676,7 @@ Photo, Lend/Return, Let go, Might let go, plus the type verb. 3D is shelved (PD-
 type's flat hero when there's none. *Done when* every v1 type shows the seven slots in order.
 
 **F5 · Edit form.** Stories 15, 25, 46, 55, 89; PD-050. A separate form with Save and Cancel, bound to the object's
-`Draft`. Each field kind gets its control: steppers, chips, the hobby's real scale, year with "NV" for wine. Values a
+`Draft`. Each field kind gets its control: steppers, chips, the hobby's real scale, a year picker. Values a
 lookup filled are badged **AUTO** until touched. A **Place** field takes a path, which fixes journey 1's fault 2.
 **Add a detail** adds an own field (PD-130 kinds). Saving appends one `edited` event with the changed keys. *Done
 when* Cancel writes nothing, and Save writes one history event that names exactly the changed keys.
@@ -660,8 +686,8 @@ propose → confirm → fill, the same for every type. The Scan tab presents the
 VisionKit), with **Type it** always available. **Add to** defaults to the last-used collection and can be corrected
 before shooting. The first object of a type creates its collection ("My Music"). After a shot, the camera **stays
 open** and the new object goes to a tray, which fixes journey 1's fault 3. With no signal, objects save with what's
-known and lookups queue. **Identify?** (sending the photo) is per shot and off by default, and in v1 it shows only if
-an identification provider exists (Q3). *Done when* the first object of a type creates its collection, and Add to
+known and lookups queue. **Identify?** (sending the photo) is per shot and off by default, and hidden in v1: the lookup
+contract has no photo endpoint (§7). *Done when* the first object of a type creates its collection, and Add to
 remembers the last collection used.
 
 **F7 · Match, "you already own this", look-alikes.** Stories 21, 22, 26, 27; PD-044, PD-151. Every match says,
@@ -679,9 +705,34 @@ field.
 `original-spec/uploads/Jeux collection.csv`, which has 485 games in a grid of 20 platform columns, semicolons,
 French notes in cells ("cartouche + manuel", "boite endommagé", "doublon", "dédicace JDG"), typos and bundles.
 
+- **The Importer API** (Q11). Every source is an `Importer` in `TegolaInterchange`, and a new source is a new
+  importer, not a new pipeline:
+
+  ```swift
+  public protocol Importer: Sendable {
+    var id: ImporterID { get }                              // "tegola-template", "discogs-csv", "spreadsheet"
+    func recognises(_ input: ImportInput) -> Recognition    // .certain, .likely(reason), .no
+    func plan(_ input: ImportInput, catalogue: Catalogue,
+              extraction: some CellExtracting) async throws -> ImportPlan
+  }
+  ```
+
+  `ImportInput` is the bytes, the file name and the sheet tabs. The `ImporterRegistry` asks every importer, and the
+  most certain one wins; the collector can pick another under **Something's off**. Every importer produces the same
+  `ImportPlan` (collection name, shelves, typed rows, the one-sentence summary, what was guessed). From there the steps
+  are shared by all importers: confirm, `ShelfCommand.importBatch`, server matching (`POST /types/{type}/match`), the
+  exceptions queue and undo. So an importer only has to read its format.
+
+  **v1 importers:**
+  - `TemplateImporter`: the `tegola.csv` template that Export writes, so a round trip needs no guessing.
+  - `DiscogsCSVImporter`: the CSV file Discogs lets you export.
+  - `SpreadsheetImporter`: any other CSV, TSV or pasted text, with on-device extraction.
+
+  **Later, each one a new importer:** a Discogs account import through tegola-server (OAuth needs a server), other
+  collection apps' exports, and a photo of a handwritten list.
 - **Where it starts:** **Import a list** on the Add screen, next to the camera and typing (49 Q3), and the share sheet
   from Files, Mail or Numbers, which lands on the same screen. It accepts CSV, TSV and pasted text, nothing else.
-- **Fast lane:** a file matching the published `clctn.csv` template (one row per object, fixed headers, the same
+- **Fast lane:** a file matching the published `tegola.csv` template (one row per object, fixed headers, the same
   format Export writes) imports instantly with no guessing. A Discogs CSV export is a second known shape.
 - **Any other layout:**
   1. Read on the phone (encoding and separator sniffed).
@@ -703,8 +754,10 @@ French notes in cells ("cartouche + manuel", "boite endommagé", "doublon", "dé
   real ambiguities ("Which Tetris?") wait in an exceptions queue that's a badge, never a gate.
 - **The payoff from their own notes:** *We noticed a few things while unpacking*: Imperfect (3), Duplicate (1), Signed
   (1), Series (3 of 4). These are live saved views (F11).
-- **Matching titles to a database** (49's step 4) and cover art (step 5) need the backend, so they wait for Q9. In v1,
-  covers are the collector's photos or the flat type tile.
+- **Matching titles to a database** (49's step 4) is `POST /types/{type}/match` on tegola-server, 50 rows a call.
+  Matches are proposals, and nothing is confirmed (PD-042). Cover art comes from a candidate's `images` when the
+  collector accepts it; there's no CDN or 3D box in v1. Until a match is accepted, the cover is the collector's photo
+  or the flat type tile.
 - The batch can be undone for 30 days, keeping what the collector has since touched (D-12).
 
 *Done when* `Jeux collection.csv` lands as one "Jeux" collection with a shelf per platform, every cell kept, notes
@@ -754,12 +807,23 @@ image and open the share sheet. What was paid is never on a card. Share links, r
 page and co-owned shelves need the backend and wait. A wishlist shares as a card list that reveals wants, never
 holdings (PD-071). *Done when* no card, of either kind, with money on or off, contains what was paid.
 
-**F15 · Quantity, wine and clocks.** Stories 66–73, 78–80; PD-020, PD-021, PD-121, PD-127, PD-017, PD-153. Quantity
-objects show a count and **promote** one copy into its own object, which can be lent. Wine is consumable: **Open a
-bottle** lowers the count and logs the pour (occasion, note, score). At zero the wine moves to **Drunk** and is kept.
-The same wine with different provenance is a separate object. The drinking-window clock is always labelled
-**Estimate**, feeds status and *need attention*, and its notifications are offered once, in plain words, when the
-first clocked object is added. *Done when* the last bottle moves to Drunk and is still found by Find.
+**F15 · Clocks.** Stories 76–81; PD-017, PD-018, PD-153; page 52 P2.
+
+- **v1's clocked type is Video games.** `saveBattery` applies to cartridge subtypes; its lithium cell lasts about 25–35
+  years, and **Log a battery swap** is an ordinary `serviced` event that resets it. `codeExpiry` applies to code cards.
+  There is no disc-rot clock (PD-018).
+- **Every clock:**
+  - is labelled **Estimate**;
+  - feeds status and *need attention*;
+  - shows its reason ("Battery from 1994, usually lasts 25–35 years");
+  - can be dismissed, and the dismissal is logged (risk R2).
+- **Notifications** are offered once, in plain words, when the first clocked object arrives.
+- **The `playStatus` clock** ("started 14 months ago, never finished") is opt-in (D-20).
+- **Not in v1:** quantity objects, promote, wine's Open a bottle and Drunk (PD-020, PD-021). No v1 type uses them, so
+  they wait for the release train with Coins and Wine. `ShelfCommand` keeps their cases out until then.
+
+*Done when* a cartridge whose battery is due shows *watch* with its reason and the Estimate label, and logging a swap
+clears it.
 
 **F16 · Wanting and leaving.** Stories 137–146, 204; PD-070, PD-126, PD-149, PD-052. Wanted objects are ordinary
 objects with ownership `wanted`, a priority and an optional price cap (the cap shows only with money on). They live
@@ -799,7 +863,7 @@ off shows no value on any screen.
 | D-7 | Value fields with money off | Paid is recorded and editable, never totalled; value and price cap are hidden (stories 161, 165) |
 | D-8 | Runs and sets (stories 195–206) | v1 shows series and "also exists on" from owned objects only, through the work layer (47); it never invents a total (#23). Declaring a run, its gaps and "finished" are not in v1 |
 | D-9 | Analytics destination with no backend | Local only, visible in the debug screen; no network |
-| D-10 | Dark mode | The designed palette only; dark "stage" surfaces where the boards have them (Q5) |
+| D-10 | Dark mode | Not in v1, but the design system is themeable so a dark theme is a new `TegolaTheme` value (Q5, D-26); v1's Board theme keeps the dark "stage" surfaces where the boards have them |
 | D-11 | Token values disagree | The archive's handoff table wins over both implementations: muted is `#6E6458` (clctn has `#5A5045`); teal `#12A594` is a type tint and green `#0E6E5E` means money (the-collection calls `#0E6E5E` "teal"). Six manifests use gradient keys the palette lacks (claret, verdigris, phosphor, oxide, indigo, plum); they get tokens, taken from the archive's type pages. |
 | D-12 | Import undo after the collector has changed things | Undo removes the batch's objects that nobody touched since the import. Objects that were edited, photographed, lent or placed are kept, and the summary says "3 kept because you changed them". clctn hard-deleted them, which destroys work (PD-090's spirit). |
 | D-13 | "It arrived" on a wanted object | The object moves from the wishlist to its type's collection (created if needed), and history records `owned`. clctn left it in the wishlist. |
@@ -811,12 +875,19 @@ off shows no value on any screen.
 | D-20 | `playStatus` (47 ask 05) | `video-game.yml` gains `playStatus` (not started / playing / finished / abandoned), replacing `playLog`'s finished flag. Its "started long ago, never finished" clock is opt-in |
 | D-21 | Import grouping | One collection per file, platforms as shelves inside it from the subtype, sheet tabs as statuses (49 §06). If a video-game collection exists, the confirm sentence offers to add to it instead; that's a choice the collector makes, so PD-151's never-merge holds |
 | D-22 | Digital games in an import | Kept, as `media: digital`, in the Digital view (49), and never counted as physical objects in stats, since the catalogue is physical (PD-024) |
+| D-23 | v1 types | Music, Video games, Board games and Thing (owner, 2026-10-31), superseding PD-164's Books and Wine. Video games carry v1's clock (`saveBattery`) |
+| D-24 | ULID (page 52) vs UUID | UUID primary keys, as SQLiteData's `SyncEngine` needs for the iCloud sync planned after v1 (Q4); the event log is ordered by `at`, then a per-device `seq` |
+| D-25 | Q3 and Q9 together | One backend in v1, tegola-server, for lookups and import matching only, under the OpenAPI contract and App Attest. No accounts, sync service, subscription or CDN |
+| D-26 | Theming | Roles, not colours, in every view; `TegolaTheme` maps roles to values; v1 ships the Board theme only (Q5) |
+| D-27 | Import sources | An `Importer` protocol and a registry; v1 ships the template, Discogs CSV and spreadsheet importers (Q11) |
 | D-15 | Status mapping (five swatches) | It is derived in `TegolaModel` from 42_One Roof's rules, not in views. `unconfirmed` reads "To tidy" (clctn showed "Out"), `lent` reads "Out", overdue and needs details read "Needs you". |
 
 ### 4.3 Not in v1
 
 Taken from the roadmap; each waits for the reason it gives:
 
+- **Types on the release train:** Books, Wine (and with it quantity, promote, Open a bottle, Drunk and the
+  drinking-window clock), Retro computers, then the rest.
 - **v1.x:** sweep capture; clocks for other types; custom types, "no type fits" routes beyond Thing, and fields added
   to an official type; the type board; migration; iPad and Mac; more import connectors; co-owned shelf; parts (Add
   part).
@@ -836,7 +907,8 @@ From clctn's `docs/product/journeys/`, rewritten for tegola's v1. Each runs from
    20 platforms, into a collection called Jeux* → Build my shelf → *We noticed a few things* → the Imperfect view.
 3. **Lend at the door:** object → Lend → "Dara" → due in 2 weeks → overdue on a moved clock → Return → history.
 4. **Saturday in the shop:** Find "Blue Note" → owned, let go and wanted shown together → make one wanted in one tap.
-5. **The weekly glance:** Today strip → *1 needs attention* → a wine at its peak → Open a bottle.
+5. **The weekly glance:** Today strip → *1 needs attention* → a Game Boy cartridge whose save battery is due → Log a
+   battery swap → the line is gone.
 6. **Letting go and the insurer's email:** Might let go list → Let go (sold) → archive → You → Inventory document.
 
 Camera beats can't run on a simulator, where `DataScannerViewController.isSupported` is false. `ScannerClient` has a
@@ -887,7 +959,8 @@ ObjectFeature
 |---|---|---|
 | `ShelfClient` | `perform(ShelfCommand)` over SQLiteData, in `TegolaStorage` | the same, on an in-memory database with the seed |
 | `CatalogueClient` | the bundled manifests | the same (pure); fixtures for the twelve disabled types |
-| `LookupClient` | MusicBrainz (music barcodes) and Open Library (ISBN) over `URLSession`, ephemeral session | recorded payloads from `TegolaTestSupport`; `unimplemented` by default |
+| `LookupClient` | the generated `TegolaLookupAPI` client over `URLSessionTransport` (ephemeral session) with `AppAttestMiddleware` and `RetryMiddleware`, pointed at tegola-server | recorded responses from `TegolaTestSupport`; `unimplemented` by default |
+| `AppAttestClient` | `DCAppAttestService` (generate key, attest, assert) | a fake signer whose assertions the contract tests check for shape |
 | `IdentifyClient` | none in v1 unless Q3 says otherwise | scripted |
 | `ExtractionClient` | Foundation Models (`LanguageModelSession`, guided generation into `@Generable` types built from the resolved type) for import shape and cell extraction, and for inferring the first piece's type; on devices without Apple Intelligence it falls back to the column mapper and keeps cells as notes | recorded outputs per fixture cell; `unimplemented` by default |
 | `ScannerClient` | VisionKit `DataScannerViewController` (barcodes, text) | an `AsyncStream` driven by the test |
@@ -923,8 +996,8 @@ directory and handed to the share sheet, and the import file is read in place an
 
 - `.github/workflows/ci.yml` has two jobs:
   - **`linux-core`** runs on every push and PR: `scripts/test-linux.sh` on `ubuntu-latest` with the Swift 6.x Linux
-    toolchain (the newest version available on hosted runners). It builds and tests the three pure packages and runs
-    the guard tests. It's free.
+    toolchain (the newest version available on hosted runners). It builds and tests the four pure packages (including the
+    generated lookup client), runs the guard tests and `scripts/lint-api.sh` on the OpenAPI contract. It's free.
   - **`macos`** runs only by `workflow_dispatch`, as in telaio: `scripts/ci.sh` on `macos-26` with Xcode 26.6 (iOS 26
     SDK). It checks the iOS 26 build path.
 - Everything else runs on the Mac (Xcode 27.1). `scripts/test.sh` runs only what changed, and `scripts/ci.sh` runs the
@@ -935,7 +1008,39 @@ directory and handed to the share sheet, and the import file is read in place an
 
 ## 7. Lookup and the queue
 
-Lookups are the only network path in v1.
+Lookups go to `mackoj/tegola-server` through the contract in `api/tegola-lookup.openapi.yaml` (Q3). The server owns
+the API keys, rate limits and caching of the game, music and board-game databases. The app holds no third-party key
+and calls no third-party API. The app assumes the server implements the contract. Offline, or when the server answers
+`429`/`503`, everything still saves locally and lookups wait in the queue (PD-046).
+
+**The client is generated** with `apple/swift-openapi-generator`, used as a build plugin in the `TegolaLookupAPI`
+package (`openapi-generator-config.yaml`: `generate: [types, client]`, `accessModifier: public`), with
+`swift-openapi-urlsession` as the transport. `TegolaClients` wraps the generated `Client` in `LookupClient`, so
+features never see generated types; they get `TegolaModel` candidates. Two middlewares sit on the client:
+
+- **`AppAttestMiddleware`** adds `X-Tegola-Key-ID`, `X-Tegola-Timestamp` and `X-Tegola-Assertion` to every secured
+  call. On first use, or after a `401` naming an unknown key, it registers the key once (challenge, `attestKey`,
+  `POST /app-attest/keys`) and retries. The key id lives in the Keychain (`mackoj/swift-keychain`). Debug builds on a
+  simulator send `X-Tegola-Debug-Token` instead, and only to a development server.
+- **`RetryMiddleware`** honours `Retry-After` on `429` and `503` by handing the request back to the queue, never by
+  sleeping in the call.
+
+The contract's endpoints:
+
+| Endpoint | Used by |
+|---|---|
+| `GET /types/{type}/barcodes/{code}` | capture (barcode) |
+| `POST /types/{type}/search` | capture (OCR text), Add by hand, the first piece's guess |
+| `POST /types/{type}/match` | import step 4, 50 rows a call, answering matched, ambiguous or unknown |
+| `GET /works/{id}` | "Also exists on", series |
+| `GET /health` | which types the server can look up |
+
+What goes out is an identifier, a title or OCR text, and the type and subtype; never a photo or anything about the rest
+of the shelf. Every candidate carries its `reasons` and `confidence`, which the review queue shows (PD-150).
+`scripts/lint-api.sh` lints the contract in CI. An `OpenAPIContractTests` suite decodes recorded server responses with
+the generated types, so a contract change breaks a test before it breaks the app.
+
+How the queue works:
 
 - A captured identifier goes into `lookupQueue` with the object, so it is saved before any network.
 - A worker effect drains the queue when `ReachabilityClient` says it's online: oldest first, exponential backoff, at
@@ -943,9 +1048,9 @@ Lookups are the only network path in v1.
 - A result never writes. It creates an **enrichment proposal** that the review queue or the object screen shows, and
   applying it is a `ShelfCommand.applyEnrichment` that only fills empty fields (PD-045). Filled fields are marked
   `auto` until touched.
-- Providers per v1 type: Music → MusicBrainz (barcode); Books → Open Library (ISBN); Video games, Wine, Thing → none
-  (OCR text proposes a title only). Discogs' API needs a token, so it isn't a v1 lookup source, and the Discogs
-  *import* uses the collector's CSV export instead (Q3).
+- Which databases the server uses per type is the server's business (page 49 suggests IGDB, ScreenScraper and
+  Wikidata for games). The app only sees candidates and their `sources`, and shows any attribution a source requires.
+- **Identify** (sending a photo) isn't in the contract, and stays hidden in v1 (PD-118).
 
 ---
 
@@ -962,6 +1067,7 @@ Nothing is copied as is. What I'd port, after review against this plan:
 | the archive `15_CSV Format`, `49_Import Pipeline` §03B | the `clctn.csv` template and the conversion prompt | Story 42; the import's fast lane and Export's format |
 | `original-spec/uploads/Jeux collection.csv` | the import fixture, as is | A real file from a real collector, which beats an invented one |
 | `original-spec/video-media.yml`, page 48's Video games subtypes | the subtype fixtures | M2's exit test |
+| clctn `Types/board-games.yml`, `music.yml`; `original-spec/video-game.yml`, `thing.yml` | the four v1 types | D-23 |
 | the archive `05_Tagging and Metrics` | the event taxonomy | F17 analytics |
 | the-collection `CollectorKit/Resources/Fonts` | the three OFL fonts and their licences | The faces the boards use |
 | the-collection `CollectorKit` (`TypeStyle`, `hardShadow`, `dashedSlot`, `halftone`, `FlowRow`) | the techniques, rewritten against tegola's tokens | They already reproduce the printed look in SwiftUI; the values come from the archive, not from it |
@@ -989,45 +1095,29 @@ the-collection's `Navigator`/`StackHost` (TCA `StackState` replaces it).
 
 ---
 
-## 10. Questions
+## 10. Answers (2026-10-31)
 
-Each has the default I'll use if you don't answer.
-
-1. ~~**The original spec.**~~ Answered: `original-spec/` is in the repo (§0 row 1).
-2. **Name.** Code and bundle id use `Tegola` / `fr.macko.tegola`. What do collectors see: **Tegola** or **CLCTN**
-   (PD-157 was only assumed)? *Default: Tegola.*
-3. **Lookups and Identify without a backend.** v1 can call MusicBrainz and Open Library directly from the phone. The
-   Discogs API needs a token, and Identify (photo matching) needs a vision service that doesn't exist yet. *Default:
-   MusicBrainz and Open Library only; Identify hidden in v1; Discogs is import-only.*
-4. **iCloud sync.** It's not in the confirmed v1 list. *Default: the schema is CloudKit-ready, and sync is not
-   switched on in v1.*
-5. **Dark mode.** The design is one printed-paper palette with dark "stage" screens. *Default: no system dark mode in
-   v1; screens follow their boards.*
-6. **Verification.** This container has no Xcode. I can build and test the pure packages here (Linux toolchain) and
-   write everything else, but "zero warnings in Swift 6 mode" and the TestStore, snapshot and UI tests for the app need
-   your Mac (or a paid manual `macos-26` run). *Default: each milestone PR says which checks ran where, and app-level
-   checks are marked "needs a Mac run".*
-7. **Branches.** One branch per task (telaio's way) needs push rights to new branches, and this session can push only
-   to `claude/tegola-rearchitecture-jcq29f`. *Default: one commit per task on that branch, one draft PR per
-   milestone.*
-8. **Contrast vs fidelity.** The archive's meta grey on paper (3.34:1), and paper text on orange, teal and pink
-   (2.6–3.3:1), fail WCAG AA at the sizes the boards use. *Default: keep every fill colour, and add derived text tokens
-   that pass, as telaio does (`metaText`, a darker grey at 4.5:1 or above; ink text instead of paper text on orange,
-   teal and pink). Each change is listed in BOARDS.md next to the board it alters.*
-9. **The October pages vs confirmed decisions.** Pages 49, 50 and 52 assume a backend in v1, for title matching
-   against game databases (IGDB, ScreenScraper, Wikidata) and cover art on a CDN. They also put accounts, sync and a
-   €50/year subscription plus the €29.99 unlock in v1's last phase (P5). That contradicts PD-160 (no backend in v1),
-   ADR-0001 (no account) and PD-112/113 (payment shape decided after launch). *Default: v1 stays backend-free and
-   account-free. The import extracts on the device and keeps unmatched titles as written. Matching and covers arrive
-   with the first backend, and P5 is planned after M9.* If you want the backend in v1, it becomes its own module
-   (`backend`, before M6) with its own spec.
-10. **Launch types.** PD-164 says five types *including* Thing (Music, Books, Video games, Wine, Thing). Pages 40 and
-    51 say "five types + Thing", with Retro computers suggested for the fifth slot. *Default: PD-164's list. Retro
-    computers is the first type on the release train.*
-11. **Discogs import** (found while rendering board 16). Its board signs in to Discogs, which needs a backend. *Default:
-    the CSV file Discogs lets you export, as a known shape in the fast lane.*
-12. **Shelf layout** (boards `home` and `collection`). The boards show a grid of tiles; PLAN F3 and F4, from PD-139,
-    say rows. *Default: the boards' tiles and their visual language on Shelf, rows inside a collection.*
+1. **Original spec:** `original-spec/`.
+2. **Name:** collectors see **Tegola**. Bundle id `fr.macko.tegola`.
+3. **Lookups:** through `mackoj/tegola-server`, which implements `api/tegola-lookup.openapi.yaml` (§7). The app's
+   client is generated from it with `apple/swift-openapi-generator`, and the server is assumed to work. Security is
+   App Attest (key registration, then a signed assertion on every call), with a debug token for development servers
+   only.
+4. **iCloud sync:** later, through `pointfreeco/sqlite-data`'s `SyncEngine`. The schema follows its rules from the
+   first migration (D-24).
+5. **Theme:** a themeable design system (roles mapped by a `TegolaTheme`), ready for dark and event themes. v1 ships
+   the Board theme, which follows the boards (§4.0, D-26).
+6. **Verification:** as proposed. Each milestone PR says which checks ran where, and app-level checks are marked
+   "needs a Mac run".
+7. **Branches:** one commit per task on the session branch, one PR per milestone.
+8. **Contrast:** keep the fills, and use derived text tokens that pass AA, listed in BOARDS.md.
+9. **Backend scope:** no accounts, sync service or subscription in v1. The only server is the lookup server from
+   answer 3 (D-25).
+10. **v1 types:** Music, Video games, Board games and Thing (D-23).
+11. **Importers:** an Importer API with several importers. v1 ships the template, Discogs CSV and spreadsheet importers
+    (F9, D-27).
+12. **Shelf layout:** tiles on Shelf, rows in a collection for now. Layouts are a `ShelfLayout` so more can come
+    (§4.0).
 
 ## 11. Milestone 1 deliverables (after approval)
 
@@ -1043,5 +1133,8 @@ Each has the default I'll use if you don't answer.
 - [ ] `scripts/test.sh`, `ci.sh`, `test-linux.sh`, `secret-scan.sh`, `periphery.sh`; `.github/workflows/ci.yml`
   (`linux-core` automatic, `macos` manual)
 - [ ] `TegolaTestSupport`: `Jeux collection.csv` with recorded extraction outputs, a `clctn.csv` template file, a
-  Discogs export, recorded MusicBrainz and Open Library payloads (the seed shelf lives in `TegolaStorage`, §2.4)
-- [ ] `docs/GLOSSARY.md`, `docs/DECISIONS.md` (D-1 to D-22), `docs/testing/ui-tests.md`
+  Discogs export, recorded tegola-server responses for every operation in the contract (the seed shelf lives in
+  `TegolaStorage`, §2.4)
+- [ ] `docs/GLOSSARY.md`, `docs/DECISIONS.md` (D-1 to D-27), `docs/testing/ui-tests.md`
+- [ ] `TegolaLookupAPI` generating its client from `api/tegola-lookup.openapi.yaml`, building on Linux, with contract
+  tests over recorded responses; `scripts/lint-api.sh`
