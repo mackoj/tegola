@@ -1,3 +1,5 @@
+public import Foundation
+
 /// An amount of money: integer minor units and an ISO 4217 currency, never a float and never without its currency
 /// (PLAN §3.2, page 52). Amounts in different currencies are never added together.
 public struct Money: Hashable, Sendable, Codable, CustomStringConvertible {
@@ -11,6 +13,13 @@ public struct Money: Hashable, Sendable, Codable, CustomStringConvertible {
   }
 
   public var description: String { "\(minorUnits) \(currency.code)" }
+
+  /// The amount in major units (12000 cents → 120): ISO 4217's minor-unit digits, 0 for the yen and its kind.
+  public var amount: Decimal {
+    var value = Decimal(minorUnits)
+    for _ in 0..<currency.minorDigits { value /= 10 }
+    return value
+  }
 
   /// The sum of `amounts` per currency, ordered by currency code. Mixing currencies gives several totals, never one.
   public static func totals(_ amounts: some Sequence<Money>) -> [Money] {
@@ -27,6 +36,17 @@ public struct Currency: Hashable, Sendable, Codable {
   public init?(_ code: String) {
     guard code.count == 3, code.allSatisfy({ $0.isASCII && $0.isUppercase }) else { return nil }
     self.code = code
+  }
+
+  /// Digits after the decimal point (ISO 4217). Two unless the currency has none or three.
+  public var minorDigits: Int {
+    switch code {
+    case "BIF", "CLP", "DJF", "GNF", "ISK", "JPY", "KMF", "KRW", "PYG", "RWF", "UGX", "UYI", "VND", "VUV", "XAF",
+      "XOF", "XPF":
+      0
+    case "BHD", "IQD", "JOD", "KWD", "LYD", "OMR", "TND": 3
+    default: 2
+    }
   }
 
   public init(from decoder: any Decoder) throws {

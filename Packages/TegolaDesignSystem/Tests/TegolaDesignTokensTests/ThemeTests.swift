@@ -79,3 +79,17 @@ import Testing
     }
   }
 }
+
+@Suite struct TypeTintTests {
+  /// D-45: every colour name a type file uses has a tint of its own, never the sand fallback.
+  @Test func everyNameTheTypeFilesUseIsMapped() {
+    let names = [
+      "claret", "verdigris", "cobalt", "yellow", "indigo", "orange", "pink", "oxide", "ink", "phosphor", "plum", "rust",
+      "teal",
+    ]
+    for name in names {
+      #expect(TegolaTheme.board.tint(named: name) != TegolaPalette.sand, "\(name)")
+    }
+    #expect(TegolaTheme.board.tint(named: "mauve") == TegolaPalette.sand)
+  }
+}

@@ -72,3 +72,11 @@ import Testing
     #expect(ObjectStatus.allCases.sorted() == [.act, .watch, .good, .fine, .gone])
   }
 }
+
+@Suite struct MoneyAmountTests {
+  @Test func amountsUseTheCurrencysMinorDigits() {
+    #expect(Money(minorUnits: 12_050, currency: Currency("EUR")!).amount == Decimal(string: "120.5"))
+    #expect(Money(minorUnits: 12_050, currency: Currency("JPY")!).amount == 12_050)
+    #expect(Money(minorUnits: 12_050, currency: Currency("KWD")!).amount == Decimal(string: "12.05"))
+  }
+}

@@ -34,9 +34,9 @@ Plan: `tasks/plan.md`, M3. Report: `docs/milestones/M3.md`.
 
 - [x] T3.1 Snapshot harness and the first components
 - [x] T3.2 Read side: Route, ShelfSummary, TodayStrip, ObjectSlots, the money switch, promises 4 and 5
-- [ ] T3.3 Navigation: tab bar, stacks, Path, routes, `--screen`
-- [ ] T3.4 Shelf home and the empty shelf
-- [ ] T3.5 Collection
+- [x] T3.3 Navigation: tab bar, stacks, Path, routes, `--screen`
+- [x] T3.4 Shelf home and the empty shelf
+- [x] T3.5 Collection
 - [ ] T3.6 Object: seven slots, ladder and set, history
 - [ ] T3.7 Edit form, and `plan`'s value checks
 - [ ] T3.8 Add by hand

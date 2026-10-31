@@ -218,3 +218,21 @@ reused; a replaced decision stays, marked **superseded by D-n**.
 ### D-44 · Settings before the settings screen
 
 **Decision.** `settings` arrives in M3 as its own migration, holding only what the collector changed (PD-161). Each known setting has a fixed row id, because `SyncEngine` allows no unique constraint on `key`. PLAN §5 reads settings through a custom `SharedKey`. Nothing writes a setting until the You screen (M8), so M3's screens read the row through a query, `ShelfStore.money()`, and the `SharedKey` arrives with M8.
+
+### D-45 · Type tints the palette doesn't name
+
+**Decision.** A type's `gradient` names two colours, and the theme maps each name to a colour (`TegolaTheme.tint(named:)`), so a type file stays data and a future theme can retint types. Six names have no hex anywhere in the archive, so each maps to the palette's nearest colour: indigo → cobalt, claret and plum → pink, oxide → rust, phosphor → yellow, verdigris → teal. An unknown name falls back to sand, so a new type file can't break a screen. If the owner wants those six as colours of their own, they're one line each in `Theme.swift`.
+
+### D-46 · Recording snapshots
+
+**Decision.** References live in `docs/snapshots/<suite>/`, outside every package, because writing into a package mid-run makes xcodebuild reload the package and hang. Separately, an `xcodebuild test` run with a failing test sometimes never exits on this Mac, so `scripts/test.sh ios:<Package>` gives up after ten minutes. A record run (`SNAPSHOTS=record`) records and passes rather than failing. A missing reference outside record mode is still recorded and fails, so CI can't pass on a snapshot nobody looked at.
+
+### D-47 · The Shelf home and the collection screen in M3
+
+**Decision.**
+- **Shelf home.** Collections are a 2-up grid of tiles as on board 01, since PLAN §4.0 puts tiles on the Shelf home. F3's "rows" is read as "the same shape for every type". With money off, the banner is board 01's `sellingOff` variant ("Catalogued · N objects" in cobalt); with money on, it's the value in green. The filter pills on board 01 ("For sale" is out of v1) and the header avatar (the You tab covers settings) aren't built.
+- **Empty shelf.** It keeps board 02's illustration and type scale, with **Type it** as its only action. The first-piece camera is M5 and **Bring your list** is M6, so each joins when it exists.
+- **Not tappable yet.** The wishlist tile shows its count but opens nothing until its screen (F16).
+- **Collection screen.** It filters by place, including the places inside it. Status filters wait for statuses (M4). A let-go object leaves the collection's list for the archive.
+- **Navigation.** The Shelf tab's stack is the first one, with `AppPath` holding the screens built so far. A route whose screen comes later in M3 does nothing yet. Tapping the Shelf tab while on it returns to its root.
+- **State equality.** A feature's `@Fetch` snapshot is the database's state, kept current outside any action, so it's left out of the state's `==`. Tests assert on it directly.

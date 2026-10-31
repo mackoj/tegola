@@ -107,7 +107,7 @@ public struct TodayStrip: Hashable, Sendable {
 public struct CollectionMeta: Hashable, Sendable {
   public let count: Int
   public let lent: Int
-  /// The type's plural noun, or nil for a mixed collection.
+  /// The type's noun for the count (singular for one), or nil for a mixed collection.
   public let noun: String?
 
   public init(collection: ShelfCollection, shelf: Shelf, catalogue: Catalogue) {
@@ -115,7 +115,8 @@ public struct CollectionMeta: Hashable, Sendable {
     count = TegolaModel.count(members)
     let ids = Set(members.map(\.id))
     lent = shelf.loans.values.filter { $0.isOpen && $0.direction == .out && ids.contains($0.objectID) }.count
-    noun = collection.typeID.flatMap { catalogue.manifest($0)?.name.plural }
+    let total = count
+    noun = collection.typeID.flatMap { catalogue.manifest($0)?.name.noun(for: total) }
   }
 }
 
@@ -212,5 +213,13 @@ public struct ObjectSlots: Hashable, Sendable {
     hasher.combine(spine)
     hasher.combine(fields)
     hasher.combine(actions)
+  }
+}
+
+extension TypeManifest.Names {
+  /// The type's own word for a count of objects: "1 release", "4 releases". Type files are data in English; the
+  /// numbers around them are localized by the screen.
+  public func noun(for count: Int) -> String {
+    count == 1 ? singular : plural
   }
 }

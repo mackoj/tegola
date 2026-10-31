@@ -56,6 +56,7 @@ import Testing
     #expect(meta.count == 2)
     #expect(meta.lent == 1)
     #expect(meta.noun == "Releases")
+    #expect(Harness.catalogue.manifest("music")?.name.noun(for: 1) == "Release")
   }
 
   /// F4: every v1 type shows the seven slots, in the product's order.

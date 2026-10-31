@@ -204,6 +204,7 @@
       .buttonStyle(.plain)
       .accessibilityElement(children: .combine)
       .accessibilityAddTraits(isSelected ? [.isButton, .isSelected] : .isButton)
+      .accessibilityIdentifier("tab.\(item.id)")
     }
 
     var scanButton: some View {
@@ -221,6 +222,7 @@
       }
       .buttonStyle(.plain)
       .accessibilityLabel(scanLabel)
+      .accessibilityIdentifier("tab.scan")
     }
   }
 #endif

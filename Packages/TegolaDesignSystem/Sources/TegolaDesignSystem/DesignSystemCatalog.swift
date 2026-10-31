@@ -7,7 +7,7 @@
   /// verbatim.
   public enum DesignSystemCatalog {
     public enum Section: String, CaseIterable, Sendable {
-      case titles, buttons, pills, chips, surfaces, empty, bars, tabBar
+      case titles, buttons, pills, chips, surfaces, tiles, rows, empty, bars, tabBar
     }
 
     @MainActor @ViewBuilder
@@ -19,6 +19,8 @@
         case .pills: pills
         case .chips: chips
         case .surfaces: surfaces
+        case .tiles: tiles
+        case .rows: rows
         case .empty: empty
         case .bars: bars
         case .tabBar: tabBar
@@ -116,6 +118,62 @@
           .padding(TegolaSpace.l)
           .frame(maxWidth: .infinity, alignment: .leading)
           .notYours()
+      }
+    }
+
+    @MainActor static var tiles: some View {
+      VStack(alignment: .leading, spacing: TegolaSpace.l) {
+        CountBanner(eyebrow: t("Catalogued"), figure: t("482 objects"), isMoney: false)
+        CountBanner(eyebrow: t("Estimated value"), figure: t("€14,280"), isMoney: true)
+        HStack(alignment: .top, spacing: TegolaSpace.m) {
+          CollectionTile(
+            name: t("My Music"),
+            meta: t("128 releases · 2 lent"),
+            count: 128,
+            gradient: ["teal", "cobalt"],
+            mark: "33⅓"
+          )
+          CollectionTile(
+            name: t("The Library"),
+            meta: t("92 games"),
+            count: 92,
+            gradient: ["oxide", "ink"],
+            mark: "CIB"
+          )
+        }
+        HStack(alignment: .top, spacing: TegolaSpace.m) {
+          CollectionTile(
+            name: t("Things"),
+            meta: t("18 things"),
+            count: 18,
+            gradient: ["indigo", "claret"],
+            mark: "00"
+          )
+          DashedTile(title: t("Wishlist"), meta: t("3 wanted"))
+        }
+      }
+    }
+
+    @MainActor static var rows: some View {
+      VStack(spacing: TegolaSpace.m) {
+        ObjectRow(
+          title: t("Radiant Silvergun"),
+          meta: t("Sega Saturn · 1998"),
+          gradient: ["oxide", "ink"],
+          mark: "CIB"
+        ) {
+          Chip(t("Grail"), fill: .accentGrail, ink: .onAccentGrail)
+        }
+        ObjectRow(title: t("Kid A"), meta: t("Radiohead · Vinyl"), gradient: ["teal", "cobalt"], mark: "33⅓") {
+          StatusChip(.watch, label: t("Lent"))
+        }
+        ObjectRow(
+          title: t("Policenauts"),
+          meta: t("PlayStation · wanted"),
+          gradient: ["oxide", "ink"],
+          mark: "CIB",
+          notYours: true
+        )
       }
     }
 
