@@ -32,7 +32,7 @@ Plan: `tasks/plan.md`, M2. Report: `docs/milestones/M2.md`.
 
 Plan: `tasks/plan.md`, M3. Report: `docs/milestones/M3.md`.
 
-- [ ] T3.1 Snapshot harness and the first components
+- [x] T3.1 Snapshot harness and the first components
 - [ ] T3.2 Read side: Route, ShelfSummary, TodayStrip, ObjectSlots, the money switch, promises 4 and 5
 - [ ] T3.3 Navigation: tab bar, stacks, Path, routes, `--screen`
 - [ ] T3.4 Shelf home and the empty shelf
@@ -41,9 +41,9 @@ Plan: `tasks/plan.md`, M3. Report: `docs/milestones/M3.md`.
 - [ ] T3.7 Edit form, and `plan`'s value checks
 - [ ] T3.8 Add by hand
 - [ ] T3.9 Photos
-- [ ] T3.10 Find and saved views
-- [ ] T3.11 Places
-- [ ] T3.12 Journeys, seed, docs, review
+- [x] T3.10 Find and saved views
+- [x] T3.11 Places
+- [x] T3.12 Journeys, seed, docs, review
 
 ## Open follow-ups
 

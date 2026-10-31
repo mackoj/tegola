@@ -1,0 +1,7 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Back" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Retour" } } } }
+  },
+  "version" : "1.1"
+}

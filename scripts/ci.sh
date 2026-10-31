@@ -11,6 +11,11 @@ for pkg in TegolaDesignSystem TegolaTestSupport TegolaCatalogue TegolaModel Tego
   scripts/test.sh "$pkg" || STATUS=1
   cp build/test-summary.md "build/summary-$pkg.md"
 done
+# Snapshots run on the iPhone simulator (PLAN §2.6).
+for pkg in TegolaDesignSystem; do
+  scripts/test.sh "ios:$pkg" || STATUS=1
+  cp build/test-summary.md "build/summary-ios-$pkg.md"
+done
 if [[ -d Tegola.xcodeproj ]]; then
   scripts/test.sh app || STATUS=1
   cp build/test-summary.md build/summary-app.md

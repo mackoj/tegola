@@ -73,6 +73,9 @@ scripts/ci.sh                        # the full gate → build/ci-summary.md
   (PLAN §10, answer 7).
 - **Package.resolved:** resolving on a Mac drops OpenCombine, which TCA needs only on Linux. Commit new pins, but
   put OpenCombine's pin back (M2 did this for `TegolaFeatures` and the Xcode project).
+- **Snapshots:** `scripts/test.sh ios:<Package>` runs a package's tests on the iPhone simulator; `assertScreenSnapshot`
+  (`TegolaSnapshotTesting`) writes references to `docs/snapshots/<suite>/`, outside the packages (xcodebuild hangs
+  when a package changes mid-run). Re-record with `SNAPSHOTS=record scripts/test.sh ios:<Package>`.
 - **Type files:** `scripts/validate-types.sh` checks them against `schema/type.schema.json`; the decoder and
   `Catalogue.problems` check the rest. A new key goes in both the decoder and the schema.
 - **Toolchain in a cloud session:** there's no Xcode and no Swift by default.
@@ -97,8 +100,6 @@ scripts/ci.sh                        # the full gate → build/ci-summary.md
 
 - TCA doesn't build on Linux with Swift 6.4 (swift-navigation's `TextState`), so feature tests only run on the Mac
   (D-32).
-- SwiftUI can't set line spacing below a font's natural leading, so the 0.96 line height of the two-line display
-  titles needs the DisplayTitle component (M3). Until then, display titles render with default leading.
 
 ## Owner questions
 

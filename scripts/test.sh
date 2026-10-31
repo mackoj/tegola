@@ -3,6 +3,8 @@
 #   scripts/test.sh                       # auto-detect from git diff against $BASE (default: the branch it forked from)
 #   scripts/test.sh TegolaModel           # one package
 #   scripts/test.sh TegolaFeatures CanvasFeatureTests   # one test target (swift test --filter)
+#   scripts/test.sh ios:TegolaDesignSystem   # one package's tests on the iPhone simulator (snapshots, PLAN §2.6);
+#                                            # SNAPSHOTS=record re-records them into docs/snapshots/
 #   scripts/test.sh app                   # xcodebuild test for the app, unit + UI tests (iPhone 17 simulator)
 #   scripts/test.sh app-unit              # the app's unit tests only (TegolaTests)
 #   scripts/test.sh ui                    # the UI tests only (TegolaUITests: the journeys, docs/testing/ui-tests.md)
@@ -103,6 +105,29 @@ run_app() {
   fi
 }
 
+# A package's tests on the iPhone simulator, through the package's own scheme. Snapshot tests are `#if os(iOS)`, so
+# `swift test` on the Mac skips them and this runs them, at PLAN §2.6's iPhone layout.
+run_ios_package() { # $1 package
+  local pkg="$1" log="build/test-ios-$1.log" result="$ROOT/build/$1-ios-$(date +%s).xcresult"
+  acquire_app_lock
+  echo "▶ $pkg (iOS simulator)"
+  (cd "Packages/$pkg" && TEST_RUNNER_SNAPSHOTS="${SNAPSHOTS:-}" xcodebuild test -scheme "$pkg-Package" -destination "${DESTINATION:-$(default_destination)}" \
+    -testLanguage en -derivedDataPath "$ROOT/build/DerivedData-packages" -resultBundlePath "$result") >"$log" 2>&1
+  local code=$?
+  local line
+  line=$(xcrun xcresulttool get test-results summary --path "$result" 2>/dev/null | python3 scripts/xcresult-summary.py 2>/dev/null)
+  [[ -z "$line" ]] && line="no test results: the build or package resolution failed"
+  if [[ $code -eq 0 ]]; then
+    echo "- ✅ \`$pkg\` (iOS) — $line" >> "$SUMMARY"
+  else
+    STATUS=1
+    echo "- ❌ \`$pkg\` (iOS) — $line (see $log, $result)" >> "$SUMMARY"
+    digest "$log" >> "$SUMMARY"
+  fi
+  rm -rf "$LOCK_DIR"
+  trap - EXIT
+}
+
 # The branch HEAD forked from: of origin/main and the origin/m<N>/* branches, the one whose merge base with HEAD has
 # the fewest commits up to HEAD. Skipped: this branch's own remote (origin/<branch>), and branches already ahead of HEAD
 # (stacked on it), except origin/main (HEAD is on main) and a branch at HEAD itself on a named branch (a new task branch
@@ -141,6 +166,7 @@ if [[ $# -ge 1 ]]; then
     app) run_app ;;
     app-unit) ONLY_TESTING=TegolaTests run_app ;;
     ui) ONLY_TESTING=TegolaUITests run_app ;;
+    ios:*) run_ios_package "${1#ios:}" ;;
     *) run_package "$1" "${2:-}" ;;
   esac
 else
