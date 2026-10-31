@@ -11,6 +11,18 @@
     footers).
 - Continuously evaluate the test harness to reduce boilerplate and prompt token waste.
 
+## Companion repo: tegola-server
+- `mackoj/tegola-server` is the app's backend-for-frontend (Swift, Hummingbird 2): it implements
+  `api/tegola-lookup.openapi.yaml` (lookups, import matching, App Attest) and holds the third-party API keys. It is the
+  owner's repo: **when a task here needs the server to change, you can work on it too** (D-41). Clone it next to this
+  one (`../tegola-server`), read its `CLAUDE.md` and `tasks/HANDOFF.md` first, and use its own branch and PR.
+- **The contract's home is this repo.** Change `api/tegola-lookup.openapi.yaml` here first (`scripts/lint-api.sh`),
+  then run `scripts/sync-contract.sh` in tegola-server and implement what its compiler asks for. Its CI fails while the
+  two copies differ.
+- The server builds and tests on Linux (`scripts/ci.sh` there; `scripts/cloud-toolchain.sh` in a cloud session), so a
+  cloud agent can do server work end to end. Its rules: secured by default, fail closed, validate every limit, errors
+  without internals, logs without content.
+
 ## Project rules
 - **Spec:** `docs/PLAN.md` is the specification, and `docs/DECISIONS.md` records the spec interpretations (`D-n`).
   Product decisions are clctn's `PD-###` log, cited by id; changing one is the owner's call. The design boards, as
