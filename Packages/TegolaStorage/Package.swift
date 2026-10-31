@@ -38,6 +38,7 @@ let package = Package(
         "TegolaStorage",
         .product(name: "TegolaModel", package: "TegolaModel"),
         .product(name: "TegolaModelTesting", package: "TegolaModel"),
+        .product(name: "Dependencies", package: "swift-dependencies"),
         .product(name: "TegolaCatalogue", package: "TegolaCatalogue"),
       ],
       swiftSettings: swiftSettings

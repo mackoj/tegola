@@ -53,7 +53,16 @@ struct Harness {
       quantity: quantity
     )
     let collection = shelf.collections.values.first { $0.typeID == type }.map { CollectionChoice.existing($0.id) }
-    let events = try perform(.add(draft, to: collection ?? .new(name: "My \(type.rawValue)"), origin: origin))
+    let source: ShelfEvent.Source =
+      switch origin {
+      case .typed, .firstPiece: .collector
+      case .captured: .capture
+      case .imported: .import
+      }
+    let events = try perform(
+      .add(draft, to: collection ?? .new(name: "My \(type.rawValue)"), origin: origin),
+      as: source
+    )
     return try #require(events.compactMap { if case .added(let object, _) = $0.kind { object.id } else { nil } }.first)
   }
 }
@@ -83,7 +92,7 @@ struct Harness {
   @Test func aPhotoWithNothingIdentifiedNeedsDetails() throws {
     var harness = Harness()
     let draft = ObjectDraft(type: "thing", needsDetails: true)
-    try harness.perform(.add(draft, to: .new(name: "Things"), origin: .captured))
+    try harness.perform(.add(draft, to: .new(name: "Things"), origin: .captured), as: .capture)
     let object = try #require(harness.shelf.objects.values.first)
     #expect(object.identity == .needsDetails)
     #expect(throws: ShelfRuleViolation.emptyTitle) { try harness.perform(.confirm([object.id])) }
@@ -243,13 +252,72 @@ struct Harness {
 
   @Test func borrowingAndGivingBack() throws {
     var harness = Harness()
-    let id = try harness.add()
+    let own = try harness.add()
+    #expect(throws: ShelfRuleViolation.notBorrowed) { try harness.perform(.markBorrowed(own, from: .new(name: "Léa"))) }
+    let id = try harness.add(ownership: .borrowed)
     try harness.perform(.markBorrowed(id, from: .new(name: "Léa")))
     #expect(harness.shelf.objects[id]?.ownership == .borrowed)
     #expect(harness.shelf.objects[id]?.counts == false)
     #expect(throws: ShelfRuleViolation.alreadyOnLoan) { try harness.perform(.setOwned(id)) }
     try harness.perform(.giveBack(id))
     #expect(harness.shelf.openLoan(on: id) == nil)
+  }
+
+  /// Review of M2, finding 3: a grade goes through its ladder axis, so a wanted object can't get one by another key.
+  @Test func aScaleIsGradedOnlyThroughItsAxis() throws {
+    var harness = Harness()
+    #expect(throws: ShelfRuleViolation.unknownField(.field("mediaCondition"))) {
+      try harness.add(values: [.field("mediaCondition"): .text("Mint")], ownership: .wanted)
+    }
+  }
+
+  /// Review of M2, finding 4: a lookup never writes acquired, money or a grade, nor an empty title.
+  @Test func aLookupLeavesTheCollectorsKeysAlone() throws {
+    var harness = Harness()
+    let id = try harness.add(ownership: .wanted)
+    let euro = try #require(Currency("EUR"))
+    let events = try harness.perform(
+      .applyLookup(
+        id,
+        values: [
+          .acquired: .date(Harness.start), .paid: .money(Money(minorUnits: 100, currency: euro)),
+          .condition: .text("Mint"), .axis("boxCondition"): .text("Good"), .title: .text(""),
+        ]
+      ),
+      as: .lookup
+    )
+    #expect(events.isEmpty)
+  }
+
+  /// Review of M2, finding 5: clearing a value is the collector's decision too.
+  @Test func aClearedKeyStaysCleared() throws {
+    var harness = Harness()
+    let id = try harness.add(values: [.year: .year(1998)])
+    try harness.perform(.edit(id, values: [.year: nil]))
+    #expect(try harness.perform(.applyLookup(id, values: [.year: .year(1999)]), as: .lookup).isEmpty)
+    #expect(harness.shelf.objects[id]?.values[.year] == nil)
+  }
+
+  /// Review of M2, finding 6: an origin must come from its source, so nothing else can claim to be the collector.
+  @Test func anOriginMustComeFromItsSource() throws {
+    var harness = Harness()
+    let draft = ObjectDraft(type: "thing", values: [.title: .text("Robot")])
+    for (origin, source) in [
+      (AddOrigin.typed, ShelfEvent.Source.lookup), (.typed, .capture), (.captured, .collector), (.imported, .collector),
+    ] {
+      #expect(throws: ShelfRuleViolation.originMismatch) {
+        try harness.perform(.add(draft, to: .new(name: "Things"), origin: origin), as: source)
+      }
+    }
+  }
+
+  @Test func whenAWantedObjectArrivesItsHuntEnds() throws {
+    var harness = Harness()
+    let id = try harness.add(ownership: .wanted)
+    try harness.perform(.setWanted(id, priority: 1, priceCap: nil))
+    try harness.perform(.setOwned(id))
+    #expect(harness.shelf.objects[id]?.priority == nil)
+    #expect(harness.shelf.objects[id]?.counts == true)
   }
 
   @Test func theSameCommandOnTheSameShelfPlansTheSameEvents() throws {

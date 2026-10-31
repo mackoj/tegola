@@ -21,6 +21,7 @@ import Testing
       workID: nil,
       values: [.title: .text("Radiant Silvergun"), .paid: .money(Money(minorUnits: 12_000, currency: euro))],
       auto: [.field("publisher")],
+      typed: [.title],
       placeID: nil,
       bulk: .rows,
       quantity: 1,

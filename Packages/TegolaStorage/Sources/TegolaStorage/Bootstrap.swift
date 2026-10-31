@@ -14,11 +14,7 @@ extension DependencyValues {
   /// Opens the app's database and runs the migrations. `reset` starts from an empty shelf and `seed` plants the seed
   /// shelf on an empty one: both are the UI tests' launch arguments, and debug builds only (PLAN §2.6).
   public mutating func bootstrapDatabase(reset: Bool = false, seed: Bool = false) throws {
-    var configuration = Configuration()
-    configuration.prepareDatabase { db in
-      db.add(function: $uuid)
-    }
-    let database = try SQLiteData.defaultDatabase(configuration: configuration)
+    let database = try SQLiteData.defaultDatabase(configuration: ShelfStore.configuration())
     #if DEBUG
       if reset { try database.erase() }
     #endif

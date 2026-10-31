@@ -108,7 +108,9 @@
         try add(boardGame("Brass: Birmingham", "Gavan Brown"), in: "Board games")
         let azul = try add(boardGame("Azul", "Michael Kiesling"), in: "Board games")
         try perform(.letGo(azul, .gifted))
-        let root = try add(boardGame("Root", "Cole Wehrle"), in: "Board games")
+        var borrowed = boardGame("Root", "Cole Wehrle")
+        borrowed.ownership = .borrowed
+        let root = try add(borrowed, in: "Board games")
         try perform(.markBorrowed(root, from: .new(name: "Léa")))
 
         // Things: a count, and one that needs details.

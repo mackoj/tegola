@@ -39,8 +39,9 @@ import Testing
         let isCollectorEdit = if case .edit = command { source == .collector } else { false }
         if !isCollectorEdit {
           for (id, old) in before.objects {
-            for (key, value) in old.values where !old.auto.contains(key) {
-              #expect(after.objects[id]?.values[key] == value, "typed \(key) changed: \(context)")
+            // Typed and cleared keys alike: a cleared key stays empty.
+            for key in old.typed {
+              #expect(after.objects[id]?.values[key] == old.values[key], "typed \(key) changed: \(context)")
             }
           }
         }
@@ -64,7 +65,7 @@ import Testing
           let confirmedByCollector: Bool =
             switch command {
             case .confirm: source == .collector
-            case .add(_, _, let origin): origin != .captured
+            case .add(_, _, let origin): origin != .captured && source != .capture && source != .lookup
             case .promote: true
             default: false
             }

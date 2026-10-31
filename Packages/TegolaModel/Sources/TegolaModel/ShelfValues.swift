@@ -29,6 +29,8 @@ public struct ShelfObject: Hashable, Sendable, Codable, Identifiable {
   /// Keys a lookup filled and the collector hasn't touched since: badged AUTO, and the only ones a lookup may
   /// change again (PD-042, PD-045).
   public var auto: Set<FieldKey>
+  /// Keys the collector has typed or cleared. A lookup never fills one again, even once it's empty (promise 1).
+  public var typed: Set<FieldKey>
   public var placeID: PlaceID?
   public let bulk: Bulk
   public var quantity: Int

@@ -45,14 +45,15 @@ public struct CommandGenerator {
     return effective.visibleFields.first { $0.field.kind == .text }.map { .field($0.key) }
   }
 
-  mutating func values(_ shelf: Shelf, allowAcquired: Bool) -> [FieldKey: FieldValue] {
+  /// `acquired` is recorded as supplied only when the collector supplies it; a lookup's offer of one must be dropped.
+  mutating func values(_ shelf: Shelf, allowAcquired: Bool, recordAcquired: Bool = true) -> [FieldKey: FieldValue] {
     var values: [FieldKey: FieldValue] = [:]
     if chance(50) { values[.notes] = .text(pick(Self.notes)) }
     if chance(40) { values[.year] = .year(pick([1994, 1998, 2001])) }
     if let key = textField(shelf), chance(50) { values[key] = .text(pick(["A", "B", "C"])) }
     if allowAcquired && chance(30) {
       let date = pick(Self.acquired)
-      suppliedAcquired.insert(date)
+      if recordAcquired { suppliedAcquired.insert(date) }
       values[.acquired] = .date(date)
     }
     return values
@@ -64,10 +65,14 @@ public struct CommandGenerator {
     let loans = shelf.loans.values.filter(\.isOpen).map(\.id).sorted()
     let collection = shelf.collections.values.first { $0.typeID == type }
     guard let object = objects.isEmpty ? nil : pick(objects), chance(85) else {
-      var draft = ObjectDraft(type: type, values: values(shelf, allowAcquired: true))
+      // Half the objects take a subtype, so presets, hidden fields and additions are exercised too.
+      let subtypes = catalogue.manifest(type)?.subtypes.map(\.key) ?? []
+      let subtype = subtypes.isEmpty || chance(50) ? nil : pick(subtypes)
+      var draft = ObjectDraft(type: type, subtype: subtype, values: values(shelf, allowAcquired: true))
       draft.values[.title] = .text(pick(Self.titles))
       draft.ownership = pick([.owned, .owned, .owned, .wanted])
       if draft.ownership == .wanted { draft.values[.acquired] = nil }
+      if chance(10) { draft.ownership = .borrowed }
       if type == "thing" && chance(50) {
         draft.bulk = .quantity
         draft.quantity = Int.random(in: 1...4, using: &random)
@@ -76,20 +81,21 @@ public struct CommandGenerator {
       let source: ShelfEvent.Source = origin == .captured ? .capture : origin == .imported ? .import : .collector
       return (.add(draft, to: collection.map { .existing($0.id) } ?? .new(name: "Mine"), origin: origin), source)
     }
-    switch Int.random(in: 0..<14, using: &random) {
+    switch Int.random(in: 0..<15, using: &random) {
     case 0: return (.confirm([object]), pick([.collector, .lookup]))
     case 1:
       let edits = values(shelf, allowAcquired: true).mapValues { Optional($0) }
       return (.edit(object, values: edits), pick([.collector, .collector, .lookup]))
     case 2, 3:
       // A lookup offers values for any key, typed or not; it must only fill the empty and the AUTO ones.
-      var offered = values(shelf, allowAcquired: false)
+      var offered = values(shelf, allowAcquired: true, recordAcquired: false)
       offered[.title] = .text(pick(Self.titles))
       return (.applyLookup(object, values: offered), .lookup)
     case 4: return (.setPlace([object], PlacePath(typed: pick(["Office › Shelf 2", "Attic", "Office"]))), .collector)
     case 5: return (.lend(object, to: .new(name: pick(["Max", "Léa"])), due: nil, note: ""), .collector)
     case 6: return (loans.isEmpty ? .giveBack(object) : .returnLoan(pick(loans), condition: nil), .collector)
     case 7: return (.markBorrowed(object, from: .new(name: "Léa")), .collector)
+    case 13: return (.edit(object, values: [pick([FieldKey.year, .notes]): nil]), .collector)
     case 8: return (.letGo(object, pick([.gifted, .lost, .sold(price: nil)])), .collector)
     case 9: return (.promote(object), .collector)
     case 10: return (.adjustQuantity(object, by: pick([-1, 1, 2])), .collector)

@@ -2,8 +2,9 @@ public import Foundation
 public import SQLiteData
 import TegolaModel
 
-// The rows, as SQLite holds them (PLAN §3.2). Each projection row keeps its model value as JSON in `data`, which is
-// what's read back, exactly. The other columns are copies of parts of it for queries, indexes and screens, written
+// The rows, as SQLite holds them (PLAN §3.2). Each row keeps its model value as JSON in `data`, which is what's read
+// back, exactly: Foundation's coders keep a date's every digit, where SQLite's text dates and StructuredQueries' JSON
+// coders keep milliseconds. The other columns are copies of parts of it for queries, indexes and screens, written
 // from the same value in the same statement (D-39).
 
 /// The event log: append-only, the source of truth.
@@ -15,10 +16,10 @@ struct EventRow: Identifiable {
   var batchID: UUID?
   /// `ShelfEvent.Kind.name`: what the History slot filters on.
   var kind: String
-  @Column(as: ShelfEvent.Kind.JSONRepresentation.self)
-  var payload: ShelfEvent.Kind
   var at: Date
   var source: String
+  /// The whole event as JSON (`StoredJSON`), read back exactly (D-39): `at` in its own column keeps milliseconds.
+  var data: String
 }
 
 @Table("collections")
@@ -29,8 +30,8 @@ struct CollectionRow: Identifiable {
   var sortKey: Int
   var createdAt: Date
   var deletedAt: Date?
-  @Column(as: ShelfCollection.JSONRepresentation.self)
-  var data: ShelfCollection
+  /// The model value as JSON (`StoredJSON`).
+  var data: String
 }
 
 @Table("objects")
@@ -50,8 +51,8 @@ struct ObjectRow: Identifiable {
   var createdAt: Date
   var updatedAt: Date
   var deletedAt: Date?
-  @Column(as: ShelfObject.JSONRepresentation.self)
-  var data: ShelfObject
+  /// The model value as JSON (`StoredJSON`).
+  var data: String
 }
 
 @Table("works")
@@ -60,8 +61,8 @@ struct WorkRow: Identifiable {
   var title: String
   var typeID: String
   var deletedAt: Date?
-  @Column(as: Work.JSONRepresentation.self)
-  var data: Work
+  /// The model value as JSON (`StoredJSON`).
+  var data: String
 }
 
 @Table("places")
@@ -71,8 +72,8 @@ struct PlaceRow: Identifiable {
   var parentID: UUID?
   var createdAt: Date
   var deletedAt: Date?
-  @Column(as: Place.JSONRepresentation.self)
-  var data: Place
+  /// The model value as JSON (`StoredJSON`).
+  var data: String
 }
 
 @Table("persons")
@@ -81,8 +82,8 @@ struct PersonRow: Identifiable {
   var name: String
   var lastUsedAt: Date
   var deletedAt: Date?
-  @Column(as: Person.JSONRepresentation.self)
-  var data: Person
+  /// The model value as JSON (`StoredJSON`).
+  var data: String
 }
 
 @Table("loans")
@@ -95,8 +96,8 @@ struct LoanRow: Identifiable {
   var openedAt: Date
   var closedAt: Date?
   var deletedAt: Date?
-  @Column(as: Loan.JSONRepresentation.self)
-  var data: Loan
+  /// The model value as JSON (`StoredJSON`).
+  var data: String
 }
 
 extension ShelfStore {
@@ -114,16 +115,31 @@ extension ShelfStore {
           "objectID" TEXT,
           "batchID" TEXT,
           "kind" TEXT NOT NULL,
-          "payload" TEXT NOT NULL,
           "at" TEXT NOT NULL,
-          "source" TEXT NOT NULL
+          "source" TEXT NOT NULL,
+          "data" TEXT NOT NULL
         ) STRICT
+        """
+      )
+      .execute(db)
+      // History only appends (PD-051): SQLite itself refuses to change or remove an event.
+      try #sql(
+        """
+        CREATE TRIGGER "events_are_append_only_update" BEFORE UPDATE ON "events"
+        BEGIN SELECT RAISE(ABORT, 'events are append-only'); END
+        """
+      )
+      .execute(db)
+      try #sql(
+        """
+        CREATE TRIGGER "events_are_append_only_delete" BEFORE DELETE ON "events"
+        BEGIN SELECT RAISE(ABORT, 'events are append-only'); END
         """
       )
       .execute(db)
       try #sql(#"CREATE INDEX "index_events_on_objectID" ON "events"("objectID")"#).execute(db)
       try #sql(#"CREATE INDEX "index_events_on_batchID" ON "events"("batchID")"#).execute(db)
-      try #sql(#"CREATE INDEX "index_events_on_at_seq" ON "events"("at", "seq")"#).execute(db)
+      try #sql(#"CREATE INDEX "index_events_on_seq" ON "events"("seq")"#).execute(db)
       try #sql(
         """
         CREATE TABLE "collections" (
@@ -219,5 +235,19 @@ extension ShelfStore {
       try #sql(#"CREATE INDEX "index_loans_on_objectID" ON "loans"("objectID")"#).execute(db)
     }
     return migrator
+  }
+}
+
+/// The JSON the `data` columns hold: Foundation's coders, keys sorted so the same value is the same text.
+enum StoredJSON {
+  static func encode(_ value: some Encodable) -> String {
+    let encoder = JSONEncoder()
+    encoder.outputFormatting = [.sortedKeys]
+    // Encoding a model value can't fail: every one is plain Codable data.
+    return String(decoding: (try? encoder.encode(value)) ?? Data("null".utf8), as: UTF8.self)
+  }
+
+  static func decode<T: Decodable>(_ type: T.Type, from text: String) throws -> T {
+    try JSONDecoder().decode(type, from: Data(text.utf8))
   }
 }

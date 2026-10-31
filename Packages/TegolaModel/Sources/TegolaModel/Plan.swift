@@ -57,6 +57,9 @@ public enum ShelfRuleViolation: Error, Hashable, Sendable {
   case alreadyLetGo
   case alreadyOnLoan
   case notOnLoan
+  /// An origin from the wrong source: only the collector types, only a capture captures, only an import imports.
+  case originMismatch
+  case notBorrowed
 }
 
 /// Turns a command into the events that carry it out, or refuses it. Pure: the same command on the same shelf with
@@ -124,9 +127,12 @@ struct Planner {
     case .applyLookup(let id, let values):
       let object = try object(id)
       try checkKeys(values.keys, on: object)
-      // Promise 1: a lookup fills empty keys and keys it filled itself, never one the collector typed (PD-045).
+      // Promise 1: a lookup fills empty keys and keys it filled itself, never one the collector typed or cleared
+      // (PD-045). It never writes `acquired` (promise 7), money, or a grade: those are the collector's.
       let changes = values.filter { key, value in
-        (object.values[key] == nil || object.auto.contains(key)) && object.values[key] != value
+        !Self.collectorOnlyKeys(key) && !object.typed.contains(key)
+          && (object.values[key] == nil || object.auto.contains(key)) && object.values[key] != value
+          && !(key == .title && !Self.isNonEmptyText(value))
       }
       if !changes.isEmpty { emit(.enriched(id, changes: changes)) }
     case .setPlace(let ids, let path):
@@ -146,6 +152,8 @@ struct Planner {
     case .markBorrowed(let id, let choice):
       let object = try object(id)
       guard object.letGo == nil else { throw .alreadyLetGo }
+      // Someone else's object, added as borrowed: marking one of the collector's own would drop it from the counts.
+      guard object.ownership == .borrowed else { throw .notBorrowed }
       guard shelf.openLoan(on: id) == nil else { throw .alreadyOnLoan }
       let personID = try person(choice)
       emit(.borrowed(loan(id, personID, direction: .in, due: nil, note: "")))
@@ -230,7 +238,8 @@ struct Planner {
       switch key {
       case .title, .subtitle, .year, .acquired, .paid, .value, .condition, .notes: continue
       case .field(let name):
-        if type.field(name) == nil { throw .unknownField(key) }
+        // A scale is graded through its ladder axis, so the condition rules see every grade (`.axis`).
+        guard let field = type.field(name), field.field.kind != .scale else { throw .unknownField(key) }
       case .axis(let name):
         if type.field(name)?.field.kind != .scale { throw .unknownField(key) }
       }
@@ -239,6 +248,18 @@ struct Planner {
 
   func checkKeys(_ keys: some Sequence<FieldKey>, on object: ShelfObject) throws(ShelfRuleViolation) {
     try checkKeys(keys, type: try effectiveType(object.typeID, object.subtype))
+  }
+
+  /// Keys only a collector writes: when it was acquired, what it cost and is worth, and how it's graded.
+  static func collectorOnlyKeys(_ key: FieldKey) -> Bool {
+    switch key {
+    case .acquired, .paid, .value, .condition, .axis: true
+    default: false
+    }
+  }
+
+  static func isNonEmptyText(_ value: FieldValue?) -> Bool {
+    if case .text(let text) = value { !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty } else { false }
   }
 
   static func hasCondition(_ keys: some Sequence<FieldKey>) -> Bool {
@@ -259,6 +280,13 @@ struct Planner {
     } else {
       hasTitle = false
     }
+    let expected: ShelfEvent.Source =
+      switch origin {
+      case .typed, .firstPiece: .collector
+      case .captured: .capture
+      case .imported: .import
+      }
+    guard context.source == expected else { throw .originMismatch }
     let needsDetails = origin == .captured && draft.needsDetails
     guard hasTitle || needsDetails else { throw .emptyTitle }
     let bulk: ShelfObject.Bulk =
@@ -295,6 +323,7 @@ struct Planner {
       workID: nil,
       values: draft.values,
       auto: [],
+      typed: origin == .captured ? [] : Set(draft.values.keys),
       placeID: nil,
       bulk: bulk,
       quantity: draft.quantity,
@@ -352,6 +381,7 @@ struct Planner {
       workID: object.workID,
       values: object.values,
       auto: object.auto,
+      typed: object.typed,
       placeID: object.placeID,
       bulk: .rows,
       quantity: 1,
@@ -442,6 +472,7 @@ extension Shelf {
           object.values[key] = value
           // The collector touched it, so it's theirs now: no AUTO badge, and no lookup changes it again.
           object.auto.remove(key)
+          object.typed.insert(key)
         }
       }
     case .enriched(let id, let changes):
@@ -469,7 +500,15 @@ extension Shelf {
       loans[id]?.closedAt = at
       loans[id]?.closedBy = .collector
     case .logged(let id, _, _): touch(id) { _ in }
-    case .ownershipChanged(let id, let ownership): touch(id) { $0.ownership = ownership }
+    case .ownershipChanged(let id, let ownership):
+      touch(id) { object in
+        object.ownership = ownership
+        // It arrived: the hunt's priority and price cap no longer apply.
+        if ownership == .owned {
+          object.priority = nil
+          object.priceCap = nil
+        }
+      }
     case .wanted(let id, let priority, let priceCap):
       touch(id) { object in
         object.priority = priority

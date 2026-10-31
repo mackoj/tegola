@@ -28,7 +28,17 @@ public struct ShelfStore: Sendable {
   public let database: any DatabaseWriter
   public let catalogue: Catalogue
 
-  /// Opens the store and runs the migrations.
+  /// What every connection to the shelf's database needs: `uuid()` for `SyncEngine`'s key defaults, backed by the
+  /// `uuid` dependency. The platform's SQLite may not have one (Linux's doesn't).
+  public static func configuration(_ base: Configuration = Configuration()) -> Configuration {
+    var configuration = base
+    configuration.prepareDatabase { db in
+      db.add(function: $uuid)
+    }
+    return configuration
+  }
+
+  /// Opens the store and runs the migrations. The database must have been opened with `configuration`.
   public init(database: any DatabaseWriter, catalogue: Catalogue) throws {
     try Self.migrator.migrate(database)
     self.database = database
@@ -64,7 +74,9 @@ public struct ShelfStore: Sendable {
   /// An object's events, oldest first: what the History slot reads, before it filters by kind.
   public func history(of object: ObjectID) throws -> [ShelfEvent] {
     try database.read { db in
-      try EventRow.where { $0.objectID.eq(object.rawValue) }.order { ($0.at, $0.seq) }.fetchAll(db).map(\.event)
+      try EventRow.where { $0.objectID.eq(object.rawValue) }.order(by: \.seq).fetchAll(db).map {
+        try StoredJSON.decode(ShelfEvent.self, from: $0.data)
+      }
     }
   }
 
@@ -83,18 +95,38 @@ public struct ShelfStore: Sendable {
     }
   }
 
+  /// In the order the commands ran. On one device that's `seq`, whatever the clock did; events from several devices
+  /// will merge by `at` once sync adds a device column (D-24).
   static func loadLog(_ db: Database) throws -> [ShelfEvent] {
-    try EventRow.order { ($0.at, $0.seq) }.fetchAll(db).map(\.event)
+    try EventRow.order(by: \.seq).fetchAll(db).map { try StoredJSON.decode(ShelfEvent.self, from: $0.data) }
   }
 
   static func loadShelf(_ db: Database) throws -> Shelf {
     var shelf = Shelf()
-    for row in try CollectionRow.fetchAll(db) { shelf.collections[row.data.id] = row.data }
-    for row in try ObjectRow.fetchAll(db) { shelf.objects[row.data.id] = row.data }
-    for row in try WorkRow.fetchAll(db) { shelf.works[row.data.id] = row.data }
-    for row in try PlaceRow.fetchAll(db) { shelf.places[row.data.id] = row.data }
-    for row in try PersonRow.fetchAll(db) { shelf.persons[row.data.id] = row.data }
-    for row in try LoanRow.fetchAll(db) { shelf.loans[row.data.id] = row.data }
+    for row in try CollectionRow.fetchAll(db) {
+      let value = try StoredJSON.decode(ShelfCollection.self, from: row.data)
+      shelf.collections[value.id] = value
+    }
+    for row in try ObjectRow.fetchAll(db) {
+      let value = try StoredJSON.decode(ShelfObject.self, from: row.data)
+      shelf.objects[value.id] = value
+    }
+    for row in try WorkRow.fetchAll(db) {
+      let value = try StoredJSON.decode(Work.self, from: row.data)
+      shelf.works[value.id] = value
+    }
+    for row in try PlaceRow.fetchAll(db) {
+      let value = try StoredJSON.decode(Place.self, from: row.data)
+      shelf.places[value.id] = value
+    }
+    for row in try PersonRow.fetchAll(db) {
+      let value = try StoredJSON.decode(Person.self, from: row.data)
+      shelf.persons[value.id] = value
+    }
+    for row in try LoanRow.fetchAll(db) {
+      let value = try StoredJSON.decode(Loan.self, from: row.data)
+      shelf.loans[value.id] = value
+    }
     shelf.lastSeq = try EventRow.select { $0.seq.max() }.fetchOne(db).flatMap { $0 } ?? 0
     return shelf
   }
@@ -131,20 +163,9 @@ extension EventRow {
       objectID: event.objectID?.rawValue,
       batchID: event.batchID?.rawValue,
       kind: event.kind.name,
-      payload: event.kind,
       at: event.at,
-      source: event.source.rawValue
-    )
-  }
-
-  var event: ShelfEvent {
-    ShelfEvent(
-      id: EventID(id),
-      seq: seq,
-      at: at,
-      source: ShelfEvent.Source(rawValue: source) ?? .app,
-      batchID: batchID.map(BatchID.init),
-      kind: payload
+      source: event.source.rawValue,
+      data: StoredJSON.encode(event)
     )
   }
 }
@@ -158,7 +179,7 @@ extension CollectionRow {
       sortKey: value.sortKey,
       createdAt: value.createdAt,
       deletedAt: nil,
-      data: value
+      data: StoredJSON.encode(value)
     )
   }
 }
@@ -181,14 +202,20 @@ extension ObjectRow {
       createdAt: value.createdAt,
       updatedAt: value.updatedAt,
       deletedAt: nil,
-      data: value
+      data: StoredJSON.encode(value)
     )
   }
 }
 
 extension WorkRow {
   init(_ value: Work) {
-    self.init(id: value.id.rawValue, title: value.title, typeID: value.typeID.rawValue, deletedAt: nil, data: value)
+    self.init(
+      id: value.id.rawValue,
+      title: value.title,
+      typeID: value.typeID.rawValue,
+      deletedAt: nil,
+      data: StoredJSON.encode(value)
+    )
   }
 }
 
@@ -200,14 +227,20 @@ extension PlaceRow {
       parentID: value.parentID?.rawValue,
       createdAt: value.createdAt,
       deletedAt: nil,
-      data: value
+      data: StoredJSON.encode(value)
     )
   }
 }
 
 extension PersonRow {
   init(_ value: Person) {
-    self.init(id: value.id.rawValue, name: value.name, lastUsedAt: value.lastUsedAt, deletedAt: nil, data: value)
+    self.init(
+      id: value.id.rawValue,
+      name: value.name,
+      lastUsedAt: value.lastUsedAt,
+      deletedAt: nil,
+      data: StoredJSON.encode(value)
+    )
   }
 }
 
@@ -222,7 +255,7 @@ extension LoanRow {
       openedAt: value.openedAt,
       closedAt: value.closedAt,
       deletedAt: nil,
-      data: value
+      data: StoredJSON.encode(value)
     )
   }
 }

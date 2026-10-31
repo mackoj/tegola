@@ -1,3 +1,4 @@
+import Dependencies
 import Foundation
 import SQLiteData
 import TegolaCatalogue
@@ -15,7 +16,10 @@ struct StoreHarness {
   var clock = Date(timeIntervalSince1970: 1_800_000_000)
 
   init() throws {
-    store = try ShelfStore(database: DatabaseQueue(), catalogue: Self.catalogue)
+    store = try ShelfStore(
+      database: DatabaseQueue(configuration: ShelfStore.configuration()),
+      catalogue: Self.catalogue
+    )
   }
 
   func context(_ source: ShelfEvent.Source = .collector) -> PlanContext {
@@ -79,19 +83,65 @@ struct StoreHarness {
     #expect(second.events.map(\.seq) == [3])
   }
 
-  /// SyncEngine's rule: a row inserted without an id gets one from `uuid()` (D-24).
-  @Test func aRowWithoutAnIdGetsOne() throws {
+  /// SyncEngine's rule: a row inserted without an id gets one from `uuid()`, which the `uuid` dependency backs, so
+  /// it's deterministic (D-24). Review of M2, finding 7: the platform's own `uuid()` hid that none was registered.
+  @Test func aRowWithoutAnIdGetsOneFromTheDependency() throws {
     let harness = try StoreHarness()
-    try harness.store.database.write { db in
-      try #sql(
-        """
-        INSERT INTO "persons" ("name", "lastUsedAt", "data") VALUES ('Max', '2026-10-31 00:00:00.000', '{}')
-        """
-      )
-      .execute(db)
+    try withDependencies {
+      $0.uuid = .incrementing
+    } operation: {
+      try harness.store.database.write { db in
+        try #sql(
+          """
+          INSERT INTO "persons" ("name", "lastUsedAt", "data") VALUES ('Max', '2026-10-31 00:00:00.000', '{}')
+          """
+        )
+        .execute(db)
+      }
     }
-    let count = try harness.store.database.read { db in try PersonRow.where { $0.id.isNot(nil) }.fetchCount(db) }
-    #expect(count == 1)
+    let ids = try harness.store.database.read { db in try PersonRow.select(\.id).fetchAll(db) }
+    #expect(ids == [UUID(0)])
+  }
+
+  /// History only appends (PD-051), and SQLite enforces it. Review of M2, finding 8.
+  @Test func theLogCantBeChangedOrEmptied() throws {
+    var harness = try StoreHarness()
+    try harness.perform(.createCollection(name: "Games", type: nil))
+    #expect(throws: (any Error).self) {
+      try harness.store.database.write { db in try #sql(#"UPDATE "events" SET "kind" = 'x'"#).execute(db) }
+    }
+    #expect(throws: (any Error).self) {
+      try harness.store.database.write { db in try #sql(#"DELETE FROM "events""#).execute(db) }
+    }
+    #expect(try harness.store.log().count == 1)
+  }
+
+  /// Review of M2, finding 1: a real clock has sub-millisecond times, and the rebuild must still match.
+  @Test func aRealClockRebuildsExactly() throws {
+    var harness = try StoreHarness()
+    harness.clock = Date(timeIntervalSince1970: 1_800_000_000.123456)
+    let id = try #require(
+      try harness.perform(.add(Self.draft("Doom"), to: .new(name: "Games"), origin: .typed)).createdObjects.first
+    )
+    let second = try harness.perform(.logEvent(id, kind: "cleaned", note: ""))
+    let live = try harness.store.shelf()
+    #expect(try harness.store.log().suffix(1) == second.events)
+    try harness.store.rebuildProjection()
+    #expect(try harness.store.shelf() == live)
+  }
+
+  /// Review of M2, finding 2: the log replays in the order commands ran, even when the clock goes back.
+  @Test func aClockGoingBackDoesntReorderTheLog() throws {
+    var harness = try StoreHarness()
+    let id = try #require(
+      try harness.perform(.add(Self.draft("Doom"), to: .new(name: "Games"), origin: .typed)).createdObjects.first
+    )
+    harness.clock += 1000
+    try harness.perform(.edit(id, values: [.notes: .text("first")]))
+    harness.clock -= 2000
+    try harness.perform(.edit(id, values: [.notes: .text("second")]))
+    try harness.store.rebuildProjection()
+    #expect(try harness.store.shelf().objects[id]?.values[.notes] == .text("second"))
   }
 
   /// The replay test (PLAN §3.1): for random command sequences on every v1 type, rebuilding the projection from the
