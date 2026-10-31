@@ -1,0 +1,224 @@
+id: music
+version: 1
+name:
+  hobby: Music
+  singular: Release
+  plural: Releases
+  collection: My Music
+mark: "33⅓"            # overridden per medium below
+icon: opticaldisc
+gradient: [teal, cobalt]
+
+# Every copy is its own object: its own condition, price and history.
+duplicates: rows
+
+spine:
+  title: Album
+  subtitle: Artist
+  year: Year
+  acquired: Acquired on
+  paid: Paid
+  value: Value
+
+# The Goldmine scale, which Discogs returns for every medium here. It grades
+# the media; the packaging is graded separately, below.
+conditions: [Mint, Near Mint, VG+, VG, Good, Fair, Poor]
+
+lookup:
+  identifier: barcode
+  symbologies: [ean13, upc-a]
+  providers: [discogs, musicbrainz]
+
+searchable: [title, subtitle, year, catalogNumber, tracklist, label]
+
+# Scanning in a shop answers "do I already own something like this?"
+related: [subtitle, label]
+
+# One type, four media. The medium decides the mark on the shelf tile, what the
+# packaging is called, which formats exist and which fields are worth showing —
+# the same move video-game makes with its media field.
+mediumRules:
+  vinyl:
+    mark: "33⅓"
+    packagingLabel: Sleeve
+    serviceLabel: Last cleaned
+    formats: ["LP", "2×LP", "7\"", "10\"", "12\"", "Box set"]
+    fields: [discColour, rpm]
+  cd:
+    mark: DDD
+    packagingLabel: Case
+    serviceLabel: Last checked for rot
+    formats: [CD, "2×CD", "3×CD", CD Single, Maxi-single, Box set]
+    fields: [discFormat, packaging, booklet, obi, matrixCode, sparsCode]
+  cassette:
+    mark: C90
+    packagingLabel: J-card
+    serviceLabel: Last respooled
+    formats: [Cassette, "2×Cassette", Single, Maxi-single, Box set, Demo]
+    fields: [tapeType, noiseReduction, shellColour, runtime]
+  other:
+    mark: REL
+    packagingLabel: Packaging
+    serviceLabel: Last serviced
+    formats: [MiniDisc, Reel-to-reel, 8-track, DAT, Other]
+    fields: []
+
+fields:
+  - key: medium
+    label: Medium
+    type: choice
+    options: [Vinyl, CD, Cassette, Other]
+    note: drives mediumRules
+    required: true
+    sample: Vinyl
+  - key: format
+    label: Format
+    type: choice
+    note: options come from the medium
+    options: ["LP", "2×LP", "7\"", "10\"", "12\"", "Box set", CD, "2×CD", "3×CD", CD Single,
+              Maxi-single, Cassette, "2×Cassette", Single, Demo, MiniDisc, Reel-to-reel,
+              8-track, DAT, Other]
+    sample: "2×LP"
+    auto: true
+  # Sleeve, case or J-card: one field, named by the medium. Collectors quote it
+  # alongside the media grade in every listing.
+  - key: packagingCondition
+    label: Packaging condition
+    type: choice
+    options: [Mint, Near Mint, VG+, VG, Good, Fair, Poor, Missing]
+    sample: "VG+"
+  - key: label
+    label: Label
+    type: text
+    sample: Steel Wool
+    auto: true
+  - key: catalogNumber
+    label: Catalogue number
+    type: text
+    sample: OBS-1287
+    auto: true
+  - key: pressing
+    label: Pressing
+    type: text
+    sample: First pressing
+    auto: true
+  - key: country
+    label: Country
+    type: text
+    sample: US
+    auto: true
+  - key: signed
+    label: Signed
+    type: yesNo
+    sample: "No"
+  - key: tracklist
+    label: Tracklist
+    type: list
+    entry: [position, title, duration]
+    sample: 16 entries
+    auto: true
+  # Care is something you do, not a fact about the object, and what it is called
+  # depends on the medium: cleaning a record, respooling a tape, holding a disc
+  # up to the light.
+  - key: lastServiced
+    label: Last serviced
+    type: event
+    sample: 3 Feb 2026
+
+  # Vinyl
+  - key: discColour
+    label: Disc colour
+    type: choice
+    options: [Black, Coke-bottle clear, Splatter, Marbled, Picture disc, Clear, Other]
+    sample: Coke-bottle clear
+  - key: rpm
+    label: Speed
+    type: choice
+    options: ["33⅓", "45", "78"]
+    sample: "33⅓"
+    auto: true
+
+  # CD
+  - key: discFormat
+    label: Disc format
+    type: choice
+    options: [CD, HDCD, SACD, Enhanced CD, CD-R, Shaped disc, Blu-spec CD, Other]
+    sample: CD
+    auto: true
+  - key: packaging
+    label: Packaging
+    type: choice
+    options: [Jewel case, Slimline case, Fatbox, Digipak, Digisleeve, Card sleeve, Longbox, None]
+    sample: Digipak
+    auto: true
+  - key: booklet
+    label: Booklet
+    type: yesNo
+    sample: "Yes"
+  # Japanese pressings live and die by the paper strip down the spine; a listing
+  # without it is a different price.
+  - key: obi
+    label: Obi strip
+    type: yesNo
+    sample: "No"
+  # The runout ring names the plant that pressed it, which is what separates a
+  # first pressing from a repress when the sleeve is identical.
+  - key: matrixCode
+    label: Matrix code
+    type: text
+    sample: "IFPI L553 · 7243 8 12345 2 6"
+    auto: true
+  - key: sparsCode
+    label: SPARS code
+    type: choice
+    options: [AAD, ADD, DDD, Unknown]
+    sample: DDD
+    auto: true
+
+  # Cassette
+  - key: tapeType
+    label: Tape type
+    type: choice
+    options: ["Type I · Ferric", "Type II · Chrome", "Type III · FeCr", "Type IV · Metal"]
+    sample: "Type II · Chrome"
+    auto: true
+  - key: noiseReduction
+    label: Noise reduction
+    type: choice
+    options: [None, Dolby B, Dolby C, Dolby S, Dolby HX Pro, dbx]
+    sample: Dolby B
+    auto: true
+  - key: shellColour
+    label: Shell colour
+    type: choice
+    options: [Black, White, Clear, Smoke, Coloured, Chrome, Other]
+    sample: Clear
+  - key: runtime
+    label: Runtime
+    type: number
+    unit: min
+    sample: "90"
+    auto: true
+
+# The three types this one replaces. Old key -> new key; anything absent
+# survives as the collector's own field, so a merge can never lose a value.
+# "sets" fills the medium, which the old types expressed by being separate.
+supersedes:
+  - type: official/vinyl@1
+    sets:
+      medium: Vinyl
+    fields:
+      sleeveCondition: packagingCondition
+      lastCleaned: lastServiced
+  - type: official/compact-discs@1
+    sets:
+      medium: CD
+    fields:
+      caseCondition: packagingCondition
+      lastInspected: lastServiced
+  - type: official/cassettes@1
+    sets:
+      medium: Cassette
+    fields:
+      jCardCondition: packagingCondition
+      lastRespooled: lastServiced

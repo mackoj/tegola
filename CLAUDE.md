@@ -4,7 +4,9 @@
 - Aggressively preserve context: summarize and clear history between distinct phases.
 - Offload heavy tasks, multi-file analysis and reviews to cloud agents when the work doesn't need the Mac.
   - Cloud runs have no Xcode, so app builds, snapshot tests and UI tests stay on the Mac. The pure packages
-    (`TegolaCatalogue`, `TegolaModel`, `TegolaInterchange`) build and test on Linux (`scripts/test-linux.sh`).
+    (`TegolaCatalogue`, `TegolaModel`, `TegolaInterchange`, `TegolaLookupAPI`, `TegolaTestSupport`, and
+    `TegolaDesignSystem`'s tokens) build and test on Linux (`scripts/test-linux.sh`); `tasks/HANDOFF.md` says how to
+    get a Swift toolchain in a cloud session.
   - Each prompt must stand alone. Point it at the repo docs, and restate the attribution rule (no Claude trailers or
     footers).
 - Continuously evaluate the test harness to reduce boilerplate and prompt token waste.

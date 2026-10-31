@@ -1,0 +1,71 @@
+id: sneakers
+name:
+  hobby: Sneakers
+  singular: Pair
+  plural: Pairs
+  collection: Sneakers
+mark: US10
+icon: shoe
+gradient: [yellow, orange]
+
+# Every copy is its own object: its own condition, price and history.
+duplicates: rows
+
+spine:
+  title: Model
+  subtitle: Brand
+  year: Released
+  acquired: Acquired on
+  paid: Paid
+  value: Value
+
+conditions: [Deadstock, VNDS, Lightly worn, Worn, Beaters]
+
+# No public database worth the name — StockX and GOAT have no open API. This is
+# the deliberate manual-entry type: whatever A3 designs for "no match" is what
+# sneakers get every single time, so it has to be good.
+lookup:
+  identifier: none
+  symbologies: []
+  providers: []
+
+searchable: [title, subtitle, colourway, styleCode]
+
+# Scanning in a shop answers \"do I already own something like this?\"
+related: [subtitle, colourway]
+
+fields:
+  - key: colourway
+    label: Colourway
+    type: text
+    sample: Chicago
+  - key: size
+    label: Size
+    type: number
+    unit: US
+    sample: "10"
+  - key: styleCode
+    label: Style code
+    type: text
+    sample: DZ5485-612
+  - key: releaseDate
+    label: Release date
+    type: date
+    sample: 14 Nov 2022
+  - key: boxIncluded
+    label: Original box
+    type: yesNo
+    sample: "Yes"
+  - key: timesWorn
+    label: Times worn
+    type: number
+    sample: "3"
+  - key: retailPrice
+    label: Retail price
+    type: money
+    sample: "€180"
+  - key: extras
+    label: Extras
+    type: list
+    entry: [name]
+    sample: 2 entries

@@ -1,0 +1,77 @@
+id: trading-cards
+name:
+  hobby: Trading cards
+  singular: Card
+  plural: Cards
+  collection: Trading Cards
+mark: TCG
+icon: rectangle.stack
+gradient: [pink, cobalt]
+
+# Bulk hobby: a duplicate is a count, not a new object. Cannot be lent
+# or sold as an individual object — see README.
+duplicates: quantity
+
+spine:
+  title: Card name
+  subtitle: Set
+  year: Printed
+  acquired: Acquired on
+  paid: Paid
+  value: Value
+
+conditions: [Gem Mint, Mint, Near Mint, Lightly played, Moderately played, Heavily played, Damaged]
+
+# Scryfall (Magic) and the Pokémon TCG API are both free, open and excellent, but
+# they are keyed by set and card number, not by barcode — a single card has no
+# barcode at all. The camera should read the card face, not a code.
+lookup:
+  identifier: none
+  symbologies: []
+  providers: [scryfall, pokemontcg]
+
+searchable: [title, subtitle, cardNumber, game]
+
+# Scanning in a shop answers \"do I already own something like this?\"
+related: [subtitle, game]
+
+fields:
+  - key: game
+    label: Game
+    type: choice
+    options: ["Magic: The Gathering", Pokémon, Yu-Gi-Oh!, Lorcana, One Piece, Sports, Other]
+    sample: Pokémon
+  - key: cardNumber
+    label: Card number
+    type: text
+    sample: 058/165
+    auto: true
+  - key: rarity
+    label: Rarity
+    type: choice
+    options: [Common, Uncommon, Rare, Holo rare, Ultra rare, Secret rare, Promo]
+    sample: Holo rare
+    auto: true
+  - key: foil
+    label: Foil
+    type: yesNo
+    sample: "Yes"
+  - key: language
+    label: Language
+    type: text
+    sample: English
+    auto: true
+  - key: gradedBy
+    label: Graded by
+    type: choice
+    options: [Raw, PSA, BGS, CGC, SGC]
+    sample: Raw
+  - key: grade
+    label: Grade
+    type: number
+    sample: "9"
+  - key: illustrator
+    label: Illustrator
+    type: text
+    sample: Mitsuhiro Arita
+    auto: true

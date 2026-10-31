@@ -1,0 +1,76 @@
+id: comics
+name:
+  hobby: Comics
+  singular: Issue
+  plural: Issues
+  collection: Comics
+mark: CGC
+icon: newspaper
+gradient: [rust, orange]
+
+# Every copy is its own object: its own condition, price and history.
+duplicates: rows
+
+spine:
+  title: Series
+  subtitle: Publisher
+  year: Published
+  acquired: Acquired on
+  paid: Paid
+  value: Value
+
+conditions: [Gem Mint, Near Mint, Very Fine, Fine, Very Good, Good, Fair, Poor]
+
+lookup:
+  identifier: barcode
+  symbologies: [ean13, upc-a]
+  providers: [comicvine, metron]
+
+searchable: [title, subtitle, issueNumber, writer, year]
+
+# Scanning in a shop answers \"do I already own something like this?\"
+related: [title, writer, subtitle]
+
+fields:
+  - key: issueNumber
+    label: Issue
+    type: number
+    sample: "129"
+    auto: true
+  - key: writer
+    label: Writer
+    type: text
+    sample: Chris Claremont
+    auto: true
+  - key: artist
+    label: Artist
+    type: text
+    sample: John Byrne
+    auto: true
+  - key: variant
+    label: Variant
+    type: text
+    sample: Newsstand
+  - key: keyIssue
+    label: Key issue
+    type: text
+    sample: 1st Kitty Pryde
+    auto: true
+  - key: gradedBy
+    label: Graded by
+    type: choice
+    options: [Raw, CGC, CBCS, PGX]
+    sample: CGC
+  - key: grade
+    label: Grade
+    type: number
+    sample: "9.4"
+  - key: slabbed
+    label: Slabbed
+    type: yesNo
+    sample: "Yes"
+  - key: pageQuality
+    label: Page quality
+    type: choice
+    options: [White, Off-white to white, Off-white, Cream, Tan, Brittle]
+    sample: Off-white

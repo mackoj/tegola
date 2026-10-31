@@ -1,0 +1,77 @@
+id: coins
+name:
+  hobby: Coins
+  singular: Coin
+  plural: Coins
+  collection: Coins
+mark: NUM
+icon: centsign.circle
+gradient: [yellow, rust]
+
+# Bulk hobby: a duplicate is a count, not a new object. Cannot be lent
+# or sold as an individual object — see README.
+duplicates: quantity
+
+spine:
+  title: Denomination
+  subtitle: Country
+  year: Minted
+  acquired: Acquired on
+  paid: Paid
+  value: Value
+
+# The Sheldon scale, abridged. Collectors quote it constantly and it is the whole
+# basis of a coin's value, so it belongs in the spine, not in a text field.
+conditions: [MS-70, MS-65, MS-60, AU-58, XF-40, VF-20, F-12, VG-8, G-4, Poor]
+
+lookup:
+  identifier: none
+  symbologies: []
+  providers: [numista]
+
+searchable: [title, subtitle, year, mintMark, catalogNumber]
+
+# Scanning in a shop answers \"do I already own something like this?\"
+related: [subtitle, metal]
+
+fields:
+  - key: mintMark
+    label: Mint mark
+    type: text
+    sample: D
+  - key: metal
+    label: Metal
+    type: choice
+    options: [Gold, Silver, Copper, Bronze, Nickel, Cupronickel, Bimetallic, Other]
+    sample: Silver
+  - key: weight
+    label: Weight
+    type: number
+    unit: g
+    sample: "26.73"
+  - key: diameter
+    label: Diameter
+    type: number
+    unit: mm
+    sample: "38.1"
+  - key: mintage
+    label: Mintage
+    type: number
+    sample: "504000"
+  - key: catalogNumber
+    label: Catalogue number
+    type: text
+    sample: KM#110
+  - key: gradedBy
+    label: Graded by
+    type: choice
+    options: [Raw, PCGS, NGC, ANACS, ICG]
+    sample: Raw
+  - key: obverse
+    label: Obverse photo
+    type: photo
+    sample: 1 photo
+  - key: reverse
+    label: Reverse photo
+    type: photo
+    sample: 1 photo

@@ -456,12 +456,9 @@ components:
       maxLength: 128
 
     SearchRequest:
+      description: At least one of `title`, `text` or `catalogueNumber` must be present; the server answers `400` otherwise.
       type: object
       additionalProperties: false
-      anyOf:
-        - required: [title]
-        - required: [text]
-        - required: [catalogueNumber]
       properties:
         title:
           type: string

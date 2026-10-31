@@ -1,0 +1,82 @@
+id: board-games
+name:
+  hobby: Board games
+  singular: Game
+  plural: Games
+  collection: Board Games
+mark: D20
+icon: die.face.5
+gradient: [orange, yellow]
+
+# Every copy is its own object: its own condition, price and history.
+duplicates: rows
+
+spine:
+  title: Title
+  subtitle: Publisher
+  year: Published
+  acquired: Acquired on
+  paid: Paid
+  value: Value
+
+conditions: [Sealed, Like new, Played, Well loved, Damaged]
+
+# BoardGameGeek has no barcode index, so the barcode is captured but the match is
+# made by name against the BGG XML API. This is the "search, don't scan" tier.
+lookup:
+  identifier: barcode
+  symbologies: [ean13, upc-a]
+  providers: [boardgamegeek]
+
+searchable: [title, subtitle, designer, year]
+
+# Scanning in a shop answers \"do I already own something like this?\"
+related: [designer, subtitle]
+
+fields:
+  - key: designer
+    label: Designer
+    type: text
+    sample: Uwe Rosenberg
+    auto: true
+  - key: players
+    label: Players
+    type: text
+    sample: 2–4
+    auto: true
+  - key: playTime
+    label: Play time
+    type: number
+    unit: min
+    sample: "90"
+    auto: true
+  - key: minAge
+    label: Minimum age
+    type: number
+    unit: years
+    sample: "12"
+    auto: true
+  - key: weight
+    label: Complexity
+    type: number
+    sample: "3.4"
+    auto: true
+  - key: completeness
+    label: Completeness
+    type: choice
+    options: [Complete, Missing pieces, Missing rules, Incomplete]
+    sample: Complete
+  - key: sleeved
+    label: Cards sleeved
+    type: yesNo
+    sample: "Yes"
+  - key: expansions
+    label: Expansions owned
+    type: list
+    entry: [name, year]
+    sample: 3 entries
+  - key: language
+    label: Language
+    type: text
+    sample: English
+    auto: true
