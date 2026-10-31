@@ -5,6 +5,7 @@ import Foundation
 import ObjectEditFeature
 import SQLiteData
 import TegolaCatalogue
+import TegolaClients
 import TegolaModel
 import TegolaStorage
 import Testing
@@ -51,14 +52,26 @@ struct ObjectFeatureTests {
     #expect(store.state.object?.mightLetGo == true)
   }
 
-  @Test func editOpensTheFormAndPhotoAsksTheRoot() async throws {
+  @Test func aPickedPhotoIsSavedThenRecorded() async throws {
+    let id = try seededObject("Kid A")
+    let store = TestStore(initialState: ObjectFeature.State(id: id)) { ObjectFeature() }
+    await store.send(.view(.photoTapped)) { $0.isPickingPhoto = true }
+    await store.send(.view(.photoPicked(Data([0xFF, 0xD8])))) { $0.isPickingPhoto = false }
+    await store.finish()
+    try await store.state.$snapshot.load()
+    let photos = store.state.snapshot.shelf.shelf.photos(of: id)
+    #expect(photos.map(\.fileName) == ["photo-1.jpg"])
+    #expect(store.state.history.first?.kind.name == "photo")
+    @Dependency(\.photoStore) var photoStore
+    #expect(photoStore.load("photo-1.jpg") == Data([0xFF, 0xD8]))
+  }
+
+  @Test func editOpensTheForm() async throws {
     let id = try seededObject("Kid A")
     let store = TestStore(initialState: ObjectFeature.State(id: id)) { ObjectFeature() }
     let object = try #require(store.state.object)
     await store.send(.view(.editTapped)) {
       $0.edit = ObjectEditFeature.State(object: object, placePath: nil, money: .off)
     }
-    await store.send(.view(.photoTapped))
-    await store.receive(\.delegate.photo, id)
   }
 }

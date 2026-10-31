@@ -45,6 +45,7 @@ public struct ShelfEvent: Hashable, Sendable, Codable, Identifiable {
     case enriched(ObjectID, changes: [FieldKey: FieldValue])
     case confirmed(ObjectID)
     case placed(ObjectID, PlaceID?)
+    case photoAttached(Photo)
     case moved(ObjectID, to: CollectionID)
     case lent(Loan)
     case borrowed(Loan)
@@ -74,6 +75,7 @@ public struct ShelfEvent: Hashable, Sendable, Codable, Identifiable {
       case .enriched: "enriched"
       case .confirmed: "confirmed"
       case .placed: "placed"
+      case .photoAttached: "photo"
       case .moved: "moved"
       case .lent: "lent"
       case .borrowed: "borrowed"
@@ -94,7 +96,8 @@ public struct ShelfEvent: Hashable, Sendable, Codable, Identifiable {
     /// (grail, might let go, a wishlist priority, a count's adjustment) aren't history.
     public var readsAsHistory: Bool {
       switch self {
-      case .added, .edited, .enriched, .confirmed, .placed, .moved, .lent, .borrowed, .returned, .gaveBack, .logged,
+      case .added, .edited, .enriched, .confirmed, .placed, .photoAttached, .moved, .lent, .borrowed, .returned,
+        .gaveBack, .logged,
         .ownershipChanged, .letGo, .promoted:
         true
       case .collectionCreated, .collectionRenamed, .placeCreated, .personCreated, .workCreated, .wanted, .grailChanged,
@@ -112,6 +115,7 @@ public struct ShelfEvent: Hashable, Sendable, Codable, Identifiable {
         .mightLetGoChanged(let id, _), .letGo(let id, _), .quantityAdjusted(let id, _):
         id
       case .lent(let loan), .borrowed(let loan): loan.objectID
+      case .photoAttached(let photo): photo.objectID
       case .returned(_, let id, _), .gaveBack(_, let id): id
       case .promoted(let id, _): id
       }

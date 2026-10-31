@@ -141,6 +141,13 @@ struct Planner {
           && !(key == .title && !Self.isNonEmptyText(value))
       }
       if !changes.isEmpty { emit(.enriched(id, changes: changes)) }
+    case .attachPhoto(let id, let fileName, let takenAt):
+      _ = try object(id)
+      guard !fileName.isEmpty else { throw .emptyName }
+      let position = shelf.photos(of: id).count
+      emit(
+        .photoAttached(Photo(id: context.id(), objectID: id, position: position, fileName: fileName, takenAt: takenAt))
+      )
     case .setPlace(let ids, let path):
       let placeID = path.map { place(at: $0) }
       for id in ids where try object(id).placeID != placeID {
@@ -544,6 +551,9 @@ extension Shelf {
       }
     case .confirmed(let id): touch(id) { $0.identity = .confirmed }
     case .placed(let id, let place): touch(id) { $0.placeID = place }
+    case .photoAttached(let photo):
+      photos[photo.id] = photo
+      touch(photo.objectID) { _ in }
     case .moved(let id, let collection): touch(id) { $0.collectionID = collection }
     case .lent(let loan):
       loans[loan.id] = loan

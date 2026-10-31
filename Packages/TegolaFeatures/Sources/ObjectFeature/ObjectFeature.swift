@@ -1,5 +1,5 @@
 public import ComposableArchitecture
-import Foundation
+public import Foundation
 public import ObjectEditFeature
 public import SQLiteData
 import TegolaCatalogue
@@ -18,6 +18,8 @@ public struct ObjectFeature {
     @ObservationStateIgnored
     @Fetch public var snapshot: ObjectSnapshot
     @Presents public var edit: ObjectEditFeature.State?
+    /// The photo picker is open.
+    public var isPickingPhoto = false
 
     public init(id: ObjectID) {
       self.id = id
@@ -32,26 +34,26 @@ public struct ObjectFeature {
     }
 
     /// The reducer's own state; the snapshot is the database's (D-47).
-    public static func == (lhs: Self, rhs: Self) -> Bool { lhs.id == rhs.id && lhs.edit == rhs.edit }
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+      lhs.id == rhs.id && lhs.edit == rhs.edit && lhs.isPickingPhoto == rhs.isPickingPhoto
+    }
   }
 
   public enum Action: ViewAction {
-    case delegate(Delegate)
     case edit(PresentationAction<ObjectEditFeature.Action>)
     case view(View)
-
-    @CasePathable
-    public enum Delegate: Equatable {
-      case photo(ObjectID)
-    }
 
     public enum View: Equatable {
       case editTapped
       case mightLetGoTapped
+      case photoPicked(Data)
+      case photoPickerDismissed
       case photoTapped
     }
   }
 
+  @Dependency(\.date.now) var now
+  @Dependency(\.photoStore) var photoStore
   @Dependency(\.shelf) var shelf
 
   public init() {}
@@ -59,8 +61,6 @@ public struct ObjectFeature {
   public var body: some ReducerOf<Self> {
     Reduce { state, action in
       switch action {
-      case .delegate:
-        return .none
       case .edit:
         return .none
       case .view(.editTapped):
@@ -77,8 +77,21 @@ public struct ObjectFeature {
         } catch: { error, _ in
           reportIssue(error)
         }
+      case .view(.photoPicked(let data)):
+        state.isPickingPhoto = false
+        let id = state.id
+        return .run { [photoStore, shelf, now] _ in
+          let fileName = try photoStore.save(data)
+          _ = try shelf.perform(.attachPhoto(id, fileName: fileName, takenAt: now))
+        } catch: { error, _ in
+          reportIssue(error)
+        }
+      case .view(.photoPickerDismissed):
+        state.isPickingPhoto = false
+        return .none
       case .view(.photoTapped):
-        return .send(.delegate(.photo(state.id)))
+        state.isPickingPhoto = true
+        return .none
       }
     }
     .ifLet(\.$edit, action: \.edit) { ObjectEditFeature() }

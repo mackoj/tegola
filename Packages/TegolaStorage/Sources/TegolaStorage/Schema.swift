@@ -100,6 +100,18 @@ struct LoanRow: Identifiable {
   var data: String
 }
 
+@Table("photos")
+struct PhotoRow: Identifiable {
+  let id: UUID
+  var objectID: UUID
+  var position: Int
+  var fileName: String
+  var takenAt: Date
+  var deletedAt: Date?
+  /// The model value as JSON (`StoredJSON`).
+  var data: String
+}
+
 /// A setting the collector changed (PD-161, ADR-0008): only those are stored, so a missing row is the default. Not a
 /// shelf change, so not an event. Each setting has a fixed id, because `SyncEngine` allows no unique constraint on
 /// `key` (D-44).
@@ -270,6 +282,23 @@ extension ShelfStore {
         """
       )
       .execute(db)
+    }
+    migrator.registerMigration("Create photos") { db in
+      try #sql(
+        """
+        CREATE TABLE "photos" (
+          "id" TEXT PRIMARY KEY NOT NULL ON CONFLICT REPLACE DEFAULT (uuid()),
+          "objectID" TEXT NOT NULL REFERENCES "objects"("id") ON DELETE CASCADE,
+          "position" INTEGER NOT NULL ON CONFLICT REPLACE DEFAULT 0,
+          "fileName" TEXT NOT NULL,
+          "takenAt" TEXT NOT NULL,
+          "deletedAt" TEXT,
+          "data" TEXT NOT NULL
+        ) STRICT
+        """
+      )
+      .execute(db)
+      try #sql(#"CREATE INDEX "index_photos_on_objectID" ON "photos"("objectID")"#).execute(db)
     }
     return migrator
   }

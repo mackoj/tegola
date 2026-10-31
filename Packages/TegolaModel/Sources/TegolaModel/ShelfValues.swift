@@ -133,6 +133,25 @@ public struct Loan: Hashable, Sendable, Codable, Identifiable {
   public var isOpen: Bool { closedAt == nil }
 }
 
+/// A photo of an object. The image is a file outside the database; this is its row (PLAN §3.2).
+public struct Photo: Hashable, Sendable, Codable, Identifiable {
+  public let id: PhotoID
+  public let objectID: ObjectID
+  /// Order on the object: 0 is the hero.
+  public let position: Int
+  /// The file's name in the photo store.
+  public let fileName: String
+  public let takenAt: Date
+
+  public init(id: PhotoID, objectID: ObjectID, position: Int, fileName: String, takenAt: Date) {
+    self.id = id
+    self.objectID = objectID
+    self.position = position
+    self.fileName = fileName
+    self.takenAt = takenAt
+  }
+}
+
 /// The projection: current state, derived from the event log by `apply` (PLAN §3.1).
 public struct Shelf: Hashable, Sendable, Codable {
   public var collections: [CollectionID: ShelfCollection] = [:]
@@ -141,6 +160,7 @@ public struct Shelf: Hashable, Sendable, Codable {
   public var places: [PlaceID: Place] = [:]
   public var persons: [PersonID: Person] = [:]
   public var loans: [LoanID: Loan] = [:]
+  public var photos: [PhotoID: Photo] = [:]
   /// The highest `seq` applied, so the next event's is one more.
   public var lastSeq: Int = 0
 
@@ -155,6 +175,11 @@ public struct Shelf: Hashable, Sendable, Codable {
       next = place.parentID
     }
     return names.isEmpty ? nil : names.joined(separator: " \(PlacePath.separator) ")
+  }
+
+  /// An object's photos, hero first.
+  public func photos(of object: ObjectID) -> [Photo] {
+    photos.values.filter { $0.objectID == object }.sorted { ($0.position, $0.id) < ($1.position, $1.id) }
   }
 
   /// The open loan on an object, if it's lent out or borrowed in.

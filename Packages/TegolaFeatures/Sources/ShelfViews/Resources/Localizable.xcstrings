@@ -341,6 +341,16 @@
         }
       }
     },
+    "Photo added" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photo ajoutée"
+          }
+        }
+      }
+    },
     "Pick a date" : {
       "localizations" : {
         "fr" : {

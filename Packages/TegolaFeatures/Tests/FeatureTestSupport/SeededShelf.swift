@@ -19,5 +19,6 @@ extension DependencyValues {
     let store = ShelfStore(migrated: defaultDatabase, catalogue: catalogue)
     shelf = .store(store)
     settings = SettingsClient { key, value in try store.set(key, to: value) }
+    photoStore = .inMemory()
   }
 }

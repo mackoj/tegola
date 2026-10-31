@@ -45,6 +45,7 @@
       case .enriched(_, let changes):
         Text("Details filled in · \(Self.labels(changes.keys, type: type))", bundle: .module)
       case .confirmed: Text("Confirmed", bundle: .module)
+      case .photoAttached: Text("Photo added", bundle: .module)
       case .placed(_, let place):
         if let place, let path = shelf.placePath(of: place) {
           Text("Placed · \(path)", bundle: .module)

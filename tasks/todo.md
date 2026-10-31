@@ -40,7 +40,7 @@ Plan: `tasks/plan.md`, M3. Report: `docs/milestones/M3.md`.
 - [x] T3.6 Object: seven slots, ladder and set, history
 - [x] T3.7 Edit form, and `plan`'s value checks
 - [x] T3.8 Add by hand
-- [ ] T3.9 Photos
+- [x] T3.9 Photos
 - [x] T3.10 Find and saved views
 - [x] T3.11 Places
 - [x] T3.12 Journeys, seed, docs, review

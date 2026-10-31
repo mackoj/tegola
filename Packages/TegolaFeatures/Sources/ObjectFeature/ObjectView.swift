@@ -2,6 +2,7 @@
   public import ComposableArchitecture
   import ObjectEditFeature
   import ShelfViews
+  import PhotosUI
   public import SwiftUI
   import TegolaCatalogue
   import TegolaClients
@@ -14,6 +15,8 @@
   public struct ObjectView: View {
     @Bindable public var store: StoreOf<ObjectFeature>
     @Dependency(\.catalogue) var catalogue
+    @Dependency(\.photoStore) var photoStore
+    @State private var pickedPhoto: PhotosPickerItem?
     @Environment(\.tegolaTheme) private var theme
 
     public init(store: StoreOf<ObjectFeature>) {
@@ -36,7 +39,7 @@
             money: store.snapshot.shelf.money
           )
           VStack(spacing: 0) {
-            hero(manifest)
+            hero(manifest, photo: store.snapshot.shelf.shelf.photos(of: object.id).first)
             VStack(alignment: .leading, spacing: TegolaSpace.l) {
               spine(object, manifest: manifest, slots: slots)
               status(object)
@@ -73,13 +76,44 @@
       .sheet(item: $store.scope(state: \.edit, action: \.edit)) { edit in
         ObjectEditView(store: edit)
       }
+      .photosPicker(
+        isPresented: Binding(get: { store.isPickingPhoto }, set: { if !$0 { send(.photoPickerDismissed) } }),
+        selection: $pickedPhoto,
+        matching: .images
+      )
+      .onChange(of: pickedPhoto) { _, item in
+        guard let item else { return }
+        Task {
+          if let data = try? await item.loadTransferable(type: Data.self) { send(.photoPicked(data)) }
+          pickedPhoto = nil
+        }
+      }
     }
 
-    // 1. Hero: the photo, or the type's flat hero (PD-145).
-    func hero(_ manifest: TypeManifest) -> some View {
-      TypeTint(gradient: manifest.gradient, mark: manifest.mark, bottomInset: Self.panelOverlap)
-        .frame(height: 260)
-        .accessibilityHidden(true)
+    // 1. Hero: the collector's photo, or the type's flat hero (PD-145).
+    @ViewBuilder
+    func hero(_ manifest: TypeManifest, photo: Photo?) -> some View {
+      if let photo, let image = photoStore.load(photo.fileName).flatMap(Self.image) {
+        image
+          .resizable()
+          .scaledToFill()
+          .frame(height: 320)
+          .frame(maxWidth: .infinity)
+          .clipped()
+          .accessibilityLabel(Text("Photo", bundle: .module))
+      } else {
+        TypeTint(gradient: manifest.gradient, mark: manifest.mark, bottomInset: Self.panelOverlap)
+          .frame(height: 260)
+          .accessibilityHidden(true)
+      }
+    }
+
+    static func image(_ data: Data) -> Image? {
+      #if canImport(UIKit)
+        UIImage(data: data).map(Image.init(uiImage:))
+      #else
+        NSImage(data: data).map(Image.init(nsImage:))
+      #endif
     }
 
     // 2. Spine: chips, the title, the subtitle, then the type's labelled spine lines.

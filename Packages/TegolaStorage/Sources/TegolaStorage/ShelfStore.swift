@@ -100,6 +100,7 @@ public struct ShelfStore: Sendable {
     try database.write { db in
       let log = try Self.loadLog(db)
       try LoanRow.delete().execute(db)
+      try PhotoRow.delete().execute(db)
       try ObjectRow.delete().execute(db)
       try CollectionRow.delete().execute(db)
       try WorkRow.delete().execute(db)
@@ -137,6 +138,10 @@ public struct ShelfStore: Sendable {
       let value = try StoredJSON.decode(Person.self, from: row.data)
       shelf.persons[value.id] = value
     }
+    for row in try PhotoRow.fetchAll(db) {
+      let value = try StoredJSON.decode(Photo.self, from: row.data)
+      shelf.photos[value.id] = value
+    }
     for row in try LoanRow.fetchAll(db) {
       let value = try StoredJSON.decode(Loan.self, from: row.data)
       shelf.loans[value.id] = value
@@ -162,6 +167,9 @@ public struct ShelfStore: Sendable {
     }
     for (id, value) in after.objects where before.objects[id] != value {
       try ObjectRow.upsert { ObjectRow(value) }.execute(db)
+    }
+    for (id, value) in after.photos where before.photos[id] != value {
+      try PhotoRow.upsert { PhotoRow(value) }.execute(db)
     }
     for (id, value) in after.loans where before.loans[id] != value {
       try LoanRow.upsert { LoanRow(value) }.execute(db)
@@ -252,6 +260,20 @@ extension PersonRow {
       id: value.id.rawValue,
       name: value.name,
       lastUsedAt: value.lastUsedAt,
+      deletedAt: nil,
+      data: StoredJSON.encode(value)
+    )
+  }
+}
+
+extension PhotoRow {
+  init(_ value: Photo) {
+    self.init(
+      id: value.id.rawValue,
+      objectID: value.objectID.rawValue,
+      position: value.position,
+      fileName: value.fileName,
+      takenAt: value.takenAt,
       deletedAt: nil,
       data: StoredJSON.encode(value)
     )
