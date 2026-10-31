@@ -75,7 +75,7 @@ public struct TypeManifest: Decodable, Hashable, Sendable, Identifiable {
     /// The renderer's name, checked against `SignatureRenderer` by validation.
     public let renderer: String
     /// The scale fields a ladder reads, best-graded part first.
-    public let axes: [String]
+    public internal(set) var axes: [String]
     /// The field the renderer reads, for every renderer but the ladder.
     public let binds: String?
     /// For a renderer over a log, the entry kind it reads (retro computers' panel reads `test` entries).
@@ -263,7 +263,7 @@ extension TypeManifest {
     public let key: String
     public let label: String
     public let kind: FieldKind
-    public let options: [String]
+    public internal(set) var options: [String]
     public let unit: String?
     /// Filled by a lookup when one runs; badged AUTO until the collector touches it (PD-042).
     public let isAuto: Bool

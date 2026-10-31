@@ -44,7 +44,7 @@ fields:
   - { key: mediaCondition,  label: Tape / disc, type: scale, ladderAxis: 1 }
   - { key: caseCondition,   label: Case,        type: scale, ladderAxis: 2 }
   - { key: sleeveCondition, label: Sleeve,      type: scale, ladderAxis: 3 }
-  - { key: inserts,   label: What's inside, type: set, slotsFrom: subtype }
+  - { key: inserts,   label: What's inside, type: set, options: [case, disc, booklet, insert], slotsFrom: subtype, note: these four until the subtype names its parts }
   - { key: watchLog,  label: Watched,    type: log, entry: [date, note, cut] }
 
 subtypes:
