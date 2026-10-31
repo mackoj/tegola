@@ -61,7 +61,7 @@ scripts/ci.sh                        # the full gate → build/ci-summary.md
 
    Add `plan`'s value checks (D-40) with the edit form. Every write is a `ShelfCommand` through `ShelfClient`; screens read through queries on the projection's columns,
    and decode `data` for the full value.
-3. **In parallel, tegola-server** (`mackoj/tegola-server`, D-41): its M1 is done. It serves the contract with
+2. **In parallel, tegola-server** (`mackoj/tegola-server`, D-41): its M1 is done. It serves the contract with
    Hummingbird 2, verifies App Attest end to end, and has every security control, but no lookup source yet (lookups
    answer "no match"). Its `tasks/HANDOFF.md` lists the owner questions (sources, hosting, persistence, Team ID). The
    app's client only needs it from M6 on. When M6 writes `AppAttestMiddleware`, build the signed bytes exactly as the
