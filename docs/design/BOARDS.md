@@ -1,6 +1,6 @@
 # Design boards
 
-Rendered reference boards for **tegola**. They come from the CLCTN high-fidelity prototype in `mackoj/clctn/design/`
+Rendered reference boards for **tegola**. They come from the CLCTN high-fidelity prototype in `original-spec/` (identical to `mackoj/clctn/design/` at `f6479f9`)
 (see `docs/PLAN.md` §0, row 1).
 
 - **Source.** `35_Collections App.dc.html` is the latest prototype. It needs `support.js` and `ios-frame.jsx` next

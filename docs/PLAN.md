@@ -12,10 +12,13 @@ decision log (`PD-###`, below). Repo layout, tooling, process and architecture a
 **What I read for this plan:**
 
 - your prompt, all of it;
-- **the site archive**: `mackoj/clctn/design/` at `f6479f9`, made up of 46 design pages (`00_Design System` …
-  `45_Judgement Experiments`), the interactive prototype `35_Collections App.dc.html` (45 screens), the handoff bundle
-  `design_handoff_clctn/` (tokens, screen table, interactions) and `decisions.md` (D27–D31, S1). There is no
-  `original-spec/` folder in `mackoj/tegola`; I take this archive to be what the prompt means (§0 row 1, Q1);
+- **the original spec, `original-spec/`** in this repo: the design pages `00_Design System` … `53_Marketplace`, the
+  interactive prototype `35_Collections App.dc.html` (45 screens), the handoff bundle `design_handoff_clctn/` (tokens,
+  screen table, interactions), `decisions.md` (D27–D31, S1), the type files and `uploads/Jeux collection.csv`. Every
+  file it shares with `mackoj/clctn/design/` at `f6479f9` is byte-identical. It adds the October 2026 pages 46–53
+  (first-piece onboarding, a friend's feedback on video games, subtypes, the import pipeline, a pricing calculator,
+  Video Media, the implementation plan, the marketplace) and `video-media.yml`. It lacks `45_Judgement Experiments`,
+  which this plan doesn't rely on;
 - `mackoj/clctn` at `f6479f9`: `CONTEXT.md`, `docs/product/SPEC.md` (17 features, 206 stories), `DECISIONS.md`
   (PD-001 to PD-166), `ROADMAP.md` (confirmed 2026-09-23, PD-164), the seven journeys, ADR-0001 to ADR-0009, the
   engineering notes, the 17 type manifests in `Sources/TypeCatalogue/Types/*.yml`, and the code (surveyed);
@@ -42,7 +45,7 @@ exact repo skeleton and dev-ops ecosystem of telaio").
 
 | # | Topic | Prompt says | Reality | Plan |
 |---|---|---|---|---|
-| 1 | `original-spec/` | A site archive folder provided in the repo | Not in `mackoj/tegola`, and in none of the clones. The archive the PD log cites (`design/NN_*.dc.html`) is `mackoj/clctn/design/`. Two pages it cites are missing from it: `46_Onboarding - First Piece` (PD-166) and the per-type `types/*.yml` folder, which moved into `Sources/TypeCatalogue/Types/`. | Treat `clctn/design/` at `f6479f9` as the original spec. Render the prototype screens to `docs/design/boards/` with text descriptions in `docs/design/BOARDS.md`, the way telaio keeps its boards. Don't copy the 22 MB archive (Q1). |
+| 1 | `original-spec/` | A site archive folder provided in the repo | It's in the repo now (added after this plan's first draft). Its September pages are the same files as `mackoj/clctn/design/`; its October pages (46–53) are newer than the PD log. | `original-spec/` is the source. The prototype's screens are rendered to `docs/design/boards/` with text descriptions in `docs/design/BOARDS.md`, the way telaio keeps its boards. Row 15 says how the October pages and the PD log are reconciled. |
 | 2 | Config files | `.swiftformat`, `.swiftlint.yml`, `.editorconfig`, mise/tool versions | telaio has **none** of these. It has `.swift-format` (Apple's swift-format, 2-space indent, 120 columns), `.periphery.yml` and `.gitignore`. | Copy telaio's three files. No SwiftLint, SwiftFormat, EditorConfig or mise. |
 | 3 | Git hooks | Replicate them | telaio has none. clctn has `.githooks/pre-commit` with guards worth keeping: no `Date()`, `UUID()`, `Locale.current` or `URLSession.shared` in source targets, and no hand-bound SQL. | No hooks, to match telaio. The guards become **guard tests**, like telaio's `DesignSystemGuardTests`, so they run in every test pass and in CI instead of only on machines that installed a hook. |
 | 4 | Handoff templates | Replicate them | telaio has `tasks/HANDOFF.md` and `tasks/briefs/*` (agent brief, `TestStore` brief) plus milestone reports `docs/milestones/M<n>.md`. | Same files, rewritten for tegola. |
@@ -56,6 +59,7 @@ exact repo skeleton and dev-ops ecosystem of telaio").
 | 12 | Navigation "as in telaio" | Same navigation patterns | telaio has no `StackState` and no `NavigationStack`: a document window never drills down, so every presentation is a `@Presents` optional (or an `IdentifiedArray` for step windows), and children ask the root through `.delegate`. An iPhone tab app needs drill-down. | Keep telaio's rules (`@Presents` for every sheet, children ask the root by delegate, only the root changes navigation) and add one `StackState<Path.State>` per tab, owned by the root (§5). |
 | 13 | telaio contradicts itself | — | Its `CLAUDE.md` and PLAN say squash merges and a review agent per PR, while its HANDOFF and agent brief say merge commits and no review agents. `ci.sh` lints less than the briefs say. PLAN names a non-existent `TelaioDesignSystemSystem`. | I copy the files as they are actually used: merge commits, the lint scope written once in `ci.sh` and covering every Swift directory, and real package names. The review step is in §9. |
 | 14 | What the legacy code teaches | — | The clctn survey found these, among others: every `TestStore` non-exhaustive (68 of 68); Edit, Lend and Let go routed only from the Shelf tab; import undo hard-deleting objects the collector had since edited; imported rows stamped *acquired* (against PD-165); the seed shelf compiled into Release; the design system used by one screen, with no fonts bundled; three different dashed edges; status swatches as system colours. the-collection is a static prototype with no persistence. | Each one becomes a rule or a test here: exhaustive `TestStore`s by default (§2.6); one `Path` with routing tested from every tab (§5); batch undo that keeps what was touched (D-12); no `acquired` written by the app (§3.4 promise 7); `Seed` behind `#if DEBUG` (§2.4); every screen built from `TegolaDesignSystem` and checked against its board (§2.7); one `notYours()` modifier (§4.0). |
+| 15 | October pages vs the PD log | — | Pages 46–53 (October 2026) are newer than the PD log (confirmed 2026-09-23), and most are marked **PROPOSAL**. Some refine the product without contradicting it: subtypes (48), item-level Signed and Bundle of (48), a work layer above the object (47), the event log as truth, money in cents (52), the first-piece flow (46), and the import pipeline's shape (49). **Three conflict with confirmed decisions:** a backend for matching and cover art (49, 52 P4) vs no backend in v1 (PD-160); accounts, sync and a €50/year subscription as v1's last phase (52 P5, 50) vs no account (ADR-0001) and a deferred payment shape (PD-112, PD-113); and a Stripe marketplace (53, v2) vs "no checkout, escrow or take rate, ever" (PD-084). | Adopt the refinements (§3, F1, F2, F9, D-16 to D-22). Follow page 52's phase order and exit tests for the milestones (§1). For the three conflicts, keep the PD log in v1 until you say otherwise (Q9). The marketplace is v2 either way, so it changes nothing now. |
 
 ---
 
@@ -66,8 +70,8 @@ These module ids are stable. Branch names, PR titles and the task list all use t
 | Module id | Responsibility | Depends on |
 |---|---|---|
 | `foundation` | Packages, Xcode project, scripts, CI, swift-format, guard tests, fonts, fixtures, the seed shelf | none |
-| `catalogue` | Type manifests: decoding, validation, field kinds, condition scales and axes, medium rules, spine labels, bulk rule, clock, type verb. The five v1 types ship enabled. | foundation |
-| `model` | Domain values and rules: Object, Collection, Place, Person, Loan, HistoryEvent, ownership and lifecycle, `ShelfCommand`, status and clock derivation, never-merge and money rules | catalogue |
+| `catalogue` | Type manifests: decoding, validation, field kinds, condition scales and ladder parts, spine labels, bulk rule, clocks from the library, type verb; the item level; subtypes and the resolver. The v1 types ship enabled. | foundation |
+| `model` | Domain values and rules: Object, Work, Collection, Place, Person, Loan, ShelfEvent (the log), ownership and lifecycle, `ShelfCommand`, status and clock derivation, never-merge and money rules | catalogue |
 | `storage` | SQLite schema and migrations, `ShelfClient` (one write path), queries, the full-text index, photo storage, the launch migration screen's runner | model |
 | `design-system` | Tokens, the three fonts, every shared component, the "not yours" rule, a snapshot catalog | foundation |
 | `shelf` | Shelf home, Collection, Object (seven slots), Edit form, Places, History, Archive | storage, design-system |
@@ -79,9 +83,22 @@ These module ids are stable. Branch names, PR titles and the task list all use t
 | `you` | Settings, the money switch, the tab editor, language, nudges and notifications, shape-only analytics, the hidden debug screen | all features |
 | `polish` | French, VoiceOver, Dynamic Type, the journeys as UI tests, performance on a 2,000-object shelf, empty states | all |
 
-**Build order (proposed milestones):** foundation (M1) → catalogue + model + storage (M2) → design-system + shelf, read
-only (M3) → shelf editing + adding by hand + first piece + places (M4) → capture, lookup, review queue (M5) →
-interchange (M6) → find + stats (M7) → people (M8) → keeping (M9) → you (M10) → polish (M11).
+**Build order.** It follows `52_Implementation Plan` ("build the verbs once, ship the nouns as data"), with each of
+its exit tests as the milestone's gate. The v1-roadmap features that page doesn't place come after it.
+
+| Milestone | Modules | Page 52 phase | Exit test |
+|---|---|---|---|
+| M1 | foundation, design-system tokens | none (repo) | Every package builds; guard, contrast and catalog tests pass |
+| M2 | catalogue, model, storage | P0 Foundations | Loading `video-game.yml` and `video-media.yml` gives the right field list for all 13 subtypes, with tests |
+| M3 | design-system components, shelf, adding by hand, find | P1 Core loop | Someone adds 30 objects across Video games and Thing in one sitting without asking how |
+| M4 | clocks, signatures, the signal feed (Today) | P2 Signals | A 200-object test shelf gives a signal list a collector agrees with on 8 of 10 |
+| M5 | the five launch types, first piece | P3 Launch types + onboarding | 5 of 6 testers finish onboarding with one complete object and can say what the app will tell them |
+| M6 | capture, lookup, review queue, interchange | P4 Lookup and import | `Jeux collection.csv` (485 games) imports in under 3 minutes, with under 5% of rows needing a fix |
+| M7 | people, places, Activity | none (roadmap v1) | The lend-at-the-door journey passes |
+| M8 | keeping, you (export, inventory, money, nudges) | none (roadmap v1); P5's export | Export → import gives the same shelf |
+| M9 | polish | none | All six journeys pass; performance targets met |
+
+P5 (accounts, sync, pricing) waits for Q9.
 
 `catalogue`, `model` and `interchange`'s parsers have no UI and build on Linux, so they can run ahead of the UI
 milestones in their own worktree. Each module still merges in milestone order.
@@ -183,7 +200,7 @@ Tegola/                        app target: @main, the root scene, Info.plist, en
 TegolaTests/                   app-level unit tests (launch arguments, root wiring, font registration)
 TegolaUITests/                 XCUITest: the journeys (§4.4) and one flow per screen
 Packages/
-  TegolaCatalogue/             TypeManifest, FieldKind, ConditionScale, MediumRule, the 17 manifests as resources
+  TegolaCatalogue/             TypeManifest, FieldKind, ConditionScale, Subtype, the resolver, the clock library, the manifests as resources
   TegolaModel/                 domain values, ShelfCommand, rules (lifecycle, loans, status, clocks, money, places)
   TegolaStorage/               schema, migrations, ShelfClient (+Live), queries, full-text index, PhotoStore
   TegolaInterchange/           CSV reader, Discogs mapping, column guesser, exporters (CSV, JSON), inventory model
@@ -302,7 +319,7 @@ public struct LendFeature {
 
 - Naming:
   - types are `UpperCamel`, and IDs are `Tagged` (`ShelfObject.ID`, `Person.ID`), so they can't be mixed up;
-  - the domain words are the glossary's (§3.0): `ShelfObject` (because `Object` collides), `Collection` → `ShelfCollection`, `Place`, `Person`, `Loan`, `HistoryEvent`. The words the app never uses (PD-101), such as "item" and "user", never appear in UI copy;
+  - the domain words are the glossary's (§3.0): `ShelfObject` (because `Object` collides), `Collection` → `ShelfCollection`, `Place`, `Person`, `Loan`, `Work`, `ShelfEvent`. The words the app never uses (PD-101), such as "item" and "user", never appear in UI copy;
   - acronyms are `ID`, `URL`, `CSV`, `JSON`, `PDF`;
   - test files are `<Subject>Tests.swift`. Swift Testing (`@Test`, `#expect`) is used everywhere except UI and
     performance tests, which use XCTest.
@@ -391,9 +408,9 @@ Each feature's "Done when" has a named test. The milestone report lists each tes
 | F6 | `CaptureFeatureTests.firstObjectOfATypeCreatesItsCollection`, `.addToDefaultsToTheLastUsedCollection` |
 | F7 | `LookAlikeTests.neverMergesAndOffersThreeChoices`, `MatchFeatureTests.saysYouAlreadyOwnThisUnprompted` |
 | F8 | `ReviewQueueFeatureTests.confirmAllConfirmsOnlyStrongMatches`, `EnrichmentTests.fillsOnlyEmptyFieldsAfterAsking` |
-| F9 | `ImportIntegrationTests.spreadsheetOf211RowsLandsUnconfirmedAndUndoRemovesAll211`, `.unknownColumnsBecomeOwnFields` |
+| F9 | `ImportIntegrationTests.jeuxCollectionLandsAsOneCollectionWithAShelfPerPlatform`, `.everyCellIsKept`, `.notesBecomePartsSignedAndBundles` (recorded model outputs), `.undoKeepsWhatWasTouched` |
 | F10 | `PlaceTests.typingAPathCreatesNestedPlaces`, `PlacesFeatureTests.screenAppearsOnlyOnceTwoPlacesExist` |
-| F11 | `SearchTests.findsASingleTrackOnAnLP`, `FindFeatureTests.chipsStackAndEachResultSaysWhatMatched` |
+| F11 | `SearchTests.findsASingleTrackOnAnLP`, `FindFeatureTests.chipsStackAndEachResultSaysWhatMatched`, `SavedViewTests.imperfectListsMissingOrWornParts` |
 | F12 | `StatsTests.groupedByTypeNeverAveragedAcrossTypes` |
 | F13 | `LendingIntegrationTests.lendAtTheDoorInThreeTapsThenOneSidedReturnIsInHistory`, `TegolaUITests.testLendAtTheDoor` |
 | F14 | `ShareCardTests.paidIsNeverOnACard` (both kinds, money on and off) |
@@ -441,9 +458,16 @@ The catalogue is one local SQLite database (ADR-0006). It's the only source of t
 - **Writes** are `ShelfCommand` values. Each one goes through `ShelfClient.perform(_:) -> CommandReceipt`, which:
   1. checks the command against the rules in `TegolaModel` (for example, a quantity object can't be lent until a copy
      is promoted; a let-go object can't be lent; a wanted object has no condition);
-  2. writes the rows in **one transaction**, together with the history events the command implies (`HistoryEvent`
-     rows are insert-only);
-  3. returns a receipt (created ids, the batch id, anything a delegate needs).
+  2. turns it into **events** (`TegolaModel.plan(command, on: snapshot) -> [ShelfEvent]`, a pure function) and appends
+     them to the `events` log;
+  3. applies the same events to the current-state tables (`objects`, `loans`, …) **in the same transaction**;
+  4. returns a receipt (created ids, the batch id, anything a delegate needs).
+- **The event log is the source of truth** (page 52: "every change is an event; current state is derived from it").
+  The tables are a projection kept up to date in the same write, so screens read plain rows and indexes, and
+  `rebuildProjection()` can recreate them from the log. A storage test replays the log of a random command sequence
+  and checks the rebuilt tables match the live ones, the way telaio checks its projections. A collector's **history**
+  slot is the object's events, filtered to the kinds a person reads. The same log gives batch undo (an import is one
+  batch of events), sync later (upload the log, merge per field), and clocks over time.
 - Undo is per command where the product asks for it (edit form Cancel never writes; import and migration batches undo
   by batch id for 30 days, PD-047). There is no general undo stack; telaio's two-stack problem doesn't arise.
 
@@ -466,17 +490,22 @@ importBatch(ImportPlan) · undoBatch(BatchID)                                   
 
 ### 3.2 Schema (first migration)
 
-Every synced table uses a TEXT UUID primary key and `deletedAt` soft deletes from the first migration, so CloudKit can
-be turned on later without retrofitting keys (ADR-0006). No unique constraints beyond the key: two devices can create
-the same place offline, so the app detects duplicates and offers a merge.
+Every synced table uses a TEXT primary key holding a **ULID** and `deletedAt` soft deletes from the first migration, so
+CloudKit or another sync can be turned on later without retrofitting keys (ADR-0006). ULIDs sort by creation time,
+which the event log needs, and come from a `ulid` dependency so tests are deterministic (page 52). No unique constraints
+beyond the key: two devices can create the same place offline, so the app detects duplicates and offers a merge.
+**Money** is always integer minor units plus an ISO currency (`paid`, `value`, `priceCap`, `letGo.price`), never a
+float and never without its currency (page 52).
 
 | Table | Columns (abridged) |
 |---|---|
+| `events` | id (ULID), objectID?, batchID?, kind, payload JSON, at, source (`collector`/`capture`/`lookup`/`import`/`app`). **Append-only; the source of truth.** |
+| `works` | id, title, typeID, externalIDs JSON (Wikidata, IGDB, MusicBrainz, Open Library): one work, many objects (Doom on six platforms, a film on three formats) |
 | `collections` | id, name, typeID? (nil = mixed), purpose? (story 196), sortKey, createdAt |
-| `objects` | id, collectionID, typeID, **spine:** title, subtitle?, year?, acquiredAt?, paid?, value?; condition?, axes JSON, placeID?, notes; quantity (1 for rows), ownership (`owned`/`wanted`/`borrowed`), identity (`confirmed`/`unconfirmed`/`needsDetails`), grail, mightLetGo, priority?, priceCap?, letGo JSON?, parentID? (parts, v1.x), `fields` JSON (type and own fields), `auto` JSON (keys filled by a lookup, PD-042), createdAt, updatedAt |
+| `objects` | id, collectionID, typeID, **subtype?**, **workID?**, **contains** JSON (work ids; two or more makes a bundle), **signed** JSON? (by, dedication, date, proof photo), **spine:** title, subtitle?, year?, acquiredAt?, paid?, value?; condition?, axes JSON, placeID?, notes; quantity (1 for rows), ownership (`owned`/`wanted`/`borrowed`), identity (`confirmed`/`unconfirmed`/`needsDetails`), grail, mightLetGo, priority?, priceCap?, letGo JSON?, parentID? (parts, v1.x), `fields` JSON (type and own fields), `auto` JSON (keys filled by a lookup, PD-042), createdAt, updatedAt |
 | `objectEntries` | id, objectID, fieldKey, position, values JSON, searchText (list and log fields flattened, so one track is findable, ADR-0007) |
 | `ownFields` | id, scope (`object`/`collection`/`type`), scopeID, key, label, kind (PD-130 kinds only) |
-| `historyEvents` | id, objectID, kind (`added`, `acquired`, `edited`, `confirmed`, `photo`, `placed`, `lent`, `returned`, `borrowed`, `gaveBack`, `serviced`, `regraded`, `opened`, `promoted`, `letGo`, `owned`, `note`), at, payload JSON. **Insert-only.** |
+| (history) | No table of its own: the History slot reads `events` for the object, filtered to the kinds a collector reads (`added`, `acquired`, `edited`, `confirmed`, `photo`, `placed`, `lent`, `returned`, `borrowed`, `gaveBack`, `serviced`, `regraded`, `opened`, `promoted`, `letGo`, `owned`, `note`). |
 | `places` | id, name, parentID?, createdAt |
 | `persons` | id, name, lastUsedAt |
 | `loans` | id, objectID, personID, direction (`out`/`in`), dueAt?, note?, openedAt, closedAt?, closedBy (`collector`/`both`), returnCondition? |
@@ -490,17 +519,38 @@ Analytics live in a **separate** database that never syncs (ADR-0006, ADR-0009).
 
 ### 3.3 Types are data
 
-A type is a YAML manifest (the 17 files in clctn's `Sources/TypeCatalogue/Types/`, ported as they are). Its schema
-is: `id`, `version`, `name {hobby, singular, plural, collection}`, `mark`, `icon`, `gradient [a, b]`,
-`duplicates: rows | quantity`, `consumable`, `spine` labels, `conditions` (best first), `axes`, `lookup {identifier,
-symbologies, providers, ocrFields}`, `searchable`, `related`, `placeLabel`, `mediumRules`, `fields[] {key, label,
-type, options, unit, auto, required}`, `clock`, `verb`, `signatures`, `supersedes`.
+A type is a YAML manifest: the 17 files in clctn's `Sources/TypeCatalogue/Types/`, plus `original-spec/video-media.yml`
+and the newer `video-game.yml`, `wine.yml`, `artwork.yml`, `retro-computer.yml` and `thing.yml` in `original-spec/`.
+Its schema is: `id`, `version`, `name {hobby, singular, plural, collection}`, `mark`, `icon`, `gradient [a, b]`,
+`duplicates: rows | quantity`, `consumable`, `spine` labels, `conditions` (best first), `allowMissing`, `lookup
+{identifier, symbologies, providers, ocrFields}`, `searchable`, `related`, `placeLabel`, `fields[] {key, label, type,
+options, unit, auto, required}`, `clocks` (names from the app's library), `verb`, `signatures`, **`subtypes`**,
+`supersedes`. The schema is also written as a JSON Schema that CI validates every type file against (page 52, P0).
 
-- `TegolaCatalogue` decodes and **validates** each manifest: field keys are unique; kinds are known; `mediumRules` name
-  existing fields; a scale has at least two steps; `Missing` comes last if present; at most one clock, one verb and
-  two signatures (PD-010, PD-015, PD-017, PD-019). An invalid manifest fails a test, never the app.
-- **v1 enables five types:** Music, Books, Video games, Wine, Thing (PD-164). The other twelve ship as test fixtures,
-  and enabling one is the release-train step (PD-111). No screen changes for a new type.
+- **Three levels, one rule each** (page 48):
+  - **item** (`item.yml`, built into the app): fields that mean the same for every type. These are title, acquired,
+    price, place, story, **Signed** (by, dedication, date, proof photo) and **Bundle of** (`contains`: a list of works,
+    so two or more makes a bundle). They stay hidden until the object has a value, and **+ Add** reveals them.
+  - **type**: the hobby's nouns, as today.
+  - **subtype**: one level only, keyed on platform for games and format for music and film. It inherits everything. It
+    can add fields (a review is flagged past about 5), preset and hide a field (Saturn → media: disc), narrow a choice,
+    add ladder parts, and name care clocks from the library. It can't remove or rename a parent field, add a signature
+    or a clock kind, have subtypes, or change the object screen.
+  - **Subtypes absorb `mediumRules`.** Music's vinyl, CD, cassette and other become subtypes (48 Q1 and Q2, leaning
+    format).
+- A **resolver** (`resolve(type, subtype) -> EffectiveType`) is the one function every screen and the import use. It
+  is tested against Video games (5 subtypes, written from page 48) and Video Media (8, from `video-media.yml`).
+- `TegolaCatalogue` decodes and **validates** each manifest: field keys are unique; kinds are known; a scale has at
+  least two steps; `Missing` comes last if present; at most one verb and two signatures; clock names exist in the
+  library; subtypes follow the rules above (PD-010, PD-015, PD-017, PD-019). An invalid manifest fails a test, never the
+  app.
+- **Clocks are a library the app owns** (page 52, P2): `drinkingWindow`, `mediaRot`, `discRot`, `saveBattery`,
+  `serviceRisk` and so on, each a named, parameterised function over an object's events and fields. A type names the
+  ones it uses and can't define its own. Every signal shows its reason and can be dismissed, and dismissals are logged
+  (risk R2).
+- **v1 enables Music, Books, Video games, Wine and Thing** (PD-164; Q10 asks whether a fifth real type joins). The
+  rest ship as test fixtures, and enabling one is the release-train step (PD-111). Video Media is the candidate for the
+  community's sixth type (51 Q3). No screen changes for a new type.
 - Field kinds a type can use: `text`, `number`, `choice`, `yesNo`, `date`, `year`, `yearRange`, `event`, `list`,
   `log`, `photo`, `scale`. Kinds a collector can use for own fields: text, number, choice, yes/no, date, event, photo
   (PD-130).
@@ -564,14 +614,26 @@ from the kit. *v1 signatures:* the **ladder** (condition axes) for every graded 
 Wine, the **gauge** (drinking window) for Wine. *Done when* all 17 manifests decode and validate, and the five v1
 types are the ones enabled.
 
-**F2 · First piece and the empty shelf.** Stories 1–6, 9; PD-166, PD-137, PD-102, PD-165. First launch opens the
-camera on *Show us something you love*, with **Type it**, **Library** and **Just look around first**. The photo
-becomes the piece; *What is it?* is a dashed field focused on arrival, and the button explains why it's disabled
-(journey 1, fault found and fixed in clctn). Then the type is inferred (a type not enabled lands as a Thing, and the
-app says so), *How did it come to you?* offers five chips plus a note, and that answer becomes the first history line,
-not `acquiredAt`. The empty shelf offers **Scan your first object** and **Bring your list**. There's no sample data.
-*Done when* a named piece lands on the shelf in a collection the collector never created, with its story as the first
-history event and no acquired date.
+**F2 · First piece and the empty shelf.** Stories 1–6, 9; PD-166, PD-137, PD-102, PD-165; page 46. Four screens:
+
+1. **One question.** *Welcome to CLCTN · Show us something you love. Just one thing, the one with a story. Hold it
+   up.* The camera is already live, with **Type it**, **Library** and **Just look around first**. There are no
+   categories and no account.
+2. **Recognise, then ask why.** The photo, the inferred type and name as a guess with **That's it** / **Not quite**.
+   With nothing recognised, *What is it?* is a dashed field focused on arrival, and the button says why it's disabled
+   (clctn journey 1's fault). Then *How did it come to you?*: one chip plus an optional line, which becomes the first
+   log entry. It's never written to `acquiredAt` (PD-165).
+3. **Type not shipped yet** (2B). *Watches aren't a full type yet. It's saved safely as a Thing.* **Count me in**
+   records the collector as a tester for that type, so when the type ships, their pieces are offered the migration
+   first (PD-031). **Not now** does nothing.
+4. **The payoff, then momentum.** *Your shelf · 1 piece*: the piece's first signal or clock if it has one, and the
+   story under it. Then empty slots with **One at a time** (the same camera) and **That's enough for today**. **Snap
+   the whole shelf** is the sweep, so it's v1.x (roadmap); v1 doesn't show it.
+
+Only the first piece is onboarding. Importing a list starts from Add (49 Q3), and the empty shelf offers **Scan your
+first object** and **Bring your list**, which opens Add's import. There's no sample data. *Done when* a named piece
+lands on the shelf in a collection the collector never created, with its story as the first history event and no
+acquired date, and a piece of a type that isn't enabled is saved as a Thing with the tester offer.
 
 **F3 · Shelf home.** Stories 147–153; PD-139, PD-140. From top to bottom: the header count (plus value only with money
 on); a Today strip with non-empty lines only (*N to tidy*, *N need attention*, *N overdue*); a stats card; collections
@@ -613,13 +675,40 @@ when matches are strong. Unconfirmed objects count, show and are searchable. A l
 fields, and asks first. *Done when* Confirm all confirms only strong matches, and enrichment never touches a typed
 field.
 
-**F9 · Import.** Stories 34, 36–41, 43; PD-047, PD-048. Sources: **Discogs CSV export** and **any spreadsheet** (CSV
-or TSV, any order, separator, encoding or date format; only a name column is required). The mapping screen shows where
-each column lands before anything is written. Unknown columns become own fields. The summary says which columns and
-grades were guessed. Everything lands unconfirmed, and the batch can be undone for 30 days. The file never leaves the
-phone. Story 42's template and AI conversion prompt are published as a page in the app, from the archive's
-`15_CSV Format`. *Done when* the 211-row fixture lands as 211 unconfirmed objects, with the unknown column as a field on
-each, and undo removes all 211.
+**F9 · Import.** Stories 34, 36–41, 43; PD-047, PD-048, PD-155; page 49. The test file is the real one:
+`original-spec/uploads/Jeux collection.csv`, which has 485 games in a grid of 20 platform columns, semicolons,
+French notes in cells ("cartouche + manuel", "boite endommagé", "doublon", "dédicace JDG"), typos and bundles.
+
+- **Where it starts:** **Import a list** on the Add screen, next to the camera and typing (49 Q3), and the share sheet
+  from Files, Mail or Numbers, which lands on the same screen. It accepts CSV, TSV and pasted text, nothing else.
+- **Fast lane:** a file matching the published `clctn.csv` template (one row per object, fixed headers, the same
+  format Export writes) imports instantly with no guessing. A Discogs CSV export is a second known shape.
+- **Any other layout:**
+  1. Read on the phone (encoding and separator sniffed).
+  2. **Understand the shape:** the layout (a column per platform, no title header) maps headers to subtypes, picks the
+     region from the locale and notes.
+  3. **Extract each cell** into a typed object: parts and condition from the notes, signed, bundles split by "/",
+     "doublon" as a second copy, digital kept apart. Anything it can't read goes into the note, untouched. It never
+     invents a value.
+
+  Steps 2 and 3 run on the device with Apple's Foundation Models, using guided generation into a `@Generable` struct
+  mirroring the resolved type (49, "Mapping"), 20–30 cells per call. That's free, private and offline, so PD-047's
+  "the file never leaves the phone" holds.
+- **One sentence to confirm:** *485 video games on 20 platforms, into a collection called Jeux.* The collector can
+  rename the collection there. **Build my shelf**, or **Something's off**, which opens the column mapper, the only
+  escape hatch. The import creates **one collection** named after the file, and the platforms become shelves inside
+  it, from the subtype (49 §06). Sheet tabs like "Vendu" or "Recherché" become statuses (let go, wanted), not
+  collections.
+- **Nothing is dropped** (49 Q2). Unknown rows land as written, with no match. Everything is unconfirmed (PD-042), and
+  real ambiguities ("Which Tetris?") wait in an exceptions queue that's a badge, never a gate.
+- **The payoff from their own notes:** *We noticed a few things while unpacking*: Imperfect (3), Duplicate (1), Signed
+  (1), Series (3 of 4). These are live saved views (F11).
+- **Matching titles to a database** (49's step 4) and cover art (step 5) need the backend, so they wait for Q9. In v1,
+  covers are the collector's photos or the flat type tile.
+- The batch can be undone for 30 days, keeping what the collector has since touched (D-12).
+
+*Done when* `Jeux collection.csv` lands as one "Jeux" collection with a shelf per platform, every cell kept, notes
+turned into parts, condition, signed and bundles as the 49 table shows, and undo removing the untouched objects.
 
 **F10 · Places.** Stories 103–111; PD-053. A place is created by typing a path (`Cellar › Rack 3 › Bin 12`) on an
 object, in a sweep tray, or in bulk "Move to…". Recent places come first. A place holds every type, and unplaced is
@@ -630,8 +719,20 @@ screen appears only at two.
 **F11 · Find.** Stories 154–156, 187–194. Search over every field, note and entry (one track on an LP). Filters stack
 as removable chips: type, bought in, condition, lent out, place, status, and archive included or not. Each result says
 what matched. Everything runs on the phone, offline, and nothing searched leaves it. In a shop, the query
-`artist / maker / series` shows what you own, what you let go and what you used up (stories 188–190). *Done when* a
-single track is found, chips stack, and each result names the field that matched.
+`artist / maker / series` shows what you own, what you let go and what you used up (stories 188–190).
+**Saved views** (47, 49) are live queries, not copies:
+
+- **Imperfect:** any ladder part at "missing" or "worn".
+- **Duplicates.**
+- **Signed:** by whom, from the item-level field.
+- **Digital.**
+- **Might let go.**
+- **Also exists on:** the same work on other platforms or formats, grouped through `workID`, for "Doom on everything".
+
+Series completion ("3 of 4 Ridge Racer") shows only what is owned, never an invented total (story 198).
+
+*Done when* a single track is found, chips stack, each result names the field that matched, and the Imperfect view
+lists exactly the objects with a missing or worn part.
 
 **F12 · Stats.** Stories 85, 153; PD-159. With money off: counts; shape by decade, by the type's choice fields and by
 type; shelf health (*31 have no photo*); lending habits. Grouped by type, never averaged across types. *Done when* a
@@ -689,20 +790,27 @@ off shows no value on any screen.
 
 | D | Question | Reading |
 |---|---|---|
-| D-1 | `original-spec/` is missing | The archive is `clctn/design/` at `f6479f9` (§0 row 1) |
+| D-1 | Which archive is the original spec | `original-spec/` in this repo. Its September pages match `clctn/design/` byte for byte; the October pages are reconciled as §0 row 15 says |
 | D-2 | Loans without a backend | Every loan is closed by the collector; the borrower can't confirm, and the screen says so (PD-160) |
 | D-3 | History of a loan doesn't say to whom (journey 3 finding) | `lent` and `returned` events carry the person's id and name at the time |
 | D-4 | Camera throws you out after every shot (journey 1 fault 3) | The camera stays open, and new objects collect in a tray |
 | D-5 | No place field in the edit form (journey 1 fault 2) | The edit form has a Place field (F5) |
 | D-6 | Nudge with no link | The share sheet with a friendly line and the object card |
 | D-7 | Value fields with money off | Paid is recorded and editable, never totalled; value and price cap are hidden (stories 161, 165) |
-| D-8 | Runs and sets (stories 195–206) | Not in v1. They aren't in the confirmed v1 roadmap, and their open questions (#23) are unresolved |
+| D-8 | Runs and sets (stories 195–206) | v1 shows series and "also exists on" from owned objects only, through the work layer (47); it never invents a total (#23). Declaring a run, its gaps and "finished" are not in v1 |
 | D-9 | Analytics destination with no backend | Local only, visible in the debug screen; no network |
 | D-10 | Dark mode | The designed palette only; dark "stage" surfaces where the boards have them (Q5) |
 | D-11 | Token values disagree | The archive's handoff table wins over both implementations: muted is `#6E6458` (clctn has `#5A5045`); teal `#12A594` is a type tint and green `#0E6E5E` means money (the-collection calls `#0E6E5E` "teal"). Six manifests use gradient keys the palette lacks (claret, verdigris, phosphor, oxide, indigo, plum); they get tokens, taken from the archive's type pages. |
 | D-12 | Import undo after the collector has changed things | Undo removes the batch's objects that nobody touched since the import. Objects that were edited, photographed, lent or placed are kept, and the summary says "3 kept because you changed them". clctn hard-deleted them, which destroys work (PD-090's spirit). |
 | D-13 | "It arrived" on a wanted object | The object moves from the wishlist to its type's collection (created if needed), and history records `owned`. clctn left it in the wishlist. |
 | D-14 | Imported rows and `acquired` | An import writes `added` only. It writes `acquired` only from a column the mapping assigns to it, and dates the event, not the field, as the collector's own fact (PD-165). |
+| D-16 | October pages vs the PD log | The October refinements are adopted where they don't contradict a confirmed decision; where they do (backend, accounts and subscription, marketplace payments), the PD log holds in v1 until Q9 is answered (§0 row 15) |
+| D-17 | Event log or mutable rows | Both: the log is the truth, and the rows are a projection written in the same transaction and rebuildable from it (§3.1). clctn's ADR-0006/0007 rows and JSON fields stay as the projection's shape |
+| D-18 | Video games' `mediaRules` (43) vs subtypes (48) | Subtypes keyed on platform replace `mediaRules`; music's per-format rules become format subtypes (48 Q1, Q2 leanings). `video-game.yml` gains the 5 subtypes page 48 draws |
+| D-19 | Consoles | Not a subtype of Video games; hardware is its own type, linked to the games it runs (47 D1, 48 Q4). Not in v1 |
+| D-20 | `playStatus` (47 ask 05) | `video-game.yml` gains `playStatus` (not started / playing / finished / abandoned), replacing `playLog`'s finished flag. Its "started long ago, never finished" clock is opt-in |
+| D-21 | Import grouping | One collection per file, platforms as shelves inside it from the subtype, sheet tabs as statuses (49 §06). If a video-game collection exists, the confirm sentence offers to add to it instead; that's a choice the collector makes, so PD-151's never-merge holds |
+| D-22 | Digital games in an import | Kept, as `media: digital`, in the Digital view (49), and never counted as physical objects in stats, since the catalogue is physical (PD-024) |
 | D-15 | Status mapping (five swatches) | It is derived in `TegolaModel` from 42_One Roof's rules, not in views. `unconfirmed` reads "To tidy" (clctn showed "Out"), `lent` reads "Out", overdue and needs details read "Needs you". |
 
 ### 4.3 Not in v1
@@ -723,8 +831,9 @@ Taken from the roadmap; each waits for the reason it gives:
 From clctn's `docs/product/journeys/`, rewritten for tegola's v1. Each runs from a cold launch with `--reset`:
 
 1. **The first evening:** first piece, then a second typed by hand, a photo added later, and a place set.
-2. **Bring your list:** empty shelf → Bring your list → spreadsheet (handed in by a `--import-fixture` launch
-   argument, because a fresh simulator has no file to pick) → mapping → summary → Today says *N to tidy* → Confirm all.
+2. **Bring your list:** empty shelf → Bring your list → `Jeux collection.csv` (handed in by a `--import-fixture`
+   launch argument, because a fresh simulator has no file to pick, with recorded model outputs) → *485 video games on
+   20 platforms, into a collection called Jeux* → Build my shelf → *We noticed a few things* → the Imperfect view.
 3. **Lend at the door:** object → Lend → "Dara" → due in 2 weeks → overdue on a moved clock → Return → history.
 4. **Saturday in the shop:** Find "Blue Note" → owned, let go and wanted shown together → make one wanted in one tap.
 5. **The weekly glance:** Today strip → *1 needs attention* → a wine at its peak → Open a bottle.
@@ -780,6 +889,7 @@ ObjectFeature
 | `CatalogueClient` | the bundled manifests | the same (pure); fixtures for the twelve disabled types |
 | `LookupClient` | MusicBrainz (music barcodes) and Open Library (ISBN) over `URLSession`, ephemeral session | recorded payloads from `TegolaTestSupport`; `unimplemented` by default |
 | `IdentifyClient` | none in v1 unless Q3 says otherwise | scripted |
+| `ExtractionClient` | Foundation Models (`LanguageModelSession`, guided generation into `@Generable` types built from the resolved type) for import shape and cell extraction, and for inferring the first piece's type; on devices without Apple Intelligence it falls back to the column mapper and keeps cells as notes | recorded outputs per fixture cell; `unimplemented` by default |
 | `ScannerClient` | VisionKit `DataScannerViewController` (barcodes, text) | an `AsyncStream` driven by the test |
 | `PhotoStoreClient` | files in Application Support, thumbnails | an in-memory store |
 | `ShareCardClient` | `ImageRenderer` of the card view | records calls |
@@ -849,7 +959,9 @@ Nothing is copied as is. What I'd port, after review against this plan:
 | clctn `docs/product/journeys/` | the beats and their verdicts | The walking order is already worked out; §4.4 rewrites them for tegola |
 | clctn `TestSupport.Seed` (shape) | the 116-object seed shelf | Previews and tests see the same shelf |
 | clctn `docs/engineering/pointfree.md` | the SQLiteData rules already learned the hard way | Fewer repeat mistakes |
-| the archive `15_CSV Format` | the import template and the conversion prompt | Story 42 |
+| the archive `15_CSV Format`, `49_Import Pipeline` §03B | the `clctn.csv` template and the conversion prompt | Story 42; the import's fast lane and Export's format |
+| `original-spec/uploads/Jeux collection.csv` | the import fixture, as is | A real file from a real collector, which beats an invented one |
+| `original-spec/video-media.yml`, page 48's Video games subtypes | the subtype fixtures | M2's exit test |
 | the archive `05_Tagging and Metrics` | the event taxonomy | F17 analytics |
 | the-collection `CollectorKit/Resources/Fonts` | the three OFL fonts and their licences | The faces the boards use |
 | the-collection `CollectorKit` (`TypeStyle`, `hardShadow`, `dashedSlot`, `halftone`, `FlowRow`) | the techniques, rewritten against tegola's tokens | They already reproduce the printed look in SwiftUI; the values come from the archive, not from it |
@@ -881,10 +993,7 @@ the-collection's `Navigator`/`StackHost` (TCA `StackState` replaces it).
 
 Each has the default I'll use if you don't answer.
 
-1. **The original spec.** The archive is `mackoj/clctn/design/` (§0 row 1). Do you want a copy committed as
-   `original-spec/` in tegola (22 MB, including PDFs), or kept by reference? *Default: by reference to `f6479f9`,
-   with rendered boards in `docs/design/`.* Is `46_Onboarding - First Piece` (PD-166) somewhere I can't see? *Default:
-   follow PD-166's text and journey 1.*
+1. ~~**The original spec.**~~ Answered: `original-spec/` is in the repo (§0 row 1).
 2. **Name.** Code and bundle id use `Tegola` / `fr.macko.tegola`. What do collectors see: **Tegola** or **CLCTN**
    (PD-157 was only assumed)? *Default: Tegola.*
 3. **Lookups and Identify without a backend.** v1 can call MusicBrainz and Open Library directly from the phone. The
@@ -905,6 +1014,20 @@ Each has the default I'll use if you don't answer.
    (2.6–3.3:1), fail WCAG AA at the sizes the boards use. *Default: keep every fill colour, and add derived text tokens
    that pass, as telaio does (`metaText`, a darker grey at 4.5:1 or above; ink text instead of paper text on orange,
    teal and pink). Each change is listed in BOARDS.md next to the board it alters.*
+9. **The October pages vs confirmed decisions.** Pages 49, 50 and 52 assume a backend in v1, for title matching
+   against game databases (IGDB, ScreenScraper, Wikidata) and cover art on a CDN. They also put accounts, sync and a
+   €50/year subscription plus the €29.99 unlock in v1's last phase (P5). That contradicts PD-160 (no backend in v1),
+   ADR-0001 (no account) and PD-112/113 (payment shape decided after launch). *Default: v1 stays backend-free and
+   account-free. The import extracts on the device and keeps unmatched titles as written. Matching and covers arrive
+   with the first backend, and P5 is planned after M9.* If you want the backend in v1, it becomes its own module
+   (`backend`, before M6) with its own spec.
+10. **Launch types.** PD-164 says five types *including* Thing (Music, Books, Video games, Wine, Thing). Pages 40 and
+    51 say "five types + Thing", with Retro computers suggested for the fifth slot. *Default: PD-164's list. Retro
+    computers is the first type on the release train.*
+11. **Discogs import** (found while rendering board 16). Its board signs in to Discogs, which needs a backend. *Default:
+    the CSV file Discogs lets you export, as a known shape in the fast lane.*
+12. **Shelf layout** (boards `home` and `collection`). The boards show a grid of tiles; PLAN F3 and F4, from PD-139,
+    say rows. *Default: the boards' tiles and their visual language on Shelf, rows inside a collection.*
 
 ## 11. Milestone 1 deliverables (after approval)
 
@@ -919,6 +1042,6 @@ Each has the default I'll use if you don't answer.
 - [ ] The guard tests (§2.5)
 - [ ] `scripts/test.sh`, `ci.sh`, `test-linux.sh`, `secret-scan.sh`, `periphery.sh`; `.github/workflows/ci.yml`
   (`linux-core` automatic, `macos` manual)
-- [ ] `TegolaTestSupport`: the seed shelf, a 211-row CSV, a Discogs export, recorded MusicBrainz and Open Library
-  payloads
-- [ ] `docs/GLOSSARY.md`, `docs/DECISIONS.md` (D-1 to D-10), `docs/testing/ui-tests.md`
+- [ ] `TegolaTestSupport`: `Jeux collection.csv` with recorded extraction outputs, a `clctn.csv` template file, a
+  Discogs export, recorded MusicBrainz and Open Library payloads (the seed shelf lives in `TegolaStorage`, §2.4)
+- [ ] `docs/GLOSSARY.md`, `docs/DECISIONS.md` (D-1 to D-22), `docs/testing/ui-tests.md`

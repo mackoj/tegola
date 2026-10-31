@@ -12,8 +12,7 @@
 ## Project rules
 - **Spec:** `docs/PLAN.md` is the specification, and `docs/DECISIONS.md` records the spec interpretations (`D-n`).
   Product decisions are clctn's `PD-###` log, cited by id; changing one is the owner's call. The design boards, as
-  images with text descriptions, are in `docs/design/BOARDS.md`. The original archive is `mackoj/clctn/design/` at
-  `f6479f9`.
+  images with text descriptions, are in `docs/design/BOARDS.md`. The original spec is `original-spec/`.
 - **Process:** `tasks/plan.md` and `tasks/todo.md` track milestones and tasks. Each milestone ends with a report in
   `docs/milestones/M<n>.md`. `tasks/HANDOFF.md` is the state of the work for whoever picks it up next.
 - **Toolchain:** always use `xcrun swift …` and `xcodebuild` on the Mac. If swiftly is installed, the `swift` on PATH
