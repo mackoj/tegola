@@ -135,7 +135,7 @@ reused; a replaced decision stays, marked **superseded by D-n**.
 
 ### D-32 · Where the pure core is tested
 
-**Decision.** On Linux with Swift 6.4.2, in CI (`linux-core`, every push) and in cloud sessions, which have no Xcode: `TegolaCatalogue`, `TegolaModel`, `TegolaInterchange`, `TegolaLookupAPI`, `TegolaTestSupport` and `TegolaDesignSystem`'s `TegolaDesignTokens`. TCA doesn't build on Linux (its dependency swift-navigation fails there with Swift 6.4), so `TegolaFeatures` and the app are verified on the Mac only, and say so in each report.
+**Decision.** On Linux with Swift 6.4.2, in CI (`linux-core`, every push) and in cloud sessions, which have no Xcode: `TegolaCatalogue`, `TegolaModel`, `TegolaStorage` (from M2, with `libsqlite3-dev`), `TegolaInterchange`, `TegolaLookupAPI`, `TegolaTestSupport` and `TegolaDesignSystem`'s `TegolaDesignTokens`. TCA doesn't build on Linux (its dependency swift-navigation fails there with Swift 6.4), so `TegolaFeatures` and the app are verified on the Mac only, and say so in each report.
 
 ### D-33 · The lookup contract's search request
 
@@ -193,7 +193,7 @@ reused; a replaced decision stays, marked **superseded by D-n**.
 - **Append-only, enforced.** Triggers make SQLite refuse any `UPDATE` or `DELETE` on `events`.
 - **`uuid()`** is registered on every connection (`ShelfStore.configuration`), backed by the `uuid` dependency. Apple's SQLite has a `uuid()` of its own, which hid the gap; Linux's doesn't.
 - **Writing.** `perform` loads the projection, plans, appends the events, and upserts every row that changed, all in one write transaction. Nothing is ever deleted except by `rebuildProjection`, which empties the projection tables and replays the log. Loading the whole projection per command is fine for v1's shelves; an import batch is one command.
-- **Linux.** Whether sqlite-data and GRDB build on Linux is checked by a non-blocking `linux-core` step. Until it's green, storage is verified on the Mac only.
+- **Linux.** sqlite-data and GRDB build and pass on Linux once `libsqlite3-dev` is installed, so `TegolaStorage` is part of `linux-core` and `test-linux.sh` (D-32).
 
 ### D-40 · What `plan` doesn't check yet
 

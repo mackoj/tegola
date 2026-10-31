@@ -16,6 +16,9 @@ jobs:
       - uses: actions/checkout@v4
       - name: Toolchain
         run: swift --version
+      # GRDB (TegolaStorage) needs the SQLite headers, which the image doesn't have.
+      - name: SQLite headers
+        run: apt-get update -qq && apt-get install -y -qq libsqlite3-dev >/dev/null
       - name: Pure packages and guard tests
         run: scripts/test-linux.sh
       - uses: actions/setup-node@v4
@@ -25,10 +28,6 @@ jobs:
         run: scripts/lint-api.sh
       - name: Type files against the schema
         run: scripts/validate-types.sh
-      # Whether sqlite-data and GRDB build on Linux is open (D-39). Until this is green, storage is verified on the Mac.
-      - name: TegolaStorage on Linux (probe)
-        continue-on-error: true
-        run: apt-get update -qq && apt-get install -y -qq libsqlite3-dev >/dev/null && scripts/test-linux.sh TegolaStorage
       - name: Secret scan
         run: git config --global --add safe.directory "$GITHUB_WORKSPACE" && scripts/secret-scan.sh
       - uses: actions/upload-artifact@v4

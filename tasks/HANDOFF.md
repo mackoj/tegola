@@ -80,7 +80,8 @@ scripts/ci.sh                        # the full gate → build/ci-summary.md
     `chroot /opt/swiftroot`.
   - Bind-mount the repo, `/proc` and `/dev`, copy `/etc/resolv.conf` and the proxy CA into the root, and pass the
     proxy environment and `SSL_CERT_FILE` through.
-  - Then `scripts/test-linux.sh` runs the pure core, and `swift format lint --strict` works too.
+  - Then `scripts/test-linux.sh` runs the pure core and storage (install `libsqlite3-dev` in the root first, for
+    GRDB), and `swift format lint --strict` works too.
 - **The Xcode project** is generated: change `scripts/generate-xcodeproj.py`, run it, commit both.
 - **The lookup contract** is `api/tegola-lookup.openapi.yaml`. Run `scripts/lint-api.sh` before committing a change
   to it, and the generated client's contract tests run with `TegolaLookupAPI`.
@@ -92,8 +93,6 @@ scripts/ci.sh                        # the full gate → build/ci-summary.md
 
 - TCA doesn't build on Linux with Swift 6.4 (swift-navigation's `TextState`), so feature tests only run on the Mac
   (D-32).
-- `TegolaStorage` on Linux is a non-blocking `linux-core` step (D-39). GRDB needs `sqlite3.h`, so the step installs
-  `libsqlite3-dev`. Once it's green, make it blocking and add `TegolaStorage` to `test-linux.sh`'s list.
 - SwiftUI can't set line spacing below a font's natural leading, so the 0.96 line height of the two-line display
   titles needs the DisplayTitle component (M3). Until then, display titles render with default leading.
 

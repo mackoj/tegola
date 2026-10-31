@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # The pure core, on any machine with a Swift toolchain (Linux CI, cloud agents, or the Mac):
-# the packages that import no Apple UI framework, plus the design tokens and the guard tests.
+# the packages that import no Apple UI framework, plus the design tokens and the guard tests. TegolaStorage needs
+# the SQLite headers (libsqlite3-dev on Debian and Ubuntu).
 #   scripts/test-linux.sh                 # every pure package
 #   scripts/test-linux.sh TegolaModel     # one package
 # Writes build/test-linux-summary.md. Uses `swift` from PATH (on the Mac, prefer scripts/test.sh, which uses xcrun).
@@ -19,7 +20,7 @@ package_totals() { # $1 log
     awk '{ tests += $4; suites += $7; runs += 1 }
       END { printf "%d tests in %d suites passed (%d test run%s)", tests, suites, runs, (runs == 1 ? "" : "s") }'
 }
-PACKAGES=(TegolaTestSupport TegolaCatalogue TegolaModel TegolaInterchange TegolaLookupAPI TegolaDesignSystem)
+PACKAGES=(TegolaTestSupport TegolaCatalogue TegolaModel TegolaStorage TegolaInterchange TegolaLookupAPI TegolaDesignSystem)
 [[ $# -ge 1 ]] && PACKAGES=("$@")
 for pkg in "${PACKAGES[@]}"; do
   log="build/linux-$pkg.log"
