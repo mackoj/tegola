@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#EAE3D6}a{color:#2B44D6}a:hover{color:#FF5B2E}</style>
+</helmet>
+
+<div style="width:1100px;margin:0 auto;padding:60px 28px 90px;font-family:Archivo,system-ui,sans-serif;color:#17130F">
+
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70">CLCTN · PRICING STRATEGY · AUGUST 2026</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:64px;line-height:.92;letter-spacing:-.045em;margin:16px 0 0;max-width:860px;text-wrap:balance">Same product. Different shape — and, within limits, a different amount.</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:720px;margin-top:20px;text-wrap:pretty">The friction isn't the amount — it's the <em>form</em>. A German collector reads a €2/month app as a trap; an American reads a €30 upfront app as a risk. Both would happily pay about the same money over three years. So the proposal is: hold the product identical, let each storefront choose the container it trusts, and move the amount only inside a band we could publish without flinching (section 05).</div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:720px;margin-top:14px;text-wrap:pretty">Every number below is a proposal to argue with, not a decision. What I'd like agreed first is the <strong>posture</strong> — section 06.</div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:16px">01 · THE PRINCIPLE</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:38px;line-height:.98;letter-spacing:-.035em;max-width:720px">One product, one entitlement,<br>three containers.</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:26px">
+    <sc-for list="{{ containers }}" as="c" hint-placeholder-count="3">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background: {{ c.bg }};color: {{ c.fg }};padding:22px;box-shadow:5px 5px 0 #17130F;display:flex;flex-direction:column">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;opacity:.6;margin-bottom:10px">{{ c.k }}</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:26px;line-height:1;letter-spacing:-.03em;margin-bottom:10px">{{ c.t }}</div>
+        <div style="font:400 13.5px/1.6 Archivo,sans-serif;opacity:.86;text-wrap:pretty;margin-bottom:12px">{{ c.b }}</div>
+        <div style="flex:1"></div>
+        <div style="font:500 10px/1.5 'DM Mono',monospace;letter-spacing:.06em;opacity:.7;border-top:2px solid currentColor;padding-top:10px">{{ c.who }}</div>
+      </div>
+    </sc-for>
+  </div>
+  <div style="border:2.5px solid #17130F;border-radius:16px;background:#FFD24A;padding:16px 18px;margin-top:16px;font:400 14px/1.6 Archivo,sans-serif;text-wrap:pretty">The containers must unlock <strong>exactly the same app</strong>. The moment a subscriber gets a feature the lifetime buyer doesn't, we've built two products and we'll be maintaining both for a decade.</div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:16px">02 · MARKET BY MARKET</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:38px;line-height:.98;letter-spacing:-.035em;max-width:760px">Five storefronts, five defaults.</div>
+  <div style="font:400 14.5px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:700px;margin-top:14px;text-wrap:pretty">"Default" means what the paywall shows first and biggest. The other options stay available one tap below — nobody is prevented from buying the way they want.</div>
+  <div style="display:flex;flex-direction:column;gap:14px;margin-top:26px">
+    <sc-for list="{{ markets }}" as="m" hint-placeholder-count="5">
+      <div style="border:2.5px solid #17130F;border-radius:20px;background:#fff;box-shadow:5px 5px 0 #17130F;padding:20px 22px;display:grid;grid-template-columns:180px 1fr 250px;gap:24px;align-items:start">
+        <div>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:26px;line-height:1;letter-spacing:-.03em">{{ m.name }}</div>
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;margin-top:7px">{{ m.code }}</div>
+          <div style="display:inline-block;font:500 9px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:5px 10px;margin-top:12px;background: {{ m.tagBg }};color: {{ m.tagFg }}">{{ m.tag }}</div>
+        </div>
+        <div>
+          <div style="font:700 15px Archivo,sans-serif;margin-bottom:8px">{{ m.headline }}</div>
+          <div style="font:400 13.5px/1.6 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ m.why }}</div>
+          <div style="font:400 12.5px/1.55 Archivo,sans-serif;color:#8A7F70;margin-top:10px;text-wrap:pretty"><strong style="color:#C2371F">Risk ·</strong> {{ m.risk }}</div>
+        </div>
+        <div style="border:2.5px solid #17130F;border-radius:14px;background:#F3ECE0;padding:14px">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:10px">PROPOSED PAYWALL</div>
+          <sc-for list="{{ m.plans }}" as="p" hint-placeholder-count="3">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:7px 0;border-bottom:1.5px solid rgba(23,19,15,.12)">
+              <div style="font:600 12.5px Archivo,sans-serif;color: {{ p.fg }}">{{ p.label }}</div>
+              <div style="font:500 12px 'DM Mono',monospace;color: {{ p.fg }}">{{ p.price }}</div>
+            </div>
+          </sc-for>
+          <div style="font:400 11.5px/1.5 Archivo,sans-serif;color:#6E6458;margin-top:10px;text-wrap:pretty">{{ m.note }}</div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:16px">03 · RULES THAT HOLD EVERYWHERE</div>
+  <div style="display:flex;flex-direction:column;gap:11px;max-width:880px">
+    <sc-for list="{{ rules }}" as="r" hint-placeholder-count="6">
+      <div style="display:flex;gap:14px;align-items:flex-start;border:2.5px solid #17130F;border-radius:14px;background:#fff;padding:14px 16px">
+        <div style="flex:none;width:26px;height:26px;border:2.5px solid #17130F;border-radius:999px;background:#FFD24A;display:flex;align-items:center;justify-content:center;font:700 11px Archivo,sans-serif">{{ r.n }}</div>
+        <div>
+          <div style="font:700 14px Archivo,sans-serif;margin-bottom:4px">{{ r.t }}</div>
+          <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ r.b }}</div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:16px">04 · WHAT IT COSTS US</div>
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:18px">
+    <sc-for list="{{ costs }}" as="c" hint-placeholder-count="4">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background: {{ c.bg }};color: {{ c.fg }};padding:20px">
+        <div style="font:700 15px Archivo,sans-serif;margin-bottom:8px">{{ c.t }}</div>
+        <div style="font:400 13.5px/1.6 Archivo,sans-serif;opacity:.86;text-wrap:pretty">{{ c.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:16px">05 · SHOULD THE AMOUNT VARY TOO?</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:38px;line-height:.98;letter-spacing:-.035em;max-width:800px">Yes — but on two axes, not four.</div>
+  <div style="font:400 15px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:740px;margin-top:14px;text-wrap:pretty">Varying the <em>shape</em> of payment is free: nobody is offended that the paywall looks different in Tokyo. Varying the <em>amount</em> is where you can win a few points of conversion and lose the thing that makes an indie app trusted. The test I'd apply: could we publish the reason on the pricing page without embarrassment?</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:24px">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#0E6E5E;color:#F3ECE0;padding:22px;box-shadow:5px 5px 0 #17130F">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;opacity:.7;margin-bottom:12px">DEFENSIBLE · VARY ON THESE</div>
+      <sc-for list="{{ varyYes }}" as="v" hint-placeholder-count="3">
+        <div style="border-top:1.5px solid rgba(243,236,224,.25);padding:11px 0">
+          <div style="font:700 14px Archivo,sans-serif;margin-bottom:4px">{{ v.t }}</div>
+          <div style="font:400 13px/1.55 Archivo,sans-serif;opacity:.82;text-wrap:pretty">{{ v.b }}</div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;padding:22px;box-shadow:5px 5px 0 #C2371F">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;color:#C2371F;margin-bottom:12px">RISKY · DON'T VARY ON THESE</div>
+      <sc-for list="{{ varyNo }}" as="v" hint-placeholder-count="3">
+        <div style="border-top:1.5px solid rgba(23,19,15,.14);padding:11px 0">
+          <div style="font:700 14px Archivo,sans-serif;margin-bottom:4px">{{ v.t }}</div>
+          <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ v.b }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#FFD24A;padding:22px;margin-top:16px;box-shadow:5px 5px 0 #17130F">
+    <div style="font:700 16px Archivo,sans-serif;margin-bottom:10px">The rule I'd write down</div>
+    <div style="font:400 14.5px/1.65 Archivo,sans-serif;text-wrap:pretty;max-width:820px">One anchor value in euros. Rich markets stay within <strong>±25%</strong> of it — enough to respect a storefront's habits, small enough that a forum screenshot is not a scandal. Lower-income markets get a real cut, up to <strong>−60%</strong>, and we say plainly that it is purchasing-power pricing. The <em>shape</em> — lifetime, yearly, monthly — varies as freely as the market wants. Features never do.</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px">
+      <sc-for list="{{ band }}" as="b" hint-placeholder-count="5">
+        <div style="border:2.5px solid #17130F;border-radius:14px;background:#F3ECE0;padding:11px 14px;min-width:150px">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.1em;color:#8A7F70">{{ b.k }}</div>
+          <div style="font:700 17px Archivo,sans-serif;margin-top:5px">{{ b.v }}</div>
+          <div style="font:400 11.5px/1.45 Archivo,sans-serif;color:#6E6458;margin-top:4px;text-wrap:pretty">{{ b.n }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:16px">06 · YOUR CALL</div>
+  <sc-for list="{{ questions }}" as="q" hint-placeholder-count="3">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#17130F;color:#F3ECE0;padding:20px 22px;box-shadow:5px 5px 0 #FF5B2E;margin-bottom:14px;max-width:900px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#FFD24A;margin-bottom:9px">{{ q.k }}</div>
+      <div style="font:700 17px/1.35 Archivo,sans-serif;margin-bottom:8px;text-wrap:pretty">{{ q.t }}</div>
+      <div style="font:400 13.5px/1.65 Archivo,sans-serif;color:rgba(243,236,224,.8);text-wrap:pretty">{{ q.b }}</div>
+      <div style="font:400 13px/1.6 Archivo,sans-serif;color:#FFD24A;margin-top:10px;text-wrap:pretty"><strong>My read ·</strong> {{ q.read }}</div>
+    </div>
+  </sc-for>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1100},&quot;showJapan&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Content&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const jp = this.props.showJapan ?? true;
+    const markets = [
+      {
+        name: 'France', code: 'FR · HOME MARKET', tag: 'LIFETIME FIRST', tagBg: '#0E6E5E', tagFg: '#F3ECE0',
+        headline: 'Lifetime unlock, founding ladder, no subscription offered at all.',
+        why: 'Subscription fatigue is loudest here and app subscriptions carry a whiff of the abonnement you can never cancel. A one-off purchase from a French developer, no cloud, no account, is the whole pitch — adding a monthly plan would undercut the thing that makes it credible.',
+        risk: 'Cash arrives once. If the founding ladder sells slowly, there is no recurring floor underneath us in the market we know best.',
+        note: 'Founding ladder rises with unlocks sold; buyers keep their price forever.',
+        plans: [
+          { label: 'Lifetime · founding', price: '€19.99', fg: '#17130F' },
+          { label: 'Lifetime · after 1,000', price: '€24.99', fg: '#8A7F70' },
+          { label: 'Lifetime · after 5,000', price: '€29.99', fg: '#8A7F70' }
+        ]
+      },
+      {
+        name: 'Germany', code: 'DE · EU EXPANSION', tag: 'LIFETIME FIRST', tagBg: '#0E6E5E', tagFg: '#F3ECE0',
+        headline: 'Same as France, with the privacy argument doing the selling.',
+        why: 'German buyers pay upfront for software that does not phone home, and they read recurring billing on a small utility as a red flag. "Your data never leaves your devices, and you pay us once" is close to a native sales pitch. Expect higher scrutiny of the Impressum, VAT and refund terms than of the price itself.',
+        risk: 'Highest support and review expectations in Europe. Sloppy German copy costs more here than a wrong price would.',
+        note: 'Show VAT-inclusive prices, always. Family Sharing is included, as everywhere.',
+        plans: [
+          { label: 'Lifetime · founding', price: '€19.99', fg: '#17130F' },
+          { label: 'Lifetime · after 1,000', price: '€24.99', fg: '#8A7F70' },
+          { label: 'Yearly / monthly', price: '— none —', fg: '#8A7F70' }
+        ]
+      },
+      {
+        name: 'United Kingdom', code: 'GB · EU-ADJACENT', tag: 'HYBRID', tagBg: '#FFD24A', tagFg: '#17130F',
+        headline: 'Yearly shown first, lifetime shown beside it at a visible saving.',
+        why: 'The most subscription-normalised market in Europe: a £9.99/year line item barely registers, and the lower entry price should lift conversion on a product nobody has heard of yet. Keeping lifetime visibly next to it converts the collectors who hate renting — and they are exactly our hardcore.',
+        risk: 'Two prices on one paywall always costs some decisions. Needs a paywall that makes the comparison obvious in three seconds.',
+        note: 'Yearly upgraders get their paid year credited against lifetime for 12 months.',
+        plans: [
+          { label: 'Yearly', price: '£9.99', fg: '#17130F' },
+          { label: 'Lifetime · founding', price: '£17.99', fg: '#17130F' },
+          { label: 'Monthly', price: '— none —', fg: '#8A7F70' }
+        ]
+      },
+      {
+        name: 'United States', code: 'US · LARGEST', tag: 'SUBSCRIPTION FIRST', tagBg: '#2B44D6', tagFg: '#F3ECE0',
+        headline: 'Yearly default, lifetime priced as a premium "Founder" tier.',
+        why: 'Subscription is the default mental model and tolerance for app pricing is the highest of the four. It also matches how the US collector market behaves: PriceCharting, CollX and the card-grading world already run on recurring plans, so we are not asking anyone to learn a new habit. Recurring revenue here is what funds the other markets.',
+        risk: 'Churn on a catalogue app is real — people finish cataloguing and stop. The yearly renewal must land on a screen that shows what changed in a year, or it dies at month 13.',
+        note: 'Free trial: 14 days, no card, because the value shows only once the shelf is full.',
+        plans: [
+          { label: 'Yearly', price: '$12.99', fg: '#17130F' },
+          { label: 'Lifetime · Founder', price: '$26.99', fg: '#17130F' },
+          { label: 'Monthly', price: '$2.49', fg: '#8A7F70' }
+        ]
+      },
+      {
+        name: 'Japan', code: 'JP · UNVERIFIED', tag: 'BLOCKED · RESEARCH', tagBg: '#C2371F', tagFg: '#F3ECE0',
+        headline: 'Monthly-led on paper — but not a decision we can make yet.',
+        why: 'Small monthly amounts are unremarkable in Japan and churn on well-made tools is famously low, which argues for a ¥300-ish monthly with a lifetime option for the serious collector. The deepest collector market in the world is here. But we still have no domestic price reference, and pricing follows trust, not the other way round.',
+        risk: 'Setting a price before the research answers whether a foreign catalogue app is trusted at all would be guessing with a currency sign in front of it.',
+        note: 'Hold until the Japan research brief comes back. Numbers here are placeholders.',
+        plans: [
+          { label: 'Monthly', price: '¥300', fg: '#8A7F70' },
+          { label: 'Yearly', price: '¥2,800', fg: '#8A7F70' },
+          { label: 'Lifetime', price: '¥4,800', fg: '#8A7F70' }
+        ]
+      }
+    ];
+    return {
+      markets: jp ? markets : markets.slice(0, 4),
+      containers: [
+        { k: 'CONTAINER A', t: 'Lifetime unlock', b: 'One payment, kept forever, price locked at whatever the founding ladder was on the day. The honest option, and the one that matches an app you use for twenty years.', who: 'BEST WHERE: TRUST IS THE BARRIER', bg: '#fff', fg: '#17130F' },
+        { k: 'CONTAINER B', t: 'Yearly', b: 'A low entry price for people who will not gamble €30 on an unknown developer. Renews on an anniversary screen that has to earn it — what shipped this year, what your shelf did.', who: 'BEST WHERE: PRICE IS THE BARRIER', bg: '#fff', fg: '#17130F' },
+        { k: 'CONTAINER C', t: 'Monthly', b: 'Only where it is culturally invisible. Everywhere else it reads as a subscription trap on a utility and does more brand damage than it earns.', who: 'BEST WHERE: MONTHLY IS THE NORM', bg: '#17130F', fg: '#F3ECE0' }
+      ],
+      rules: [
+        { n: '1', t: 'The catalogue is never the hostage', b: 'Cancel a subscription and you drop to the free tier: your objects stay readable, editable and exportable in full. What you lose is new imports, value tracking and unlimited collections — never access to what you wrote.' },
+        { n: '2', t: 'A price you paid is a price you keep', b: 'Lifetime buyers are never re-charged, never migrated onto a plan, never asked to "upgrade to the new version". If that ever stops being true the whole positioning collapses.' },
+        { n: '3', t: 'Rent converts to ownership', b: 'Any subscriber can move to lifetime, and what they paid in the last twelve months comes off the price. It removes the fear of paying twice, which is what actually stops people subscribing.' },
+        { n: '4', t: 'One entitlement across all Apple devices', b: 'iPhone, iPad and Mac are a single purchase, Family Sharing included, in every market. Charging per platform on a collection you sync yourself is indefensible.' },
+        { n: '5', t: 'The storefront decides, not our guess about you', b: 'Pricing follows the App Store region of the account, which is the only signal that is both legal and reliable. No IP sniffing, no "we noticed you are in France".' },
+        { n: '6', t: 'Never two products', b: 'Plans differ in how you pay, never in what you get. The free tier is the only feature boundary that exists, and it is drawn at fifty objects and one collection.' }
+      ],
+      costs: [
+        { t: 'Comparison across borders', b: 'People do compare, especially collectors on forums. A €19.99 lifetime in France and a $39.99 lifetime in the US will be screenshotted side by side. The answer has to be a stated policy — local pricing, locked once bought — not silence.', bg: '#fff', fg: '#17130F' },
+        { t: 'Support surface', b: 'Every plan shape multiplies refund questions, upgrade questions and family-sharing questions. Four markets with three containers is realistically a support page and a decision tree we have to write before launch, not after.', bg: '#fff', fg: '#17130F' },
+        { t: 'Forecasting gets murkier', b: 'Mixed lifetime and recurring revenue makes the model harder to read: one is cash today, the other is a curve. The revenue model needs a per-market split rather than one blended number, or we will fool ourselves.', bg: '#FFD24A', fg: '#17130F' },
+        { t: 'Store mechanics', b: 'Subscription groups, introductory offers and price tiers are configured per storefront, and changing a live subscription price is slow and visible. Getting the ladder wrong costs weeks; getting a lifetime price wrong costs a day.', bg: '#0E6E5E', fg: '#F3ECE0' }
+      ],
+      varyYes: [
+        { t: 'Purchasing power', b: 'A price that is a rounding error in Zurich is a real decision in Warsaw or São Paulo. Charging the same absolute amount everywhere is not fairness, it is just pricing for the rich half of the map — and it hands the whole long tail to piracy or to nothing.' },
+        { t: 'What the storefront costs and expects', b: 'Local VAT, Apple\u2019s per-region tiers and the customary price of a serious tool in that store all move the sensible number. Landing on a familiar tier reads as competence; an odd converted figure reads as a foreign app that did not bother.' },
+        { t: 'What the same money buys in habit terms', b: 'Japan\u2019s ¥300/month and the US\u2019s $14.99/year are the same conversation held in two different units. Matching the local unit of thought is worth more conversion than shaving the amount.' }
+      ],
+      varyNo: [
+        { t: 'How much we think they can be squeezed', b: 'Charging Americans double for the identical app because the market tolerates it is a strategy that works right up to the first Reddit thread. For a trust-led product sold on "we don\u2019t take your data", getting caught pricing by gullibility is expensive.' },
+        { t: 'Assumptions about the people', b: '"Germans are careful, Americans buy anything" is a caricature, not a segment. Collectors are a narrower and more similar tribe than their nationalities suggest — the hardcore in Lyon and in Osaka want the same three things.' },
+        { t: 'Features by region', b: 'Never. The moment a market gets a lesser version, the price difference stops being pricing and becomes a worse product, and every review says so.' }
+      ],
+      band: [
+        { k: 'ANCHOR', v: '€19.99', n: 'Lifetime, founding, France' },
+        { k: 'CEILING +25%', v: '€24.99', n: 'US, CH, NO, AU' },
+        { k: 'FLOOR −25%', v: '€14.99', n: 'ES, IT, PT, GR' },
+        { k: 'PPP MARKETS', v: '−40 to −60%', n: 'PL, BR, MX, TR, IN' },
+        { k: 'NEVER', v: 'under €9', n: 'Below this it reads as a toy' }
+      ],
+      questions: [
+        { k: 'DECISION 1', t: 'Do we ship more than one payment shape at all in v1?', b: 'The alternative is lifetime-only everywhere for the first year: one price, one message, zero support tree, and a clean read on whether people will pay for this at all. Localise the shape in year two, once there is data instead of intuition.', read: 'Lifetime-only for launch in FR and DE. Introduce yearly with the GB/US launch, when there is a paywall worth optimising.' },
+        { k: 'DECISION 2', t: 'Is the US worth a different product posture, or just a different price?', b: 'Subscription-first in the US means building renewal screens, trials, churn handling and a value story that has to keep proving itself annually. That is a real amount of product, not a pricing checkbox.', read: 'Worth it, but not first. Treat the US as the second launch and let the recurring machinery be its scope, not a bolt-on to the French release.' },
+        { k: 'DECISION 3', t: 'What is the lowest price we would accept to be believed?', b: 'Cheap reads as unserious for a tool people trust with a €14,000 collection, and every market has a floor below which a catalogue app looks like a toy. The founding ladder is a discount on top of that floor, not a substitute for it.', read: 'Hold €19.99 lifetime as the floor in the anchor markets — FR, DE, GB, and the US equivalent. Southern Europe and PPP markets can sit lower on the band in section 05; nothing anywhere goes under €9.' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

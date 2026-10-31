@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#EAE3D6}
+a{color:#2B44D6}a:hover{color:#FF5B2E}
+.vp-page{width:1100px;margin:0 auto;padding:0 0 90px;font-family:Archivo,system-ui,sans-serif;color:#17130F}
+.vp-sec{padding:46px 0 40px;border-bottom:2px solid rgba(23,19,15,.12)}
+.vp-lab{font:500 10px 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#8A7F70;margin-bottom:12px}
+.vp-h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:34px;line-height:1;letter-spacing:-.03em;margin:0 0 18px}
+.vp-h3{font:700 15px Archivo,sans-serif;margin:28px 0 10px}
+.vp-p{max-width:720px;font:400 15px/1.65 Archivo,sans-serif;color:#3A2F26;margin:0 0 14px;text-wrap:pretty}
+.vp-note{max-width:720px;font:400 13px/1.6 Archivo,sans-serif;color:#6E6458;margin:0 0 14px;text-wrap:pretty}
+.vp-big{border:2.5px solid #17130F;border-radius:18px;padding:20px 22px;box-shadow:5px 5px 0 #17130F;max-width:820px;margin:6px 0 18px}
+.vp-bigt{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:26px;line-height:1.12;letter-spacing:-.02em;text-wrap:pretty}
+.vp-math{border:2.5px solid #17130F;border-radius:18px;background:#17130F;color:#F3ECE0;padding:18px 20px;box-shadow:5px 5px 0 #FF5B2E;max-width:860px;margin:18px 0 8px}
+.vp-row{display:flex;gap:14px;align-items:baseline;padding:9px 0;border-bottom:1.5px solid rgba(243,236,224,.16)}
+.vp-rk{flex:1;font:400 13.5px/1.4 Archivo,sans-serif;color:rgba(243,236,224,.82)}
+.vp-rv{flex:none;font:700 14px 'DM Mono',monospace}
+.vp-cards{display:flex;flex-wrap:wrap;gap:14px;margin:18px 0 6px}
+.vp-card{flex:1 1 320px;min-width:300px;border:2.5px solid #17130F;border-radius:16px;padding:15px 16px;background:#fff;box-shadow:4px 4px 0 #17130F}
+.vp-ck{font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:8px}
+.vp-cn{font:700 16px Archivo,sans-serif;margin-bottom:7px}
+.vp-cv{font:400 13.5px/1.55 Archivo,sans-serif;text-wrap:pretty}
+.vp-list{display:flex;flex-direction:column;gap:16px;margin:20px 0 6px}
+.vp-item{border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden}
+.vp-ihd{display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:2.5px solid #17130F;background:#EDE4D6;flex-wrap:wrap}
+.vp-ib{flex:none;width:32px;height:32px;border:2.5px solid #17130F;border-radius:8px;display:flex;align-items:center;justify-content:center;font:700 12px 'DM Mono',monospace}
+.vp-in{font:700 17px Archivo,sans-serif;letter-spacing:-.01em}
+.vp-itag{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.vp-tag{font:500 9px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:4px 8px;background:#fff;white-space:nowrap}
+.vp-hook{padding:14px 16px;border-bottom:2px solid rgba(23,19,15,.12);background:#FFD24A}
+.vp-hookk{font:500 9px 'DM Mono',monospace;letter-spacing:.13em;margin-bottom:6px}
+.vp-hookv{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:21px;line-height:1.15;letter-spacing:-.02em;text-wrap:pretty}
+.vp-body{display:flex;flex-wrap:wrap}
+.vp-cell{flex:1 1 300px;min-width:290px;padding:14px 16px;border-right:2px solid rgba(23,19,15,.12)}
+.vp-shots{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.vp-shot{display:flex;gap:9px;align-items:flex-start;font:400 13px/1.5 Archivo,sans-serif;text-wrap:pretty}
+.vp-t{flex:none;font:500 10px 'DM Mono',monospace;letter-spacing:.04em;background:#17130F;color:#F3ECE0;border-radius:5px;padding:2px 5px;margin-top:2px}
+.vp-mono{font:400 12px/1.6 'DM Mono',monospace;background:#17130F;color:#F3ECE0;border-radius:12px;padding:13px 14px;margin-top:8px;text-wrap:pretty}
+.vp-foot{border-top:2.5px solid #17130F;padding:12px 16px;font:700 13.5px/1.5 Archivo,sans-serif;text-wrap:pretty}
+</style>
+</helmet>
+
+<div class="vp-page">
+
+<div class="vp-sec" style="padding-top:60px">
+  <div class="vp-lab">Video &amp; paid · working document · August 2026</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:62px;line-height:.92;letter-spacing:-.04em;max-width:860px">Don't buy ads.<br>Make the clip<br>they'd steal.</div>
+  <p class="vp-p" style="font-size:17px;margin-top:22px">Short answer to "should we start with ads": <strong>no, not yet</strong> — and not because ads are bad, but because you don't yet know your conversion rate, and paid media is a machine for multiplying a number you haven't measured. Organic first. Then, if a clip works organically, put money behind <em>that exact clip</em> and only then.</p>
+  <div class="vp-math">
+    <div class="vp-lab" style="color:#FFD24A;margin-bottom:10px">WHY PAID FAILS AT €24.99 ONE-TIME · ILLUSTRATIVE</div>
+    <div class="vp-row"><div class="vp-rk">Cost per install, iOS, niche utility, EU (TikTok/Meta, realistic band)</div><div class="vp-rv">€2 – €6</div></div>
+    <div class="vp-row"><div class="vp-rk">Of installs, share that catalogue enough to hit the 100-object cap</div><div class="vp-rv">≈ 18%</div></div>
+    <div class="vp-row"><div class="vp-rk">Of those, share that unlock</div><div class="vp-rv">≈ 22%</div></div>
+    <div class="vp-row"><div class="vp-rk">So: installs needed per paying user</div><div class="vp-rv">≈ 25</div></div>
+    <div class="vp-row"><div class="vp-rk">Cost to acquire one payer</div><div class="vp-rv">€50 – €150</div></div>
+    <div class="vp-row" style="border-bottom:none"><div class="vp-rk"><strong style="color:#F3ECE0">What that payer is worth, net of Apple</strong></div><div class="vp-rv" style="color:#FF5B2E">€21</div></div>
+  </div>
+  <p class="vp-note">You'd be buying euros for five euros. That maths only inverts under three conditions, and none are true today: a subscription with a long tail, a marketplace take rate, or a creative so good its organic reach subsidises the paid spend. The third is achievable — which is what the rest of this page is for.</p>
+  <div class="vp-big" style="background:#FFD24A">
+    <div class="vp-bigt">One more thing in your favour: this app is a <em>visual</em> product in a category built entirely on people showing off their shelves. The content practically exists already. Your competitors' problem is that a database is unfilmable. Yours turns.</div>
+  </div>
+</div>
+
+<div class="vp-sec">
+  <div class="vp-lab">01 · The three platforms</div>
+  <div class="vp-h2">Different jobs,<br>not different sizes</div>
+  <div class="vp-cards">
+    <div class="vp-card" style="background:#17130F;color:#F3ECE0;box-shadow:4px 4px 0 #FF5B2E">
+      <div class="vp-ck" style="color:#FFD24A">TIKTOK — DISCOVERY</div>
+      <div class="vp-cn">Raw, first-person, no branding</div>
+      <div class="vp-cv" style="color:rgba(243,236,224,.87)">The only platform where a nobody can reach 200k people with one clip. Rules: shot on a phone, face or hands in frame, no logo in the first three seconds, spoken hook, text on screen because most watch muted. Anything that looks like an ad dies in the first second. Hobby hashtags matter more than reach hashtags — #vinylcollection, not #app.</div>
+    </div>
+    <div class="vp-card" style="background:#0E6E5E;color:#F3ECE0;box-shadow:4px 4px 0 #17130F">
+      <div class="vp-ck" style="color:#FFD24A">INSTAGRAM — CREDIBILITY</div>
+      <div class="vp-cn">Beautiful, and where the collectors already live</div>
+      <div class="vp-cv" style="color:rgba(243,236,224,.9)">Every serious collector community has an Instagram side. Reels for the turning sleeve and the shelf scroll; carousels for "the 11 fields that describe a graded comic" — the same schema posts that work on forums perform here as saveable slides. This is also where you DM creators, and where a shop or a recyclerie will check whether you're real.</div>
+    </div>
+    <div class="vp-card" style="background:#fff;box-shadow:4px 4px 0 #17130F">
+      <div class="vp-ck">YOUTUBE — CONVERSION</div>
+      <div class="vp-cn">Not yours. Theirs.</div>
+      <div class="vp-cv">Don't build a channel; you'd be filming for a year. Buy nothing — trade lifetime unlock codes to two mid-size collector channels and let them catalogue their own shelf on camera. Their fifteen-minute video converts better than anything you'd post, because the shelf is theirs and the doubt is real. Shorts you can do yourself as clip repurposing, zero extra work.</div>
+    </div>
+  </div>
+  <p class="vp-note" style="margin-top:16px">Post the same clip to all three, vertical 9:16, but re-cut the first two seconds per platform — that's where the algorithm decides. Everything after second three can be identical.</p>
+</div>
+
+<div class="vp-sec">
+  <div class="vp-lab">02 · Before you film</div>
+  <div class="vp-h2">What AI can and<br>can't make here</div>
+  <p class="vp-p">Generative video cannot render your interface. It will invent a plausible-looking app that isn't yours, with text that melts — and for a product whose whole argument is craft, a fake UI is the worst possible first impression. So split every clip in two:</p>
+  <div class="vp-cards">
+    <div class="vp-card" style="background:#FFD24A;box-shadow:4px 4px 0 #17130F"><div class="vp-ck">AI GENERATES</div><div class="vp-cn">The world around the object</div><div class="vp-cv">Crates in an attic, a flea market at dawn, dust in light, hands lifting a sleeve, a shelf in a warm room. Atmosphere, b-roll, transitions. Never the phone screen, never text, never a logo.</div></div>
+    <div class="vp-card" style="background:#fff;box-shadow:4px 4px 0 #17130F"><div class="vp-ck">YOU SCREEN-RECORD</div><div class="vp-cn">Every frame containing the app</div><div class="vp-cv">The real prototype, on a real device, at 60fps. The sleeve turning, the sparkle on a special edition, the shelf scrolling, the history tab. This is the payoff shot in every single clip below and it must be genuine.</div></div>
+  </div>
+  <p class="vp-note" style="margin-top:16px">Each prompt below therefore has two parts: a <strong>generation prompt</strong> you can paste into a video model for the b-roll, and a <strong>capture list</strong> of what to record from the app. Copy is written to be spoken flatly, without enthusiasm — collectors distrust enthusiasm.</p>
+</div>
+
+<div class="vp-sec">
+  <div class="vp-lab">03 · Eight clips</div>
+  <div class="vp-h2">The prompts</div>
+
+  <div class="vp-list">
+
+    <div class="vp-item">
+      <div class="vp-ihd"><div class="vp-ib" style="background:#FFD24A">01</div><div class="vp-in">The inherited crate</div><div class="vp-itag"><div class="vp-tag">TIKTOK</div><div class="vp-tag">24s</div><div class="vp-tag">HIGHEST CEILING</div></div></div>
+      <div class="vp-hook"><div class="vp-hookk">FIRST TWO SECONDS — SPOKEN, NO MUSIC YET</div><div class="vp-hookv">"My dad left me four hundred records and I don't know what a single one of them is."</div></div>
+      <div class="vp-body">
+        <div class="vp-cell">
+          <div class="vp-ck">GENERATION PROMPT — B-ROLL</div>
+          <div class="vp-mono">Handheld vertical video, 9:16. A dim garage in late afternoon, one small window, dust suspended in a shaft of light. Three cardboard boxes crammed with vinyl records on a concrete floor. A pair of adult hands tips a box forward and fans the spines apart; the sleeves are worn, corners soft. Natural light only, slight camera shake, shallow depth of field, warm faded colour, 35mm film grain. No text, no screens, no logos, no faces.</div>
+        </div>
+        <div class="vp-cell" style="border-right:none">
+          <div class="vp-ck">CAPTURE LIST — REAL APP</div>
+          <div class="vp-shots">
+            <div class="vp-shot"><div class="vp-t">0–6s</div><div>AI b-roll of the crate, hook spoken over it.</div></div>
+            <div class="vp-shot"><div class="vp-t">6–15s</div><div>Screen record: camera in photo mode, shoot a crate spine-on, results filling the review queue. Real-time, no speed ramp — the speed <em>is</em> the point.</div></div>
+            <div class="vp-shot"><div class="vp-t">15–21s</div><div>Screen record: collection list scrolling, then one object opening and the sleeve turning.</div></div>
+            <div class="vp-shot"><div class="vp-t">21–24s</div><div>Cut back to the real crate, now empty. Text on screen: "400 records. One evening."</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="vp-foot" style="background:#0E6E5E;color:#F3ECE0">Why this one first: inheritance is the story every collector app ignores, and it's the only hook that reaches non-collectors — audience C from the brief. Comments will be people describing their own unopened boxes.</div>
+    </div>
+
+    <div class="vp-item">
+      <div class="vp-ihd"><div class="vp-ib" style="background:#FF5B2E;color:#F3ECE0">02</div><div class="vp-in">Say their name</div><div class="vp-itag"><div class="vp-tag">TIKTOK</div><div class="vp-tag">12s</div><div class="vp-tag">COMMENT BAIT</div></div></div>
+      <div class="vp-hook"><div class="vp-hookk">FIRST TWO SECONDS</div><div class="vp-hookv">"Say the name of the person who still has your stuff."</div></div>
+      <div class="vp-body">
+        <div class="vp-cell">
+          <div class="vp-ck">GENERATION PROMPT — B-ROLL</div>
+          <div class="vp-mono">Vertical 9:16, static shot. A bookshelf of vinyl records and boardgames in a warm living room, evening lamp light. One conspicuous empty slot in the middle of the row, a thin gap where something is missing. Slow push in on the gap. Cinematic, soft shadows, muted colour, no text, no people, no screens.</div>
+        </div>
+        <div class="vp-cell" style="border-right:none">
+          <div class="vp-ck">CAPTURE LIST — REAL APP</div>
+          <div class="vp-shots">
+            <div class="vp-shot"><div class="vp-t">0–4s</div><div>B-roll of the gap, hook spoken deadpan.</div></div>
+            <div class="vp-shot"><div class="vp-t">4–9s</div><div>Screen record: the "Out of the house" list — four objects, one overdue in red, a name beside each. Hold long enough to read.</div></div>
+            <div class="vp-shot"><div class="vp-t">9–12s</div><div>Tap a person, their history: "2 lent · 1 returned late". Text on screen: "It remembers so you don't have to be the bad guy."</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="vp-foot" style="background:#FFD24A">Shortest clip, best comment-to-view ratio. Everyone has this person. Pin a comment naming yours.</div>
+    </div>
+
+    <div class="vp-item">
+      <div class="vp-ihd"><div class="vp-ib" style="background:#2B44D6;color:#F3ECE0">03</div><div class="vp-in">Sleeve turn — no words</div><div class="vp-itag"><div class="vp-tag">REELS</div><div class="vp-tag">8s LOOP</div><div class="vp-tag">ZERO EFFORT, REPEATABLE</div></div></div>
+      <div class="vp-hook"><div class="vp-hookk">NO SPOKEN HOOK — THE MOTION IS THE HOOK</div><div class="vp-hookv">One sleeve, rotating. Sparkle fires. Loop is seamless.</div></div>
+      <div class="vp-body">
+        <div class="vp-cell">
+          <div class="vp-ck">NO AI NEEDED</div>
+          <div class="vp-cv">100% screen recording. Record the object detail with the sleeve dragged slowly through its full ±34°, tap once to trigger the sparkle on a special edition, then reverse the clip so it loops without a cut. Sound: a single vinyl-crackle or a click, nothing musical.</div>
+        </div>
+        <div class="vp-cell" style="border-right:none">
+          <div class="vp-ck">CAPTURE LIST — REAL APP</div>
+          <div class="vp-shots">
+            <div class="vp-shot"><div class="vp-t">0–4s</div><div>Slow drag right, showing the open edge and disc colour.</div></div>
+            <div class="vp-shot"><div class="vp-t">4–5s</div><div>Tap — sparkle burst.</div></div>
+            <div class="vp-shot"><div class="vp-t">5–8s</div><div>Reversed drag back to centre. Caption in the post, not on the video: the record's name and pressing.</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="vp-foot" style="background:#fff">Make forty of these — one per grail, one per hobby. They cost ten minutes each, they're what people re-share, and they're the only asset you can also drop into a custom product page as an app preview.</div>
+    </div>
+
+    <div class="vp-item">
+      <div class="vp-ihd"><div class="vp-ib" style="background:#0E6E5E;color:#F3ECE0">04</div><div class="vp-in">Spreadsheet funeral</div><div class="vp-itag"><div class="vp-tag">TIKTOK · REELS</div><div class="vp-tag">18s</div><div class="vp-tag">TARGETS REFUGEES</div></div></div>
+      <div class="vp-hook"><div class="vp-hookk">FIRST TWO SECONDS</div><div class="vp-hookv">"This is eleven years of collecting, in a spreadsheet nobody will ever open again."</div></div>
+      <div class="vp-body">
+        <div class="vp-cell">
+          <div class="vp-ck">GENERATION PROMPT — B-ROLL</div>
+          <div class="vp-mono">Vertical 9:16. Close-up of an old laptop screen glowing in a dark room, out of focus so no text is legible, cool blue light on a tired face's edge — no full face visible. Cut to the same room, a hand closing the laptop lid. Slow, quiet, documentary style, film grain, no on-screen text, no logos.</div>
+        </div>
+        <div class="vp-cell" style="border-right:none">
+          <div class="vp-ck">CAPTURE LIST — REAL APP</div>
+          <div class="vp-shots">
+            <div class="vp-shot"><div class="vp-t">0–5s</div><div>Your actual spreadsheet, blurred, scrolling forever. Hook spoken.</div></div>
+            <div class="vp-shot"><div class="vp-t">5–11s</div><div>Screen record: the CSV import — 128 rows landing, the report appearing ("96 with cover art, 41 with a price you paid, nothing marked confirmed").</div></div>
+            <div class="vp-shot"><div class="vp-t">11–18s</div><div>The shelf, populated, scrolling. Text: "Same data. Ten seconds. It looks like something now."</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="vp-foot" style="background:#0E6E5E;color:#F3ECE0">This is the highest-intent clip on the page — spreadsheet people are pre-sold and arrive deep. Post it as a reply to any "collection spreadsheet template" thread you find.</div>
+    </div>
+
+    <div class="vp-item">
+      <div class="vp-ihd"><div class="vp-ib" style="background:#E5457B;color:#F3ECE0">05</div><div class="vp-in">One object, its whole life</div><div class="vp-itag"><div class="vp-tag">REELS</div><div class="vp-tag">20s</div><div class="vp-tag">THE DIFFERENTIATOR</div></div></div>
+      <div class="vp-hook"><div class="vp-hookk">FIRST TWO SECONDS</div><div class="vp-hookv">"I bought this in Lille in 2021. Here's everything that's happened to it since."</div></div>
+      <div class="vp-body">
+        <div class="vp-cell">
+          <div class="vp-ck">GENERATION PROMPT — B-ROLL</div>
+          <div class="vp-mono">Vertical 9:16, three short shots, warm documentary tone, 35mm grain. One: a narrow second-hand record shop, crates along a wall, a hand flicking through sleeves. Two: the same record being handed across a counter to a friend in a hallway. Three: it back on a home shelf, evening light. Continuous colour grade across all three, no text, no faces, no screens.</div>
+        </div>
+        <div class="vp-cell" style="border-right:none">
+          <div class="vp-ck">CAPTURE LIST — REAL APP</div>
+          <div class="vp-shots">
+            <div class="vp-shot"><div class="vp-t">0–7s</div><div>B-roll trio while you narrate the three events plainly.</div></div>
+            <div class="vp-shot"><div class="vp-t">7–17s</div><div>Screen record: the History tab, scrolling its entries — acquired, lent to Jeff, returned, 3D scan captured. One entry per beat of the voiceover.</div></div>
+            <div class="vp-shot"><div class="vp-t">17–20s</div><div>Text: "A spreadsheet holds what it is. This holds what happened to it."</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="vp-foot" style="background:#fff">Lowest reach, highest conversion. This is the clip that makes a serious collector download rather than double-tap — save it for the forum posts and the creator briefs.</div>
+    </div>
+
+    <div class="vp-item">
+      <div class="vp-ihd"><div class="vp-ib" style="background:#17130F;color:#F3ECE0">06</div><div class="vp-in">The shelf scroll</div><div class="vp-itag"><div class="vp-tag">TIKTOK · REELS</div><div class="vp-tag">15s</div><div class="vp-tag">SATISFYING</div></div></div>
+      <div class="vp-hook"><div class="vp-hookk">FIRST TWO SECONDS</div><div class="vp-hookv">"482 objects. Every one of them photographed, graded and findable."</div></div>
+      <div class="vp-body">
+        <div class="vp-cell">
+          <div class="vp-ck">NO AI NEEDED</div>
+          <div class="vp-cv">Pure screen capture, but it only works if the data is real and deep — which is why this clip comes <em>after</em> your Founding Cataloguers have filled their shelves. Ask one of them for permission to film theirs; a stranger's 400-object collection is more convincing than yours.</div>
+        </div>
+        <div class="vp-cell" style="border-right:none">
+          <div class="vp-ck">CAPTURE LIST — REAL APP</div>
+          <div class="vp-shots">
+            <div class="vp-shot"><div class="vp-t">0–8s</div><div>Long continuous scroll through a genuinely full collection, at reading speed, no speed-up.</div></div>
+            <div class="vp-shot"><div class="vp-t">8–12s</div><div>Search: type two tokens, watch 482 become 3. This is the moment people understand it's a database, not a photo album.</div></div>
+            <div class="vp-shot"><div class="vp-t">12–15s</div><div>Open the third result. Text: "Twelve seconds to find one record in four hundred."</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="vp-foot" style="background:#FFD24A">The "482 → 3" beat is your best single second of footage. Use it as the first screenshot test in product page optimization.</div>
+    </div>
+
+    <div class="vp-item">
+      <div class="vp-ihd"><div class="vp-ib" style="background:#12A594;color:#F3ECE0">07</div><div class="vp-in">Grail found</div><div class="vp-itag"><div class="vp-tag">v2 ONLY</div><div class="vp-tag">14s</div><div class="vp-tag">HOLD UNTIL LAUNCH</div></div></div>
+      <div class="vp-hook"><div class="vp-hookk">FIRST TWO SECONDS</div><div class="vp-hookv">"I've been looking for this exact printing for six years. My phone found it while I was asleep."</div></div>
+      <div class="vp-body">
+        <div class="vp-cell">
+          <div class="vp-ck">GENERATION PROMPT — B-ROLL</div>
+          <div class="vp-mono">Vertical 9:16. A dark bedroom at night, a phone face-down on a bedside table beside a stack of comic books in protective sleeves. The screen lights up, throwing a soft glow across the table. Static camera, very shallow depth of field, cool moonlight plus warm screen glow, no legible text on the screen, no faces.</div>
+        </div>
+        <div class="vp-cell" style="border-right:none">
+          <div class="vp-ck">CAPTURE LIST — REAL APP</div>
+          <div class="vp-shots">
+            <div class="vp-shot"><div class="vp-t">0–5s</div><div>B-roll of the phone lighting up, hook spoken quietly.</div></div>
+            <div class="vp-shot"><div class="vp-t">5–11s</div><div>Screen record: the wishlist hit sheet — matched print, matched grade, under your cap — then the handshake to ask about it.</div></div>
+            <div class="vp-shot"><div class="vp-t">11–14s</div><div>Text: "It only wakes you for the real thing."</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="vp-foot" style="background:#17130F;color:#F3ECE0">Do not post this before v2 ships. A clip promising a feature that doesn't exist converts once and poisons every comment thread afterwards.</div>
+    </div>
+
+    <div class="vp-item">
+      <div class="vp-ihd"><div class="vp-ib" style="background:#8A7F70;color:#F3ECE0">08</div><div class="vp-in">The lending shelf</div><div class="vp-itag"><div class="vp-tag">REELS · LOCAL</div><div class="vp-tag">22s</div><div class="vp-tag">v3 / PARTNERS</div></div></div>
+      <div class="vp-hook"><div class="vp-hookk">FIRST TWO SECONDS</div><div class="vp-hookv">"This place lends out two hundred tools and tracks them in a paper notebook."</div></div>
+      <div class="vp-body">
+        <div class="vp-cell">
+          <div class="vp-ck">GENERATION PROMPT — B-ROLL</div>
+          <div class="vp-mono">Vertical 9:16, documentary style. The inside of a small community workshop: pegboard walls hung with hand tools, mismatched shelving, printed paper lists taped near a door, daylight through high windows. Slow pan across the tools, then a close shot of a worn paper ledger with handwritten columns, writing not legible. Warm, real, slightly cluttered, no people's faces, no screens, no logos.</div>
+        </div>
+        <div class="vp-cell" style="border-right:none">
+          <div class="vp-ck">CAPTURE LIST — REAL APP</div>
+          <div class="vp-shots">
+            <div class="vp-shot"><div class="vp-t">0–7s</div><div>B-roll of the workshop and the ledger. Hook spoken.</div></div>
+            <div class="vp-shot"><div class="vp-t">7–16s</div><div>Screen record: shared shelf, a loan going out with a due date, then the reminder email arriving with the object rendered in it.</div></div>
+            <div class="vp-shot"><div class="vp-t">16–22s</div><div>Text: "Same notebook. Now it sends the reminder for you." Tag the organisation — their followers are the point.</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="vp-foot" style="background:#fff">Film this at your recyclerie contact's place once v3's roles exist. It's a case study, a growth loop and a sales asset for the next twenty organisations, shot in one afternoon.</div>
+    </div>
+
+  </div>
+</div>
+
+<div class="vp-sec" style="border-bottom:none">
+  <div class="vp-lab">04 · Running it</div>
+  <div class="vp-h2">Rules and cadence</div>
+  <div class="vp-cards">
+    <div class="vp-card"><div class="vp-ck">RULE 1</div><div class="vp-cn">Never open on the logo</div><div class="vp-cv">Open on the object or the problem. The app appears at second five, once someone has a reason to care.</div></div>
+    <div class="vp-card"><div class="vp-ck">RULE 2</div><div class="vp-cn">Real speed, no speed ramps</div><div class="vp-cv">The claim is "ten seconds per object". Speeding up the footage secretly admits it isn't true, and collectors notice.</div></div>
+    <div class="vp-card"><div class="vp-ck">RULE 3</div><div class="vp-cn">Text on screen, always</div><div class="vp-cv">Most views are muted. Every hook and every payoff line exists as burned-in text as well as voice.</div></div>
+    <div class="vp-card"><div class="vp-ck">RULE 4</div><div class="vp-cn">One hobby per clip</div><div class="vp-cv">A clip about "collections" reaches nobody. A clip about vinyl reaches vinyl people, who are the only ones who'll comment — and comments are the distribution.</div></div>
+    <div class="vp-card"><div class="vp-ck">RULE 5</div><div class="vp-cn">Answer every comment for the first month</div><div class="vp-cv">Especially the hostile ones about grading. It's free research, and it's how you find Founding Cataloguers.</div></div>
+    <div class="vp-card"><div class="vp-ck">RULE 6</div><div class="vp-cn">No paid spend until one clip clears 50k organically</div><div class="vp-cv">That's your proof of a working creative. Then put €300 behind that one clip, measure cost per <em>payer</em>, not per install, and stop the moment it exceeds €21.</div></div>
+  </div>
+  <div class="vp-h3">A realistic cadence for one person</div>
+  <p class="vp-note">Two clips a week, both filmed in the same session: one sleeve-turn loop (ten minutes) and one story clip from the eight above (two hours including the b-roll generation). Post each to TikTok and Reels with a re-cut opening; drop the loops into Shorts as filler. That's eight clips a month, ninety a year, and one of them working is the entire plan — this is a lottery where the tickets are cheap and you print them yourself.</p>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

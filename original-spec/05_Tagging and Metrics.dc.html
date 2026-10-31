@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#EAE3D6}
+a{color:#2B44D6}a:hover{color:#FF5B2E}
+.mt-page{width:1180px;margin:0 auto;padding:0 0 90px;font-family:Archivo,system-ui,sans-serif;color:#17130F}
+.mt-sec{padding:46px 0 40px;border-bottom:2px solid rgba(23,19,15,.12)}
+.mt-lab{font:500 10px 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#8A7F70;margin-bottom:12px}
+.mt-h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:34px;line-height:1;letter-spacing:-.03em;margin:0 0 18px}
+.mt-h3{font:700 15px Archivo,sans-serif;margin:30px 0 10px}
+.mt-p{max-width:720px;font:400 15px/1.65 Archivo,sans-serif;color:#3A2F26;margin:0 0 14px;text-wrap:pretty}
+.mt-note{max-width:760px;font:400 13px/1.6 Archivo,sans-serif;color:#6E6458;margin:0 0 14px;text-wrap:pretty}
+.mt-big{border:2.5px solid #17130F;border-radius:18px;padding:20px 22px;box-shadow:5px 5px 0 #17130F;max-width:840px;margin:6px 0 18px}
+.mt-bigt{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:26px;line-height:1.12;letter-spacing:-.02em;text-wrap:pretty}
+.mt-tbl{border:2.5px solid #17130F;border-radius:16px;overflow:hidden;margin:16px 0 8px;background:#fff;box-shadow:5px 5px 0 #17130F}
+.mt-tr{display:flex;border-bottom:2px solid rgba(23,19,15,.12)}
+.mt-th{background:#17130F;color:#F3ECE0}
+.mt-tk{font:500 9px 'DM Mono',monospace;letter-spacing:.13em}
+.mt-ev{flex:0 0 210px;padding:11px 13px;font:500 12px/1.4 'DM Mono',monospace;border-right:2px solid rgba(23,19,15,.1)}
+.mt-c2{flex:1 1 210px;padding:11px 13px;font:400 12.5px/1.45 Archivo,sans-serif;border-right:2px solid rgba(23,19,15,.1)}
+.mt-c3{flex:1 1 230px;padding:11px 13px;font:500 11px/1.5 'DM Mono',monospace;color:#6E6458;border-right:2px solid rgba(23,19,15,.1)}
+.mt-c4{flex:1 1 250px;padding:11px 13px;font:400 12.5px/1.45 Archivo,sans-serif}
+.mt-band{padding:9px 13px;background:#EDE4D6;font:700 12px Archivo,sans-serif;border-bottom:2px solid rgba(23,19,15,.12);display:flex;gap:9px;align-items:center}
+.mt-bl{font:500 9px 'DM Mono',monospace;letter-spacing:.12em;border:2px solid #17130F;border-radius:999px;padding:3px 7px;background:#fff}
+.mt-cards{display:flex;flex-wrap:wrap;gap:14px;margin:18px 0 6px}
+.mt-card{flex:1 1 320px;min-width:300px;border:2.5px solid #17130F;border-radius:16px;padding:15px 16px;background:#fff;box-shadow:4px 4px 0 #17130F}
+.mt-ck{font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:8px}
+.mt-cn{font:700 16px Archivo,sans-serif;margin-bottom:7px}
+.mt-cv{font:400 13.5px/1.55 Archivo,sans-serif;text-wrap:pretty}
+.mt-score{border:2.5px solid #17130F;border-radius:18px;background:#17130F;color:#F3ECE0;padding:18px 20px;box-shadow:5px 5px 0 #FF5B2E;margin:18px 0 8px}
+.mt-srow{display:flex;gap:12px;align-items:baseline;padding:10px 0;border-bottom:1.5px solid rgba(243,236,224,.16)}
+.mt-sn{flex:none;width:22px;font:700 13px 'DM Mono',monospace;color:#FFD24A}
+.mt-sk{flex:1;font:400 13.5px/1.45 Archivo,sans-serif;color:rgba(243,236,224,.86)}
+.mt-sv{flex:none;font:500 10px 'DM Mono',monospace;letter-spacing:.08em;color:#FFD24A;text-align:right;width:110px}
+</style>
+</helmet>
+
+<div class="mt-page">
+
+<div class="mt-sec" style="padding-top:60px">
+  <div class="mt-lab">Instrumentation · working document · August 2026</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:62px;line-height:.92;letter-spacing:-.04em;max-width:900px">What to count,<br>and what never<br>to touch</div>
+  <p class="mt-p" style="font-size:17px;margin-top:22px">The standard App Store playbook assumes a subscription business with accounts and an ad budget. You have neither: v1 is a one-time unlock, there are no accounts, sync is the user's own iCloud, and "your photos stay on your phone" is a selling point. So most of that playbook's machinery — grace periods, win-back offers, save rates, attribution windows — is <strong>not applicable yet</strong>, and pretending otherwise would have you building plumbing for a business you don't run.</p>
+  <div class="mt-big" style="background:#FFD24A">
+    <div class="mt-bigt">One north star, and it isn't downloads or revenue: <span style="background:#17130F;color:#F3ECE0;padding:0 6px;border-radius:6px">median objects catalogued per user at day 30.</span> Every other number on this page exists to explain a movement in that one.</div>
+  </div>
+  <p class="mt-note">The funnel order from the playbook holds, translated: <strong>depth → conversion → discovery → spend.</strong> Fix why people stop cataloguing before you optimise a screenshot, and don't spend a euro on ads until the first two are healthy.</p>
+</div>
+
+<div class="mt-sec">
+  <div class="mt-lab">01 · The constraint</div>
+  <div class="mt-h2">Privacy-first analytics<br>is a design decision</div>
+  <p class="mt-p">Your app's whole trust argument is that it doesn't ship people's collections anywhere. An analytics SDK that phones home with object names would make that a lie, and it's the one lie a collector community would never forgive. So the rule is absolute and cheap to hold: <strong>you log that a thing happened and its shape, never what the thing was.</strong></p>
+  <div class="mt-cards">
+    <div class="mt-card" style="background:#0E6E5E;color:#F3ECE0;box-shadow:4px 4px 0 #17130F">
+      <div class="mt-ck" style="color:#FFD24A">ALLOWED</div>
+      <div class="mt-cn">Counts, kinds, buckets</div>
+      <div class="mt-cv" style="color:rgba(243,236,224,.9)">Event name, type slug (<span style="font-family:'DM Mono',monospace">vinyl</span>, <span style="font-family:'DM Mono',monospace">coins</span>), a bucketed count, method used, storefront, app version, a rotating install id. Enough to answer every question on this page.</div>
+    </div>
+    <div class="mt-card" style="background:#17130F;color:#F3ECE0;box-shadow:4px 4px 0 #FF5B2E">
+      <div class="mt-ck" style="color:#FFD24A">NEVER — WRITE THIS INTO THE PRIVACY PAGE</div>
+      <div class="mt-cn">Object names, photos, prices, people, locations</div>
+      <div class="mt-cv" style="color:rgba(243,236,224,.87)">No titles, artists, barcodes or catalogue numbers. No image, ever. No price paid, no valuation, no total. No lender names or contacts. No precise location. No third-party ad or analytics SDK. No device fingerprint.</div>
+    </div>
+    <div class="mt-card">
+      <div class="mt-ck">HOW</div>
+      <div class="mt-cn">Two sources, no SDK</div>
+      <div class="mt-cv"><strong>App Analytics</strong> for everything store-side (impressions, page views, conversion, downloads, proceeds, D1/D7/D28, benchmarks) — free, already there, no code. Plus <strong>one first-party endpoint</strong> of your own for the in-app events below: a JSON POST, batched, retried, droppable. A day of work, no vendor, nothing to disclose beyond "anonymous usage counts".</div>
+    </div>
+  </div>
+  <p class="mt-note" style="margin-top:16px"><strong>Bucket every count</strong> before it leaves the device — <span style="font-family:'DM Mono',monospace;font-size:12px">1–9 / 10–49 / 50–99 / 100–249 / 250–999 / 1000+</span>. A raw "4,187 objects, type: synths, FR" is close to identifying one person; a bucket answers the same question and can't. Same for durations and prices: buckets only, and prices only as ranges, only in v2.</p>
+</div>
+
+<div class="mt-sec">
+  <div class="mt-lab">02 · The event taxonomy</div>
+  <div class="mt-h2">Thirty-six events,<br>eight properties</div>
+  <p class="mt-p">Naming is <span style="font-family:'DM Mono',monospace;font-size:13px">noun_verb_past</span>, always. One event per real user action — never one per screen, never one per tap. If you can't name the question an event answers, don't ship it: dead events cost you schema churn forever and answer nothing.</p>
+
+  <div class="mt-tbl">
+    <div class="mt-tr mt-th"><div class="mt-ev"><div class="mt-tk">EVENT</div></div><div class="mt-c2"><div class="mt-tk">FIRES WHEN</div></div><div class="mt-c3"><div class="mt-tk">PROPERTIES</div></div><div class="mt-c4"><div class="mt-tk">THE QUESTION IT ANSWERS</div></div></div>
+
+    <div class="mt-band"><div class="mt-bl">A</div>ACTIVATION — the first ten minutes</div>
+    <div class="mt-tr"><div class="mt-ev">first_open</div><div class="mt-c2">First launch, once ever</div><div class="mt-c3">storefront, app_version, source_page</div><div class="mt-c4">Denominator for everything. <span style="font-family:'DM Mono',monospace">source_page</span> carries which custom product page they came through.</div></div>
+    <div class="mt-tr"><div class="mt-ev">detail_bar_set</div><div class="mt-c2">Onboarding question answered</div><div class="mt-c3">level, skipped</div><div class="mt-c4">Which of the three audiences actually installs — and how many skip the question entirely.</div></div>
+    <div class="mt-tr"><div class="mt-ev">collection_created</div><div class="mt-c2">A collection is made</div><div class="mt-c3">type, is_mixed, is_custom</div><div class="mt-c4">Which of the fourteen types are real demand, and how often none of them fit.</div></div>
+    <div class="mt-tr"><div class="mt-ev">first_object_added</div><div class="mt-c2">First object ever, once</div><div class="mt-c3">method, minutes_since_first_open</div><div class="mt-c4">The single most important activation number: how long until one object exists.</div></div>
+
+    <div class="mt-band"><div class="mt-bl">B</div>CATALOGUING — the core loop</div>
+    <div class="mt-tr"><div class="mt-ev">object_added</div><div class="mt-c2">Any object saved</div><div class="mt-c3">method, type, seconds_bucket, from_review</div><div class="mt-c4">Everything. <span style="font-family:'DM Mono',monospace">method</span> = photo / barcode / manual / import settles the photo-first bet.</div></div>
+    <div class="mt-tr"><div class="mt-ev">lookup_requested</div><div class="mt-c2">A photo or barcode is sent out</div><div class="mt-c3">kind, type</div><div class="mt-c4">Your variable cost, per user, per type. Sizes the lookup packs.</div></div>
+    <div class="mt-tr"><div class="mt-ev">lookup_resolved</div><div class="mt-c2">Match returned</div><div class="mt-c3">kind, type, outcome, confidence_bucket</div><div class="mt-c4">Match quality by type — and which types have no usable provider.</div></div>
+    <div class="mt-tr"><div class="mt-ev">lookup_rejected</div><div class="mt-c2">User refuses the match</div><div class="mt-c3">kind, type</div><div class="mt-c4">Whether the catalogue is trustworthy. A high rate here is a product emergency.</div></div>
+    <div class="mt-tr"><div class="mt-ev">import_started</div><div class="mt-c2">A file is picked</div><div class="mt-c3">source, rows_bucket</div><div class="mt-c4">Which export formats to build next — ranked by real usage, not guesses.</div></div>
+    <div class="mt-tr"><div class="mt-ev">import_completed</div><div class="mt-c2">Import lands</div><div class="mt-c3">source, rows_bucket, matched_pct_bucket</div><div class="mt-c4">The highest-leverage feature you have. Completion rate versus started is the whole verdict.</div></div>
+    <div class="mt-tr"><div class="mt-ev">review_item_resolved</div><div class="mt-c2">A queued guess is confirmed or edited</div><div class="mt-c3">action, type</div><div class="mt-c4">Whether the review queue gets worked or abandoned.</div></div>
+    <div class="mt-tr"><div class="mt-ev">field_filled</div><div class="mt-c2">A type-specific field gets a value</div><div class="mt-c3">field_kind, type, control</div><div class="mt-c4">Which fields people actually fill — the evidence for trimming fourteen schemas.</div></div>
+    <div class="mt-tr"><div class="mt-ev">capture_3d_completed</div><div class="mt-c2">A 3D capture finishes</div><div class="mt-c3">type, abandoned</div><div class="mt-c4">Whether the 3D object is a real feature or a demo. Watch the abandon rate hard.</div></div>
+
+    <div class="mt-band"><div class="mt-bl">C</div>DEPTH &amp; RETURN — is it a tool or a toy</div>
+    <div class="mt-tr"><div class="mt-ev">session_started</div><div class="mt-c2">Foreground after 30 min idle</div><div class="mt-c3">objects_bucket, days_since_first_open</div><div class="mt-c4">Retention with collection size attached — the pairing that predicts payment.</div></div>
+    <div class="mt-tr"><div class="mt-ev">object_opened</div><div class="mt-c2">Detail screen opened</div><div class="mt-c3">type, tab</div><div class="mt-c4">Is anyone reading History? If not, your differentiator isn't landing.</div></div>
+    <div class="mt-tr"><div class="mt-ev">search_performed</div><div class="mt-c2">A query runs</div><div class="mt-c3">token_count, result_bucket, zero_results</div><div class="mt-c4">Whether search earns the Find tab. Zero-result rate is your query-language bug list.</div></div>
+    <div class="mt-tr"><div class="mt-ev">sleeve_rotated</div><div class="mt-c2">3D object dragged</div><div class="mt-c3">type</div><div class="mt-c4">Is the thing you spent weeks on being touched? Honest answer welcome.</div></div>
+    <div class="mt-tr"><div class="mt-ev">tab_bar_edited</div><div class="mt-c2">Slots reordered in settings</div><div class="mt-c3">slots_after</div><div class="mt-c4">Which five tabs people actually choose — the real answer to Q5 in the brief.</div></div>
+
+    <div class="mt-band"><div class="mt-bl">D</div>LENDING — the reason non-collectors open the app</div>
+    <div class="mt-tr"><div class="mt-ev">lend_created</div><div class="mt-c2">A loan handshake starts</div><div class="mt-c3">type, has_due_date, reminder_on</div><div class="mt-c4">Whether lending is a headline feature or a footnote.</div></div>
+    <div class="mt-tr"><div class="mt-ev">lend_returned</div><div class="mt-c2">Return confirmed</div><div class="mt-c3">days_out_bucket, condition_changed</div><div class="mt-c4">Loop completion — the proof the handshake works socially, not just technically.</div></div>
+    <div class="mt-tr"><div class="mt-ev">lend_overdue_seen</div><div class="mt-c2">Overdue state displayed</div><div class="mt-c3">days_over_bucket</div><div class="mt-c4">How much of the app's emotional value is "where is my stuff".</div></div>
+    <div class="mt-tr"><div class="mt-ev">borrowed_added</div><div class="mt-c2">Something not yours is logged</div><div class="mt-c3">type</div><div class="mt-c4">Whether the dashed-edge model gets used in both directions.</div></div>
+
+    <div class="mt-band"><div class="mt-bl">E</div>THE v2 GATES — measurable in v1, no marketplace needed</div>
+    <div class="mt-tr" style="background:#FFF8E1"><div class="mt-ev">object_flagged_sellable</div><div class="mt-c2">"Might let this go" or duplicate marked</div><div class="mt-c3">type, reason</div><div class="mt-c4"><strong>LATENT SUPPLY.</strong> Gate: ≥8% of users flag at least one. The seller side pre-registering.</div></div>
+    <div class="mt-tr" style="background:#FFF8E1"><div class="mt-ev">wish_added</div><div class="mt-c2">A wanted object is added</div><div class="mt-c3">type, has_cap, priority</div><div class="mt-c4"><strong>LATENT DEMAND.</strong> Gate: ≥30% of actives reach a 5-object wishlist. Your market's query volume before the market exists.</div></div>
+    <div class="mt-tr"><div class="mt-ev">export_completed</div><div class="mt-c2">A collection export finishes</div><div class="mt-c3">kind, objects_bucket</div><div class="mt-c4">Insurance appetite — the evidence you take into the insurer conversation.</div></div>
+
+    <div class="mt-band"><div class="mt-bl">F</div>THE GROWTH LOOP — every share is a store impression</div>
+    <div class="mt-tr"><div class="mt-ev">share_link_created</div><div class="mt-c2">A link is generated</div><div class="mt-c3">kind, type, channel</div><div class="mt-c4">Which artefact travels: one object, a wishlist, a loan receipt, a shelf.</div></div>
+    <div class="mt-tr"><div class="mt-ev">share_link_opened</div><div class="mt-c2">Server-side, recipient opens it</div><div class="mt-c3">kind, is_new_visitor</div><div class="mt-c4">Opens per link sent — the loop's multiplier. Under 1.0 and it isn't a loop.</div></div>
+    <div class="mt-tr"><div class="mt-ev">share_link_converted</div><div class="mt-c2">Install attributed to a link</div><div class="mt-c3">kind</div><div class="mt-c4">Your only honest acquisition attribution, and it needs no SDK or fingerprinting.</div></div>
+
+    <div class="mt-band"><div class="mt-bl">G</div>MONEY — one-time unlock, no subscription</div>
+    <div class="mt-tr"><div class="mt-ev">cap_reached</div><div class="mt-c2">The 100-object wall is hit</div><div class="mt-c3">days_since_first_open, type</div><div class="mt-c4">Is the cap in the right place? If almost nobody reaches it, it's too high to earn and too low to be generous.</div></div>
+    <div class="mt-tr"><div class="mt-ev">unlock_shown</div><div class="mt-c2">Purchase sheet displayed</div><div class="mt-c3">trigger, objects_bucket</div><div class="mt-c4">Which trigger converts: the cap, export, sharing, or a settings visit.</div></div>
+    <div class="mt-tr"><div class="mt-ev">unlock_purchased</div><div class="mt-c2">Unlock completes</div><div class="mt-c3">trigger, objects_bucket, days_since_first_open</div><div class="mt-c4">Conversion by depth. Expect a step change above ~60 objects; that's your paywall thesis confirmed or dead.</div></div>
+    <div class="mt-tr"><div class="mt-ev">lookup_pack_purchased</div><div class="mt-c2">Consumable bought</div><div class="mt-c3">pack_size, allowance_hit_count</div><div class="mt-c4">Whether metered lookups cover their own cost.</div></div>
+    <div class="mt-tr"><div class="mt-ev">offer_code_redeemed</div><div class="mt-c2">A code is used</div><div class="mt-c3">campaign</div><div class="mt-c4">Per-creator and per-community attribution, cleanly, with no tracking.</div></div>
+
+    <div class="mt-band"><div class="mt-bl">H</div>HEALTH — the quality floor under everything</div>
+    <div class="mt-tr"><div class="mt-ev">entitlement_check_failed</div><div class="mt-c2">Paid user sees a paywall</div><div class="mt-c3">context</div><div class="mt-c4">The fastest route to a one-star review. Should be zero; alert on any.</div></div>
+    <div class="mt-tr"><div class="mt-ev">sync_conflict_resolved</div><div class="mt-c2">iCloud conflict handled</div><div class="mt-c3">resolution, objects_bucket</div><div class="mt-c4">Trust in the data layer. A collector who loses one edit tells forty people.</div></div>
+    <div class="mt-tr" style="border-bottom:none"><div class="mt-ev">import_failed</div><div class="mt-c2">Import errors out</div><div class="mt-c3">source, reason</div><div class="mt-c4">Each distinct reason is a parser to fix, ranked by frequency.</div></div>
+  </div>
+
+  <div class="mt-h3">The eight shared properties — send these on everything relevant, nothing else</div>
+  <p class="mt-note"><span style="font-family:'DM Mono',monospace;font-size:12.5px">type</span> (one of the fourteen slugs, or <span style="font-family:'DM Mono',monospace;font-size:12.5px">custom</span> / <span style="font-family:'DM Mono',monospace;font-size:12.5px">mixed</span>) · <span style="font-family:'DM Mono',monospace;font-size:12.5px">method</span> (photo / barcode / manual / import) · <span style="font-family:'DM Mono',monospace;font-size:12.5px">objects_bucket</span> · <span style="font-family:'DM Mono',monospace;font-size:12.5px">days_since_first_open</span> · <span style="font-family:'DM Mono',monospace;font-size:12.5px">storefront</span> · <span style="font-family:'DM Mono',monospace;font-size:12.5px">app_version</span> · <span style="font-family:'DM Mono',monospace;font-size:12.5px">source_page</span> · <span style="font-family:'DM Mono',monospace;font-size:12.5px">is_unlocked</span>. Nothing free-text, ever — a free-text property is where PII leaks in six months, from a well-meaning line of code.</p>
+</div>
+
+<div class="mt-sec">
+  <div class="mt-lab">03 · The scorecard</div>
+  <div class="mt-h2">Nine numbers</div>
+  <div class="mt-score">
+    <div class="mt-lab" style="color:#FFD24A;margin-bottom:8px">IF YOU TRACK NOTHING ELSE</div>
+    <div class="mt-srow"><div class="mt-sn">1</div><div class="mt-sk"><strong style="color:#F3ECE0">Median objects per user at day 30</strong> — the north star. Segment by acquisition source and by type; a channel's value is its median, not its volume.</div><div class="mt-sv">WEEKLY</div></div>
+    <div class="mt-srow"><div class="mt-sn">2</div><div class="mt-sk"><strong style="color:#F3ECE0">Time to first object</strong> — minutes from first open. If this exceeds ten minutes, nothing downstream can be fixed by pricing or marketing.</div><div class="mt-sv">WEEKLY</div></div>
+    <div class="mt-srow"><div class="mt-sn">3</div><div class="mt-sk"><strong style="color:#F3ECE0">Import completion rate</strong> — completed ÷ started, by source format. Your highest-leverage feature, and the cheapest thing to fix.</div><div class="mt-sv">WEEKLY</div></div>
+    <div class="mt-srow"><div class="mt-sn">4</div><div class="mt-sk"><strong style="color:#F3ECE0">Store conversion rate + benchmark percentile</strong> — downloads ÷ unique impressions, split by source type and by custom product page.</div><div class="mt-sv">WEEKLY</div></div>
+    <div class="mt-srow"><div class="mt-sn">5</div><div class="mt-sk"><strong style="color:#F3ECE0">Download-to-paid at day 30</strong>, plus unlock rate among users who reached the cap. Two different numbers; the second is the actionable one.</div><div class="mt-sv">WEEKLY</div></div>
+    <div class="mt-srow"><div class="mt-sn">6</div><div class="mt-sk"><strong style="color:#F3ECE0">D7 and D28 usage retention</strong> against peer percentile. The leading indicator — it moves weeks before revenue does.</div><div class="mt-sv">WEEKLY</div></div>
+    <div class="mt-srow"><div class="mt-sn">7</div><div class="mt-sk"><strong style="color:#FFD24A">Latent supply and latent demand</strong> — sellable-flag rate (gate 8%) and 5-object wishlist rate (gate 30%). These two decide v2. Nothing else does.</div><div class="mt-sv">MONTHLY</div></div>
+    <div class="mt-srow"><div class="mt-sn">8</div><div class="mt-sk"><strong style="color:#F3ECE0">Share links: opens per link sent, installs per hundred opens</strong> — the growth loop's actual multiplier.</div><div class="mt-sv">MONTHLY</div></div>
+    <div class="mt-srow" style="border-bottom:none"><div class="mt-sn">9</div><div class="mt-sk"><strong style="color:#F3ECE0">Lookup cost per active user</strong> against average proceeds per download. The moment the first exceeds the second, your pricing is broken.</div><div class="mt-sv">MONTHLY</div></div>
+  </div>
+  <p class="mt-note" style="margin-top:14px"><strong>Review rule, borrowed and worth keeping:</strong> each cycle, find the funnel stage where you sit at your lowest benchmark percentile and fix that one. Don't optimise a stage you're already good at — the headroom is where you're worst. Benchmarks tell you where to look; your own cohorts tell you what to fix.</p>
+</div>
+
+<div class="mt-sec">
+  <div class="mt-lab">04 · Reading it</div>
+  <div class="mt-h2">Four diagnoses<br>you'll actually face</div>
+  <div class="mt-cards">
+    <div class="mt-card"><div class="mt-ck">DEPTH LOW · RETENTION OK</div><div class="mt-cn">An adding problem</div><div class="mt-cv">People come back but their collections stay small. Look at <span style="font-family:'DM Mono',monospace">seconds_bucket</span> on <span style="font-family:'DM Mono',monospace">object_added</span> and at the import funnel. This is friction, not desire — the most fixable state on this list.</div></div>
+    <div class="mt-card"><div class="mt-ck">DEPTH OK · RETENTION LOW</div><div class="mt-cn">A finished-job problem</div><div class="mt-cv">They catalogued everything and left, which is arguably success. Then lending, wishlists and share links are your only reasons to return — check whether people who lend or keep wishlists retain differently. If they do, that's your v1 roadmap.</div></div>
+    <div class="mt-card"><div class="mt-ck">CAP REACHED · NO UNLOCK</div><div class="mt-cn">A pricing or moment problem</div><div class="mt-cv">Compare <span style="font-family:'DM Mono',monospace">unlock_shown</span> triggers. If the cap converts worse than export or sharing, the wall is in the wrong place — move it to the moment of value, not the moment of volume.</div></div>
+    <div class="mt-card"><div class="mt-ck">STORE VIEWS OK · DOWNLOADS LOW</div><div class="mt-cn">A creative problem, per page</div><div class="mt-cv">Conversion by <span style="font-family:'DM Mono',monospace">source_page</span> tells you which hobby's door is weak. Fix that page's screenshots before touching the default page, and keep product page optimization off community traffic.</div></div>
+  </div>
+  <div class="mt-h3">What to deliberately not build yet</div>
+  <p class="mt-note">Attribution SDKs, conversion-value schemas, cohort dashboards, a data warehouse. With one-time purchases and no ad spend there's nothing to attribute and no budget to misallocate — App Analytics plus a weekly query against your own endpoint answers all nine numbers above. Revisit the moment you either run paid media or ship the v2 seller subscription; <em>then</em> the retention machinery — grace periods, save rates, win-back timing, the 85% proceeds tier past twelve months — becomes real, and worth a page of its own.</p>
+</div>
+
+<div class="mt-sec" style="border-bottom:none">
+  <div class="mt-lab">05 · Order of work</div>
+  <div class="mt-h2">Ship the tagging<br>in three passes</div>
+  <div class="mt-cards">
+    <div class="mt-card" style="background:#FFD24A;box-shadow:4px 4px 0 #17130F"><div class="mt-ck">PASS 1 — BEFORE TESTFLIGHT</div><div class="mt-cn">Nine events</div><div class="mt-cv"><span style="font-family:'DM Mono',monospace;font-size:12px">first_open · collection_created · first_object_added · object_added · import_started · import_completed · import_failed · session_started · cap_reached</span><br><br>That's the whole activation and depth picture — and it's what tells you whether fifty invested experts reach sixty objects each.</div></div>
+    <div class="mt-card" style="background:#fff;box-shadow:4px 4px 0 #17130F"><div class="mt-ck">PASS 2 — BEFORE LAUNCH</div><div class="mt-cn">Money, gates and the loop</div><div class="mt-cv">All of groups E, F and G, plus <span style="font-family:'DM Mono',monospace;font-size:12px">lookup_*</span> so your variable cost is visible from day one. The v2 gates must exist at launch — they need months of data before the decision, and you can't backfill them.</div></div>
+    <div class="mt-card" style="background:#17130F;color:#F3ECE0;box-shadow:4px 4px 0 #FF5B2E"><div class="mt-ck">PASS 3 — MONTH TWO ONWARDS</div><div class="mt-cn">The refinements</div><div class="mt-cv" style="color:rgba(243,236,224,.87)">Groups C, D and H — field usage, 3D engagement, tab choices, sync health. These change the product rather than the business, so they can wait until there are enough real users to read.</div></div>
+  </div>
+  <p class="mt-note" style="margin-top:18px"><strong>Two hygiene rules that save you a rewrite.</strong> Version the schema from event one (<span style="font-family:'DM Mono',monospace;font-size:12px">v: 1</span> on every payload) and never rename an event — add a new one and let the old die. And sample nothing: at your volumes a 10% sample means one usable number a month, and full-fidelity anonymous counts are cheaper to store than the meeting about whether the sample is representative.</p>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

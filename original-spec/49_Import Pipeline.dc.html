@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#EAE3D6}a{color:#2B44D6}a:hover{color:#FF5B2E}</style>
+</helmet>
+<div style="max-width:1960px;margin:0 auto;padding:60px 40px 100px;font-family:Archivo,system-ui,sans-serif;color:#17130F;box-sizing:border-box">
+  <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+    <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70">CLCTN · IMPORT PIPELINE · OCTOBER 2026</div>
+    <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#F3ECE0;background:#2B44D6;border-radius:999px;padding:5px 12px">TESTED ON A REAL FILE</div>
+  </div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:66px;line-height:.92;letter-spacing:-.045em;margin:16px 0 0;max-width:1100px;text-wrap:balance">Drop a spreadsheet. Get a shelf. Only answer the questions we can't.</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:920px;margin-top:20px;text-wrap:pretty">Your friend's <span style="font-family:'DM Mono',monospace">Jeux collection.csv</span> is a good stress test because it's not a database export. It has <strong>485 games</strong> in a grid of <strong>20 platform columns</strong>, and <strong>126 cells carry notes in French</strong>: “cartouche + manuel”, “boite endommagé”, “cartouche ko”, “doublon”, “dédicace JDG”. There are also typos (“Donckey Kong”, “Game Boy advence”) and bundles (“Heavy rain / beyond 2 souls”). Each of those cells already contains something the app uses: parts, condition, duplicate, edition. <strong>The user's whole job is to drop the file and confirm one sentence.</strong></div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:20px">01 · THE PIPELINE · WHO DOES WHAT</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px">
+    <sc-for list="{{ stages }}" as="s" hint-placeholder-count="6">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 {{ s.c }};overflow:hidden;display:flex;flex-direction:column">
+        <div style="padding:11px 16px;background:#17130F;color:#F3ECE0;display:flex;justify-content:space-between;align-items:center;gap:8px">
+          <div style="font:700 15px Archivo,sans-serif">{{ s.n }} · {{ s.t }}</div>
+        </div>
+        <div style="padding:14px 16px;display:flex;flex-direction:column;gap:10px;flex:1">
+          <div style="display:inline-flex;align-self:flex-start;font:500 9px 'DM Mono',monospace;letter-spacing:.12em;background:{{ s.c }};color:#fff;border-radius:999px;padding:3px 9px">{{ s.where }}</div>
+          <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ s.b }}</div>
+          <div style="flex:1"></div>
+          <div style="border-top:2px solid #E0D6C4;padding-top:9px;font:500 10.5px/1.5 'DM Mono',monospace;color:#6E6458">USER: {{ s.user }}</div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:18px;margin-top:16px;font:500 10px 'DM Mono',monospace;letter-spacing:.1em;color:#6E6458">
+    <div style="display:flex;align-items:center;gap:6px"><div style="width:12px;height:12px;border-radius:3px;background:#0E6E5E"></div>ON DEVICE · FREE · PRIVATE</div>
+    <div style="display:flex;align-items:center;gap:6px"><div style="width:12px;height:12px;border-radius:3px;background:#2B44D6"></div>BACKEND · KEYS, RATE LIMITS, CACHE</div>
+    <div style="display:flex;align-items:center;gap:6px"><div style="width:12px;height:12px;border-radius:3px;background:#FF5B2E"></div>USER · ONLY EXCEPTIONS</div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">02 · THE SCREENS · FIVE, AND TWO OF THEM ARE WAITING</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:920px;margin-bottom:28px;text-wrap:pretty">Total user effort for this file: one drop, one confirm, about 20 taps on exceptions, which can be postponed. Everything else happens while the shelf is already visible.</div>
+  <div style="display:flex;flex-wrap:wrap;gap:32px;align-items:flex-start">
+
+    <div data-screen-label="01 Drop" style="display:flex;flex-direction:column;gap:12px;width:360px">
+      <div style="width:360px;height:760px;box-sizing:border-box;border:2.5px solid #17130F;border-radius:48px;box-shadow:6px 6px 0 #17130F;background:#F3ECE0;overflow:hidden;display:flex;flex-direction:column;padding:58px 22px 30px">
+        <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70">BRING YOUR COLLECTION</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:34px;line-height:.95;letter-spacing:-.04em;margin:10px 0 8px;text-wrap:balance">Already listed it somewhere?</div>
+        <div style="font:400 14px/1.5 Archivo,sans-serif;color:#5A5045;text-wrap:pretty">A CSV or TSV in any layout, any language, typos included. We'll do the sorting.</div>
+        <div style="margin-top:22px;border:2.5px dashed #17130F;border-radius:20px;background:#fff;padding:26px 18px;display:flex;flex-direction:column;align-items:center;gap:8px">
+          <div style="width:54px;height:66px;border:2.5px solid #17130F;border-radius:8px;background:#E3D8C6;display:flex;align-items:flex-end;justify-content:center;padding-bottom:6px;box-sizing:border-box;font:500 9px 'DM Mono',monospace">CSV</div>
+          <div style="font:700 15px Archivo,sans-serif;margin-top:6px">Jeux collection.csv</div>
+          <div style="font:500 10px 'DM Mono',monospace;color:#8A7F70">SHARED FROM FILES · 31 KB</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:18px">
+          <sc-for list="{{ sources }}" as="o" hint-placeholder-count="4">
+            <div style="border:2px solid #17130F;border-radius:12px;background:#fff;padding:11px 14px;display:flex;justify-content:space-between;gap:10px">
+              <div style="font:600 13.5px Archivo,sans-serif">{{ o.t }}</div>
+              <div style="font:500 10px 'DM Mono',monospace;color:#8A7F70">{{ o.n }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="flex:1"></div>
+        <div style="font:400 12px/1.5 Archivo,sans-serif;color:#8A7F70;text-align:center;text-wrap:pretty">Your file is read on this phone. Only titles leave it, to find the games.</div>
+      </div>
+      <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.14em;color:#8A7F70">01 · DROP</div>
+      <div style="font:400 13px/1.5 Archivo,sans-serif;color:#3A322A;text-wrap:pretty">The most common way in is the share sheet from Files, Mail or Numbers, so the user never has to find an import menu. Only CSV, TSV and pasted text are accepted. Excel and Numbers export to CSV in two taps, so we skip binary formats and OCR.</div>
+    </div>
+
+    <div data-screen-label="02 Confirm shape" style="display:flex;flex-direction:column;gap:12px;width:360px">
+      <div style="width:360px;height:760px;box-sizing:border-box;border:2.5px solid #17130F;border-radius:48px;box-shadow:6px 6px 0 #17130F;background:#F3ECE0;overflow:hidden;display:flex;flex-direction:column;padding:58px 22px 30px">
+        <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70">READ IN 2 SECONDS</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:34px;line-height:.95;letter-spacing:-.04em;margin:10px 0 16px;text-wrap:balance">485 video games on 20 platforms, into a collection called <span style="text-decoration:underline;text-decoration-thickness:3px;text-underline-offset:4px;text-decoration-color:#FF5B2E">Jeux</span>.</div>
+        <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;padding:14px;display:flex;flex-wrap:wrap;gap:6px">
+          <sc-for list="{{ platforms }}" as="p" hint-placeholder-count="20">
+            <div style="border:2px solid {{ p.bd }};border-radius:999px;padding:4px 9px;font:600 11.5px Archivo,sans-serif;background:{{ p.bg }};display:flex;gap:5px;align-items:baseline">{{ p.t }}<span style="font:500 9.5px 'DM Mono',monospace;color:#8A7F70">{{ p.n }}</span></div>
+          </sc-for>
+        </div>
+        <div style="margin-top:14px;display:flex;flex-direction:column;gap:6px">
+          <sc-for list="{{ also }}" as="a" hint-placeholder-count="4">
+            <div style="display:flex;gap:10px;font:400 13px/1.45 Archivo,sans-serif;color:#3A2F26"><span style="font:500 11px 'DM Mono',monospace;color:#0E6E5E;flex:none">✓</span>{{ a }}</div>
+          </sc-for>
+        </div>
+        <div style="flex:1"></div>
+        <div style="border:2.5px solid #17130F;border-radius:16px;background:#17130F;color:#F3ECE0;padding:16px;text-align:center;font:700 15px Archivo,sans-serif;box-shadow:4px 4px 0 #FF5B2E">Build my shelf</div>
+        <div style="font:500 13px Archivo,sans-serif;color:#8A7F70;text-align:center;margin-top:12px">Something's off</div>
+      </div>
+      <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.14em;color:#8A7F70">02 · ONE SENTENCE TO CONFIRM</div>
+      <div style="font:400 13px/1.5 Archivo,sans-serif;color:#3A322A;text-wrap:pretty">The user never sees a column mapper. The model reports what it understood in one sentence, the user checks it in a second and taps. Dashed chips are headers it renamed (“Game Boy advence” → GBA). “Something's off” opens the mapper, the only escape hatch.</div>
+    </div>
+
+    <div data-screen-label="03 Shelf building" style="display:flex;flex-direction:column;gap:12px;width:360px">
+      <div style="width:360px;height:760px;box-sizing:border-box;border:2.5px solid #17130F;border-radius:48px;box-shadow:6px 6px 0 #17130F;background:#17130F;color:#F3ECE0;overflow:hidden;display:flex;flex-direction:column;padding:58px 22px 30px">
+        <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#B9AC99">PS1 · 41 OF 73 FOUND</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:34px;line-height:.95;letter-spacing:-.04em;margin:10px 0 18px">Your shelf is arriving.</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
+          <sc-for list="{{ shelf }}" as="b" hint-placeholder-count="16">
+            <div style="aspect-ratio:3/4;border-radius:6px;background:{{ b.bg }};border:2px solid {{ b.bd }};display:flex;align-items:flex-end;padding:5px;box-sizing:border-box;font:500 7.5px/1.2 'DM Mono',monospace;color:{{ b.fg }};transform:{{ b.tf }};box-shadow:{{ b.sh }}">{{ b.t }}</div>
+          </sc-for>
+        </div>
+        <div style="margin-top:18px;height:8px;border-radius:999px;background:#3A322A;overflow:hidden"><div style="width:58%;height:100%;background:#FFD24A"></div></div>
+        <div style="display:flex;justify-content:space-between;font:500 10px 'DM Mono',monospace;color:#B9AC99;margin-top:8px"><span>281 / 485 FOUND</span><span>COVERS · 3D NEXT</span></div>
+        <div style="flex:1"></div>
+        <div style="border:2px solid #F3ECE0;border-radius:14px;padding:12px 14px;font:400 13px/1.45 Archivo,sans-serif;text-wrap:pretty">You can close the app. We'll let you know when the last box is on the shelf.</div>
+      </div>
+      <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.14em;color:#8A7F70">03 · THE WAIT IS THE REWARD</div>
+      <div style="font:400 13px/1.5 Archivo,sans-serif;color:#3A322A;text-wrap:pretty">Covers fill in as the backend finds them, platform by platform, and the boxes turn 3D once their textures are ready. The import is the first time the user sees their collection in the app. Nothing blocks on review, and the user can leave.</div>
+    </div>
+
+    <div data-screen-label="04 Exceptions" style="display:flex;flex-direction:column;gap:12px;width:360px">
+      <div style="width:360px;height:760px;box-sizing:border-box;border:2.5px solid #17130F;border-radius:48px;box-shadow:6px 6px 0 #17130F;background:#F3ECE0;overflow:hidden;display:flex;flex-direction:column;padding:58px 22px 30px">
+        <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70">3 OF 21 · NO RUSH</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:30px;line-height:.95;letter-spacing:-.04em;margin:10px 0 6px">Which Tetris?</div>
+        <div style="font:500 11px 'DM Mono',monospace;color:#6E6458;margin-bottom:16px">YOU WROTE · “Tetris version alternative (cartouche)” · GAME BOY</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <sc-for list="{{ candidates }}" as="c" hint-placeholder-count="3">
+            <div style="display:flex;gap:12px;align-items:center;border:2.5px solid #17130F;border-radius:14px;background:{{ c.bg }};padding:10px;box-shadow:{{ c.sh }}">
+              <div style="width:48px;height:56px;border-radius:6px;border:2px solid #17130F;background:repeating-linear-gradient(135deg,#E3D8C6 0 6px,#EDE4D5 6px 12px);flex:none"></div>
+              <div style="display:flex;flex-direction:column;gap:2px">
+                <div style="font:700 14px Archivo,sans-serif">{{ c.t }}</div>
+                <div style="font:500 10px 'DM Mono',monospace;color:#6E6458">{{ c.m }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:16px;font:600 13px Archivo,sans-serif">
+          <span>None of these</span><span style="color:#8A7F70">Keep as I wrote it</span>
+        </div>
+        <div style="flex:1"></div>
+        <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;margin-bottom:8px">STILL TO SORT</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">
+          <sc-for list="{{ queue }}" as="q" hint-placeholder-count="4">
+            <div style="border:2px solid #17130F;border-radius:999px;padding:4px 10px;font:600 11.5px Archivo,sans-serif;background:#fff">{{ q }}</div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.14em;color:#8A7F70">04 · ONLY THE EXCEPTIONS, ONE TAP EACH</div>
+      <div style="font:400 13px/1.5 Archivo,sans-serif;color:#3A322A;text-wrap:pretty">This queue only holds real ambiguities: variants, bundles to split, digital copies. Each one is a single tap with the cover art shown. Nothing is ever dropped. “Keep as I wrote it” is the default: the item stays on the shelf as written, without a match. The queue sits as a badge on the shelf and is never a gate.</div>
+    </div>
+
+    <div data-screen-label="05 First look" style="display:flex;flex-direction:column;gap:12px;width:360px">
+      <div style="width:360px;height:760px;box-sizing:border-box;border:2.5px solid #17130F;border-radius:48px;box-shadow:6px 6px 0 #17130F;background:#F3ECE0;overflow:hidden;display:flex;flex-direction:column;padding:58px 22px 30px">
+        <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70">YOUR SHELF · 485 GAMES</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:30px;line-height:.95;letter-spacing:-.04em;margin:10px 0 16px;text-wrap:balance">We noticed a few things while unpacking.</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <sc-for list="{{ noticed }}" as="n" hint-placeholder-count="4">
+            <div style="border:2.5px solid #17130F;border-radius:14px;background:#fff;padding:12px 14px;box-shadow:4px 4px 0 {{ n.c }};display:flex;flex-direction:column;gap:3px">
+              <div style="font:500 9.5px 'DM Mono',monospace;letter-spacing:.12em;color:{{ n.c }}">{{ n.k }}</div>
+              <div style="font:700 14.5px Archivo,sans-serif">{{ n.t }}</div>
+              <div style="font:400 12.5px/1.45 Archivo,sans-serif;color:#5A5045;text-wrap:pretty">{{ n.b }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="flex:1"></div>
+        <div style="border:2.5px solid #17130F;border-radius:16px;background:#17130F;color:#F3ECE0;padding:16px;text-align:center;font:700 15px Archivo,sans-serif;box-shadow:4px 4px 0 #FF5B2E">See the shelf</div>
+      </div>
+      <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.14em;color:#8A7F70">05 · PAYOFF FROM THEIR OWN NOTES</div>
+      <div style="font:400 13px/1.5 Archivo,sans-serif;color:#3A322A;text-wrap:pretty">The notes he typed into his spreadsheet become features on day one: an Imperfect list, a duplicate, a signed copy, a series to complete. This is the same idea as onboarding 46: the first thing the app shows is something he didn't know.</div>
+    </div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">03 · CELL → ITEM · REAL CELLS FROM THE FILE</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:920px;margin-bottom:20px;text-wrap:pretty">This is the extraction step, and where a typed-extraction model earns its keep. The input is a messy cell plus its column. The output is a typed object that matches <span style="font-family:'DM Mono',monospace">video-game.yml</span>. It must never invent a value: anything it can't read goes into <span style="font-family:'DM Mono',monospace">note</span>, untouched.</div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+    <div style="display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1.6fr) minmax(0,.9fr);background:#17130F;color:#F3ECE0;font:500 9.5px 'DM Mono',monospace;letter-spacing:.12em">
+      <div style="padding:11px 18px">CELL · COLUMN</div><div style="padding:11px 18px">EXTRACTED</div><div style="padding:11px 18px">WHAT IT BECOMES</div>
+    </div>
+    <sc-for list="{{ cells }}" as="c" hint-placeholder-count="8">
+      <div style="display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1.6fr) minmax(0,.9fr);border-top:2px solid #E0D6C4">
+        <div style="padding:12px 18px;display:flex;flex-direction:column;gap:3px">
+          <div style="font:600 13.5px Archivo,sans-serif">{{ c.cell }}</div>
+          <div style="font:500 10px 'DM Mono',monospace;color:#8A7F70">{{ c.col }}</div>
+        </div>
+        <div style="padding:12px 18px;font:400 12px/1.6 'DM Mono',monospace;color:#3A2F26;background:#FAF6EF">{{ c.out }}</div>
+        <div style="padding:12px 18px;font:400 13px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ c.becomes }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">03B · CLCTN.CSV · THE FAST LANE, NEVER THE ONLY LANE</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:920px;margin-bottom:20px;text-wrap:pretty">A template we publish, with one row per item and fixed headers. If a file matches it, there's no model and no guessing, and the import is instant and free. <strong>The template is optional, though.</strong> Your friend won't rewrite 485 cells into new columns, and asking him to would lose him before the first box shows up. The template is for people starting from scratch, and it's the same format the app exports. Exporting and re-importing a collection gives back exactly what went out, and that's what makes people trust the app with their data.</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:16px">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#0C0A08;color:#F3ECE0;padding:20px 22px;box-shadow:5px 5px 0 #6E2440;overflow-x:auto">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;opacity:.55;margin-bottom:12px">CLCTN.CSV · VIDEO GAME · UTF-8 · COMMA</div>
+      <pre style="margin:0;font:400 12px/1.75 'DM Mono',monospace;white-space:pre">type,platform,title,region,parts,condition,signed_by,note
+game,n64,Super Mario 64,PAL,box|cart,box:worn,,
+game,nes,Teenage Mutant Ninja Turtles,PAL,cart|manual,,JDG,
+game,ps4,Heavy Rain + Beyond Two Souls,PAL,case|disc,,,bundle
+game,megadrive,Moonwalker,PAL,cart,cart:faulty,,</pre>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;padding:18px 20px;display:flex;flex-direction:column;gap:10px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70">DESIGN RULES FOR THE TEMPLATE</div>
+      <sc-for list="{{ tplRules }}" as="r" hint-placeholder-count="5">
+        <div style="display:flex;flex-direction:column;gap:2px;border-bottom:1.5px solid #E0D6C4;padding-bottom:9px">
+          <div style="font:700 14px Archivo,sans-serif">{{ r.t }}</div>
+          <div style="font:400 13px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ r.b }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:20px">04 · ARCHITECTURE CALLS</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:12px">
+    <sc-for list="{{ calls }}" as="a" hint-placeholder-count="6">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;box-shadow:4px 4px 0 {{ a.c }};padding:16px 18px;display:flex;flex-direction:column;gap:6px">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">{{ a.k }}</div>
+        <div style="font:700 15px Archivo,sans-serif">{{ a.t }}</div>
+        <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ a.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">05 · WHERE MATCHES COME FROM · CHECKED OCTOBER 2026</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:920px;margin-bottom:20px;text-wrap:pretty">There's no general product search to rely on: Amazon and Google have both closed theirs. Use one game database for identity and one for box scans, with Wikidata stitching IDs together. All calls go through the backend, which caches by title + platform + region.</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px">
+    <sc-for list="{{ sources2 }}" as="s" hint-placeholder-count="7">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;box-shadow:4px 4px 0 {{ s.c }};padding:16px 18px;display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
+          <div style="font:700 16px Archivo,sans-serif">{{ s.t }}</div>
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;background:{{ s.c }};color:#fff;border-radius:999px;padding:3px 9px;white-space:nowrap">{{ s.verdict }}</div>
+        </div>
+        <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.08em;color:#8A7F70">{{ s.role }}</div>
+        <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ s.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">06 · HOW IT'S GROUPED · ONE COLLECTION, NOT TWENTY</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:920px;margin-bottom:22px;text-wrap:pretty">A collection is a choice the user makes. A platform is a fact about the game. His file is called <em>Jeux collection</em>, and he chose to keep it as one sheet. <strong>So the import creates exactly one collection, “Jeux”, and the 20 platforms become shelves inside it, generated from the subtype.</strong> Twenty collections would be a mess on day one: Switch would get a collection for one game and CD-i one for three.</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:16px">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #2B44D6;overflow:hidden">
+      <div style="padding:14px 20px;background:#17130F;color:#F3ECE0;display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap">
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:24px;letter-spacing:-.03em">Jeux</div>
+        <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.12em;opacity:.7">COLLECTION · 485 · VIDEO GAME</div>
+      </div>
+      <div style="padding:16px 20px">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:10px">SHELVES · ONE PER PLATFORM · AUTOMATIC</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">
+          <sc-for list="{{ platforms }}" as="p" hint-placeholder-count="20">
+            <div style="border:2px solid #17130F;border-radius:8px;padding:4px 9px;font:600 12px Archivo,sans-serif;background:#FAF6EF;display:flex;gap:5px;align-items:baseline">{{ p.t }}<span style="font:500 9.5px 'DM Mono',monospace;color:#8A7F70">{{ p.n }}</span></div>
+          </sc-for>
+        </div>
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin:18px 0 10px">VIEWS · BUILT FROM HIS NOTES · LIVE, NOT COPIES</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">
+          <sc-for list="{{ views }}" as="v" hint-placeholder-count="6">
+            <div style="border:2px solid {{ v.c }};color:{{ v.c }};border-radius:999px;padding:4px 10px;font:600 12px Archivo,sans-serif;display:flex;gap:5px;align-items:baseline">{{ v.t }}<span style="font:500 9.5px 'DM Mono',monospace">{{ v.n }}</span></div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;padding:18px 20px;display:flex;flex-direction:column;gap:10px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70">WHAT IN THE FILE BECOMES WHAT</div>
+      <sc-for list="{{ grouping }}" as="g" hint-placeholder-count="6">
+        <div style="display:grid;grid-template-columns:minmax(0,1fr) 18px minmax(0,1fr);gap:8px;align-items:baseline;border-bottom:1.5px solid #E0D6C4;padding-bottom:9px">
+          <div style="font:600 13px Archivo,sans-serif">{{ g.from }}</div>
+          <div style="font:500 12px 'DM Mono',monospace;color:#8A7F70">→</div>
+          <div style="font:400 13px/1.45 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ g.to }}</div>
+        </div>
+      </sc-for>
+      <div style="font:400 12.5px/1.55 Archivo,sans-serif;color:#6E6458;text-wrap:pretty">On screen 02, the collection's name is part of the sentence the user confirms (“…into a collection called <u>Jeux</u>”), and they can rename it there. If the shelf already has a video-game collection, the import offers to merge into it instead.</div>
+    </div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:20px">07 · OPEN QUESTIONS</div>
+  <div style="display:flex;flex-direction:column;gap:12px;max-width:1000px">
+    <sc-for list="{{ open }}" as="o" hint-placeholder-count="5">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#17130F;color:#F3ECE0;padding:17px 19px;box-shadow:5px 5px 0 #FF5B2E">
+        <div style="display:flex;gap:12px;align-items:baseline">
+          <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.12em;opacity:.55">{{ o.k }}</div>
+          <div style="font:700 16px Archivo,sans-serif">{{ o.q }}</div>
+        </div>
+        <div style="font:400 13.5px/1.6 Archivo,sans-serif;opacity:.82;margin-top:8px;text-wrap:pretty">{{ o.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const DEV = "#0E6E5E", BE = "#2B44D6", US = "#FF5B2E";
+    const P = [["PS1",73],["PC",74],["PS3",51],["PS2",44],["PS4",44],["PS5",32],["SNES",30],["Game Gear",24],["NES",23],["Mega Drive",17],["Dreamcast",13],["PSP",11],["GBA",10,1],["N64",9],["GameCube",9,1],["Game Boy",8],["PC Engine",5,1],["Saturn",4,1],["CD-i",3,1],["Switch",1]];
+    const shelfT = ["TOMB RAIDER","TOMB RAIDER 2","METAL GEAR SOLID","TEKKEN","TEKKEN 2","TEKKEN 3","SOUL BLADE","SPYRO","RESIDENT EVIL","WIPEOUT 3","WIPEOUT 2097","RIVAL SCHOOLS","COLONY WARS","NOVASTORM","DRIVER","QUAKE II"];
+    return {
+      stages: [
+        { n: "1", t: "Ingest", where: "ON DEVICE", c: DEV, b: "Accepts CSV, TSV and pasted text, nothing else. Detects the encoding and separator: this file uses semicolons and curly apostrophes. If the headers match our template, steps 2 and 3 are skipped.", user: "drops a file" },
+        { n: "2", t: "Understand the shape", where: "ON DEVICE · FOUNDATION MODEL", c: DEV, b: "Works out the layout: one column per platform, no header for the title. Maps the 20 headers to subtypes and picks PAL as the region from the locale and the French notes.", user: "confirms one sentence" },
+        { n: "3", t: "Extract each cell", where: "ON DEVICE · TYPED EXTRACTION", c: DEV, b: "Turns 485 cells into typed items: title, parts present, condition, edition, digital, duplicate, signed. Bundles are split. Anything unreadable stays in a note.", user: "nothing" },
+        { n: "4", t: "Match", where: "BACKEND", c: BE, b: "Looks up title + platform + region in the game databases. Each item lands in one of three buckets: matched (auto), ambiguous (2–3 candidates) or unknown (kept as written).", user: "nothing" },
+        { n: "5", t: "Assets", where: "BACKEND · CDN", c: BE, b: "Downloads covers, back covers and spine scans once per release, not once per user, and caches them on a CDN. It also bakes the textures for the 3D box of each media silhouette.", user: "nothing, watches the shelf fill" },
+        { n: "6", t: "Exceptions", where: "USER · OPTIONAL", c: US, b: "A queue of real ambiguities only, one tap each. It shows as a badge on the shelf and never blocks it.", user: "~20 taps, whenever" }
+      ],
+      sources: [{ t: "CSV or TSV", n: "ANY LAYOUT" }, { t: "Paste a list", n: "TEXT" }, { t: "Get our template", n: "FAST LANE" }],
+      platforms: P.map(([t, n, r]) => ({ t, n, bd: r ? "#2B44D6" : "#17130F", bg: r ? "#EEF0FB" : "#fff" })),
+      sources2: [
+        { t: "IGDB", verdict: "PRIMARY", c: "#0E6E5E", role: "IDENTITY · SERIES · PLATFORMS · COVERS", b: "Free, including for commercial products, through a partnership that requires visible attribution. It has franchises and collections, which feed the series sets (47). Owned by Twitch/Amazon." },
+        { t: "ScreenScraper", verdict: "3D TEXTURES", c: "#0E6E5E", role: "BOX FRONT · SPINE · BACK · CART · MANUALS", b: "French and community-run, and the richest source of exactly what the 3D box needs: separate front, side and back scans, plus box and cartridge textures. About 20k requests a day for a registered account. Ask them for commercial terms before launch." },
+        { t: "Wikidata", verdict: "GLUE", c: "#2B44D6", role: "CROSS-IDS · WORKS · CC0", b: "Public domain data. It maps one game to its IGDB, MobyGames and other IDs, and groups releases under one work, which is the Doom-on-everything layer. Use it instead of Wikipedia, which is prose, not data." },
+        { t: "MobyGames", verdict: "LATER, PAID", c: "#8A7F70", role: "PRODUCT CODES · RELEASES · VARIANTS", b: "The best data on releases and variants, but commercial use starts at $99.99 a month, and product codes are in the $499.99 tier. Worth it once the Tetris-style variant cases add up." },
+        { t: "Amazon", verdict: "NO", c: "#C2371F", role: "—", b: "The old product API was retired in 2026. Its replacement, the Creators API, is tied to the affiliate programme and its sales quotas. It's also weak on used and retro items." },
+        { t: "Google", verdict: "NO", c: "#C2371F", role: "—", b: "The Custom Search JSON API is closed to new customers and shuts down for existing ones on 1 January 2027. Its suggested replacement is enterprise site search, not product lookup." },
+        { t: "Barcode (EAN/UPC)", verdict: "FOR SCANS", c: "#2B44D6", role: "CAMERA ADD, NOT IMPORT", b: "Spreadsheets rarely have barcodes, so this matters for the camera path in 46 rather than for import. Many retro releases predate barcodes, so title + platform stays the main key." }
+      ],
+      tplRules: [
+        { t: "Only title is required", b: "A file with only titles and platforms is valid. Every other column improves the match but none blocks it." },
+        { t: "One template per type, same first columns", b: "type, title, note and signed_by are always there. After them, each type adds its own columns (games: platform, region, parts; wine: vintage, appellation)." },
+        { t: "Values match the app", b: "The platform column holds the subtype key, and parts and condition use the ladder's own words. Unknown values go to the model instead of failing." },
+        { t: "Offered as a file, a Google Sheet and a Numbers file", b: "Each is linked from the import screen. Numbers and Sheets give dropdowns for platform and condition, so fewer typos make it in." },
+        { t: "Export = template", b: "CLCTN exports in this exact format. It works as a backup, it's portable, and a re-import round-trips with no loss." }
+      ],
+      views: [
+        { t: "Imperfect", n: 3, c: "#C2371F" }, { t: "Signed", n: 1, c: "#6E2440" }, { t: "Duplicates", n: 1, c: "#2B44D6" },
+        { t: "Digital", n: 10, c: "#6E6458" }, { t: "Not matched yet", n: "~20", c: "#6E6458" }, { t: "Bundles", n: "~10", c: "#2B44D6" }, { t: "Series to complete", n: "auto", c: "#0E6E5E" }
+      ],
+      grouping: [
+        { from: "The file (Jeux collection.csv)", to: "One collection, named after the file, which the user can rename" },
+        { from: "Column headers (Ps1, SuperNes…)", to: "Subtype → a shelf inside the collection. Not a collection." },
+        { from: "Notes (ko, manque, endommagé)", to: "Ladder parts → the Imperfect view" },
+        { from: "“doublon”", to: "A second copy → the Duplicates view" },
+        { from: "“digital”", to: "Kept, media: digital → the Digital view" },
+        { from: "Sheet tabs like “Vendu” or “Recherché”", to: "Status, not collections: sold → history, wanted → wishlist" }
+      ],
+      also: ["126 notes on parts and condition, read", "PAL region, from your notes in French", "10 digital games, kept apart", "Bundles detected, 1 duplicate"],
+      shelf: shelfT.map((t, i) => i < 11
+        ? { t, bg: ["#C2371F","#2B44D6","#6E2440","#0E6E5E","#FFD24A"][i % 5], bd: "#F3ECE0", fg: i % 5 === 4 ? "#17130F" : "#F3ECE0", tf: i % 3 === 0 ? "perspective(200px) rotateY(-14deg)" : "none", sh: i % 3 === 0 ? "4px 4px 0 #000" : "none" }
+        : { t: "", bg: "transparent", bd: "#5A5045", fg: "#5A5045", tf: "none", sh: "none" }),
+      candidates: [
+        { t: "Tetris · DMG-TRA", m: "1989 · FAH · ORIGINAL BOX", bg: "#fff", sh: "4px 4px 0 #2B44D6" },
+        { t: "Tetris · Player's Choice", m: "1993 · REPRINT · MOST LIKELY", bg: "#fff", sh: "none" },
+        { t: "Tetris DX", m: "1998 · GAME BOY COLOR", bg: "#fff", sh: "none" }
+      ],
+      queue: ["Doom + Doom 2 (digital)", "Chine · PC", "Egypte · PC", "Demo one · PS1", "+15"],
+      noticed: [
+        { k: "IMPERFECT · 3", c: "#C2371F", t: "Mario 64's box is damaged, and Moonwalker doesn't boot", b: "Killer Instinct is also missing its audio CD. Taken from your notes." },
+        { k: "DUPLICATE · 1", c: "#2B44D6", t: "Two copies of Fantasy Zone", b: "You marked one as a duplicate. Do you want to put it up for trade?" },
+        { k: "ONE OF A KIND", c: "#6E2440", t: "Turtles, signed by JDG", b: "Saved as a signed copy, which adds to its value." },
+        { k: "SERIES", c: "#0E6E5E", t: "Ridge Racer: you have 3 of 4 on PS1", b: "Missing: Rage Racer." }
+      ],
+      cells: [
+        { cell: "Mario 64 (boite endommagé + cartouche)", col: "N64", out: "title: Super Mario 64 · parts: {box: worn, cart: ok, manual: missing}", becomes: "Ladder plus the Imperfect list" },
+        { cell: "Moonwalker (cartouche ko)", col: "Mega Drive", out: "title: Michael Jackson's Moonwalker · parts: {cart: faulty}", becomes: "Imperfect. Not playable." },
+        { cell: "Killer instinct (manque cd audio + cale cartouche)", col: "SuperNes", out: "parts: {cart: ok, soundtrackCD: missing, insert: missing}", becomes: "A subtype part for SNES Killer Instinct" },
+        { cell: "Tortue ninja (cartouche dédicace JDG + manuel)", col: "Nes", out: "title: Teenage Mutant Ninja Turtles · parts: {cart, manual} · signed: JDG", becomes: "A one-of-a-kind log entry" },
+        { cell: "Mario / duck hunt (cartouche + manuel)", col: "Nes", out: "contains: [Super Mario Bros., Duck Hunt] · parts: {cart, manual}", becomes: "A bundle cart, detected from the slash" },
+        { cell: "Fantasy zone (cartouche) doublon", col: "GameGear", out: "title: Fantasy Zone · copies: 2", becomes: "Two items, one flagged as a duplicate" },
+        { cell: "Heavy rain / beyond 2 souls", col: "Ps4", out: "contains: [Heavy Rain, Beyond: Two Souls] · matched as the PS4 bundle release", becomes: "One object, two works. Both count in sets." },
+        { cell: "It take two (digital)", col: "Ps5", out: "title: It Takes Two · media: digital", becomes: "Follows Q4 in 43: wishlist or skip" },
+        { cell: "Donckey Kong Country 2", col: "SuperNes", out: "title: Donkey Kong Country 2: Diddy's Kong Quest · fixed: typo", becomes: "Auto-matched" }
+      ],
+      calls: [
+        { k: "MAPPING", c: DEV, t: "On-device model for shape and extraction", b: "Apple's Foundation Models with guided generation (a typed @Generable struct mirroring video-game.yml) are enough for both. It's free, private and works offline. A hosted typed-extraction model like Schemer is the fallback on older devices, or for photos of handwritten lists. The model only extracts. It never decides what the real product is; the backend does that." },
+        { k: "BATCHING", c: DEV, t: "Extract 20–30 cells per call, with the column as context", b: "The column gives the platform, which resolves most ambiguity. 485 cells come to about 20 calls. One example per note pattern goes in the prompt (cartouche + manuel, ko, doublon)." },
+        { k: "MATCHING", c: BE, t: "The backend owns API keys and rate limits", b: "Game databases cap requests and need secret keys, which can't ship in the app. Matching is cached by normalized title + platform + region. The second user with Tomb Raider on PS1 PAL costs nothing." },
+        { k: "IMAGES", c: BE, t: "Download once per release, never per user", b: "The backend pulls front, back and spine scans, stores them and serves them from a CDN. The phone only downloads thumbnails, then the full textures when a box is opened in 3D." },
+        { k: "3D", c: BE, t: "Generate boxes from templates, never model them", b: "Each media silhouette (jewel case, cart box, big box) is one parametric 3D model, and the scans are wrapped onto it. Without a back or spine scan, the box falls back to a solid colour sampled from the cover." },
+        { k: "SPEED", c: US, t: "Progressive by platform, biggest first", b: "PS1 and PC go first, so the shelf looks full fast. A push notification arrives when assets finish. The first covers should appear in under 10 seconds." }
+      ],
+      open: [
+        { k: "Q1 · DECIDED", q: "Image rights: database scans first, the user's photo as fallback", b: "Use the scans from the databases. If a source refuses or a takedown comes in, the app asks the user for a photo of their own box (front, back, spine) and wraps it onto the 3D template on the device. Caveat: box art from the 80s and 90s is still under the publishers' copyright, not public domain. Check each source's licence before caching on our CDN. The photo fallback is the safe path and also makes each box unique, so it could become a feature rather than a backup." },
+        { k: "Q2 · DECIDED", q: "Unknown items: always keep.", b: "The app never drops anything. Unknown items like “Chine”, “Egypte” or “Versailles” in the PC column land on the shelf as written, with no cover. They can be matched later, or never. Only the user deletes." },
+        { k: "Q3 · DECIDED", q: "Where does the import flow start?", b: "From the add screen. “Import a list” sits next to camera and typing, as a third way to add. Onboarding 46 stays about one item only. The share sheet lands on the same screen with the file already attached." },
+        { k: "Q4", q: "What do imported items cost?", b: "Imports aren't a paywall question. The 3D boxes are, under the D4 decision. Show them in 3D during the import, then keep 3D for paid users? Lean yes: the import is the best demo the unlock will ever get." },
+        { k: "Q5 · DECIDED", q: "One LLM mapper for every source. No parsers per app.", b: "The types are known and stable, so the mapper's only job is to pull the user's data into them. The backend then turns it into a clean item. Exports from other apps go through the same path. Known formats can become prompt examples, not code." }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

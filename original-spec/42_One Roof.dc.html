@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#EAE3D6}
+a{color:#2B44D6}a:hover{color:#FF5B2E}
+.or-page{width:1100px;margin:0 auto;padding:0 0 90px;font-family:Archivo,system-ui,sans-serif;color:#17130F}
+.or-sec{padding:46px 0 40px;border-bottom:2px solid rgba(23,19,15,.12)}
+.or-lab{font:500 10px 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#8A7F70;margin-bottom:12px}
+.or-h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:34px;line-height:1;letter-spacing:-.03em;margin:0 0 18px}
+.or-h3{font:700 15px Archivo,sans-serif;margin:26px 0 10px}
+.or-p{max-width:740px;font:400 15px/1.65 Archivo,sans-serif;color:#3A2F26;margin:0 0 14px;text-wrap:pretty}
+.or-note{max-width:740px;font:400 13px/1.6 Archivo,sans-serif;color:#6E6458;margin:0 0 14px;text-wrap:pretty}
+.or-big{border:2.5px solid #17130F;border-radius:18px;padding:20px 22px;box-shadow:5px 5px 0 #17130F;max-width:860px;margin:6px 0 18px}
+.or-bigt{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:26px;line-height:1.12;letter-spacing:-.02em;text-wrap:pretty}
+.or-cards{display:flex;flex-wrap:wrap;gap:14px;margin:18px 0 6px}
+.or-card{flex:1 1 300px;min-width:280px;box-sizing:border-box;border:2.5px solid #17130F;border-radius:16px;background:#fff;box-shadow:4px 4px 0 #17130F;padding:15px 16px}
+.or-ck{font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:8px}
+.or-cn{font:700 16px/1.25 Archivo,sans-serif;margin-bottom:7px}
+.or-cv{font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty}
+.or-rules{display:flex;flex-direction:column;gap:10px;margin:18px 0 6px;max-width:900px}
+.or-rule{display:flex;gap:14px;align-items:flex-start;border:2.5px solid #17130F;border-radius:14px;background:#fff;padding:13px 15px}
+.or-rn{flex:none;width:26px;height:26px;border:2.5px solid #17130F;border-radius:999px;background:#FFD24A;display:flex;align-items:center;justify-content:center;font:700 11px Archivo,sans-serif}
+.or-rt{font:700 14px Archivo,sans-serif;margin-bottom:4px}
+.or-rv{font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty}
+.or-two{display:flex;flex-wrap:wrap;gap:16px;max-width:1000px;margin:16px 0 6px}
+.or-col{flex:1 1 380px;min-width:340px;box-sizing:border-box;border:2.5px solid #17130F;border-radius:16px;padding:15px 17px;box-shadow:4px 4px 0 #17130F}
+.or-li{display:flex;gap:10px;align-items:flex-start;font:400 13px/1.5 Archivo,sans-serif;margin-bottom:8px;text-wrap:pretty}
+.or-gl{flex:none;font:700 12px 'DM Mono',monospace;margin-top:1px}
+.or-demo{display:flex;gap:28px;align-items:flex-start;margin:18px 0 6px}
+.or-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.or-tab{cursor:pointer;font:600 12.5px Archivo,sans-serif;border:2.5px solid #17130F;border-radius:999px;padding:8px 14px;background:#fff}
+.or-phone{flex:none;width:300px;border:2.5px solid #17130F;border-radius:30px;background:#F3ECE0;box-shadow:6px 6px 0 #17130F;padding:14px 14px 18px;box-sizing:border-box}
+.or-slot{position:relative;border:2px dashed rgba(43,68,214,.55);border-radius:12px;padding:10px;margin-bottom:10px}
+.or-slotk{position:absolute;top:-8px;left:10px;font:500 8px 'DM Mono',monospace;letter-spacing:.12em;color:#2B44D6;background:#F3ECE0;padding:0 5px}
+.or-field{display:flex;justify-content:space-between;gap:10px;font:400 12px Archivo,sans-serif;padding:6px 0;border-bottom:1.5px solid #E0D6C4}
+.or-field:last-child{border-bottom:none}
+.or-fk{color:#6E6458}
+.or-fv{font-weight:600;text-align:right}
+.or-ev{display:flex;gap:8px;align-items:baseline;font:400 11.5px Archivo,sans-serif;padding:5px 0}
+.or-evd{flex:none;font:500 9px 'DM Mono',monospace;color:#8A7F70;width:58px}
+.or-legend{flex:1;min-width:0}
+.or-lg{display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-bottom:2px solid rgba(23,19,15,.12)}
+.or-lg:last-child{border-bottom:none}
+.or-lgk{flex:none;width:150px;font:500 10px 'DM Mono',monospace;letter-spacing:.1em;color:#2B44D6;padding-top:3px}
+.or-lgv{font:400 13px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty}
+.or-lgv strong{color:#17130F}
+.or-tbl{border:2.5px solid #17130F;border-radius:16px;overflow:hidden;background:#fff;box-shadow:5px 5px 0 #17130F;max-width:1000px;margin:16px 0 8px}
+.or-tr{display:flex;border-bottom:2px solid rgba(23,19,15,.12)}
+.or-tr:last-child{border-bottom:none}
+.or-th{background:#17130F;color:#F3ECE0}
+.or-t1{flex:0 0 170px;padding:10px 13px;font:500 11px/1.4 'DM Mono',monospace;letter-spacing:.06em;border-right:2px solid rgba(23,19,15,.1)}
+.or-t{flex:1 1 0;padding:10px 13px;font:400 12.5px/1.45 Archivo,sans-serif;border-right:2px solid rgba(23,19,15,.1);text-wrap:pretty}
+.or-t:last-child{border-right:none}
+.or-sw{display:flex;gap:6px;margin-top:8px}
+.or-swb{flex:1;height:22px;border:2px solid #17130F;border-radius:6px;display:flex;align-items:center;justify-content:center;font:500 8px 'DM Mono',monospace;letter-spacing:.08em}
+.or-q{border:2.5px solid #17130F;border-radius:16px;background:#17130F;color:#F3ECE0;padding:16px 17px;box-shadow:5px 5px 0 #FF5B2E;margin-bottom:12px;max-width:860px}
+.or-qk{font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#FFD24A;margin-bottom:8px}
+.or-qt{font:700 16px/1.35 Archivo,sans-serif;margin-bottom:7px;text-wrap:pretty}
+.or-qv{font:400 13.5px/1.6 Archivo,sans-serif;color:rgba(243,236,224,.82);text-wrap:pretty}
+</style>
+</helmet>
+
+<div class="or-page">
+
+<div class="or-sec" style="padding-top:60px">
+  <div class="or-lab">Coherence proposal · one app, many hobbies · September 2026</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:64px;line-height:.92;letter-spacing:-.04em;max-width:900px">The app owns the verbs.<br>The type owns<br>the nouns.</div>
+  <p class="or-p" style="font-size:17px;margin-top:22px">Wine is drunk, a computer is serviced, a record is played, a pin is just kept. Each type has asked for something the others don't need — a drinking window, a service clock, a working state, parts inside parts. The risk is obvious: sixteen types become sixteen small apps sharing a tab bar. This page proposes the rules that stop that, and shows one screen rendering five types without changing shape.</p>
+  <div class="or-big" style="background:#FFD24A">
+    <div class="or-bigt">Coherence isn't sameness. A cellar and a record shelf <em>should</em> feel different — in their nouns, their scales, their objects on the shelf. They must never feel different in how you add, find, lend, confirm, or read a screen. So: <span style="background:#17130F;color:#F3ECE0;padding:0 6px;border-radius:6px">the app fixes the structure and the verbs; a type may only fill slots.</span></div>
+  </div>
+</div>
+
+<div class="or-sec">
+  <div class="or-lab">01 · The demonstration</div>
+  <div class="or-h2">One item screen,<br>five types, zero new layouts</div>
+  <p class="or-p">Every dashed box is a <strong>slot</strong>. The type fills it or hides it; it never adds a box, moves one, or invents a control. Switch types and watch what changes — and what can't.</p>
+  <div class="or-tabs">
+    <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="5">
+      <div class="or-tab" onClick="{{ t.pick }}" style="background: {{ t.bg }};color: {{ t.fg }}">{{ t.name }}</div>
+    </sc-for>
+  </div>
+  <div class="or-demo">
+    <div class="or-phone">
+      <div style="display:flex;justify-content:space-between;font:500 9px 'DM Mono',monospace;color:#8A7F70;padding:0 4px 10px"><div>9:41</div><div>{{ typeLabel }}</div></div>
+      <div class="or-slot"><div class="or-slotk">HERO · ONE 3D SILHOUETTE PER TYPE</div>
+        <div style="height:96px;border:2.5px solid #17130F;border-radius:10px;display:flex;align-items:center;justify-content:center;font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#F3ECE0;background: {{ heroBg }}">{{ heroLabel }}</div>
+      </div>
+      <div class="or-slot"><div class="or-slotk">SPINE · 2–3 FACTS, TYPE NAMES THEM</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:22px;line-height:1;letter-spacing:-.03em">{{ title }}</div>
+        <div style="font:500 12px Archivo,sans-serif;color:#3A2F26;margin-top:4px">{{ subtitle }}</div>
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.1em;color:#8A7F70;margin-top:4px">{{ spineYear }}</div>
+      </div>
+      <div class="or-slot"><div class="or-slotk">STATUS · ONE CHIP, SAME PALETTE</div>
+        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+          <div style="font:600 11px Archivo,sans-serif;border:2px solid #17130F;border-radius:999px;padding:5px 10px;background: {{ statusBg }};color: {{ statusFg }}">{{ statusName }}</div>
+          <div style="font:500 8.5px 'DM Mono',monospace;letter-spacing:.08em;color:#8A7F70">{{ statusKind }}</div>
+        </div>
+      </div>
+      <div class="or-slot"><div class="or-slotk" style="white-space:nowrap">SIGNATURE · 0–2, BOUND FROM THE KIT</div>
+        <sc-if value="{{ sigNone }}" hint-placeholder-val="{{ false }}"><div style="font:500 8.5px 'DM Mono',monospace;letter-spacing:.1em;color:#8A7F70;padding:3px 0">— NONE DECLARED · SLOT COLLAPSES, NEVER MOVES</div></sc-if>
+        <sc-if value="{{ sigGauge }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;justify-content:space-between;font:500 8px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70"><div>MATURITY · GAUGE</div><div>ESTIMATE</div></div>
+          <div style="position:relative;margin:7px 0 5px">
+            <div style="height:14px;border:2px solid #17130F;border-radius:999px;overflow:hidden;display:flex"><div style="flex:0 0 28%;background:#EDE4D6"></div><div style="flex:0 0 20%;background:#B9F0C9"></div><div style="flex:0 0 26%;background:#0E6E5E"></div><div style="flex:1;background:#17130F"></div></div>
+            <div style="position:absolute;top:-5px;bottom:-5px;width:4px;background:#FF5B2E;border:1.5px solid #17130F;border-radius:2px;left: {{ sigNow }}"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font:500 8px 'DM Mono',monospace;letter-spacing:.08em;color:#6E6458"><div>2015</div><div>PEAK 2032–41</div><div>2050</div></div>
+        </sc-if>
+        <sc-if value="{{ sigCase }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;justify-content:space-between;font:500 8px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;margin-top:12px"><div>THE CASE · CONSUMABLE</div><div>4 OF 6 LEFT</div></div>
+          <div style="display:flex;gap:8px;margin-top:6px;align-items:flex-end">
+            <sc-for list="{{ sigBottles }}" as="b" hint-placeholder-count="6">
+              <div style="display:flex;flex-direction:column;align-items:center"><div style="width:5px;height:7px;border:2px solid #17130F;border-bottom:none;border-radius:2px 2px 0 0;background: {{ b.bg }}"></div><div style="width:13px;height:22px;border:2px solid #17130F;border-radius:3px 3px 5px 5px;background: {{ b.bg }}"></div></div>
+            </sc-for>
+          </div>
+        </sc-if>
+        <sc-if value="{{ sigLadder }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;justify-content:space-between;font:500 8px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70"><div>{{ sigLadderCap }}</div><div>{{ sigLadderLeg }}</div></div>
+          <div style="display:flex;gap:3px;margin-top:6px">
+            <sc-for list="{{ sigGrades }}" as="g" hint-placeholder-count="8">
+              <div style="flex:1;text-align:center"><div style="font:600 8px 'DM Mono',monospace;padding:4px 0;border:2px solid #17130F;border-radius:6px;background: {{ g.bg }};color: {{ g.fg }}">{{ g.n }}</div><div style="font:700 10px 'DM Mono',monospace;height:12px;margin-top:2px;color:#0E6E5E">{{ g.mark }}</div></div>
+            </sc-for>
+          </div>
+        </sc-if>
+        <sc-if value="{{ sigLeds }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;justify-content:space-between;font:500 8px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70"><div>POWER-ON PANEL · AUG 2026</div><div>FROM LOG</div></div>
+          <div style="display:flex;gap:6px;margin-top:6px">
+            <sc-for list="{{ sigLedItems }}" as="l" hint-placeholder-count="4">
+              <div style="flex:1;border:2px solid #17130F;border-radius:8px;padding:6px 4px;background:#17130F;display:flex;flex-direction:column;gap:4px;align-items:center"><div style="width:9px;height:9px;border-radius:999px;background: {{ l.bg }};box-shadow:0 0 6px {{ l.bg }}"></div><div style="font:500 7.5px 'DM Mono',monospace;letter-spacing:.08em;color:#F3ECE0">{{ l.n }}</div></div>
+            </sc-for>
+          </div>
+        </sc-if>
+        <sc-if value="{{ sigMap }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;justify-content:space-between;font:500 8px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;margin-top:12px"><div>SYSTEM MAP · COMPOSITE</div><div>1 + 2 PARTS</div></div>
+          <div style="display:flex;align-items:center;margin-top:6px">
+            <div style="flex:none;border:2px solid #17130F;border-radius:6px;padding:7px 9px;background:#C9B99A;font:700 9px 'DM Mono',monospace">A500</div>
+            <sc-for list="{{ sigParts }}" as="p" hint-placeholder-count="2">
+              <div style="display:flex;align-items:center"><div style="width:12px;border-top:2px dashed #17130F"></div><div style="border:2px solid #17130F;border-radius:6px;padding:7px 8px;background:#fff;font:600 9px 'DM Mono',monospace;white-space:nowrap">{{ p.n }}</div></div>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+      <div class="or-slot"><div class="or-slotk">FIELDS · KIND DECIDES THE CONTROL</div>
+        <sc-for list="{{ fields }}" as="f" hint-placeholder-count="4">
+          <div class="or-field"><div class="or-fk">{{ f.k }}</div><div class="or-fv">{{ f.v }}</div></div>
+        </sc-for>
+      </div>
+      <div class="or-slot"><div class="or-slotk">ACTIONS · APP VERBS + AT MOST ONE TYPE VERB</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <div style="font:600 11px Archivo,sans-serif;border:2px solid #17130F;border-radius:999px;padding:6px 10px;background:#17130F;color:#F3ECE0">Lend</div>
+          <div style="font:600 11px Archivo,sans-serif;border:2px solid #17130F;border-radius:999px;padding:6px 10px;background:#fff">Move</div>
+          <div style="font:600 11px Archivo,sans-serif;border:2px solid #17130F;border-radius:999px;padding:6px 10px;background:#fff">Edit</div>
+          <sc-if value="{{ hasTypeVerb }}" hint-placeholder-val="{{ true }}"><div style="font:600 11px Archivo,sans-serif;border:2px dashed #2B44D6;color:#2B44D6;border-radius:999px;padding:6px 10px;background:#fff">{{ typeVerb }}</div></sc-if>
+        </div>
+      </div>
+      <div class="or-slot" style="margin-bottom:0"><div class="or-slotk">HISTORY · APPEND-ONLY, SHARED EVENTS + TYPE EVENTS</div>
+        <sc-for list="{{ events }}" as="e" hint-placeholder-count="3">
+          <div class="or-ev"><div class="or-evd">{{ e.d }}</div><div>{{ e.t }}</div></div>
+        </sc-for>
+      </div>
+    </div>
+    <div class="or-legend">
+      <div class="or-lg"><div class="or-lgk">WHAT CHANGED</div><div class="or-lgv">{{ changed }}</div></div>
+      <div class="or-lg"><div class="or-lgk">WHAT COULDN'T</div><div class="or-lgv">The seven slots, their order, the three app verbs, the tab bar, the row shape in the list behind this screen, the review queue this object came through, the lending handshake it will go out on. None of these know which type they're showing.</div></div>
+      <div class="or-lg"><div class="or-lgk">THE TYPE VERB</div><div class="or-lgv">{{ verbNote }}</div></div>
+      <div class="or-lg"><div class="or-lgk">THE SIGNATURE</div><div class="or-lgv">{{ sigNote }}</div></div>
+      <div class="or-lg"><div class="or-lgk">THE STATUS CHIP</div><div class="or-lgv">Every derived state in the app — maturity, service risk, completeness, a plain grade — is drawn from the same five swatches with the same meaning: <strong>fine · good · watch · act · gone</strong>. A mixed shelf can therefore sort every type by "needs attention" without knowing what attention means for each.<div class="or-sw"><div class="or-swb" style="background:#EDE4D6">FINE</div><div class="or-swb" style="background:#B9F0C9">GOOD</div><div class="or-swb" style="background:#FFD24A">WATCH</div><div class="or-swb" style="background:#C2371F;color:#F3ECE0">ACT</div><div class="or-swb" style="background:#17130F;color:#F3ECE0">GONE</div></div></div></div>
+      <div class="or-lg"><div class="or-lgk">THE ESTIMATE LABEL</div><div class="or-lgv">Any state computed rather than typed carries the mono word <strong>ESTIMATE</strong> beside it, in every type. One word teaches the whole app's honesty policy once.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="or-sec">
+  <div class="or-lab">02 · The contract</div>
+  <div class="or-h2">What a type may declare,<br>and what it may not</div>
+  <p class="or-p">Today a type is a YAML manifest. Coherence is mostly a matter of what that manifest is <em>allowed</em> to contain. This is the proposed boundary — the left column is the entire vocabulary a type has; the right column is what it can never touch, no matter how good the reason.</p>
+  <div class="or-two">
+    <div class="or-col" style="background:#fff">
+      <div class="or-ck">A TYPE MAY DECLARE</div>
+      <div class="or-li"><div class="or-gl">+</div><div><strong>Spine labels</strong> — what title, subtitle and year are called (Album / Artist / Year; Wine / Producer / Vintage; Model / Manufacturer / Built).</div></div>
+      <div class="or-li"><div class="or-gl">+</div><div><strong>Fields, each with a kind</strong> from the shared kit — number, choice, scale, date, year, yearRange, text, list, log, quantity, composite. Fourteen fields maximum; nine or fewer optional.</div></div>
+      <div class="or-li"><div class="or-gl">+</div><div><strong>One condition scale</strong>, named and ordered, and optionally <strong>up to two further axes</strong> on that same scale (sleeve; cart · box · manual; disc · booklet · case). Three axes is the cap — past that it's a table, not a picture.</div></div>
+      <div class="or-li"><div class="or-gl">+</div><div><strong>Its bulk rule</strong>: individuals, rows, or quantity — and whether quantity is consumable.</div></div>
+      <div class="or-li"><div class="or-gl">+</div><div><strong>Type events</strong> that append to history (opened, serviced, regraded, played), added to the shared set — never replacing it.</div></div>
+      <div class="or-li"><div class="or-gl">+</div><div><strong>One derived status</strong>, mapped onto the five shared swatches, and <strong>one clock</strong> that may notify — opt-in, labelled estimate.</div></div>
+      <div class="or-li"><div class="or-gl">+</div><div><strong>One type verb</strong> — Open a bottle, Add part, Power-on test. Not two.</div></div>
+      <div class="or-li"><div class="or-gl">+</div><div><strong>Zero, one or two signatures</strong> — a renderer from the kit (ladder, set, gauge, panel, map, case) bound to one of its own fields. See 03 and 09.</div></div>
+      <div class="or-li"><div class="or-gl">+</div><div><strong>Lookup strategy</strong>: barcode symbologies, providers, local corpus, OCR fields, identifier patterns.</div></div>
+      <div class="or-li"><div class="or-gl">+</div><div><strong>Identity</strong>: one accent colour from the app's palette, one 3D silhouette, one noun for the object and one for the collection (bottle / cellar, record / crate, machine / bench).</div></div>
+    </div>
+    <div class="or-col" style="background:#17130F;color:#F3ECE0;box-shadow:4px 4px 0 #FF5B2E">
+      <div class="or-ck" style="color:#FFD24A">A TYPE MAY NEVER</div>
+      <div class="or-li"><div class="or-gl" style="color:#FF5B2E">—</div><div>Add a screen, a tab, a sheet, or a navigation route. If a type needs a screen, it isn't a type — it's a feature, and it's built once for everyone.</div></div>
+      <div class="or-li"><div class="or-gl" style="color:#FF5B2E">—</div><div>Reorder or hide the seven item slots, or change the list row's shape. It may leave a slot empty.</div></div>
+      <div class="or-li"><div class="or-gl" style="color:#FF5B2E">—</div><div>Draw its own signature. Renderers live in the kit; a type binds one, it never paints one. No custom view code, ever.</div></div>
+      <div class="or-li"><div class="or-gl" style="color:#FF5B2E">—</div><div>Rename an app verb. Lend is lend, even for a bottle nobody would lend. Confirm is confirm.</div></div>
+      <div class="or-li"><div class="or-gl" style="color:#FF5B2E">—</div><div>Introduce a colour, a font, an icon style, or a status meaning outside the shared five.</div></div>
+      <div class="or-li"><div class="or-gl" style="color:#FF5B2E">—</div><div>Invent a field kind. A new kind enters the kit only when a <em>second</em> type asks for it unprompted — the rule that gave us <code style="font-family:'DM Mono',monospace;font-size:12px">log</code> (wine asked, retro computers confirmed).</div></div>
+      <div class="or-li"><div class="or-gl" style="color:#FF5B2E">—</div><div>Send more than one kind of notification, or any by default.</div></div>
+      <div class="or-li"><div class="or-gl" style="color:#FF5B2E">—</div><div>Touch money, people, places or sharing. Those are app-level entities; a type can only reference them.</div></div>
+      <div class="or-li"><div class="or-gl" style="color:#FF5B2E">—</div><div>Collect personal data in a field (names, addresses, emails). Provenance names a previous owner as text, and stops there.</div></div>
+    </div>
+  </div>
+  <p class="or-note" style="margin-top:14px">The test for any proposed type, official or community: <strong>can it be written in the manifest with at most one new primitive and zero new screens?</strong> Wine passed with <code style="font-family:'DM Mono',monospace;font-size:12px">yearRange</code>. Retro computers passed with <code style="font-family:'DM Mono',monospace;font-size:12px">composite</code>. Anything that fails is either two types or a feature.</p>
+</div>
+
+<div class="or-sec">
+  <div class="or-lab">03 · Signatures</div>
+  <div class="or-h2">How a type gets a face<br>without getting a screen</div>
+  <p class="or-p">Slots and swatches keep the app coherent; they also risk making a cellar and a crate feel like the same spreadsheet. So a type may declare up to <strong>two signatures</strong>: a small, opinionated rendering of a field it already owns — the drinking window drawn as a gauge, bottles left drawn as bottles. Not a new control, not new data, not a screen. A noun, drawn bigger.</p>
+  <div class="or-big" style="background:#fff">
+    <div class="or-bigt">A signature <em>renders</em>; it never <em>collects</em>. Strip every signature from a type and it loses charm and nothing else — same fields, same CSV, same row, same clock.</div>
+  </div>
+  <div class="or-h3">Proposed for the launch types</div>
+  <div class="or-tbl">
+    <div class="or-tr or-th"><div class="or-t1">TYPE · SIGNATURE</div><div class="or-t">RENDERS</div><div class="or-t" style="flex:2 1 0">WHY IT EARNS THE SLOT</div></div>
+    <div class="or-tr"><div class="or-t1">Wine · Maturity gauge</div><div class="or-t">yearRange + vintage → <strong>gauge</strong></div><div class="or-t" style="flex:2 1 0">The window is why the type exists. Young / drinking / peak / past as one band with a "now" marker — the chip says <em>drink it</em>, the gauge says <em>how long you've got</em>.</div></div>
+    <div class="or-tr"><div class="or-t1">Wine · The case</div><div class="or-t">consumable quantity → <strong>case</strong></div><div class="or-t" style="flex:2 1 0">Bottles left, as bottles. Turns "Open a bottle" from a decrement into a small, visible loss — the emotional core of cellaring.</div></div>
+    <div class="or-tr"><div class="or-t1">Vinyl · Grade ladder</div><div class="or-t">scale × 2 → <strong>ladder</strong></div><div class="or-t" style="flex:2 1 0">Media and sleeve on one Goldmine ladder. Two grades read as one object, the way a collector actually says "VG+ / VG".</div></div>
+    <div class="or-tr"><div class="or-t1">Retro computer · Power-on panel</div><div class="or-t">log (kind: test) → <strong>panel</strong></div><div class="or-t" style="flex:2 1 0">The last power-on test as four LEDs: power · video · floppy · keys. Working state in the hobby's own idiom; refreshes each time a test is logged.</div></div>
+    <div class="or-tr"><div class="or-t1">Retro computer · System map</div><div class="or-t">composite → <strong>map</strong></div><div class="or-t" style="flex:2 1 0">The machine and what hangs off it. Says "+2 parts" as a shape, and makes Add part feel like plugging something in.</div></div>
+    <div class="or-tr"><div class="or-t1">Retro game · CIB ladder</div><div class="or-t">scale × 3 → <strong>ladder</strong></div><div class="or-t" style="flex:2 1 0">Cart, box and manual as three markers on one condition ladder whose last step is <em>Missing</em>. One picture answers both questions a game collector asks — how complete, and how nice — and it's the same renderer vinyl uses. See 09.</div></div>
+    <div class="or-tr"><div class="or-t1">Thing · none</div><div class="or-t">—</div><div class="or-t" style="flex:2 1 0">By design. The collapsed signature slot is the quiet nudge toward proposing a real type.</div></div>
+  </div>
+  <div class="or-h3">Five rules for signatures</div>
+  <div class="or-rules">
+    <div class="or-rule"><div class="or-rn">1</div><div><div class="or-rt">Bound to a field, never to new data</div><div class="or-rv">A signature reads one field (or two of the same kind) the type already declares. Tapping it opens that field's ordinary control. It has no side effect — that's the type verb's job — and never notifies — that's the clock's.</div></div></div>
+    <div class="or-rule"><div class="or-rn">2</div><div><div class="or-rt">Renderers live in the kit, like kinds</div><div class="or-rv">Launch kit: ladder, set, gauge, panel, map, case — six renderers, each built once, and each reading its steps and labels out of the type's own YAML (see 09). A type binds one; a community type may only bind. A new renderer enters the kit under the second-customer rule, with the same one-exception clause.</div></div></div>
+    <div class="or-rule"><div class="or-rn">3</div><div><div class="or-rt">One slot, one place, one height budget</div><div class="or-rv">Between status and fields — verdict, then evidence, then detail. At most two, each ≤ 64pt tall. When none is declared the slot collapses; it never moves.</div></div></div>
+    <div class="or-rule"><div class="or-rn">4</div><div><div class="or-rt">Same ink, plus the accent</div><div class="or-rv">The signature is part of the object, so the type accent is allowed here — rule 1 of coexistence grows from three places to four. The five swatches keep their meaning inside it; anything derived carries ESTIMATE.</div></div></div>
+    <div class="or-rule"><div class="or-rn">5</div><div><div class="or-rt">Invisible everywhere but the item screen</div><div class="or-rv">List row, CSV, share card, widget, notification: none of them see a signature. It's the one place a type is allowed to show off, and the app keeps it there.</div></div></div>
+  </div>
+</div>
+
+<div class="or-sec">
+  <div class="or-lab">04 · Seven rules of coexistence</div>
+  <div class="or-h2">How the hobbies share<br>the rest of the app</div>
+  <div class="or-rules">
+    <div class="or-rule"><div class="or-rn">1</div><div><div class="or-rt">Identity lives in the object, never in the chrome</div><div class="or-rv">A cellar looks like a cellar because the shelf shows racks of bottles, not because the navigation turned burgundy. Type accent appears in exactly four places: the collection's 3D object, the type chip, the empty state, and the signature. Everything else is ink on paper.</div></div></div>
+    <div class="or-rule"><div class="or-rn">2</div><div><div class="or-rt">One row shape from a stamp to a Porsche</div><div class="or-rv">44px thumb, two or three spine lines, one status chip, one trailing fact. A quantity type shows ×N in the chip; a composite shows +3 parts in the trailing fact; a consumable shows what's left. The row never grows a second line of chips.</div></div></div>
+    <div class="or-rule"><div class="or-rn">3</div><div><div class="or-rt">Six fields every object has, whatever its type</div><div class="or-rv">Title, acquired, paid, condition, location, notes. They're what a mixed collection sorts and searches on, what the CSV always contains, and what the generic Thing type is made of. Every type is these six plus its own.</div></div></div>
+    <div class="or-rule"><div class="or-rn">4</div><div><div class="or-rt">Stats group by type and never average across them</div><div class="or-rv">The shelf header counts objects. A mixed collection's stats screen is a stack of per-type cards. The one cross-type number allowed is "needs attention", because the five-swatch status makes it honest.</div></div></div>
+    <div class="or-rule"><div class="or-rn">5</div><div><div class="or-rt">The add flow is the same four steps for everything</div><div class="or-rv">Capture → propose → confirm → fill. What happens inside "propose" is the type's lookup strategy (Discogs for vinyl, OCR for a wine label, a local corpus for a Commodore), but the user sees the same viewfinder, the same match card, the same review queue.</div></div></div>
+    <div class="or-rule"><div class="or-rn">6</div><div><div class="or-rt">Type vocabulary in the fields, app vocabulary everywhere else</div><div class="or-rv">Inside a wine object the words are vintage, producer, appellation, fill level. Around it — buttons, tabs, empty states, notifications — the words are add, lend, confirm, shelf, object. A user who learns the app on records already knows how to use it on bottles.</div></div></div>
+    <div class="or-rule"><div class="or-rn">7</div><div><div class="or-rt">One clock per type, and all clocks tell the same time</div><div class="or-rv">Wine's maturity, the machine's service risk, a card's grading-due, a watch's service interval: each type may have one. They all render as the status chip, all carry ESTIMATE, all opt-in, all feed one "needs attention" shelf. The app has one idea of urgency, not sixteen.</div></div></div>
+  </div>
+</div>
+
+<div class="or-sec">
+  <div class="or-lab">05 · The shared kit, as it stands</div>
+  <div class="or-h2">Eleven kinds, six shared<br>fields, five swatches</div>
+  <div class="or-tbl">
+    <div class="or-tr or-th"><div class="or-t1">KIND</div><div class="or-t">CONTROL IT GETS</div><div class="or-t">FIRST ASKED BY</div><div class="or-t">ALSO USED BY</div></div>
+    <div class="or-tr"><div class="or-t1">number · choice · text</div><div class="or-t">Stepper · chips · field</div><div class="or-t">Everyone</div><div class="or-t">Everyone</div></div>
+    <div class="or-tr"><div class="or-t1">scale</div><div class="or-t">The hobby's ordered grading picker</div><div class="or-t">Vinyl (Goldmine)</div><div class="or-t">Comics, coins, cards, computers (cosmetic)</div></div>
+    <div class="or-tr"><div class="or-t1">date · year</div><div class="or-t">Picker; year allows NV / circa</div><div class="or-t">Vinyl</div><div class="or-t">Wine (vintage is identity), computers (built week)</div></div>
+    <div class="or-tr"><div class="or-t1">yearRange</div><div class="or-t">Two-handle range with a "now" marker</div><div class="or-t">Wine (drinking window)</div><div class="or-t"><em>Pending a second customer</em> — whisky, cigars, film stock would qualify</div></div>
+    <div class="or-tr"><div class="or-t1">log</div><div class="or-t">Dated, append-only entries with a kind</div><div class="or-t">Wine (opened bottles)</div><div class="or-t">Retro computers (service log) — the rule proven</div></div>
+    <div class="or-tr"><div class="or-t1">quantity</div><div class="or-t">×N with per-copy promotion; consumable flag</div><div class="or-t">Coins, stamps, cards</div><div class="or-t">Wine (consumable)</div></div>
+    <div class="or-tr"><div class="or-t1">composite</div><div class="or-t">Add part / detach; system total, one level deep</div><div class="or-t">Retro computers</div><div class="or-t">Cameras, synths, cars, board-game expansions — waiting</div></div>
+    <div class="or-tr"><div class="or-t1">list</div><div class="or-t">Small repeated tuples (mods, straps, inserts)</div><div class="or-t">Retro computers</div><div class="or-t">Watches, board games</div></div>
+  </div>
+  <p class="or-note" style="margin-top:12px">Every kind is one control, built once, tested once, exported once. When a proposal asks for something not on this table, the answer is "which existing kind is closest?" first, and "which second type would need it?" second.</p>
+</div>
+
+<div class="or-sec">
+  <div class="or-lab">06 · Community types under the same roof</div>
+  <div class="or-h2">The checklist a proposal<br>must pass</div>
+  <p class="or-p">The proposal system is where coherence is most at risk — sixteen careful types can be undone by two hundred careless ones. The AI pass checks the mechanics; the human pass checks the taste. Both use this list, and it's shown to the proposer before they start.</p>
+  <div class="or-cards">
+    <div class="or-card"><div class="or-ck">MECHANICS · AI PASS</div><div class="or-cv"><div class="or-li"><div class="or-gl">1</div><div>Has a spine: two or three fields that identify the object in a row.</div></div><div class="or-li"><div class="or-gl">2</div><div>≤14 fields, every one with a kind from the kit, ≤5 required.</div></div><div class="or-li"><div class="or-gl">3</div><div>Declares a bulk rule and a condition scale — or says "none" explicitly.</div></div><div class="or-li"><div class="or-gl">4</div><div>No personal-data fields. No field that duplicates one of the six shared.</div></div><div class="or-li"><div class="or-gl">5</div><div>Not a near-duplicate of an existing type (≥60% field overlap → suggest borrowing instead).</div></div></div></div>
+    <div class="or-card"><div class="or-ck">TASTE · HUMAN PASS</div><div class="or-cv"><div class="or-li"><div class="or-gl">6</div><div>Is it a <em>collected</em> thing, or a merchant's stock category? ("Enamel pins" yes; "phone lot" no.)</div></div><div class="or-li"><div class="or-gl">7</div><div>Do the field names use the hobby's own words, spelled the way its community spells them?</div></div><div class="or-li"><div class="or-gl">8</div><div>Would a stamp collector recognise the row? (It fits the shape without a second chip line.)</div></div><div class="or-li"><div class="or-gl">9</div><div>Does it ask for a new kind? If so, name the second type that would use it — or it ships with the nearest existing kind.</div></div><div class="or-li"><div class="or-gl">10</div><div>Is the type verb, if any, genuinely singular to the hobby?</div></div></div></div>
+    <div class="or-card" style="background:#FFD24A"><div class="or-ck">WHEN IT'S PROMOTED</div><div class="or-cv">It gets what official types get and nothing more: an accent from the palette, a silhouette we draw, a noun pair, one clock if it earned one. The proposer's objects migrate with every value intact, and their name goes in the release note. Types are scoped per storefront so a Brazilian merchant category never surfaces in a French collector's list.</div></div>
+  </div>
+</div>
+
+<div class="or-sec">
+  <div class="or-lab">07 · Where I'd want pushback</div>
+  <div class="or-h2">Four places the rules<br>might be too tight</div>
+  <div class="or-q"><div class="or-qk">Q1 · ONE TYPE VERB</div><div class="or-qt">Is a single type action enough for wine and computers?</div><div class="or-qv">Wine wants "Open a bottle"; a computer wants "Add part" <em>and</em> "Log a service". The rule says one. <strong>My answer:</strong> hold the line — "Log a service" is just adding a history event, which every object can already do; only Add part is a genuinely new action. The rule forces that distinction, which is the point.</div></div>
+  <div class="or-q"><div class="or-qk">Q2 · IDENTITY IN THREE PLACES</div><div class="or-qt">Will a cellar feel like a cellar with this little colour?</div><div class="or-qv">The wine community is used to burgundy everything. Paper-and-ink with a rack of rendered bottles is a bet that the object carries the atmosphere. <strong>My answer:</strong> yes, because the alternative — themed chrome per type — is exactly how sixteen apps happen. Test it with wine people first; they're the most likely to miss the colour.</div></div>
+  <div class="or-q"><div class="or-qk">Q3 · THE SECOND-CUSTOMER RULE</div><div class="or-qt">Does waiting for a second type slow a good first one?</div><div class="or-qv">yearRange shipped for wine alone because the drinking window <em>is</em> the type. <strong>My answer:</strong> allow one exception per type when the primitive is the reason the type exists, and log it. Rules that admit their exception get followed; rules that don't get ignored.</div></div>
+  <div class="or-q"><div class="or-qk">Q4 · TWO SIGNATURES</div><div class="or-qt">Do signatures reopen the door to sixteen apps?</div><div class="or-qv">They're the first thing on this page that lets a type look different on purpose. <strong>My answer:</strong> the budget is in the kit, not the type. Six renderers at launch, all reading existing kinds, all confined to one slot. If the renderer count ever passes ten, that's the signal it's gone wrong — not the number of types using them.</div></div>
+</div>
+
+<div class="or-sec" style="border-bottom:none">
+  <div class="or-lab">08 · Explored and declined</div>
+  <div class="or-h2">Should the slot order<br>change per type?</div>
+  <p class="or-p">Worth asking, because the premise is sound: the most important fact about an object is not in the same place for every hobby. A bottle's window matters more than its label condition; a machine's working state matters more than its cosmetics. If the order were type-owned, each hobby could lead with its own truth. Three candidates, then the reason I'd still keep the order fixed.</p>
+
+  <div class="or-two" style="max-width:1000px">
+    <div class="or-col" style="background:#fff;flex:1 1 300px;min-width:290px">
+      <div class="or-ck">A · FIXED ORDER · AS BUILT</div>
+      <div style="display:flex;flex-direction:column;gap:5px;margin:10px 0 12px">
+        <div style="border:2px solid #17130F;border-radius:8px;padding:7px 9px;font:600 10.5px 'DM Mono',monospace;letter-spacing:.06em;background:#EDE4D6">1 · HERO</div>
+        <div style="border:2px solid #17130F;border-radius:8px;padding:7px 9px;font:600 10.5px 'DM Mono',monospace;letter-spacing:.06em;background:#EDE4D6">2 · SPINE</div>
+        <div style="border:2px solid #17130F;border-radius:8px;padding:7px 9px;font:600 10.5px 'DM Mono',monospace;letter-spacing:.06em;background:#EDE4D6">3 · STATUS</div>
+        <div style="border:2px solid #17130F;border-radius:8px;padding:7px 9px;font:600 10.5px 'DM Mono',monospace;letter-spacing:.06em;background:#EDE4D6">4 · SIGNATURE</div>
+        <div style="border:2px solid #17130F;border-radius:8px;padding:7px 9px;font:600 10.5px 'DM Mono',monospace;letter-spacing:.06em;background:#EDE4D6">5 · FIELDS</div>
+        <div style="border:2px solid #17130F;border-radius:8px;padding:7px 9px;font:600 10.5px 'DM Mono',monospace;letter-spacing:.06em;background:#EDE4D6">6 · ACTIONS</div>
+        <div style="border:2px solid #17130F;border-radius:8px;padding:7px 9px;font:600 10.5px 'DM Mono',monospace;letter-spacing:.06em;background:#EDE4D6">7 · HISTORY</div>
+      </div>
+      <div class="or-cv">Identical for all sixteen types. Reads as a sentence: <em>what it is → what it's called → how it is → the proof → the detail → what you can do → what happened.</em> A wine person who sorts records for an afternoon never re-learns a screen.</div>
+    </div>
+
+    <div class="or-col" style="background:#fff;flex:1 1 300px;min-width:290px;box-shadow:4px 4px 0 #C2371F">
+      <div class="or-ck">B · TYPE-OWNED ORDER</div>
+      <div style="display:flex;gap:8px;margin:10px 0 12px">
+        <div style="flex:1;display:flex;flex-direction:column;gap:5px">
+          <div style="font:500 8px 'DM Mono',monospace;letter-spacing:.12em;color:#6E2440">WINE</div>
+          <div style="border:2px solid #17130F;border-radius:8px;padding:6px 7px;font:600 9px 'DM Mono',monospace;background:#EDE4D6">HERO</div>
+          <div style="border:2px solid #17130F;border-radius:8px;padding:6px 7px;font:600 9px 'DM Mono',monospace;background:#EDE4D6">SPINE</div>
+          <div style="border:2.5px solid #6E2440;border-radius:8px;padding:6px 7px;font:600 9px 'DM Mono',monospace;background:#fff;color:#6E2440">SIGNATURE ↑</div>
+          <div style="border:2.5px solid #6E2440;border-radius:8px;padding:6px 7px;font:600 9px 'DM Mono',monospace;background:#fff;color:#6E2440">STATUS ↓</div>
+          <div style="border:2.5px solid #6E2440;border-radius:8px;padding:6px 7px;font:600 9px 'DM Mono',monospace;background:#fff;color:#6E2440">ACTIONS ↑</div>
+          <div style="border:2px solid #17130F;border-radius:8px;padding:6px 7px;font:600 9px 'DM Mono',monospace;background:#EDE4D6">FIELDS</div>
+          <div style="border:2px solid #17130F;border-radius:8px;padding:6px 7px;font:600 9px 'DM Mono',monospace;background:#EDE4D6">HISTORY</div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:5px">
+          <div style="font:500 8px 'DM Mono',monospace;letter-spacing:.12em;color:#7A6A50">MACHINE</div>
+          <div style="border:2.5px solid #7A6A50;border-radius:8px;padding:6px 7px;font:600 9px 'DM Mono',monospace;background:#fff;color:#7A6A50">SPINE ↑</div>
+          <div style="border:2px solid #17130F;border-radius:8px;padding:6px 7px;font:600 9px 'DM Mono',monospace;background:#EDE4D6">STATUS</div>
+          <div style="border:2.5px solid #7A6A50;border-radius:8px;padding:6px 7px;font:600 9px 'DM Mono',monospace;background:#fff;color:#7A6A50">SIGNATURE ↑</div>
+          <div style="border:2.5px solid #7A6A50;border-radius:8px;padding:6px 7px;font:600 9px 'DM Mono',monospace;background:#fff;color:#7A6A50">HISTORY ↑</div>
+          <div style="border:2px solid #17130F;border-radius:8px;padding:6px 7px;font:600 9px 'DM Mono',monospace;background:#EDE4D6">FIELDS</div>
+          <div style="border:2px solid #17130F;border-radius:8px;padding:6px 7px;font:600 9px 'DM Mono',monospace;background:#EDE4D6">ACTIONS</div>
+          <div style="border:2.5px solid #7A6A50;border-radius:8px;padding:6px 7px;font:600 9px 'DM Mono',monospace;background:#fff;color:#7A6A50">HERO ↓</div>
+        </div>
+      </div>
+      <div class="or-cv">Every type orders its own seven. Defensible per type — the wine screen genuinely reads better with the gauge above the verdict, and a machine's photo is the least useful thing on its screen.</div>
+    </div>
+
+    <div class="or-col" style="background:#FFD24A;flex:1 1 300px;min-width:290px">
+      <div class="or-ck">C · FIXED ORDER, TYPE-OWNED EMPHASIS</div>
+      <div style="display:flex;flex-direction:column;gap:5px;margin:10px 0 12px">
+        <div style="border:2px solid #17130F;border-radius:8px;padding:5px 9px;font:600 9.5px 'DM Mono',monospace;background:rgba(255,255,255,.55)">HERO — <span style="opacity:.62">height: tall | short | none</span></div>
+        <div style="border:2px solid #17130F;border-radius:8px;padding:5px 9px;font:600 9.5px 'DM Mono',monospace;background:rgba(255,255,255,.55)">SPINE — <span style="opacity:.62">2 or 3 lines</span></div>
+        <div style="border:2px solid #17130F;border-radius:8px;padding:5px 9px;font:600 9.5px 'DM Mono',monospace;background:rgba(255,255,255,.55)">STATUS — <span style="opacity:.62">fixed</span></div>
+        <div style="border:2px solid #17130F;border-radius:8px;padding:5px 9px;font:600 9.5px 'DM Mono',monospace;background:#fff">SIGNATURE — <span style="opacity:.62">compact | tall</span></div>
+        <div style="border:2px solid #17130F;border-radius:8px;padding:5px 9px;font:600 9.5px 'DM Mono',monospace;background:#fff">FIELDS — <span style="opacity:.62">which 3 show first</span></div>
+        <div style="border:2px solid #17130F;border-radius:8px;padding:5px 9px;font:600 9.5px 'DM Mono',monospace;background:rgba(255,255,255,.55)">ACTIONS — <span style="opacity:.62">fixed</span></div>
+        <div style="border:2px solid #17130F;border-radius:8px;padding:5px 9px;font:600 9.5px 'DM Mono',monospace;background:#fff">HISTORY — <span style="opacity:.62">collapsed | open</span></div>
+      </div>
+      <div class="or-cv"><strong>What I'd do.</strong> Four dials, no reordering. Wine sets signature <em>tall</em> — the gauge takes the space a photo would, and outweighs the chip by size instead of by position. The machine sets hero <em>short</em> and history <em>open</em>. Same sentence, different stresses.</div>
+    </div>
+  </div>
+
+  <div class="or-h3">Why B loses, precisely</div>
+  <p class="or-p">Not because it's wrong per type — it's right per type. It's wrong per <em>user</em>, and the asymmetry is the whole argument: <strong>the benefit of a better order is collected once, when you learn a type. The cost of a shifting order is paid on every screen, forever.</strong> A mixed collector flicks between a bottle and a record twenty times an evening; each flick becomes a re-read. And the app's own pitch — one place for everything — is the pitch most damaged by it.</p>
+  <div class="or-two" style="max-width:1000px">
+    <div class="or-col" style="background:#fff">
+      <div class="or-ck">WHAT B WOULD ACTUALLY BUY</div>
+      <div class="or-li"><div class="or-gl">+</div><div>One scroll saved on dense types, for the fact that type cares most about.</div></div>
+      <div class="or-li"><div class="or-gl">+</div><div>Wine's gauge above the verdict, which does read better in isolation.</div></div>
+      <div class="or-li"><div class="or-gl">+</div><div>Machines lose a hero photo that's genuinely the least informative thing on the screen.</div></div>
+      <div class="or-note" style="margin:10px 0 0;font-size:12.5px">All three are height and emphasis problems wearing an ordering costume — which is what C fixes.</div>
+    </div>
+    <div class="or-col" style="background:#17130F;color:#F3ECE0;box-shadow:4px 4px 0 #C2371F">
+      <div class="or-ck" style="color:#FFD24A">WHAT IT WOULD COST</div>
+      <div class="or-li"><div class="or-gl" style="color:#FF5B2E">—</div><div>Muscle memory, the app's single biggest asset for a sixteen-type product.</div></div>
+      <div class="or-li"><div class="or-gl" style="color:#FF5B2E">—</div><div>The reading grammar. The order isn't decoration; it's <em>identify → judge → verify → act</em>. Reordering breaks the argument, not the layout.</div></div>
+      <div class="or-li"><div class="or-gl" style="color:#FF5B2E">—</div><div>Moderation. Two hundred community proposals each with their own order is unreviewable — and "order" is the field every proposer will fight over.</div></div>
+      <div class="or-li"><div class="or-gl" style="color:#FF5B2E">—</div><div>Everything downstream: share cards, the widget, PDF export, screenshots, docs, and every "where do I find…" answer becomes per-type.</div></div>
+      <div class="or-li"><div class="or-gl" style="color:#FF5B2E">—</div><div>Migration. Change type and the screen rearranges under the same object — the one moment a user most needs it not to.</div></div>
+    </div>
+  </div>
+
+  <div class="or-big" style="background:#fff;margin-top:20px">
+    <div class="or-bigt">Verdict: <span style="background:#17130F;color:#F3ECE0;padding:0 6px;border-radius:6px">order stays fixed; emphasis becomes type-owned.</span> A type may make a slot taller, shorter, or open — never earlier or later. If one exception ever earns itself it's swapping STATUS and SIGNATURE, which are the same question asked twice; that's one bit, not a free permutation, and I'd still want a type to prove it needs it.</div>
+  </div>
+  <p class="or-note">Cheap way to be sure: ship A, log how often people hunt (time-to-first-scroll on the item screen, per type). If machines and bottles scroll measurably more than records, that's an argument for C's dials — it is never an argument for B.</p>
+</div>
+
+<div class="or-sec" style="border-bottom:none">
+  <div class="or-lab">09 · The ladder, generalised</div>
+  <div class="or-h2">One renderer, every<br>hobby's own scale</div>
+  <p class="or-p">You were right that the vinyl ladder is the reusable one — and it's more reusable than it first looked. Almost every collectible has an ordered notion of condition; what differs is only the <strong>steps</strong>, the <strong>number of axes</strong>, and whether the bottom of the scale means <em>ruined</em> or <em>absent</em>. All three are already in the YAML. So the ladder takes nothing new:</p>
+  <div class="or-big" style="background:#FFD24A">
+    <div class="or-bigt"><span style="background:#17130F;color:#F3ECE0;padding:0 6px;border-radius:6px">ladder(scale: conditions, axes: [fields], allowMissing: bool)</span> — steps come from the type's own <code style="font-family:'DM Mono',monospace;font-size:20px">conditions:</code> list, best first. Two steps or seventy. One marker per axis. Built once.</div>
+  </div>
+  <div class="or-two" style="max-width:1000px">
+    <div class="or-col" style="background:#fff">
+      <div class="or-ck">WHAT THE YAML ALREADY GIVES IT</div>
+      <div class="or-li"><div class="or-gl">+</div><div><strong>The steps.</strong> Goldmine's eight, the conservator's five, Sheldon's seventy, sealed-to-project's six. Declared once, used by the picker, the row, the CSV <em>and</em> the ladder.</div></div>
+      <div class="or-li"><div class="or-gl">+</div><div><strong>The axes.</strong> Any field of kind <code style="font-family:'DM Mono',monospace;font-size:12px">scale</code> becomes a marker: ● first, ◐ second, ○ third. Three is the cap — past that it's a table, not a picture.</div></div>
+      <div class="or-li"><div class="or-gl">+</div><div><strong>Missing.</strong> <code style="font-family:'DM Mono',monospace;font-size:12px">allowMissing: true</code> appends a final step. That one flag is what lets completeness and condition share a renderer — and it's the answer to the retro-game question below.</div></div>
+      <div class="or-li"><div class="or-gl">+</div><div><strong>Numeric scales.</strong> A 1–70 or 0.1–10.0 scale buckets into seven visible steps with the exact number printed above the marker. Coins and comics get their grade, not an approximation of it.</div></div>
+    </div>
+    <div class="or-col" style="background:#17130F;color:#F3ECE0;box-shadow:4px 4px 0 #0E6E5E">
+      <div class="or-ck" style="color:#FFD24A">AND THE TRIPTYCH DIES</div>
+      <div class="or-li"><div class="or-gl" style="color:#B9F0C9">→</div><div>You said you didn't get the retro-game signature, and the reason is that it wasn't one — three tiles showing cart, box and manual was a table pretending to be a picture.</div></div>
+      <div class="or-li"><div class="or-gl" style="color:#B9F0C9">→</div><div>It's a three-axis ladder whose last step is <em>Missing</em>: ● cart at NM, ◐ box at VG+, ○ manual at VG. Now it reads like the vinyl one, because it <em>is</em> the vinyl one.</div></div>
+      <div class="or-li"><div class="or-gl" style="color:#B9F0C9">→</div><div>The kit stays at six renderers but every one of them now has several customers. That's a better six. Switch to Retro game in section 01 to see it.</div></div>
+    </div>
+  </div>
+
+  <div class="or-h3">Proposals for the fifteen you listed</div>
+  <p class="or-note">Two maximum, both bound to fields the type already declares, both from the kit. Where a type only earns one, it gets one — an empty second slot is not a gap.</p>
+  <div class="or-tbl">
+    <div class="or-tr or-th"><div class="or-t1">TYPE</div><div class="or-t">SIGNATURE 1</div><div class="or-t">SIGNATURE 2</div></div>
+    <div class="or-tr"><div class="or-t1">Action figures</div><div class="or-t"><strong>ladder</strong> · figure ● and card ○ on one scale ending in <em>Loose</em> — MOC collectors grade both and trade on the gap between them</div><div class="or-t"><strong>set</strong> · the wave: 4 of 6 filled, the two you lack greyed</div></div>
+    <div class="or-tr"><div class="or-t1">Artwork</div><div class="or-t"><strong>gauge</strong> · cumulative light exposure against the medium's tolerance, ESTIMATE — the one clock art actually needs</div><div class="or-t"><strong>ladder</strong> · the conservator's five steps, stability not desirability</div></div>
+    <div class="or-tr"><div class="or-t1">Board games</div><div class="or-t"><strong>ladder</strong> · box ● and components ○, last step <em>Incomplete</em> — the only two facts that decide whether it can be played or sold</div><div class="or-t"><strong>set</strong> · base plus expansions of the line</div></div>
+    <div class="or-tr"><div class="or-t1">Books</div><div class="or-t"><strong>ladder</strong> · book ● and dust jacket ○ — the exact vinyl pattern, and the second unprompted customer that proves the two-axis rule</div><div class="or-t"><strong>set</strong> · volume 3 of 7 in the series</div></div>
+    <div class="or-tr"><div class="or-t1">Cars</div><div class="or-t"><strong>gauge</strong> · mileage toward the next service interval, ESTIMATE</div><div class="or-t"><strong>panel</strong> · four lights — MOT, tax, insurance, service — from date fields, not a log</div></div>
+    <div class="or-tr"><div class="or-t1">Cassettes</div><div class="or-t"><strong>ladder</strong> · shell ● and inlay ○, last step <em>No case</em></div><div class="or-t"><em>Candidate only</em> — a tape-stock degradation gauge. Real for some formulations, folklore for others; needs evidence before it earns a clock</div></div>
+    <div class="or-tr"><div class="or-t1">Coins</div><div class="or-t"><strong>ladder</strong> · Sheldon 1–70 bucketed to seven steps, the exact grade printed above the marker · the stress test for numeric scales</div><div class="or-t"><strong>set</strong> · the date run, mintmark by mintmark</div></div>
+    <div class="or-tr"><div class="or-t1">Comics</div><div class="or-t"><strong>ladder</strong> · CGC 0.1–10.0, with a slab outline on the marker when graded</div><div class="or-t"><strong>set</strong> · the run — #1 to #50, holes visible</div></div>
+    <div class="or-tr"><div class="or-t1">Compact discs</div><div class="or-t"><strong>ladder</strong> · disc ●, booklet ◐, case ○ — three axes, same as the retro game</div><div class="or-t"><strong>set</strong> · box set or discography completion</div></div>
+    <div class="or-tr"><div class="or-t1">Lego</div><div class="or-t"><strong>set</strong> · 1,204 of 1,210 parts against the official inventory, minifigs counted separately — the anxiety this hobby actually has</div><div class="or-t"><strong>ladder</strong> · sealed → built → complete loose → incomplete</div></div>
+    <div class="or-tr"><div class="or-t1">Motorcycles</div><div class="or-t"><strong>gauge</strong> · mileage to service, ESTIMATE</div><div class="or-t"><strong>panel</strong> · the same four legal lights as cars</div></div>
+    <div class="or-tr"><div class="or-t1">Sneakers</div><div class="or-t"><strong>ladder</strong> · DS → VNDS → used, the community's own words</div><div class="or-t"><strong>gauge</strong> · midsole age against crumble risk, ESTIMATE — a genuine clock, and the reason to wear them before they're worthless</div></div>
+    <div class="or-tr"><div class="or-t1">Stamps</div><div class="or-t"><strong>ladder</strong> · condition ● and gum ○ (MNH → hinged → no gum), last step <em>Faulty</em></div><div class="or-t"><strong>set</strong> · the issue, filled or not</div></div>
+    <div class="or-tr"><div class="or-t1">Trading cards</div><div class="or-t"><strong>ladder</strong> · raw grade, or PSA/BGS 1–10 with the slab outline</div><div class="or-t"><strong>set</strong> · base, insert and parallel completion</div></div>
+    <div class="or-tr"><div class="or-t1">Watches</div><div class="or-t"><strong>gauge</strong> · years since service against the caliber's interval, ESTIMATE</div><div class="or-t"><strong>set</strong> · full set — watch, box, papers, links, tag — five slots, and the one that moves the price most</div></div>
+  </div>
+
+  <div class="or-h3">Which means the kit changes shape</div>
+  <p class="or-p">One renderer leaves and one arrives. <strong>Triptych</strong> is gone — it was a one-customer renderer doing the ladder's job. <strong>Set</strong> arrives with eleven customers on day one, which is more than any renderer in the kit except the ladder: it renders "which of the N you have" from a series field, and it is the single most requested thing in every set-collecting hobby.</p>
+  <div class="or-tbl">
+    <div class="or-tr or-th"><div class="or-t1">RENDERER</div><div class="or-t">READS</div><div class="or-t">CUSTOMERS</div><div class="or-t">STANDING</div></div>
+    <div class="or-tr"><div class="or-t1">ladder</div><div class="or-t">scale × 1–3, allowMissing</div><div class="or-t">14 types</div><div class="or-t">The backbone. Build first.</div></div>
+    <div class="or-tr"><div class="or-t1">set</div><div class="or-t">series + setSize, or a fixed slot list</div><div class="or-t">11 types</div><div class="or-t">New. Earns itself on arrival.</div></div>
+    <div class="or-tr"><div class="or-t1">gauge</div><div class="or-t">yearRange, or a number against an interval</div><div class="or-t">7 types</div><div class="or-t">Already proven by wine.</div></div>
+    <div class="or-tr"><div class="or-t1">panel</div><div class="or-t">2–4 states, from a log or from dates</div><div class="or-t">3 types</div><div class="or-t">Generalised from the log to dates by cars.</div></div>
+    <div class="or-tr"><div class="or-t1">map</div><div class="or-t">composite</div><div class="or-t">1–2 types</div><div class="or-t">On the exception clause, like <code style="font-family:'DM Mono',monospace;font-size:12px">yearRange</code> was.</div></div>
+    <div class="or-tr"><div class="or-t1">case</div><div class="or-t">consumable quantity</div><div class="or-t">1 type</div><div class="or-t">Exception: consumption is why wine exists.</div></div>
+    <div class="or-tr"><div class="or-t1"><s>triptych</s></div><div class="or-t">—</div><div class="or-t">0</div><div class="or-t">Withdrawn. Absorbed by the ladder.</div></div>
+  </div>
+  <p class="or-note" style="margin-top:12px">Six renderers still cover twenty types, and the two on the exception clause are the two I'd cut first if the count ever crept toward ten. Section 03's rule 2 stands: a type binds, it never paints.</p>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;type&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Vinyl&quot;,&quot;Wine&quot;,&quot;Retro computer&quot;,&quot;Retro game&quot;,&quot;Enamel pin (Thing)&quot;],&quot;default&quot;:&quot;Wine&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Demonstration&quot;}}">
+class Component extends DCLogic {
+  state = { pick: null };
+  renderVals() {
+    const types = {
+      'Vinyl': {
+        heroBg: 'linear-gradient(150deg,#0E6E5E,#17130F)', heroLabel: 'SLEEVE · 6 FACES · ±34°',
+        title: 'Moon Safari', subtitle: 'Air', spineYear: '1998 · FRENCH FIRST PRESSING',
+        statusName: 'VG+', statusBg: '#B9F0C9', statusFg: '#17130F', statusKind: 'GOLDMINE · TYPED',
+        fields: [{k:'Label',v:'Source / Virgin'},{k:'Format',v:'2×LP'},{k:'Matrix',v:'V2848 A1'},{k:'Sleeve',v:'VG'}],
+        typeVerb: null,
+        events: [{d:'MAY 2026',t:'Lent to Marco'},{d:'JUN 2026',t:'Returned · sleeve corner bumped'},{d:'AUG 2024',t:'Acquired · €38'}],
+        changed: 'Spine says Album / Artist / Year. Status is a typed grade, not a clock — so no ESTIMATE label. Four vinyl nouns in the fields. No type verb: a record has nothing to do to it that lend, move and edit don\'t cover.',
+        verbNote: 'None. The baseline — most types live happily on the three app verbs.',
+        sig: { ladder: { cap: 'GOLDMINE · LADDER', leg: '● MEDIA · ○ SLEEVE', steps: [['M',''],['NM',''],['VG+','●'],['VG','○'],['G+',''],['G',''],['F',''],['P','']] } },
+        sigNote: 'One: the grade ladder, with its eight steps read straight out of vinyl.yml. It renders the two scale fields (media, sleeve) that already exist — the fields below still list them. A vinyl person reads "VG+ / VG" in one glance instead of two rows.'
+      },
+      'Wine': {
+        heroBg: 'linear-gradient(150deg,#6E2440,#2B1018)', heroLabel: 'BOTTLE · 75CL SILHOUETTE',
+        title: 'Léoville-Barton', subtitle: 'Saint-Julien · Bordeaux', spineYear: '2015 · VINTAGE IS IDENTITY',
+        statusName: 'Drink it', statusBg: '#0E6E5E', statusFg: '#F3ECE0', statusKind: 'MATURITY · ESTIMATE',
+        fields: [{k:'Bottles left',v:'4 of 6'},{k:'Window',v:'2025 – 2050'},{k:'Fill',v:'Into neck'},{k:'Rack',v:'Cellar · B3'}],
+        typeVerb: 'Open a bottle',
+        events: [{d:'SEP 2026',t:'Opened · with Claire · "ready, not peak"'},{d:'JAN 2026',t:'Moved · Cellar B3'},{d:'MAR 2019',t:'Acquired · 6 × €62'}],
+        changed: 'Spine year becomes Vintage and moves into the identity. Status is a clock — dark green "act now" swatch plus ESTIMATE. Fields show a consumable quantity and a yearRange. One type verb appears: Open a bottle, which writes a log event and decrements the count.',
+        verbNote: 'Open a bottle. It exists because a bottle is the only object in the app that is consumed; it is a history event with a side effect, not a screen.',
+        sig: { gauge: true, case: true },
+        sigNote: 'Two, the maximum: the maturity gauge (yearRange + vintage, marker at 2026, ESTIMATE) and the case (consumable quantity, 4 of 6). Open a bottle empties one silhouette. Both read fields shown in plain rows below — nothing lives only in the signature.'
+      },
+      'Retro computer': {
+        heroBg: 'linear-gradient(150deg,#C9B99A,#7A6A50)', heroLabel: 'BEIGE WEDGE · +2 PARTS',
+        title: 'Amiga 500', subtitle: 'Commodore', spineYear: 'BUILT WK 14 · 1989 · REV 6A · PAL',
+        statusName: 'Open it this week', statusBg: '#C2371F', statusFg: '#F3ECE0', statusKind: 'SERVICE RISK · ESTIMATE',
+        fields: [{k:'Working',v:'Boots with faults'},{k:'Completeness',v:'Boxed'},{k:'Parts',v:'A501 · 1084S monitor'},{k:'Battery',v:'Original · 37 yrs'}],
+        typeVerb: 'Add part',
+        events: [{d:'AUG 2026',t:'Power-on test · floppy fault'},{d:'JUL 2026',t:'Part added · A501 expansion'},{d:'JUL 2026',t:'Acquired · €140 · untested'}],
+        changed: 'Spine year becomes Built, decoded from the serial, with revision and region because two "Amiga 500"s are never interchangeable. Status is the red "act" swatch: the clock has run out. A second axis (Working) sits in the fields, not in a second chip. Type verb: Add part — the composite kind.',
+        verbNote: 'Add part. The only one of the five that creates another object. "Log a service" was proposed too and rejected: it\'s an ordinary history event.',
+        sig: { leds: true, map: true },
+        sigNote: 'Two: the power-on panel (renders the latest test entry of the log — floppy fault shows red) and the system map (renders the composite). Add part grows the map; logging a test relights the panel. The Working field below is the same fact in words.'
+      },
+      'Retro game': {
+        heroBg: 'linear-gradient(150deg,#7C8CF0,#2B44D6)', heroLabel: 'BOXED CART · SPINE OUT',
+        title: 'Chrono Trigger', subtitle: 'Square · SNES', spineYear: '1995 · NTSC-U · SNS-ACTE-USA',
+        statusName: 'CIB', statusBg: '#B9F0C9', statusFg: '#17130F', statusKind: 'COMPLETENESS · TYPED',
+        fields: [{k:'Cart',v:'NM · label clean'},{k:'Box',v:'VG+ · one crease'},{k:'Manual',v:'Present'},{k:'Save battery',v:'Replaced 2024'}],
+        typeVerb: null,
+        events: [{d:'FEB 2026',t:'Regraded · box VG → VG+'},{d:'NOV 2024',t:'Battery replaced'},{d:'OCT 2024',t:'Acquired · €210 · Yahoo Japan'}],
+        changed: 'Closest to vinyl in shape: catalogue number in the spine, a typed completeness grade in the status slot. Three sub-conditions (cart, box, manual) live as fields, not three chips — rule 2. No type verb; the save battery is a field with a date, and the day it earns a clock it becomes the type\'s one.',
+        verbNote: 'None yet. If the community asks for a "battery due" clock, that becomes the type\'s single derived status and CIB moves into the fields.',
+        sig: { ladder: { cap: 'CIB · LADDER · 3 AXES', leg: '● CART · ◐ BOX · ○ MANUAL', steps: [['SLD',''],['M',''],['NM','●'],['VG+','◐'],['VG','○'],['G',''],['P',''],['—','']] } },
+        sigNote: 'One: the same ladder vinyl uses, with three markers instead of two and a last step meaning Missing. Cart near-mint, box VG+, manual VG — how complete and how nice, in one line. This replaces the "CIB triptych" idea, which was three tiles doing badly what one ladder does well.'
+      },
+      'Enamel pin (Thing)': {
+        heroBg: 'linear-gradient(150deg,#E5457B,#FF5B2E)', heroLabel: 'GENERIC TILE · USER PHOTO',
+        title: 'Tour pin, 1994', subtitle: 'Portishead · Dummy tour', spineYear: '1994 · THING · 3 CUSTOM FIELDS',
+        statusName: 'Kept', statusBg: '#EDE4D6', statusFg: '#17130F', statusKind: 'NO SCALE DECLARED',
+        fields: [{k:'Maker',v:'Unknown'},{k:'Backing',v:'Butterfly clutch'},{k:'Set',v:'Tour 1994 · 2 of 5'},{k:'Location',v:'Board · hallway'}],
+        typeVerb: null,
+        events: [{d:'JUN 2026',t:'Shared · link to Ana'},{d:'MAY 2026',t:'Acquired · gift'}],
+        changed: 'The generic type on the same screen. Six shared fields plus three the collector typed — but typed with kinds, so "Set 2 of 5" sorts. Status slot shows the neutral swatch because no scale was declared; it is not hidden, so the shape holds. The photo replaces the silhouette because Thing has none.',
+        verbNote: 'None, by definition. A Thing that needs a verb is a proposal waiting to happen.',
+        sig: {},
+        sigNote: 'None. The slot collapses to a single line here so you can see it; in the app it is simply absent. Its absence is the nudge: want a face for pins? Propose the type.'
+      }
+    };
+    const names = Object.keys(types);
+    const pick = this.state.pick || this.props.type || 'Wine';
+    const t = types[pick] || types['Wine'];
+    const s = t.sig || {};
+    const wine = '#6E2440', cream = '#F3ECE0';
+    const lad = s.ladder || null;
+    return {
+      sigNone: !s.gauge && !s.case && !lad && !s.leds && !s.map,
+      sigGauge: !!s.gauge, sigCase: !!s.case, sigLadder: !!lad, sigLeds: !!s.leds, sigMap: !!s.map,
+      sigLadderCap: lad ? lad.cap : '', sigLadderLeg: lad ? lad.leg : '',
+      sigNow: '31%',
+      sigBottles: [1,1,1,1,0,0].map(f => ({ bg: f ? wine : cream })),
+      sigGrades: (lad ? lad.steps : []).map(([n, mark]) => ({ n, mark, bg: mark.indexOf('●') >= 0 ? '#0E6E5E' : '#fff', fg: mark.indexOf('●') >= 0 ? cream : '#17130F' })),
+      sigLedItems: [{n:'POWER',bg:'#B9F0C9'},{n:'VIDEO',bg:'#B9F0C9'},{n:'FLOPPY',bg:'#FF5B2E'},{n:'KEYS',bg:'#B9F0C9'}],
+      sigParts: [{n:'A501'},{n:'1084S'}],
+      typeLabel: pick.toUpperCase(),
+      tabs: names.map(n => ({ name: n, pick: () => this.setState({ pick: n }), bg: n === pick ? '#17130F' : '#fff', fg: n === pick ? '#F3ECE0' : '#17130F' })),
+      ...t,
+      hasTypeVerb: !!t.typeVerb,
+      typeVerb: t.typeVerb || ''
+    };
+  }
+}
+</script>
+</body>
+</html>

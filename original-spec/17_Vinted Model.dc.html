@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#EAE3D6}a{color:#2B44D6}a:hover{color:#FF5B2E}</style>
+</helmet>
+
+<div style="width:1360px;margin:0 auto;padding:60px 28px 100px;font-family:Archivo,system-ui,sans-serif;color:#17130F">
+
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70">CLCTN · STRATEGY NOTE · THE VINTED MODEL, APPLIED · SEPTEMBER 2026</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:66px;line-height:.92;letter-spacing:-.045em;margin:16px 0 0;max-width:1060px;text-wrap:balance">Vinted monetises the flux. We monetise the stock.</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:860px;margin-top:20px;text-wrap:pretty">Thinking out loud about the Vinted playbook and which parts of it belong in CLCTN. The useful finding is not the growth story — it is that their entire engine is built on one asymmetry they never resolved: people look at the stock in their closet and never at the speed they refill it. That unresolved half is the market we are already standing in.</div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:860px;margin-top:14px;text-wrap:pretty">Written as a note, not a plan. Section 03 is the part to argue with; section 06 is the part to decide.</div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">00 · THE THESIS IN ONE PARAGRAPH</div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#0C0A08;color:#F3ECE0;padding:26px;box-shadow:5px 5px 0 #2B44D6">
+    <div style="font:400 20px/1.55 Archivo,sans-serif;max-width:940px;text-wrap:pretty">Vinted got rich by making it free to <em>let go</em> of an object and charging a few cents on the way back in. CLCTN can invert every term: it is free to <em>keep</em> an object, and what costs money is everything you want to do with a collection you have decided to keep — know what it is worth, prove you own it, insure it, lend it, and eventually sell it on your terms rather than into a feed of eighty-three million Zara listings.</div>
+    <div style="font:400 13px/1.7 'DM Mono',monospace;color:#FFD24A;margin-top:18px">SAME STRUCTURAL BET (one engine, N object types) · OPPOSITE SIDE OF THE LOOP</div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">01 · THE MECHANISM, STRIPPED</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:860px;margin-bottom:22px;text-wrap:pretty">Five moving parts. Only the first two are respectable; the middle two are the ones to be deliberate about; the last one is the moat nobody talks about.</div>
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <sc-for list="{{ mech }}" as="m" hint-placeholder-count="5">
+      <div style="display:grid;grid-template-columns:210px 1fr 360px;gap:0;border:2.5px solid #17130F;border-radius:18px;background:#fff;overflow:hidden;box-shadow:5px 5px 0 #17130F">
+        <div style="padding:22px;background:#17130F;color:#F3ECE0">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;color:#FFD24A">{{ m.n }}</div>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:22px;line-height:1.05;letter-spacing:-.02em;margin-top:10px">{{ m.name }}</div>
+        </div>
+        <div style="padding:22px">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;color:#8A7F70;margin-bottom:8px">HOW IT WORKS THERE</div>
+          <div style="font:400 14px/1.65 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ m.how }}</div>
+        </div>
+        <div style="padding:22px;background:#F3ECE0;border-left:2.5px solid #17130F">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;color:#8A7F70;margin-bottom:8px">WHAT IT TELLS US</div>
+          <div style="font:400 13.5px/1.6 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ m.lesson }}</div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <sc-if value="{{ showNumbers }}" hint-placeholder-val="{{ true }}">
+    <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+    <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">02 · THE NUMBERS I WOULD KEEP IN MY POCKET</div>
+    <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:860px;margin-bottom:22px;text-wrap:pretty">Half of these are for the pitch deck. The 31% is the one that matters to us, because it is the crack in their story and the whole reason a keeping app has something honest to say.</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px">
+      <sc-for list="{{ stats }}" as="s" hint-placeholder-count="8">
+        <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;padding:20px;box-shadow:4px 4px 0 #17130F">
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:34px;line-height:1;letter-spacing:-.03em">{{ s.v }}</div>
+          <div style="font:400 13px/1.5 Archivo,sans-serif;color:#3A2F26;margin-top:10px;text-wrap:pretty">{{ s.l }}</div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="font:400 12px/1.6 'DM Mono',monospace;color:#6E6458;margin-top:14px">Figures as reported in the video note; worth a second source before any of them go in front of an investor.</div>
+  </sc-if>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">03 · WHAT TRANSFERS TO CLCTN</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:860px;margin-bottom:20px;text-wrap:pretty">Mechanic by mechanic, with a verdict. <strong>Steal</strong> means do it now; <strong>adapt</strong> means the shape is right and the incentive is wrong; <strong>refuse</strong> means it works and we still should not.</div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;overflow:hidden;box-shadow:5px 5px 0 #17130F">
+    <div style="display:grid;grid-template-columns:230px 1fr 1fr 110px;background:#17130F;color:#F3ECE0;font:500 9.5px 'DM Mono',monospace;letter-spacing:.1em">
+      <div style="padding:13px 16px">MECHANIC</div>
+      <div style="padding:13px 16px">THEIR FORM</div>
+      <div style="padding:13px 16px">OUR FORM</div>
+      <div style="padding:13px 16px">VERDICT</div>
+    </div>
+    <sc-for list="{{ transfer }}" as="t" hint-placeholder-count="9">
+      <div style="display:grid;grid-template-columns:230px 1fr 1fr 110px;border-top:2px solid #E0D6C4;background:#fff;align-items:start">
+        <div style="padding:15px 16px;font:500 13px/1.45 Archivo,sans-serif">{{ t.k }}</div>
+        <div style="padding:15px 16px;font:400 13px/1.6 Archivo,sans-serif;color:#6E6458;text-wrap:pretty">{{ t.them }}</div>
+        <div style="padding:15px 16px;font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ t.us }}</div>
+        <div style="padding:15px 16px"><span style="font:500 8.5px 'DM Mono',monospace;letter-spacing:.08em;border:2px solid #17130F;border-radius:999px;padding:4px 9px;white-space:nowrap">{{ t.v }}</span></div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">04 · WHERE THE ANALOGY BREAKS</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:860px;margin-bottom:20px;text-wrap:pretty">Four differences big enough that copying the Vinted funnel line for line would kill us rather than scale us.</div>
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px">
+    <sc-for list="{{ breaks }}" as="b" hint-placeholder-count="4">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#FFD24A;padding:22px;box-shadow:5px 5px 0 #17130F">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;color:#6B5410">{{ b.k }}</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:23px;line-height:1.08;letter-spacing:-.02em;margin:10px 0 10px;text-wrap:balance">{{ b.t }}</div>
+        <div style="font:400 14px/1.65 Archivo,sans-serif;color:#2E2410;text-wrap:pretty">{{ b.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">05 · THE ASYMMETRY WE INHERIT</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:stretch">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;padding:26px;box-shadow:5px 5px 0 #FF5B2E">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;color:#8A7F70">THE 16-POINT GAP</div>
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:30px;line-height:1.02;letter-spacing:-.03em;margin:12px 0 14px;text-wrap:balance">35% feel they own too much. 19% think they buy too much.</div>
+      <div style="font:400 14.5px/1.65 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Vinted sells a fix for the first number and quietly lives off the second. Emptying a closet makes room, room invites refilling, and the proceeds are already sitting in the app as spendable credit. Their loop is deliberately open at the top.</div>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#0C0A08;color:#F3ECE0;padding:26px;box-shadow:5px 5px 0 #FFD24A">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;color:#FFD24A">WHAT A COLLECTOR IS</div>
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:30px;line-height:1.02;letter-spacing:-.03em;margin:12px 0 14px;text-wrap:balance">Someone who has already decided the stock is the point.</div>
+      <div style="font:400 14.5px/1.65 Archivo,sans-serif;text-wrap:pretty">A collector does not want the closet emptied; they want it understood. That makes them a terrible Vinted user and an excellent CLCTN user — low churn, high attachment, and a genuine willingness to pay for depth rather than for discharge. Our retention comes from the object staying, not from the next transaction.</div>
+    </div>
+  </div>
+  <div style="font:400 15px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:1000px;margin-top:18px;text-wrap:pretty">Practical consequence for positioning: never claim an ecological benefit we cannot measure inside our own app. Vinted's ecology framing was mostly press-assembled and it is now a liability. If we want a virtue claim, the defensible one is <strong>longevity</strong> — an object that is catalogued, valued, insured and repaired stays owned. That we can actually instrument: years held per object, repairs logged, objects passed on intact rather than resold blind.</div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">06 · THREE MODELS ON THE TABLE</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:860px;margin-bottom:20px;text-wrap:pretty">All three keep cataloguing free and unlimited — that is the Vinted lesson we should not negotiate. They differ in what carries the price.</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+    <sc-for list="{{ models }}" as="m" hint-placeholder-count="3">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;padding:24px;box-shadow:5px 5px 0 #2B44D6;display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;color:#8A7F70">{{ m.k }}</div>
+          <sc-if value="{{ m.isPick }}" hint-placeholder-val="{{ false }}">
+            <span style="font:500 8.5px 'DM Mono',monospace;letter-spacing:.08em;background:#FF5B2E;color:#fff;border:2px solid #17130F;border-radius:999px;padding:3px 9px">MY PICK</span>
+          </sc-if>
+        </div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:25px;line-height:1.05;letter-spacing:-.025em;text-wrap:balance">{{ m.t }}</div>
+        <div style="font:400 14px/1.65 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ m.b }}</div>
+        <div style="border-top:2px solid #E0D6C4;padding-top:12px;font:400 12.5px/1.7 'DM Mono',monospace;color:#3A2F26;white-space:pre-wrap">{{ m.price }}</div>
+        <div style="margin-top:auto;font:400 13px/1.55 Archivo,sans-serif;color:#6E6458;text-wrap:pretty"><strong style="color:#17130F">Risk.</strong> {{ m.risk }}</div>
+      </div>
+    </sc-for>
+  </div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#F3ECE0;padding:24px;box-shadow:5px 5px 0 #17130F;margin-top:16px">
+    <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;color:#8A7F70;margin-bottom:10px">HOW I WOULD SEQUENCE IT</div>
+    <div style="font:400 15px/1.7 Archivo,sans-serif;color:#3A2F26;max-width:1040px;text-wrap:pretty">Ship A alone. It needs no counterparty, no logistics, no moderation team, and it prices the thing collectors already ask for out loud. Add B only once a single type has enough depth that a sale inside the app beats a sale on the open marketplace — Vinted almost died precisely by opening six fronts before one of them was solid. Treat C as the long option: every object we catalogue accrues a record with memory, and a marketplace full of amnesiac listings will eventually pay for that. Do not build C on spec.</div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:16px">07 · WHAT I NEED DECIDED</div>
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px">
+    <sc-for list="{{ questions }}" as="q" hint-placeholder-count="4">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#FFD24A;padding:22px;box-shadow:5px 5px 0 #17130F">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;color:#6B5410">{{ q.k }}</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:22px;line-height:1.08;letter-spacing:-.02em;margin:10px 0 10px;text-wrap:balance">{{ q.t }}</div>
+        <div style="font:400 14px/1.65 Archivo,sans-serif;color:#2E2410;text-wrap:pretty">{{ q.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;pick&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;A · PAID INTELLIGENCE&quot;,&quot;B · TRANSACTION RAIL&quot;,&quot;C · PROVENANCE RAIL&quot;],&quot;default&quot;:&quot;A · PAID INTELLIGENCE&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Note&quot;},&quot;showNumbers&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Note&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const pick = this.props.pick ?? 'A · PAID INTELLIGENCE';
+    const models = [
+      { k: 'MODEL A', t: 'Free catalogue, paid intelligence', b: 'Adding, photographing and organising objects is free forever and uncapped — the catalogue is our supply and supply is never taxed. Money sits on knowing: continuous valuation, market history per object, insurance-grade export, provenance dossiers, multi-device and co-shelf.', price: 'Free · unlimited objects, 1 type\nPlus €4.90/mo · all types, valuation,\n  exports, co-shelf\nArchive €9.90/mo · per-object market\n  history, appraisal dossiers, priority lookup', risk: 'Valuation quality is the whole product. If the provider data is thin for a type, the subscription has no floor under it.' },
+      { k: 'MODEL B', t: 'A transaction rail on top of the shelf', b: 'A catalogued object is already a finished listing: photos, condition, identifier, provenance. Selling from CLCTN skips the whole chore Vinted still imposes. Free to list — buyer pays protection, exactly their inversion.', price: 'Listing · free, always\nBuyer protection · 4% + €0.60\nAuthentication (opt-in) · from €9\nDealer tools · revenue share', risk: 'A marketplace with no liquidity is worse than no marketplace, and it drags in moderation, fraud and support costs Vinted underfunded at €1.1B revenue.' },
+      { k: 'MODEL C', t: 'The provenance rail, licensed out', b: 'Vinted moves 83 million Zara listings with no memory whatsoever. Our unit is the opposite: one object, one continuous record, across owners. Sell that record as an API to marketplaces, insurers and auction houses.', price: 'B2B per-verification pricing\nInsurer partnerships per policy\nConsumer side stays free', risk: 'Two-sided and slow. Nothing to license until we have real density in a category, and incumbents may build it themselves first.' },
+    ].map(m => ({ ...m, isPick: pick.startsWith(m.k.slice(-1)) }));
+    return {
+      showNumbers: this.props.showNumbers ?? true,
+      models,
+      mech: [
+        { n: 'PART 01', name: 'Supply is free', how: 'The seller commission of 20–30% was removed outright while the company had months of cash left. Listing became free, so people listed the €3 t-shirt that was never worth a commission. Supply exploded, buyers finally found their size, and buyers who found their size came back.', lesson: 'Never charge for the act that creates the inventory. For us that is adding an object — no object caps, no per-collection fee, no paywall on the shelf itself, ever.' },
+        { n: 'PART 02', name: 'The buyer pays the cents', how: '5% of the item price plus €0.70, called buyer protection. Trivially small per transaction, enormous across 2.2 items exchanged per second.', lesson: 'Micro-fees only work at consumer-internet scale. Collectors are a few hundred thousand people, not 23 million, so our unit price has to be a subscription — the fee model cannot carry us alone.' },
+        { n: 'PART 03', name: 'The money never leaves', how: 'Sale proceeds land in an in-app wallet rather than a bank account, sitting there as credit for the next purchase. The comparison to casino chips is not unfair.', lesson: 'The structural equivalent for us would be sale credit locked to the next acquisition. It would work, and I would not ship it locked: credit as an opt-in with one-tap payout keeps the mechanic and drops the trap.' },
+        { n: 'PART 04', name: 'The loop is pushed', how: 'Someone liked your item. An item you viewed dropped in price. Every notification is a reason to reopen, and every reopen is an impulse-buy surface.', lesson: 'We have a legitimate version of this that they do not: an object of yours changed value, an item on your wanted list surfaced, a warranty expires in a month. Notifications about what you own, not about what you could buy.' },
+        { n: 'PART 05', name: 'The rail is the real asset', how: 'Under the fashion story sits infrastructure: pickup points, integrated payments, cross-border shipping, acquisitions of rivals in four countries, an investment fund in resale. BlackRock bought into that, not into dresses.', lesson: 'Ours is not logistics — it is identity. A canonical, portable record per object is the only asset here that compounds, and it is exactly what their 83 million listings lack.' },
+      ],
+      stats: [
+        { v: '31%', l: 'of second-hand purchases genuinely replace a new one. The other 69% simply stack on top.' },
+        { v: '114', l: 'garments owned on average per person in France; roughly half are worn regularly.' },
+        { v: '2.2 / s', l: 'items exchanged on the platform, every second.' },
+        { v: '€1.1B', l: 'revenue in 2025, on close to €11B of goods exchanged, +47% in a year.' },
+        { v: '83M', l: 'Zara items listed — plus 76M H&M and 39M Shein, double the year before.' },
+        { v: '5% + €0.70', l: 'buyer protection fee, after seller commission was cut to zero.' },
+        { v: '40% → 60%', l: 'Emmaüs resells only 40 of every 100 tonnes collected, down from 60: the good pieces now go to resale apps.' },
+        { v: '€8B', l: 'valuation at the BlackRock secondary in April; profit fell to €62M as logistics spend rose.' },
+      ],
+      transfer: [
+        { k: 'Free to create supply', them: 'Zero seller commission; the €3 t-shirt gets listed.', us: 'Unlimited objects on the free tier, forever. The catalogue is never the paywall.', v: 'STEAL' },
+        { k: 'Charge the consumption side', them: 'Buyer protection on every purchase.', us: 'Charge for depth on a collection you keep: valuation, exports, dossiers, co-shelf.', v: 'STEAL' },
+        { k: 'One engine, many categories', them: 'Fashion first, then "every object in your house".', us: 'Already our architecture — sixteen type manifests, the seventeenth is a file. Same bet, no rebuild.', v: 'STEAL' },
+        { k: 'Cataloguing removes friction', them: 'Photo, price, done in a minute on a Sunday night.', us: 'Capture has to be that fast or the shelf stays empty. Scan, lookup, confirm.', v: 'STEAL' },
+        { k: 'Push notifications', them: 'Likes and price drops on things you might buy.', us: 'Value moves, warranty expiries, wanted-list hits — about objects you own.', v: 'ADAPT' },
+        { k: 'In-app wallet', them: 'Proceeds stay as spendable credit by default.', us: 'Opt-in acquisition credit with one-tap payout. Keep the convenience, drop the lock-in.', v: 'ADAPT' },
+        { k: 'Own the transaction', them: '20–30% take, then 0%, now the logistics rail.', us: 'Selling from a catalogued object, listing free, fee on the buyer — but only after one category has depth.', v: 'ADAPT' },
+        { k: 'Six countries at once', them: 'Nearly fatal: five failed UK attempts, offices closed, 40% of staff cut.', us: 'One type, one market, until the unit economics are boring.', v: 'REFUSE' },
+        { k: 'Borrowed virtue story', them: 'Ecology framing they never had to prove, now a reputational debt.', us: 'Only claims we instrument ourselves: years held, repairs logged, objects passed on intact.', v: 'REFUSE' },
+      ],
+      breaks: [
+        { k: 'BREAK 01', t: 'Our user is not trying to get rid of anything', b: 'Every Vinted growth loop runs on discharge — list, sell, refill. A collector who empties a shelf has churned. Retention has to come from the object staying interesting: value moving, provenance deepening, the set nearing completion.' },
+        { k: 'BREAK 02', t: 'The audience is two orders of magnitude smaller', b: 'Twenty-three million French users make €0.70 a viable unit. A few hundred thousand serious collectors do not. That forces higher ARPU and therefore a product that is genuinely worth €5–10 a month, not a fee skimmed off volume.' },
+        { k: 'BREAK 03', t: 'Fast fashion is their fuel; we cannot run on it', b: 'What rotates most on Vinted is what cost least to make. Our objects rotate rarely by definition — a watch, a first pressing, a graded card. Low transaction frequency means transaction fees can never be the primary engine.' },
+        { k: 'BREAK 04', t: 'Trust debt arrives before revenue does', b: 'Photos of objects inside homes, values attached, sometimes an address in the frame. Vinted let moderation lag behind growth and paid for it publicly. For us that failure would be existential rather than embarrassing, so safety is a v1 line item.' },
+      ],
+      questions: [
+        { k: 'DECISION 1', t: 'Do we ever want to be a marketplace at all?', b: 'Model B changes the company: support, fraud, moderation, payouts, a second side to acquire. The alternative is staying the layer above marketplaces and pushing listings out to them. Both are defensible; only one is cheap.' },
+        { k: 'DECISION 2', t: 'Free tier — one type, or everything?', b: 'Unlimited objects is settled. The question is whether the wall sits at the second type. Gating types is the cleanest upgrade trigger we have, and it is also the first thing that makes the app feel mean.' },
+        { k: 'DECISION 3', t: 'Do we take the credit mechanic at all?', b: 'Acquisition credit measurably increases repeat purchase and it is the single most manipulative part of their design. I lean opt-in with instant payout, but if we are not doing transactions in v1 the question can wait.' },
+        { k: 'DECISION 4', t: 'What is our defensible virtue claim?', b: 'I would commit to longevity and instrument it from day one — years held, repairs, intact transfers — so the claim has our own data behind it. Alternative: make no claim, sell competence. Choosing later means measuring nothing now.' },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

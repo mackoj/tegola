@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#EAE3D6}a{color:#2B44D6}a:hover{color:#FF5B2E}</style>
+</helmet>
+
+<div style="width:1360px;margin:0 auto;padding:60px 28px 100px;font-family:Archivo,system-ui,sans-serif;color:#17130F">
+
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70">CLCTN · BUSINESS PLAN STRESS-TEST · ANDROID · 19 SEP 2026</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:66px;line-height:.92;letter-spacing:-.045em;margin:16px 0 0;max-width:1030px;text-wrap:balance">Most of the plan survives. The spine of it doesn't.</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-top:20px;text-wrap:pretty">Nine of the eleven revenue options in the <a href="02_Business Plan.dc.html">Business Plan</a> work on Android unchanged or better. The two that break are the two everything else was resting on: <strong>the €24.99 one-time unlock</strong>, and <strong>free sync you don't pay for</strong>. Both are iOS-shaped assumptions that were never labelled as such.</div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:900px;margin-top:14px;text-wrap:pretty">The useful reframing is in section 01, and it is not a monetisation question at all. Numbers here are illustrative and conservative, in the same spirit as the original — argue with the shape, not the digits.</div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">00 · THE VERDICT, BEFORE THE DETAIL</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+    <sc-for list="{{ verdicts }}" as="v" hint-placeholder-count="3">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;padding:22px">
+        <div style="display:inline-block;font:500 9px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:4px 10px;background:{{ v.tone }}">{{ v.tag }}</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:23px;letter-spacing:-.02em;line-height:1.1;margin-top:14px;text-wrap:pretty">{{ v.t }}</div>
+        <div style="font:400 14px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:10px;text-wrap:pretty">{{ v.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">01 · THE REFRAME THAT ANSWERS THE QUESTION</div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#FFD24A;padding:24px 26px;box-shadow:5px 5px 0 #17130F;max-width:1000px;margin-bottom:20px">
+    <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:30px;line-height:1.1;letter-spacing:-.025em;text-wrap:pretty">Android is not a second copy of your iOS business. Android <em>is</em> market B — the one section 04 of the plan already told you to build for, and then deferred because you had no way to reach it.</div>
+  </div>
+  <div style="font:400 16px/1.7 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:14px;text-wrap:pretty">The plan already sorts the world into three market types: <strong>A</strong> pays for tools and hates ads, <strong>B</strong> is huge and price-sensitive and fine with ads, <strong>C</strong> finishes every deal off-platform. Look at where each one lives by device and the whole question resolves itself.</div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:900px;margin-bottom:22px;text-wrap:pretty">So "does the business plan work on Android" is the wrong question. The right one: <strong>does the market-B profile you already designed actually earn?</strong> Android is just the only delivery mechanism for it. And the honest answer to that is in section 05 — it earns, but not much, and never per-user.</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+    <sc-for list="{{ markets }}" as="m" hint-placeholder-count="3">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+        <div style="display:flex;align-items:center;gap:12px;padding:14px 18px;background:{{ m.tone }};border-bottom:2.5px solid #17130F">
+          <div style="width:30px;height:30px;border:2.5px solid #17130F;border-radius:8px;display:flex;align-items:center;justify-content:center;font:700 13px Archivo,sans-serif;background:#fff">{{ m.k }}</div>
+          <div style="font:700 17px Archivo,sans-serif;letter-spacing:-.01em">{{ m.name }}</div>
+        </div>
+        <div style="padding:16px 18px">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">DEVICE REALITY</div>
+          <div style="font:400 13.5px/1.6 Archivo,sans-serif;margin-top:7px;text-wrap:pretty">{{ m.device }}</div>
+          <div style="height:2px;background:#E0D6C4;margin:14px 0"></div>
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">WHAT ANDROID CHANGES</div>
+          <div style="font:400 13.5px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:7px;text-wrap:pretty">{{ m.change }}</div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">02 · EVERY REVENUE OPTION, RE-SCORED</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:20px;text-wrap:pretty">Each line from the plan, run against a Play-store, market-B-weighted audience. Two break, two get better, the rest hold with a smaller price tag.</div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;overflow:hidden;box-shadow:5px 5px 0 #17130F">
+    <div style="display:grid;grid-template-columns:62px 250px 150px 1fr;background:#17130F;color:#F3ECE0;font:500 9.5px 'DM Mono',monospace;letter-spacing:.1em">
+      <div style="padding:13px 14px">FROM</div>
+      <div style="padding:13px 14px">OPTION</div>
+      <div style="padding:13px 14px">ON ANDROID</div>
+      <div style="padding:13px 14px">WHY</div>
+    </div>
+    <sc-for list="{{ rescore }}" as="r" hint-placeholder-count="11">
+      <div style="display:grid;grid-template-columns:62px 250px 150px 1fr;border-top:2px solid #E0D6C4;background:#fff;align-items:start">
+        <div style="padding:14px;font:500 10px 'DM Mono',monospace;letter-spacing:.08em;color:#8A7F70">{{ r.src }}</div>
+        <div style="padding:14px;font:700 14px/1.35 Archivo,sans-serif;text-wrap:pretty">{{ r.name }}</div>
+        <div style="padding:14px">
+          <div style="display:inline-block;font:500 9px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:4px 9px;background:{{ r.tone }}">{{ r.verdict }}</div>
+        </div>
+        <div style="padding:14px;font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ r.why }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">03 · THE TWO THINGS THAT ACTUALLY BREAK</div>
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <sc-for list="{{ breaks }}" as="b" hint-placeholder-count="2">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#0C0A08;color:#F3ECE0;overflow:hidden;box-shadow:5px 5px 0 #FF5B2E">
+        <div style="padding:24px 26px 20px;max-width:1000px">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;opacity:.5">{{ b.n }}</div>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:32px;letter-spacing:-.03em;line-height:1.06;margin-top:12px;text-wrap:balance">{{ b.t }}</div>
+          <div style="font:400 15px/1.7 Archivo,sans-serif;opacity:.84;margin-top:14px;text-wrap:pretty">{{ b.p1 }}</div>
+          <div style="font:400 15px/1.7 Archivo,sans-serif;opacity:.84;margin-top:12px;text-wrap:pretty">{{ b.p2 }}</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;border-top:2.5px solid #2E2823">
+          <div style="padding:16px 20px;border-right:2px solid #2E2823">
+            <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#FFD24A">THE FIX</div>
+            <div style="font:400 13px/1.6 Archivo,sans-serif;opacity:.85;margin-top:8px;text-wrap:pretty">{{ b.fix }}</div>
+          </div>
+          <div style="padding:16px 20px;border-right:2px solid #2E2823">
+            <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#FFD24A">WHAT IT COSTS</div>
+            <div style="font:400 13px/1.6 Archivo,sans-serif;opacity:.85;margin-top:8px;text-wrap:pretty">{{ b.cost }}</div>
+          </div>
+          <div style="padding:16px 20px">
+            <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#FF5B2E">THE WRONG FIX</div>
+            <div style="font:400 13px/1.6 Archivo,sans-serif;opacity:.85;margin-top:8px;text-wrap:pretty">{{ b.wrong }}</div>
+          </div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">04 · STORE ECONOMICS — LESS DIFFERENT THAN YOU'D THINK</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:20px;text-wrap:pretty">The cut is a wash at your scale. The difference is entirely in who pays and what it costs to stay listed.</div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;overflow:hidden;box-shadow:5px 5px 0 #17130F">
+    <div style="display:grid;grid-template-columns:230px 1fr 1fr 290px;background:#17130F;color:#F3ECE0;font:500 9.5px 'DM Mono',monospace;letter-spacing:.1em">
+      <div style="padding:13px 16px"></div>
+      <div style="padding:13px 16px">APP STORE</div>
+      <div style="padding:13px 16px">GOOGLE PLAY</div>
+      <div style="padding:13px 16px">CONSEQUENCE FOR THE PLAN</div>
+    </div>
+    <sc-for list="{{ stores }}" as="s" hint-placeholder-count="7">
+      <div style="display:grid;grid-template-columns:230px 1fr 1fr 290px;border-top:2px solid #E0D6C4;background:#fff;align-items:start">
+        <div style="padding:14px 16px;font:700 13.5px/1.4 Archivo,sans-serif;text-wrap:pretty">{{ s.k }}</div>
+        <div style="padding:14px 16px;font:400 12.5px/1.55 'DM Mono',monospace;color:#3A2F26;text-wrap:pretty">{{ s.ios }}</div>
+        <div style="padding:14px 16px;font:400 12.5px/1.55 'DM Mono',monospace;color:#3A2F26;text-wrap:pretty">{{ s.play }}</div>
+        <div style="padding:14px 16px;font:400 12.5px/1.6 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ s.note }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <sc-if value="{{ showScenario }}" hint-placeholder-val="{{ true }}">
+    <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+    <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">05 · WHAT ANDROID WOULD REALISTICALLY MAKE</div>
+    <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:20px;text-wrap:pretty">Same conservative middle case as the plan's year one, with a Play-weighted audience and the market-B profile. More than twice the installs, a fraction of the money.</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#17130F;color:#F3ECE0;padding:20px 22px;box-shadow:5px 5px 0 #FF5B2E">
+        <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.14em;color:#FFD24A;margin-bottom:12px">SCENARIO · ANDROID YEAR ONE, MARKET-B PROFILE</div>
+        <sc-for list="{{ scenario }}" as="s" hint-placeholder-count="8">
+          <div style="display:flex;gap:14px;align-items:baseline;padding:9px 0;border-bottom:1.5px solid rgba(243,236,224,.16)">
+            <div style="flex:1;font:400 13.5px/1.4 Archivo,sans-serif;color:rgba(243,236,224,.8)">{{ s.k }}</div>
+            <div style="flex:none;font:700 14px 'DM Mono',monospace;color:{{ s.tone }}">{{ s.v }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <sc-for list="{{ reads }}" as="r" hint-placeholder-count="3">
+          <div style="border:2.5px solid #17130F;border-radius:16px;background:{{ r.bg }};padding:20px">
+            <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">{{ r.k }}</div>
+            <div style="font:700 16px/1.35 Archivo,sans-serif;margin-top:8px;text-wrap:pretty">{{ r.t }}</div>
+            <div style="font:400 13.5px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">{{ r.b }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </sc-if>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">06 · THE REAL ARGUMENT FOR ANDROID ISN'T CONSUMER REVENUE</div>
+  <div style="display:grid;grid-template-columns:1.1fr .9fr;gap:16px;align-items:start">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#0E6E5E;color:#F3ECE0;padding:28px;box-shadow:5px 5px 0 #17130F">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;color:#FFD24A">v3 · INSTITUTIONS · THE UNDERRATED CASE</div>
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:32px;letter-spacing:-.03em;line-height:1.06;margin-top:14px;text-wrap:balance">A recyclerie doesn't get to choose what phones its volunteers own.</div>
+      <div style="font:400 15px/1.7 Archivo,sans-serif;opacity:.9;margin-top:16px;text-wrap:pretty">The plan's v3 needs staff devices — the shared shelf, roles, the lend handshake, all on a phone on a shift. In France, roughly two of every three phones in that room run Android. An iOS-only app doesn't sell a smaller institution tier; in most organisations it sells zero, because the coordinator can't run a rota on a device half the volunteers don't have.</div>
+      <div style="font:400 15px/1.7 Archivo,sans-serif;opacity:.9;margin-top:12px;text-wrap:pretty">The member side is already a link with no account and no install, so it costs nothing today. It's the staff side that is quietly iOS-gated — and v3 was named the best possible plan B.</div>
+      <div style="height:2px;background:rgba(243,236,224,.2);margin:20px 0"></div>
+      <div style="font:400 13.5px/1.6 Archivo,sans-serif;opacity:.7;text-wrap:pretty">Test it for free before writing any Kotlin: ask the recyclerie contact what the volunteers on shift carry. That is question seven, and it costs one line in an email you're already sending.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <sc-for list="{{ strategic }}" as="s" hint-placeholder-count="3">
+        <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;padding:20px">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">{{ s.k }}</div>
+          <div style="font:700 15px/1.35 Archivo,sans-serif;margin-top:8px;text-wrap:pretty">{{ s.t }}</div>
+          <div style="font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">{{ s.b }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">07 · THE EDITS TO MAKE TO THE BUSINESS PLAN</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:20px;text-wrap:pretty">Four, and none of them is a rewrite. Three are one sentence each; the fourth is the only one with engineering attached.</div>
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px">
+    <sc-for list="{{ edits }}" as="e" hint-placeholder-count="4">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+        <div style="display:flex;align-items:center;gap:12px;padding:13px 18px;background:#EDE4D6;border-bottom:2.5px solid #17130F">
+          <div style="font:500 9.5px 'DM Mono',monospace;letter-spacing:.1em;color:#8A7F70">{{ e.where }}</div>
+          <div style="margin-left:auto;font:500 9px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:4px 9px;background:{{ e.tone }}">{{ e.effort }}</div>
+        </div>
+        <div style="padding:18px">
+          <div style="font:700 16px/1.35 Archivo,sans-serif;text-wrap:pretty">{{ e.t }}</div>
+          <div style="font:400 13.5px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:9px;text-wrap:pretty">{{ e.b }}</div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">08 · WHEN TO SHIP IT</div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#FFD24A;padding:24px 26px;box-shadow:5px 5px 0 #17130F;max-width:1000px;margin-bottom:18px">
+    <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:28px;line-height:1.12;letter-spacing:-.025em;text-wrap:pretty">{{ stanceLine }}</div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+    <sc-for list="{{ gates }}" as="g" hint-placeholder-count="3">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#EAE3D6;padding:18px">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">{{ g.k }}</div>
+        <div style="font:700 15px/1.35 Archivo,sans-serif;margin-top:8px;text-wrap:pretty">{{ g.t }}</div>
+        <div style="font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">{{ g.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="font:400 12.5px/1.7 Archivo,sans-serif;color:#8A7F70;margin-top:44px;max-width:900px;text-wrap:pretty">Companion pages: <a href="02_Business Plan.dc.html">Business Plan</a> for the original eleven options and the three market types, <a href="23_Android via Swift.dc.html">Android via Swift</a> for how the code gets there, <a href="14_Pricing by Market.dc.html">Pricing by Market</a> for the storefront price tiers. Store fee structures and Play Console policy requirements change without much notice — confirm current terms before committing a price.</div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1416,&quot;height&quot;:900},&quot;showScenario&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Content&quot;},&quot;stance&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;After iOS v1 proves demand&quot;,&quot;Simultaneously with iOS v1&quot;,&quot;Only if v3 institutions land&quot;],&quot;default&quot;:&quot;After iOS v1 proves demand&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Content&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const stance = this.props.stance ?? "After iOS v1 proves demand";
+    const stanceLines = {
+      "After iOS v1 proves demand": "Ship Android after iOS v1 has run long enough to read the country log — but write the logic in shared Swift from the first commit, because that decision expires the moment you write a ViewModel that imports SwiftUI.",
+      "Simultaneously with iOS v1": "Shipping both at once doubles the store operations and the support surface before you know whether anyone wants the app at all. If you do it anyway, ship Android with the market-B profile only — no €24.99 unlock, no insurance flow, no second premium tier to maintain.",
+      "Only if v3 institutions land": "Treat Android as a v3 unlock rather than a consumer play: build it the week a real organisation says yes and its volunteers carry Android. That is the one case where the revenue is legible before the work starts."
+    };
+    return {
+      showScenario: this.props.showScenario ?? true,
+      stanceLine: stanceLines[stance] ?? stanceLines["After iOS v1 proves demand"],
+      verdicts: [
+        { tag: "MOSTLY YES", tone: "#B9F0C9", t: "Nine of eleven options hold", b: "Lookup packs, promoted listings, the seller subscription, boosts, the business tier and affiliate all work on Play — some of them better than on iOS. The model isn't iOS-specific; the price points are." },
+        { tag: "TWO BREAK", tone: "#FFD24A", t: "The unlock and free sync", b: "A €24.99 one-time purchase converts a fraction as well on Play, and there is no iCloud — so \"no account, no server, no monthly cost\" stops being true. Both are load-bearing in the current plan." },
+        { tag: "THE TWIST", tone: "#EAE3D6", t: "The money isn't consumer", b: "Android's best financial argument is the v3 institution tier, where an iOS-only app doesn't sell a smaller seat — it sells none, because the volunteers on shift carry Android." }
+      ],
+      markets: [
+        { k: "A", tone: "#B9F0C9", name: "Pays for tools, hates ads", device: "DE, FR, NL, UK, US, JP, Nordics — the markets where iPhone share is highest and where a paid app is a normal purchase. This is where the plan's €20k year one comes from, and it is already well served.", change: "Almost nothing. Android adds reach here but the marginal user is a low payer even in a high-paying country, because within market A the Android cohort self-selects toward not paying for apps." },
+        { k: "B", tone: "#FFD24A", name: "Huge, price-sensitive, ads fine", device: "BR, IN, ID, MX, PH, TR, VN, NG — where Android is not the majority platform so much as effectively the only one. iPhone share in India and Indonesia is in the single digits.", change: "Everything. This market is unreachable from iOS in any meaningful volume. The rewarded-video and micro-tier profile the plan designed for it has been sitting unused because there was no device to run it on." },
+        { k: "C", tone: "#A8E0F0", name: "Deal finishes off-platform", device: "LATAM, India, SEA, Southern and Eastern Europe — overlaps heavily with B, and WhatsApp-first behaviour is an Android behaviour more than an iOS one.", change: "The handshake and share-sheet primitives were already the right design here. Android just puts them in front of the people who behave that way, and share-to-WhatsApp is smoother on Android than on iOS." }
+      ],
+      rescore: [
+        { src: "v1 · 1", name: "Free trial, €24.99 one-time unlock", verdict: "BREAKS", tone: "#FF9B8A", why: "The spine of the plan, and the weakest line on Play. A €25 one-time purchase in market B is out of the question by the plan's own description, and even in market A the Android cohort converts far worse on one-time unlocks. Keep the 100-object cap — change what it asks for." },
+        { src: "v1 · 2", name: "Lookup packs, €4.99 / 500 scans", verdict: "SURVIVES", tone: "#B9F0C9", why: "The strongest carry-over. Consumables are the native Play monetisation and they price against your actual variable cost, which doesn't change by platform. At lower local tiers this becomes the primary consumer revenue on Android, not the top-up." },
+        { src: "v1 · 3", name: "Affiliate on the wishlist", verdict: "BETTER", tone: "#B9F0C9", why: "Link-out is less culturally penalised on Android, and market B has strong local marketplace affiliate programmes. Still deferred to v2 per the plan's own reasoning — the objection was about promises, not platforms." },
+        { src: "v1 · 4", name: "Paid up front, no free tier", verdict: "BREAKS", tone: "#FF9B8A", why: "Paid-up-front is effectively dead on Play outside a handful of niches. It was already filed as research-not-a-plan on iOS; on Android it isn't even research." },
+        { src: "v1 · NEW", name: "Rewarded video for lookups", verdict: "ANDROID ONLY", tone: "#FFD24A", why: "The plan already specced this for market B and deferred it. Android is the vehicle. Watch one video, get 25 scans — a trade the user chooses, never a banner, never rendered against someone's inventory. Requires the lookup meter, which v1 needs anyway." },
+        { src: "v2 · 1", name: "Seller subscription €6.99/mo", verdict: "HOLDS, LOWER", tone: "#B9F0C9", why: "Subscriptions work on Play and are cut at 15% from day one there. But €6.99 is a market-A price; expect a materially lower local tier and worse retention in B. Still the right v2 model on both platforms." },
+        { src: "v2 · 2", name: "Insurance referral €25–80/policy", verdict: "MARKET A ONLY", tone: "#EAE3D6", why: "Specialist collectibles insurers exist mainly where market A lives, and that is where iOS already reaches. Android adds almost no upside to the highest-revenue line in the plan — worth knowing before you count on Android to grow it." },
+        { src: "v2 · 3", name: "Transaction take rate 4–6%", verdict: "STILL NO", tone: "#EAE3D6", why: "Unchanged by platform. It was a different company on iOS and it is a different company on Android — with more payment-method fragmentation and more fraud surface in exactly the markets Android reaches." },
+        { src: "v2 · 4", name: "Promoted listings €1–3", verdict: "SURVIVES", tone: "#B9F0C9", why: "Consumable, sells attention rather than processing money, and works under market C's off-platform behaviour. One of the few lines that gets stronger as the audience skews toward B and C — which is exactly what Android does to it." },
+        { src: "v2 · 5", name: "Shops, clubs, libraries €19–49/mo", verdict: "BETTER", tone: "#B9F0C9", why: "Business buyers are device-agnostic and their staff are not. An iOS-only staff app fails the first question a shop asks. This is the line Android most directly unblocks — see section 06." },
+        { src: "v3", name: "Association tier, free forever", verdict: "BETTER", tone: "#B9F0C9", why: "The distribution argument depends on volunteers using the app on shift, and volunteer phones are majority Android in France. The member side is already an account-free link, so only the staff side is gated." }
+      ],
+      breaks: [
+        {
+          n: "BREAK 01 · THE SPINE",
+          t: "€24.99 once is an iPhone price.",
+          p1: "The plan's whole v1 rests on one payment from a person who values a well-made tool — and it works, on iOS, in seven countries. On Play the same offer meets an audience that has been trained for fifteen years that apps are free, plus the enormous market-B population for whom €25 is genuinely not a number they will consider. Across categories, revenue per install on Play tends to run somewhere around a quarter to a third of the App Store, even where installs are several times higher.",
+          p2: "What does not change is the diagnosis underneath: someone with 200 catalogued objects is a payer, and someone with 8 is not. The cap is still the right instrument. Only the ask attached to it has to change by storefront — which the plan already established as a mechanism.",
+          fix: "Keep the 100-object cap everywhere. Attach a market profile to it: the €24.99 unlock in A, a micro annual tier plus rewarded lookups in B. Two entitlement paths, one cap, one codebase.",
+          cost: "A second entitlement path and an ad SDK you didn't want. The meter that makes rewarded video possible is already required for lookup packs, so the incremental work is the SDK and the placement rules.",
+          wrong: "Discounting the unlock globally to chase Android conversion. That leaves market-A money on the table to win pennies in B, and it is unrecoverable — you cannot quietly raise a price you already published."
+        },
+        {
+          n: "BREAK 02 · THE HIDDEN COST",
+          t: "There is no iCloud, and cross-platform sync is the trap.",
+          p1: "\"A catalogue that lives on someone's phone and syncs through their iCloud costs you nothing to keep running\" is the sentence trap 1 is built on. It is an iOS sentence. On Android the closest equivalent is the user's own Google Drive app-data folder — free to you, inside their quota, no account beyond the one they already have. That preserves the principle exactly, and it is the answer for Android-only households.",
+          p2: "The real danger arrives the day you support both. A user with an iPhone and an Android tablet will expect one catalogue, and that requires your account system and your server — which converts the catalogue from a zero-marginal-cost product into a recurring bill, which is precisely the pressure that makes people build the subscription trap 1 forbids. That is the genuine hidden cost of Android, and it is not a line item.",
+          fix: "Google Drive app-data folder on Android, iCloud on iOS, and state plainly that a collection lives on one ecosystem. Export and import covers the rare migration. Revisit only if cross-platform sync is the top request with real numbers behind it.",
+          cost: "One honest limitation in the store listing, and the support emails it generates. Cheaper than a sync backend by two orders of magnitude, and it keeps trap 1 intact.",
+          wrong: "Building your own sync backend so both platforms share one account. That is a server bill, a GDPR posture, an auth system and a breach surface — for a feature that earns nothing and that most users will never trigger."
+        }
+      ],
+      stores: [
+        { k: "Fee at your scale", ios: "15% · Small Business Program, under $1M/yr", play: "15% · first $1M of annual revenue", note: "A wash. The store cut is not the reason Android earns less — stop reasoning about it." },
+        { k: "Subscription fee", ios: "15% under the SBP threshold", play: "15% from day one on subscriptions", note: "No difference worth planning around for the v2 seller subscription." },
+        { k: "Alternative billing", ios: "Limited, regulated, per-jurisdiction", play: "Available in several regions at a reduced fee", note: "Both are a distraction at your volume. Revisit above six figures." },
+        { k: "Revenue per install", ios: "Baseline", play: "Roughly a quarter to a third, rule of thumb", note: "This is the whole gap. It is about who installs, not about what Google takes." },
+        { k: "Install volume", ios: "Baseline", play: "Multiples higher, heavily weighted to market B", note: "The argument for Android is reach and distribution — not revenue per head." },
+        { k: "Staying listed", ios: "Occasional SDK and privacy updates", play: "Annual target-API bump or new installs stop", note: "A real ongoing tax on a solo dev. An unmaintained Play app degrades; an unmaintained iOS app mostly sits there." },
+        { k: "Getting listed", ios: "Review, usually days", play: "New personal accounts face a closed-testing requirement before production", note: "Weeks of lead time you have to plan for. Not hard, but it cannot be done the week you want to launch." }
+      ],
+      scenario: [
+        { k: "Downloads, year one (Play discovery, market-B weighted)", v: "60,000", tone: "#F3ECE0" },
+        { k: "Hit the 100-object cap at all", v: "14% · 8,400", tone: "#F3ECE0" },
+        { k: "Micro annual tier, local pricing (avg €5.50 net of 15%)", v: "5% · 420", tone: "#F3ECE0" },
+        { k: "Micro tier revenue", v: "€2,310", tone: "#F3ECE0" },
+        { k: "Lookup packs at local tiers", v: "€1,900", tone: "#F3ECE0" },
+        { k: "Rewarded video (18k MAU, ~2 views/mo, low eCPM)", v: "€1,700", tone: "#F3ECE0" },
+        { k: "Lookup costs, ad SDK, second store operations", v: "−€2,600", tone: "#F3ECE0" },
+        { k: "Android year one, net", v: "≈ €3,300", tone: "#FFD24A" }
+      ],
+      reads: [
+        { k: "HOW TO READ IT", bg: "#fff", t: "2.4× the installs, a sixth of the money", b: "Against the plan's ≈€20k iOS year one. If you were hoping Android roughly doubles revenue, it does not — not in year one, and not per user in any year." },
+        { k: "WHAT IT IS GOOD FOR", bg: "#B9F0C9", t: "60,000 people using it", b: "Reach at this scale is worth something real: word of mouth, review volume, the v2 index having supply in markets iOS never touches, and the country log telling you where the product actually resonates." },
+        { k: "THE HONEST CONCLUSION", bg: "#FFD24A", t: "Do it for reach or for v3 — not for the year-one number", b: "If the reason to build Android is consumer revenue, the arithmetic says don't. If it is distribution, market-B presence, or unblocking institutions, the arithmetic is not the right measure." }
+      ],
+      strategic: [
+        { k: "SECOND ARGUMENT", t: "The v2 index needs supply", b: "An index with listings in eight countries is a different product from one with listings in two. Supply density is the thing that makes a marketplace work, and Android is the cheapest way to multiply it." },
+        { k: "THIRD ARGUMENT", t: "Market C behaviour is Android behaviour", b: "The handshake, the WhatsApp-first share, the reputation track record — all designed for markets that are overwhelmingly Android. Right now that design has no audience." },
+        { k: "THE COUNTER", t: "It is still a second app to support", b: "Two stores, two review queues, two crash dashboards, two sets of screenshots, an annual API treadmill, and support in more languages. On the year-one number above, that is a poor trade unless one of the three arguments above is real for you." }
+      ],
+      edits: [
+        { where: "SECTION 01 · v1 OPTIONS", effort: "ONE SENTENCE", tone: "#B9F0C9", t: "Label option 1 as a market-A instrument", b: "\"The €24.99 unlock is the market-A ask; in market B the same cap opens a micro annual tier and rewarded lookups.\" The mechanism already exists in section 04 — this just connects it to the spine so it isn't read as universal." },
+        { where: "SECTION 03 · TRAP 1", effort: "ONE SENTENCE", tone: "#B9F0C9", t: "Add the sync caveat to \"subscribing the catalogue\"", b: "\"Zero-cost sync means iCloud on iOS and the Drive app-data folder on Android. Cross-platform sync means a server, and a server is how this trap gets sprung.\" Names the pressure before it arrives." },
+        { where: "SECTION 04 · GEOGRAPHY", effort: "ONE SENTENCE", tone: "#B9F0C9", t: "Say that the market profile is per platform × storefront", b: "Market B is not reachable from iOS at volume. Stating it turns \"phase two\" from a vague deferral into a concrete dependency: market B ships when Android ships." },
+        { where: "SECTION 06 · v3", effort: "NEEDS A CALL", tone: "#FFD24A", t: "Flag the institution tier as device-gated", b: "The only edit with engineering attached. If v3 is the best plan B, and v3 staff devices are majority Android, then Android is not optional in the plan B — it is the plan B. Worth resolving with one question to the recyclerie contact before it becomes a roadmap assumption." }
+      ],
+      gates: [
+        { k: "GATE 1 · FREE TO CHECK", t: "The country log", b: "The plan already says log downloads by country from day one. If market-B countries show meaningful demand on iOS despite low iPhone share, that is a strong signal of much larger latent demand on Android." },
+        { k: "GATE 2 · ONE EMAIL", t: "What the volunteers carry", b: "Ask the recyclerie contact. If the answer is majority Android, the v3 plan B is device-gated and Android moves up the roadmap on its own merits, ahead of any consumer argument." },
+        { k: "GATE 3 · ARCHITECTURAL", t: "Is the logic still portable", b: "The only gate with an expiry date. Shared Swift packages with no SwiftUI import stay cheap indefinitely; a codebase where the domain logic and the iOS layer have fused makes all of the above moot." }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

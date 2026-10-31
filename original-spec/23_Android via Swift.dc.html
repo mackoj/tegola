@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#EAE3D6}a{color:#2B44D6}a:hover{color:#FF5B2E}</style>
+</helmet>
+
+<div style="width:1360px;margin:0 auto;padding:60px 28px 100px;font-family:Archivo,system-ui,sans-serif;color:#17130F">
+
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70">CLCTN · PLATFORM STRATEGY · ANDROID VIA SHARED SWIFT · 19 SEP 2026</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:66px;line-height:.92;letter-spacing:-.045em;margin:16px 0 0;max-width:1020px;text-wrap:balance">Android later. The line you draw now.</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:880px;margin-top:20px;text-wrap:pretty">Polymarket shipped an Android app in July 2026 with roughly <strong>170,000 lines of production Swift inside it</strong> — models, networking, business logic, and over 120 ViewModels, all shared with the iOS app. Native Compose UI on top. That is the path, and it is proven at a scale far beyond anything CLCTN will reach.</div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:880px;margin-top:14px;text-wrap:pretty">The corner to avoid is not "we didn't build Android." It is arriving at the Android decision with a codebase where the domain logic and the iOS framework code are the same code. Polymarket's own account is explicit that the head start came from having already split the app into Swift packages before the question was asked — the rest was moving files across a line that already existed.</div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">00 · THE VERDICT, BEFORE THE DETAIL</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+    <sc-for list="{{ verdicts }}" as="v" hint-placeholder-count="3">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;padding:22px">
+        <div style="display:inline-block;font:500 9px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:4px 10px;background:{{ v.tone }}">{{ v.tag }}</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:23px;letter-spacing:-.02em;line-height:1.1;margin-top:14px;text-wrap:pretty">{{ v.t }}</div>
+        <div style="font:400 14px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:10px;text-wrap:pretty">{{ v.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">01 · WHY THIS IS NOW CREDIBLE AND WASN'T TWO YEARS AGO</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:860px;margin-bottom:20px;text-wrap:pretty">Four things landed independently and happen to compose. Any one of them missing and this page would say "use Kotlin."</div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+    <sc-for list="{{ pillars }}" as="p" hint-placeholder-count="4">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;padding:18px">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">{{ p.k }}</div>
+        <div style="font-family:'DM Mono',monospace;font-weight:500;font-size:17px;letter-spacing:-.01em;margin-top:8px">{{ p.t }}</div>
+        <div style="font:400 12.5px/1.55 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">{{ p.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">02 · THE LINE — WHAT SHIPS TO BOTH, WHAT STAYS ON IOS</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:880px;margin-bottom:10px;text-wrap:pretty">Polymarket's rule was one sentence: <strong>share everything we can.</strong> Anything touching UIKit, SwiftUI, MapKit, PassKit or a platform SDK stays on the iOS side; everything else is a candidate for the shared layer. The boundary is made real by hiding platform code behind protocols and injecting the implementation at startup — which in our case is <span style="font-family:'DM Mono',monospace">swift-dependencies</span>, already in the blueprint for every effectful boundary.</div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:880px;margin-bottom:22px;text-wrap:pretty">Applied to CLCTN's existing target list, the split is unusually clean — because the blueprint already put one SPM target per domain rather than one app target with folders.</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #2B44D6;overflow:hidden">
+      <div style="background:#2B44D6;color:#fff;padding:14px 20px">
+        <div style="font-family:'DM Mono',monospace;font-weight:500;font-size:17px">clctn-shared</div>
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;opacity:.8;margin-top:5px">FOUNDATION + OBSERVATION + PORTABLE PACKAGES ONLY</div>
+      </div>
+      <div style="padding:6px 0">
+        <sc-for list="{{ shared }}" as="s" hint-placeholder-count="7">
+          <div style="padding:13px 20px;border-bottom:2px solid #F0EAE0">
+            <div style="font-family:'DM Mono',monospace;font-weight:500;font-size:14px">{{ s.t }}</div>
+            <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;margin-top:5px;text-wrap:pretty">{{ s.b }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #FF5B2E;overflow:hidden">
+      <div style="background:#17130F;color:#F3ECE0;padding:14px 20px">
+        <div style="font-family:'DM Mono',monospace;font-weight:500;font-size:17px">clctn-ios</div>
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;opacity:.55;margin-top:5px">PLATFORM CODE — MIRRORED IN KOTLIN ON ANDROID</div>
+      </div>
+      <div style="padding:6px 0">
+        <sc-for list="{{ iosOnly }}" as="s" hint-placeholder-count="7">
+          <div style="padding:13px 20px;border-bottom:2px solid #F0EAE0">
+            <div style="font-family:'DM Mono',monospace;font-weight:500;font-size:14px">{{ s.t }}</div>
+            <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;margin-top:5px;text-wrap:pretty">{{ s.b }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#0C0A08;color:#F3ECE0;padding:24px;box-shadow:5px 5px 0 #2B44D6;overflow-x:auto;margin-top:16px">
+    <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:16px;flex-wrap:wrap">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;opacity:.5">THE PATTERN · A SWIFT PROTOCOL, A KOTLIN CONFORMANCE</div>
+      <div style="margin-left:auto;font:500 8.5px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #FFD24A;color:#FFD24A;border-radius:999px;padding:3px 9px">ALREADY OUR DEPENDENCY STYLE</div>
+    </div>
+    <div style="font:400 12.5px/1.8 'DM Mono',monospace;white-space:pre-wrap;max-width:1060px">{{ sketch }}</div>
+    <div style="font:400 12.5px/1.6 Archivo,sans-serif;opacity:.55;margin-top:16px;max-width:920px;text-wrap:pretty">This is the part of the Polymarket write-up worth internalising: the Android implementation is plain Kotlin using the native SDK, conforming to a Swift protocol. No reducer knows which platform it is on. We already write dependencies this way — the blueprint mandates it — so the work is choosing the right protocols, not inventing a technique.</div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">03 · TCA 2 IS THE REASON THIS IS EASIER FOR US THAN FOR THEM</div>
+  <div style="display:grid;grid-template-columns:1.1fr .9fr;gap:16px;align-items:start">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;padding:28px">
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:32px;letter-spacing:-.03em;line-height:1.08;text-wrap:balance">They had to invent a shareable ViewModel. We inherit one.</div>
+      <div style="font:400 15px/1.7 Archivo,sans-serif;color:#3A2F26;margin-top:16px;text-wrap:pretty">Polymarket's hardest migration was moving 120+ ViewModels off <span style="font-family:'DM Mono',monospace">ObservableObject</span>, <span style="font-family:'DM Mono',monospace">@Published</span> and Combine onto <span style="font-family:'DM Mono',monospace">@Observable</span>, because the bridge generates Kotlin from Swift Concurrency, not from Combine publishers. Every publisher needed a hand-written async surface.</div>
+      <div style="font:400 15px/1.7 Archivo,sans-serif;color:#3A2F26;margin-top:14px;text-wrap:pretty">A TCA reducer is already the thing they spent a year building toward: a value type, an action enum, effects expressed in structured concurrency, state observed through Observation. No Combine, no UI framework, nothing to migrate. <strong>The unit of sharing is the reducer, and it is portable by construction.</strong></div>
+      <div style="font:400 15px/1.7 Archivo,sans-serif;color:#3A2F26;margin-top:14px;text-wrap:pretty">TCA 2 sharpens this further — Point-Free describe it as the next generation of the library, embracing Swift's modern concurrency tools. The 1.x line already builds for Android, Linux and Wasm on the package index, and Point-Free maintain a whole cross-platform Swift track. The company that makes our architecture is actively taking it off Apple's platforms.</div>
+      <div style="height:2px;background:#E0D6C4;margin:22px 0"></div>
+      <div style="font:400 13.5px/1.6 Archivo,sans-serif;color:#6E6458;text-wrap:pretty">Caveat worth carrying: TCA 2 was in <strong>beta preview</strong> at last public note. Fine for a project that hasn't shipped v1 — you would adopt it during the build, not migrate to it after. Confirm its release status before committing the blueprint to 2.x.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <sc-for list="{{ tcaPoints }}" as="t" hint-placeholder-count="4">
+        <div style="border:2.5px solid #17130F;border-radius:18px;background:#EAE3D6;padding:20px">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">{{ t.k }}</div>
+          <div style="font:700 15px/1.35 Archivo,sans-serif;margin-top:8px;text-wrap:pretty">{{ t.t }}</div>
+          <div style="font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">{{ t.b }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">04 · WHAT BIT THEM — READ BEFORE BELIEVING THE PITCH</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:860px;margin-bottom:20px;text-wrap:pretty">The write-up is unusually honest about cost, which is the main reason to trust it. Four of these are real and one of them is genuinely nasty.</div>
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <sc-for list="{{ bites }}" as="b" hint-placeholder-count="5">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+        <div style="display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;background:#17130F;color:#F3ECE0;padding:14px 20px">
+          <div style="font:500 9.5px 'DM Mono',monospace;letter-spacing:.12em;opacity:.55">{{ b.n }}</div>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:21px;letter-spacing:-.02em">{{ b.title }}</div>
+          <div style="margin-left:auto;font:500 9px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #FFD24A;color:#FFD24A;border-radius:999px;padding:4px 10px">{{ b.severity }}</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr">
+          <div style="padding:18px 20px;border-right:2px solid #E0D6C4">
+            <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;margin-bottom:8px">WHAT HAPPENED TO THEM</div>
+            <div style="font:400 13.5px/1.6 Archivo,sans-serif;text-wrap:pretty">{{ b.them }}</div>
+          </div>
+          <div style="padding:18px 20px">
+            <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;margin-bottom:8px">WHAT IT MEANS FOR CLCTN</div>
+            <div style="font:400 13.5px/1.6 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ b.us }}</div>
+          </div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">05 · THE HONEST CASE AGAINST</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:860px;margin-bottom:20px;text-wrap:pretty">The forum thread contains a well-argued dissent, and it is worth keeping on the page rather than filtering out. Two of the three objections do not apply to a one-person company; one of them applies harder.</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+    <sc-for list="{{ against }}" as="a" hint-placeholder-count="3">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;padding:22px">
+        <div style="display:inline-block;font:500 9px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:4px 10px;background:{{ a.tone }}">{{ a.verdict }}</div>
+        <div style="font:700 16px/1.35 Archivo,sans-serif;margin-top:14px;text-wrap:pretty">{{ a.claim }}</div>
+        <div style="font:400 13.5px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:10px;text-wrap:pretty">{{ a.reply }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">06 · THE ACTUAL CHANGE TO MAKE NOW</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:880px;margin-bottom:10px;text-wrap:pretty">Nothing that costs a day. <strong>Zero Skip, zero Gradle, zero Kotlin, zero Android tooling installed.</strong> Two paragraphs in the Technical Blueprint and one habit — the same shape as the resizability rule on the iPhone Duo page: a constraint that is free while the codebase is small and expensive once it isn't.</div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:880px;margin-bottom:22px;text-wrap:pretty">And like that rule, it pays off without Android ever happening: a platform-neutral core is also what makes the logic testable without a simulator, and what would let a web or server surface exist later.</div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#0C0A08;color:#F3ECE0;padding:24px;box-shadow:5px 5px 0 #FF5B2E;overflow-x:auto">
+    <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;opacity:.5;margin-bottom:16px">BLUEPRINT · PORTABILITY CONSTRAINT · PROPOSED WORDING</div>
+    <div style="font:400 12.5px/1.85 'DM Mono',monospace;white-space:pre-wrap;max-width:1060px">{{ constraint }}</div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px">
+    <sc-for list="{{ steps }}" as="s" hint-placeholder-count="4">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;padding:18px">
+        <div style="display:flex;align-items:baseline;gap:10px">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">{{ s.n }}</div>
+          <div style="margin-left:auto;font:500 9px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:3px 9px;background:{{ s.tone }}">{{ s.when }}</div>
+        </div>
+        <div style="font:700 15px/1.35 Archivo,sans-serif;margin-top:10px;text-wrap:pretty">{{ s.t }}</div>
+        <div style="font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">{{ s.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:14px">07 · OPEN QUESTIONS, TO ANSWER BEFORE ANY OF THIS IS LOAD-BEARING</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <sc-for list="{{ questions }}" as="q" hint-placeholder-count="6">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#EAE3D6;padding:18px">
+        <div style="display:flex;gap:10px;align-items:baseline">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">{{ q.n }}</div>
+          <div style="font:700 15px/1.45 Archivo,sans-serif;text-wrap:pretty">{{ q.q }}</div>
+        </div>
+        <div style="font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">{{ q.why }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="font:400 12.5px/1.7 Archivo,sans-serif;color:#8A7F70;margin-top:44px;max-width:900px;text-wrap:pretty">Sources: <a href="https://forums.swift.org/t/our-android-app-is-written-in-swift/88778">Our Android App Is Written in Swift</a> (Swift Forums, August 2026) and its reply thread, including the dissent in section 05; Point-Free's notes on ComposableArchitecture 2.0 and their cross-platform Swift work; Swift Package Index build results for swift-composable-architecture. Related: <a href="22_iPhone Duo.dc.html">iPhone Duo</a> for the sibling resizability constraint, and <a href="16_Technical Blueprint.dc.html">Technical Blueprint</a> for the target list this page splits.</div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1416,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      verdicts: [
+        { tag: "DO NOW · ~1 DAY", tone: "#B9F0C9", t: "Split the package graph", b: "clctn-shared and clctn-ios, with the domain targets on the shared side. The blueprint already has one SPM target per domain, so this is where they sit, not a rewrite." },
+        { tag: "DO NOW · FREE", tone: "#B9F0C9", t: "Keep the core Foundation-only", b: "No UIKit, no SwiftUI, no Apple-framework import below the view layer. Every platform capability behind a protocol, injected at startup — which is already how the blueprint does dependencies." },
+        { tag: "DO NOT", tone: "#FFD24A", t: "Install any Android tooling", b: "No Skip, no Gradle, no Android Studio, no Kotlin, no cross-platform CI. The decision stays open at near-zero cost; paying for it before there are iOS users is the actual mistake." }
+      ],
+      pillars: [
+        { k: "TOOLCHAIN", t: "Skip", b: "Compiles Swift for Android and bridges it to Kotlin. Polymarket had Swift networking and models driving an Android screen within a week of starting." },
+        { k: "LANGUAGE", t: "Official Android SDK", b: "Swift on Android stopped being a hobby port: there is an Android Workgroup, an official SDK, and issues get fixed in the open." },
+        { k: "ECOSYSTEM", t: "The packages we use", b: "swift-dependencies, swift-clocks, swift-concurrency-extras, swift-identified-collections, swift-async-algorithms — named in the field report as what made the path practical. All already in our stack." },
+        { k: "ARCHITECTURE", t: "TCA 2", b: "Value-type state, action enums, structured-concurrency effects, Observation. No Combine and no UI framework in the reducer — portable without a migration." }
+      ],
+      shared: [
+        { t: "Models", b: "Every @Table struct. Item, Collection, Photo, Loan, Valuation — plain Swift value types with no Apple framework in sight." },
+        { t: "All 21 reducers", b: "The blueprint's feature list, minus the views. State, actions, effects and navigation logic are the shared asset, and they are the expensive part of the app." },
+        { t: "Persistence layer", b: "SQLite is portable; the question is whether sqlite-data's Android story is ready. Open question 01 — but the schema, queries and requests are portable regardless of which driver sits under them." },
+        { t: "Valuation and pricing", b: "The comp-matching and price-history logic. Pure computation over rows, the single most obviously platform-neutral thing in the product." },
+        { t: "CSV import and mapping", b: "Column detection, coercion, dedupe. String and file work — Foundation only." },
+        { t: "Networking and sync", b: "URLSession is available cross-platform; the request and response types are ours." },
+        { t: "Dependency protocols", b: "The declarations themselves: camera, storage, notifications, payments, analytics. Shared interface, per-platform implementation." }
+      ],
+      iosOnly: [
+        { t: "SwiftUI views", b: "Every screen. On Android these are rewritten in Compose — this is the real cost of Android and there is no way around it." },
+        { t: "Camera capture", b: "AVFoundation on iOS, CameraX on Android. Behind one protocol that returns an image and a set of detected regions." },
+        { t: "On-device ML", b: "Vision and Foundation Models are Apple-only. Android needs ML Kit or a bundled model — see the On-Device ML page. Behind a protocol that answers questions, not one that exposes a model." },
+        { t: "StoreKit", b: "Entitlements and subscriptions. Google Play Billing is the mirror, and this is exactly the Apple Pay / Google Pay pattern from the write-up." },
+        { t: "Photo library", b: "PhotosUI against Android's photo picker. A protocol that hands back image data." },
+        { t: "Keychain and files", b: "Reported as working through the bridge, but still platform surface. Behind a protocol either way." },
+        { t: "Widgets, Shortcuts, Share", b: "Genuinely Apple-only product features. Accept divergence here rather than designing to the intersection — the dissent in section 05 is right that this is the trap." }
+      ],
+      sketch: [
+        "// clctn-shared — the interface the reducers know about",
+        "protocol ShelfCameraClient {",
+        "  func capture() async throws -> CapturedShelf",
+        "}",
+        "",
+        "// clctn-ios — AVFoundation + Vision",
+        "struct AVShelfCameraClient: ShelfCameraClient { ... }",
+        "",
+        "// Android app module — plain Kotlin, CameraX, conforming to the Swift protocol",
+        "class CameraXShelfClient(val context: Context) : ShelfCameraClient {",
+        "  override suspend fun capture(): CapturedShelf { ... }",
+        "}",
+        "",
+        "// Injected once at startup. No reducer ever learns which one it got.",
+        "@Dependency(\\.shelfCamera) var shelfCamera"
+      ].join("\n"),
+      tcaPoints: [
+        { k: "THEIR PAIN", t: "120 ViewModels to migrate", b: "ObservableObject and @Published to @Observable, one screen at a time, over months. We would start where they finished." },
+        { k: "THEIR PAIN", t: "Combine glue in both directions", b: "The bridge reads Swift Concurrency, not publishers, so every Combine surface needed an AsyncStream twin. TCA effects are already structured concurrency." },
+        { k: "OUR EDGE", t: "The reducer is the sharing unit", b: "Not a convention we would have to enforce — it is what the library is. Testability and portability turn out to be the same property." },
+        { k: "OUR EDGE", t: "Point-Free are going cross-platform", b: "TCA 1.x already builds for Android, Linux and Wasm, and they publish a cross-platform Swift track. We are not betting against our own vendor's direction." }
+      ],
+      bites: [
+        { n: "B1", title: "Object lifetimes", severity: "THE HARD ONE", them: "Swift @Observable objects do not fit Android's lifecycle. Compose keeps objects around and reuses them; that produced stale data, zombie websocket subscriptions and strange recomposition. They ended up building their own Compose navigation stack, tab view, sheet and full-screen cover to recreate iOS lifetime behaviour.", us: "TCA's store tree is explicit about when child state exists — @Presents and scoped stores make lifetime a value in the parent's state rather than an object the UI owns. That should help, but do not assume it: this is the first thing to test on a spike, not the last." },
+        { n: "B2", title: "Binary size", severity: "REAL, MEASURABLE", them: "Swift added roughly 50 MB to the APK at download time.", us: "For a marketplace app on Android in emerging markets that is a conversion problem. For a paid collection-cataloguing app it is an annoyance. Worth knowing before it is a surprise in a store listing." },
+        { n: "B3", title: "The edit-compile loop", severity: "DAILY FRICTION", them: "A Swift change means running skip export to recompile modules into AARs, then a Gradle sync, before build and run. Android Studio cannot do it for you, and it adds up when iterating.", us: "A solo developer feels this more than a team does, because there is no one else to absorb the context switch. It is the single strongest argument for doing Android only once iOS is stable and the shared core is changing slowly." },
+        { n: "B4", title: "Debugging", severity: "ANNOYING", them: "You cannot set a breakpoint in Swift from Android Studio. Yet.", us: "Push the shared core's correctness into tests — which is what TCA's TestStore is for. If the logic is test-covered, the Android debugger only ever needs to see Kotlin UI code." },
+        { n: "B5", title: "Discipline drift", severity: "PREVENTABLE", them: "Someone imports UIKit into shared code on a Friday afternoon. Their fix was not vigilance but CI: every PR touching shared code runs the shared tests on an Android emulator and builds the Android app before it can merge.", us: "We cannot run that CI without an Android project. The cheap substitute today: a Linux build of clctn-shared in CI. Same guardrail, no Android tooling — it fails the moment an Apple framework sneaks below the view layer." }
+      ],
+      against: [
+        { verdict: "DOESN'T APPLY", tone: "#B9F0C9", claim: "It shrinks your hiring pool — you end up hiring someone less senior because you need Swift-on-Android skills.", reply: "The strongest objection in the thread, and it is an objection about staffing a team. CLCTN has no team. If that changes, the counter-argument from the thread holds: you are hiring a Swift engineer, not a Swift-on-Android engineer." },
+        { verdict: "APPLIES", tone: "#FFD24A", claim: "Shared codebases drift toward the lowest common denominator — good platform-specific features get rejected because they cannot exist everywhere.", reply: "This is the real risk and the reason section 02 puts widgets, Shortcuts and Vision firmly on the iOS side. The rule is share the logic, never the ambition: iOS is allowed features Android will not have." },
+        { verdict: "DOESN'T APPLY", tone: "#B9F0C9", claim: "The shared layer plus its glue eventually grows bigger than two native codebases would have been.", reply: "That was the experience with C++ across JNI and C#. The glue here is a set of protocols we would write anyway for testing. And unlike a team of two, one person genuinely cannot write the same valuation logic twice." }
+      ],
+      constraint: [
+        "PORTABILITY",
+        "",
+        "  · Two package roots: clctn-shared and clctn-ios.",
+        "    All domain targets — Models, Collections, Valuation, Importing,",
+        "    Trading, Entitlements, DatabaseSupport — live in clctn-shared.",
+        "  · clctn-shared imports Foundation, Observation, TCA and the Point-Free",
+        "    packages. Nothing else. No UIKit, SwiftUI, Vision, StoreKit, PhotosUI,",
+        "    AVFoundation or any other Apple framework, at any depth.",
+        "  · Every platform capability is a protocol in clctn-shared with its",
+        "    implementation injected at startup via swift-dependencies.",
+        "    The protocol answers a question; it never exposes a platform type.",
+        "  · Reducers never import a UI framework. Views never contain logic",
+        "    that could be tested without one.",
+        "  · CI builds clctn-shared on Linux and runs its tests there.",
+        "    That build failing IS the boundary — it is not a style rule.",
+        "",
+        "  Consequence: Android via Skip becomes a UI project rather than a rewrite.",
+        "  Until then, the same rule buys faster tests and a genuinely modular app."
+      ].join("\n"),
+      steps: [
+        { n: "STEP 01", when: "AT SETUP", tone: "#B9F0C9", t: "Create the two package roots", b: "Before the first feature is written, not after twenty-one. This is the whole point of the page and it costs about a day at day zero." },
+        { n: "STEP 02", when: "AT SETUP", tone: "#B9F0C9", t: "Add the Linux CI job", b: "One workflow that builds and tests clctn-shared on Linux. Cheap, needs no Android anything, and it enforces the boundary automatically." },
+        { n: "STEP 03", when: "AT BUILD", tone: "#FFD24A", t: "Write dependencies as questions", b: "shelfCamera.capture() rather than a client that hands back an AVCapturePhoto. The protocol shape decides whether a Kotlin conformance is possible later." },
+        { n: "STEP 04", when: "IF ANDROID", tone: "#EAE3D6", t: "Spike lifetimes first, on one screen", b: "Polymarket proved the idea on Settings in a week. Pick the smallest CLCTN screen, and make B1 — object lifetimes — the thing the spike is actually testing." }
+      ],
+      questions: [
+        { n: "01", q: "Does sqlite-data run on Android?", why: "The single biggest unknown. Persistence is in the shared core, and if the Point-Free persistence layer is not portable, either the driver is swapped behind a protocol or the core shrinks. Worth checking before the blueprint commits." },
+        { n: "02", q: "Is TCA 2 out of beta?", why: "It was in beta preview at last public note. We would adopt it during the build rather than migrate later, so the timing matters for the blueprint's stack section, not for Android." },
+        { n: "03", q: "What does Skip cost commercially?", why: "It is a sponsored commercial toolchain. The licence and pricing should be understood before it is load-bearing, not after — the same discipline as the Redact licence question." },
+        { n: "04", q: "Is there an Android market for this at all?", why: "Collection cataloguing skews toward users who already pay for apps. If the Android revenue case is weak, the correct answer is to keep the boundary and never ship Android — which this plan supports at zero extra cost." },
+        { n: "05", q: "Does on-device ML survive the crossing?", why: "Vision and Foundation Models are free on iOS and have no Android equivalent. Any feature built on them is an iOS feature until proven otherwise, and that should be conscious rather than discovered." },
+        { n: "06", q: "Who writes the Compose UI?", why: "The shared core makes Android cheaper; it does not make it free. Twenty-one screens still have to be built by someone who knows Compose, and that is the real budget line." }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

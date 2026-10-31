@@ -1,0 +1,74 @@
+{
+ "recordedAt": "2026-09-21",
+ "model": "jev-1.13.0",
+ "source": "node experiments/run.mjs, one request per item",
+ "experiments": {
+  "feedback": {
+   "results": {
+    "F1 · polite browser": {"pain_named":{"type":"choice","choice":"no_pain_stated","confidence":0.98},"names_a_type_we_lack":{"type":"noul","noul":0.11},"type_requested":{"type":"choice","choice":"none_named","confidence":0.96},"intent_to_pay":{"type":"score","score":0.03,"confidence":0.97,"legend":{"0":"","1":"","2":"","3":""}},"blocked_by_a_missing_type":{"type":"noul","noul":0.05},"mentions_a_clock":{"type":"noul","noul":0.04},"names_a_competitor":{"type":"noul","noul":0.04}},
+    "F2 · spreadsheet refugee, watches": {"pain_named":{"type":"choice","choice":"a_sixth_thing","confidence":0.56},"names_a_type_we_lack":{"type":"noul","noul":0.82},"type_requested":{"type":"choice","choice":"watches","confidence":1},"intent_to_pay":{"type":"score","score":2.96,"confidence":0.96,"legend":{"0":"","1":"","2":"","3":""}},"blocked_by_a_missing_type":{"type":"noul","noul":0.04},"mentions_a_clock":{"type":"noul","noul":0.97},"names_a_competitor":{"type":"noul","noul":0.92}},
+    "F3 · vague enthusiasm": {"pain_named":{"type":"choice","choice":"no_pain_stated","confidence":1},"names_a_type_we_lack":{"type":"noul","noul":0.78},"type_requested":{"type":"choice","choice":"sneakers","confidence":1},"intent_to_pay":{"type":"score","score":0.01,"confidence":0.99,"legend":{"0":"","1":"","2":"","3":""}},"blocked_by_a_missing_type":{"type":"noul","noul":0.04},"mentions_a_clock":{"type":"noul","noul":0.06},"names_a_competitor":{"type":"noul","noul":0.03}},
+    "F4 · already-shipped type": {"pain_named":{"type":"choice","choice":"forgetting_what_i_own","confidence":1},"names_a_type_we_lack":{"type":"noul","noul":0.1},"type_requested":{"type":"choice","choice":"other","confidence":0.97},"intent_to_pay":{"type":"score","score":1.91,"confidence":0.87,"legend":{"0":"","1":"","2":"","3":""}},"blocked_by_a_missing_type":{"type":"noul","noul":0.07},"mentions_a_clock":{"type":"noul","noul":0.08},"names_a_competitor":{"type":"noul","noul":0.38}},
+    "F5 · blocked, and says so": {"pain_named":{"type":"choice","choice":"no_single_place","confidence":0.77},"names_a_type_we_lack":{"type":"noul","noul":0.97},"type_requested":{"type":"choice","choice":"synthesizers","confidence":1},"intent_to_pay":{"type":"score","score":2.53,"confidence":0.53,"legend":{"0":"","1":"","2":"","3":""}},"blocked_by_a_missing_type":{"type":"noul","noul":0.92},"mentions_a_clock":{"type":"noul","noul":0.93},"names_a_competitor":{"type":"noul","noul":0.51}},
+    "F6 · feature request, no pain": {"pain_named":{"type":"choice","choice":"no_pain_stated","confidence":1},"names_a_type_we_lack":{"type":"noul","noul":0.31},"type_requested":{"type":"choice","choice":"lego","confidence":0.93},"intent_to_pay":{"type":"score","score":0.59,"confidence":0.48,"legend":{"0":"","1":"","2":"","3":""}},"blocked_by_a_missing_type":{"type":"noul","noul":0.03},"mentions_a_clock":{"type":"noul","noul":0.1},"names_a_competitor":{"type":"noul","noul":0.04}}
+   },
+   "meta": {"F1 · polite browser":{"ms":704,"tokens":1498},"F2 · spreadsheet refugee, watches":{"ms":701,"tokens":1558},"F3 · vague enthusiasm":{"ms":674,"tokens":1470},"F4 · already-shipped type":{"ms":675,"tokens":1541},"F5 · blocked, and says so":{"ms":727,"tokens":1565},"F6 · feature request, no pain":{"ms":677,"tokens":1486}}
+  },
+  "board": {
+   "results": {
+    "B1 · watches (a real peer)": {"duplicate_of_wine":{"type":"noul","noul":0.03},"duplicate_of_vinyl":{"type":"noul","noul":0.02},"duplicate_of_video_game":{"type":"noul","noul":0.02},"duplicate_of_retro_computer":{"type":"noul","noul":0.02},"verdict":{"type":"score","score":1.99,"confidence":0.98,"legend":{"0":"","1":"","2":""}},"has_public_scale":{"type":"noul","noul":0.9},"has_corpus":{"type":"noul","noul":0.91},"is_a_sub_type":{"type":"noul","noul":0.46},"renderer_wanted":{"type":"choice","choice":"gauge","confidence":0.44},"body_is_abusive":{"type":"noul","noul":0.03}},
+    "B2 · spirits (near-duplicate of wine)": {"duplicate_of_wine":{"type":"noul","noul":0.14},"duplicate_of_vinyl":{"type":"noul","noul":0.02},"duplicate_of_video_game":{"type":"noul","noul":0.02},"duplicate_of_retro_computer":{"type":"noul","noul":0.02},"verdict":{"type":"score","score":1.72,"confidence":0.58,"legend":{"0":"","1":"","2":""}},"has_public_scale":{"type":"noul","noul":0.79},"has_corpus":{"type":"noul","noul":0.8},"is_a_sub_type":{"type":"noul","noul":0.78},"renderer_wanted":{"type":"choice","choice":"panel","confidence":0.37},"body_is_abusive":{"type":"noul","noul":0.03}},
+    "B3 · lego (a real peer, set-shaped)": {"duplicate_of_wine":{"type":"noul","noul":0.03},"duplicate_of_vinyl":{"type":"noul","noul":0.03},"duplicate_of_video_game":{"type":"noul","noul":0.03},"duplicate_of_retro_computer":{"type":"noul","noul":0.03},"verdict":{"type":"score","score":1.98,"confidence":0.97,"legend":{"0":"","1":"","2":""}},"has_public_scale":{"type":"noul","noul":0.82},"has_corpus":{"type":"noul","noul":0.95},"is_a_sub_type":{"type":"noul","noul":0.73},"renderer_wanted":{"type":"choice","choice":"set","confidence":0.79},"body_is_abusive":{"type":"noul","noul":0.05}},
+    "B4 · a sub-type in disguise": {"duplicate_of_wine":{"type":"noul","noul":0.04},"duplicate_of_vinyl":{"type":"noul","noul":0.05},"duplicate_of_video_game":{"type":"noul","noul":0.51},"duplicate_of_retro_computer":{"type":"noul","noul":0.06},"verdict":{"type":"score","score":1.83,"confidence":0.74,"legend":{"0":"","1":"","2":""}},"has_public_scale":{"type":"noul","noul":0.88},"has_corpus":{"type":"noul","noul":0.94},"is_a_sub_type":{"type":"noul","noul":0.94},"renderer_wanted":{"type":"choice","choice":"ladder","confidence":0.28},"body_is_abusive":{"type":"noul","noul":0.04}},
+    "B5 · a Thing, kindly": {"duplicate_of_wine":{"type":"noul","noul":0.03},"duplicate_of_vinyl":{"type":"noul","noul":0.01},"duplicate_of_video_game":{"type":"noul","noul":0.01},"duplicate_of_retro_computer":{"type":"noul","noul":0.02},"verdict":{"type":"score","score":1.04,"confidence":0.93,"legend":{"0":"","1":"","2":""}},"has_public_scale":{"type":"noul","noul":0.31},"has_corpus":{"type":"noul","noul":0.25},"is_a_sub_type":{"type":"noul","noul":0.77},"renderer_wanted":{"type":"choice","choice":"map","confidence":0.8},"body_is_abusive":{"type":"noul","noul":0.02}}
+   },
+   "meta": {"B1 · watches (a real peer)":{"ms":291,"tokens":1614},"B2 · spirits (near-duplicate of wine)":{"ms":291,"tokens":1604},"B3 · lego (a real peer, set-shaped)":{"ms":272,"tokens":1613},"B4 · a sub-type in disguise":{"ms":424,"tokens":1592},"B5 · a Thing, kindly":{"ms":497,"tokens":1576}}
+  },
+  "grades": {
+   "results": {
+    "\"NM\"": {"grade_step":{"type":"choice","choice":"NM","confidence":0.99},"string_is_a_condition":{"type":"noul","noul":0.6},"describes_two_axes":{"type":"noul","noul":0.11},"is_non_english":{"type":"noul","noul":0.16}},
+    "\"EX+/NM-\"": {"grade_step":{"type":"choice","choice":"VG+","confidence":0.25},"string_is_a_condition":{"type":"noul","noul":0.92},"describes_two_axes":{"type":"noul","noul":0.92},"is_non_english":{"type":"noul","noul":0.17}},
+    "\"mint minus\"": {"grade_step":{"type":"choice","choice":"NM","confidence":0.28},"string_is_a_condition":{"type":"noul","noul":0.85},"describes_two_axes":{"type":"noul","noul":0.2},"is_non_english":{"type":"noul","noul":0.05}},
+    "\"vg++ but sleeve has ring wear\"": {"grade_step":{"type":"choice","choice":"VG+","confidence":0.98},"string_is_a_condition":{"type":"noul","noul":0.96},"describes_two_axes":{"type":"noul","noul":0.57},"is_non_english":{"type":"noul","noul":0.05}},
+    "\"NM- media / VG+ sleeve\"": {"grade_step":{"type":"choice","choice":"NM","confidence":0.97},"string_is_a_condition":{"type":"noul","noul":0.95},"describes_two_axes":{"type":"noul","noul":0.97},"is_non_english":{"type":"noul","noul":0.09}},
+    "\"plays great, looks rough\"": {"grade_step":{"type":"choice","choice":"G","confidence":0.36},"string_is_a_condition":{"type":"noul","noul":0.89},"describes_two_axes":{"type":"noul","noul":0.81},"is_non_english":{"type":"noul","noul":0.02}},
+    "\"comme neuf\"": {"grade_step":{"type":"choice","choice":"M","confidence":0.55},"string_is_a_condition":{"type":"noul","noul":0.97},"describes_two_axes":{"type":"noul","noul":0.06},"is_non_english":{"type":"noul","noul":0.98}},
+    "\"bon état, quelques rayures\"": {"grade_step":{"type":"choice","choice":"VG+","confidence":0.54},"string_is_a_condition":{"type":"noul","noul":0.98},"describes_two_axes":{"type":"noul","noul":0.09},"is_non_english":{"type":"noul","noul":0.99}},
+    "\"still sealed\"": {"grade_step":{"type":"choice","choice":"M","confidence":0.5},"string_is_a_condition":{"type":"noul","noul":0.96},"describes_two_axes":{"type":"noul","noul":0.05},"is_non_english":{"type":"noul","noul":0.05}},
+    "\"skips on track 3\"": {"grade_step":{"type":"choice","choice":"F","confidence":0.41},"string_is_a_condition":{"type":"noul","noul":0.51},"describes_two_axes":{"type":"noul","noul":0.07},"is_non_english":{"type":"noul","noul":0.04}},
+    "\"180g reissue\"": {"grade_step":{"type":"choice","choice":"unmappable","confidence":1},"string_is_a_condition":{"type":"noul","noul":0.07},"describes_two_axes":{"type":"noul","noul":0.05},"is_non_english":{"type":"noul","noul":0.07}},
+    "\"12.50\"": {"grade_step":{"type":"choice","choice":"unmappable","confidence":0.59},"string_is_a_condition":{"type":"noul","noul":0.08},"describes_two_axes":{"type":"noul","noul":0.13},"is_non_english":{"type":"noul","noul":0.1}}
+   },
+   "meta": {"\"NM\"":{"ms":268,"tokens":842},"\"EX+/NM-\"":{"ms":317,"tokens":846},"\"mint minus\"":{"ms":270,"tokens":843},"\"vg++ but sleeve has ring wear\"":{"ms":279,"tokens":849},"\"NM- media / VG+ sleeve\"":{"ms":275,"tokens":848},"\"plays great, looks rough\"":{"ms":243,"tokens":846},"\"comme neuf\"":{"ms":259,"tokens":843},"\"bon état, quelques rayures\"":{"ms":242,"tokens":848},"\"still sealed\"":{"ms":301,"tokens":843},"\"skips on track 3\"":{"ms":320,"tokens":847},"\"180g reissue\"":{"ms":280,"tokens":851},"\"12.50\"":{"ms":267,"tokens":849}}
+  },
+  "duplicates": {
+   "results": {
+    "D1 · double scan": {"relationship":{"type":"choice","choice":"same_object_rescanned","confidence":0.97},"identifying_field_conflicts":{"type":"noul","noul":0.1},"safe_to_merge_silently":{"type":"noul","noul":0.89}},
+    "D2 · a genuine second copy": {"relationship":{"type":"choice","choice":"second_copy","confidence":0.79},"identifying_field_conflicts":{"type":"noul","noul":0.05},"safe_to_merge_silently":{"type":"noul","noul":0.04}},
+    "D3 · different print, same title": {"relationship":{"type":"choice","choice":"same_title_different_print","confidence":1},"identifying_field_conflicts":{"type":"noul","noul":0.96},"safe_to_merge_silently":{"type":"noul","noul":0.05}},
+    "D4 · unrelated": {"relationship":{"type":"choice","choice":"different_object","confidence":0.99},"identifying_field_conflicts":{"type":"noul","noul":0.96},"safe_to_merge_silently":{"type":"noul","noul":0.02}}
+   },
+   "meta": {"D1 · double scan":{"ms":242,"tokens":826},"D2 · a genuine second copy":{"ms":270,"tokens":771},"D3 · different print, same title":{"ms":250,"tokens":772},"D4 · unrelated":{"ms":308,"tokens":713}}
+  },
+  "listings": {
+   "results": {
+    "L1 · honest prose, flattering grade": {"text_contradicts_grade":{"type":"noul","noul":0.9},"pushes_offsite":{"type":"noul","noul":0.02},"describes_a_different_object":{"type":"noul","noul":0.08},"is_a_bulk_dealer_listing":{"type":"noul","noul":0.32}},
+    "L2 · honest and correctly graded": {"text_contradicts_grade":{"type":"noul","noul":0.19},"pushes_offsite":{"type":"noul","noul":0.02},"describes_a_different_object":{"type":"noul","noul":0.06},"is_a_bulk_dealer_listing":{"type":"noul","noul":0.39}},
+    "L3 · pushes off-platform": {"text_contradicts_grade":{"type":"noul","noul":0.06},"pushes_offsite":{"type":"noul","noul":0.98},"describes_a_different_object":{"type":"noul","noul":0.07},"is_a_bulk_dealer_listing":{"type":"noul","noul":0.26}},
+    "L4 · terse but clean": {"text_contradicts_grade":{"type":"noul","noul":0.03},"pushes_offsite":{"type":"noul","noul":0.02},"describes_a_different_object":{"type":"noul","noul":0.06},"is_a_bulk_dealer_listing":{"type":"noul","noul":0.43}}
+   },
+   "meta": {"L1 · honest prose, flattering grade":{"ms":262,"tokens":794},"L2 · honest and correctly graded":{"ms":256,"tokens":787},"L3 · pushes off-platform":{"ms":239,"tokens":794},"L4 · terse but clean":{"ms":234,"tokens":763}}
+  },
+  "clocks": {
+   "results": {
+    "C1 · save battery": {"clock_is_real":{"type":"noul","noul":0.9},"affects_all_or_some":{"type":"choice","choice":"all","confidence":0.99},"user_can_act_on_it":{"type":"noul","noul":0.95},"would_a_warning_be_alarming":{"type":"noul","noul":0.45}},
+    "C2 · download code expiry": {"clock_is_real":{"type":"noul","noul":0.89},"affects_all_or_some":{"type":"choice","choice":"all","confidence":0.92},"user_can_act_on_it":{"type":"noul","noul":0.61},"would_a_warning_be_alarming":{"type":"noul","noul":0.51}},
+    "C3 · disc rot": {"clock_is_real":{"type":"noul","noul":0.82},"affects_all_or_some":{"type":"choice","choice":"some","confidence":1},"user_can_act_on_it":{"type":"noul","noul":0.53},"would_a_warning_be_alarming":{"type":"noul","noul":0.73}},
+    "C4 · vinyl wears out": {"clock_is_real":{"type":"noul","noul":0.71},"affects_all_or_some":{"type":"choice","choice":"all","confidence":0.98},"user_can_act_on_it":{"type":"noul","noul":0.83},"would_a_warning_be_alarming":{"type":"noul","noul":0.74}},
+    "C5 · sealed games must stay sealed": {"clock_is_real":{"type":"noul","noul":0.21},"affects_all_or_some":{"type":"choice","choice":"all","confidence":0.74},"user_can_act_on_it":{"type":"noul","noul":0.8},"would_a_warning_be_alarming":{"type":"noul","noul":0.26}},
+    "C6 · cassette tape stock": {"clock_is_real":{"type":"noul","noul":0.83},"affects_all_or_some":{"type":"choice","choice":"all","confidence":0.62},"user_can_act_on_it":{"type":"noul","noul":0.91},"would_a_warning_be_alarming":{"type":"noul","noul":0.4}}
+   },
+   "meta": {"C1 · save battery":{"ms":258,"tokens":753},"C2 · download code expiry":{"ms":290,"tokens":727},"C3 · disc rot":{"ms":300,"tokens":736},"C4 · vinyl wears out":{"ms":374,"tokens":738},"C5 · sealed games must stay sealed":{"ms":277,"tokens":722},"C6 · cassette tape stock":{"ms":256,"tokens":727}}
+  }
+ }
+}

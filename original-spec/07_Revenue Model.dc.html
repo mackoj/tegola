@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#EAE3D6}
+a{color:#2B44D6}a:hover{color:#FF5B2E}
+</style>
+</helmet>
+
+<div style="width:1100px;margin:0 auto;padding:0 0 90px;font-family:Archivo,system-ui,sans-serif;color:#17130F">
+
+<div style="padding:60px 0 40px;border-bottom:2px solid rgba(23,19,15,.12)">
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#8A7F70;margin-bottom:12px">Revenue model · the proposal · August 2026</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:62px;line-height:.92;letter-spacing:-.04em;max-width:860px">One product,<br>five meters</div>
+  <p style="max-width:760px;font:400 17px/1.6 Archivo,sans-serif;color:#3A2F26;margin:22px 0 14px;text-wrap:pretty">The business plan laid out nine ways to charge. This is the one I'd actually pick, with the prices, the entitlement boundaries, the numbers over three years and the order to switch each meter on. It is a decision, not a menu.</p>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#FFD24A;padding:22px 24px;box-shadow:5px 5px 0 #17130F;max-width:840px;margin:8px 0 20px">
+    <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:27px;line-height:1.12;letter-spacing:-.02em;text-wrap:pretty">The catalogue is <em>bought once</em>. The API bills are <em>metered</em>. The market data is <em>rented</em>. The insurance document is <em>referred</em>. The institutions are <em>invoiced</em>.</div>
+    <div style="font:400 14px/1.55 Archivo,sans-serif;margin-top:12px;max-width:640px">Five separate meters, each attached to a different kind of cost. No meter ever charges rent on something that costs you nothing to keep running.</div>
+  </div>
+  <p style="max-width:720px;font:400 13px/1.6 Archivo,sans-serif;color:#6E6458;margin:0;text-wrap:pretty">All figures net of Apple's 15% (Small Business Program) and deliberately conservative. They're here to be argued with.</p>
+</div>
+
+<div style="padding:46px 0 40px;border-bottom:2px solid rgba(23,19,15,.12)">
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#8A7F70;margin-bottom:12px">01 · the five meters</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:34px;line-height:1;letter-spacing:-.03em;margin:0 0 18px">Every SKU, and the<br>cost it's attached to</div>
+
+  <div style="display:flex;flex-direction:column;gap:16px;margin:20px 0 6px">
+
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+      <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:2.5px solid #17130F;background:#EDE4D6">
+        <div style="flex:none;width:30px;height:30px;border:2.5px solid #17130F;border-radius:8px;display:flex;align-items:center;justify-content:center;font:700 13px Archivo,sans-serif;background:#FFD24A">M1</div>
+        <div style="font:700 18px Archivo,sans-serif;letter-spacing:-.01em">CLCTN Complete — the one-time unlock</div>
+        <div style="margin-left:auto;font:500 10px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:5px 10px;background:#fff">€29.99 ONCE</div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap">
+        <div style="flex:1 1 240px;min-width:230px;padding:14px 16px;border-right:2px solid rgba(23,19,15,.12)">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px">WHAT IT UNLOCKS</div>
+          <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Unlimited objects past the free 100. Lending, wishlists, shared shelves, 3D shelf, export, multiple collections. Non-consumable, no account, restores on any device.</div>
+        </div>
+        <div style="flex:1 1 240px;min-width:230px;padding:14px 16px;border-right:2px solid rgba(23,19,15,.12)">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px">ATTACHED COST</div>
+          <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">None recurring — the data lives in the user's iCloud. That's exactly why it's a purchase and not a subscription.</div>
+        </div>
+        <div style="flex:1 1 240px;min-width:230px;padding:14px 16px">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px">WHY €29.99, NOT €24.99</div>
+          <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Conversion is flat between the two, and €29.99 leaves you a launch price (€19.99), a Black Friday, and a bundle without ever devaluing the app. Price down from strength, never up from weakness.</div>
+        </div>
+      </div>
+      <div style="border-top:2.5px solid #17130F;padding:12px 16px;font:700 13.5px/1.5 Archivo,sans-serif;background:#0E6E5E;color:#F3ECE0;text-wrap:pretty">≈ 80% of year-one revenue. This is the spine — everything else is added on top of a product that already stands alone.</div>
+    </div>
+
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+      <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:2.5px solid #17130F;background:#EDE4D6">
+        <div style="flex:none;width:30px;height:30px;border:2.5px solid #17130F;border-radius:8px;display:flex;align-items:center;justify-content:center;font:700 13px Archivo,sans-serif;background:#2B44D6;color:#F3ECE0">M2</div>
+        <div style="font:700 18px Archivo,sans-serif;letter-spacing:-.01em">Lookup credits — the metered bill</div>
+        <div style="margin-left:auto;font:500 10px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:5px 10px;background:#fff">€4.99 / 500</div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap">
+        <div style="flex:1 1 240px;min-width:230px;padding:14px 16px;border-right:2px solid rgba(23,19,15,.12)">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px">HOW IT METERS</div>
+          <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Barcode scans, photo matches and catalogue enrichment cost one credit. 100 free credits a month for everyone, 300 for unlock owners. Manual entry is always unlimited and free.</div>
+        </div>
+        <div style="flex:1 1 240px;min-width:230px;padding:14px 16px;border-right:2px solid rgba(23,19,15,.12)">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px">ATTACHED COST</div>
+          <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">€0.02–0.06 per call across Discogs, IGDB, comic and coin sources plus your own image matching. Real money, forever, per use.</div>
+        </div>
+        <div style="flex:1 1 240px;min-width:230px;padding:14px 16px">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px">WHAT IT'S REALLY FOR</div>
+          <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Insurance, not income. It caps the damage a user cataloguing 4,000 comics can do to your margin, and it's the socket rewarded video plugs into later in price-sensitive storefronts.</div>
+        </div>
+      </div>
+      <div style="border-top:2.5px solid #17130F;padding:12px 16px;font:700 13.5px/1.5 Archivo,sans-serif;background:#FFD24A;text-wrap:pretty">Build the meter in v1 even if you never sell a pack. Retrofitting a counter onto a shipped free app is the expensive version of this.</div>
+    </div>
+
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+      <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:2.5px solid #17130F;background:#EDE4D6">
+        <div style="flex:none;width:30px;height:30px;border:2.5px solid #17130F;border-radius:8px;display:flex;align-items:center;justify-content:center;font:700 13px Archivo,sans-serif;background:#0E6E5E;color:#F3ECE0">M3</div>
+        <div style="font:700 18px Archivo,sans-serif;letter-spacing:-.01em">Market Data — the only subscription</div>
+        <div style="margin-left:auto;font:500 10px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:5px 10px;background:#fff">€6.99/MO · €54.99/YR</div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap">
+        <div style="flex:1 1 240px;min-width:230px;padding:14px 16px;border-right:2px solid rgba(23,19,15,.12)">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px">WHAT'S RENTED</div>
+          <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Live comps, sold-price history, condition-adjusted values, portfolio value over time, bulk listing tools, insurance-grade export. Listing itself stays free and unlimited.</div>
+        </div>
+        <div style="flex:1 1 240px;min-width:230px;padding:14px 16px;border-right:2px solid rgba(23,19,15,.12)">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px">ATTACHED COST</div>
+          <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Data licences and an index that must be refreshed whether anyone opens it or not. A monthly obligation, honestly priced monthly.</div>
+        </div>
+        <div style="flex:1 1 240px;min-width:230px;padding:14px 16px">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px">SHIP IT IN SLICES</div>
+          <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Slice one is read-only: comps and price history, no listings, no moderation, no index. That alone is what sellers pay for — and it earns while you build the rest.</div>
+        </div>
+      </div>
+      <div style="border-top:2.5px solid #17130F;padding:12px 16px;font:700 13.5px/1.5 Archivo,sans-serif;background:#0E6E5E;color:#F3ECE0;text-wrap:pretty">The only recurring charge in the whole model, and the only one with a recurring cost behind it. Annual option because cataloguing happens in bursts.</div>
+    </div>
+
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+      <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:2.5px solid #17130F;background:#EDE4D6">
+        <div style="flex:none;width:30px;height:30px;border:2.5px solid #17130F;border-radius:8px;display:flex;align-items:center;justify-content:center;font:700 13px Archivo,sans-serif;background:#FF5B2E;color:#F3ECE0">M4</div>
+        <div style="font:700 18px Archivo,sans-serif;letter-spacing:-.01em">Insurance &amp; valuation referral</div>
+        <div style="margin-left:auto;font:500 10px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:5px 10px;background:#fff">€25–80 / POLICY</div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap">
+        <div style="flex:1 1 240px;min-width:230px;padding:14px 16px;border-right:2px solid rgba(23,19,15,.12)">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px">WHERE IT LIVES</div>
+          <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">One line at the bottom of the export screen, shown only to someone whose collection has crossed a real value threshold. Never a banner, never a notification, never in the catalogue.</div>
+        </div>
+        <div style="flex:1 1 240px;min-width:230px;padding:14px 16px;border-right:2px solid rgba(23,19,15,.12)">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px">ATTACHED COST</div>
+          <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Nothing to build — the export already exists. The cost is two partner conversations and per-country rules on insurance introductions.</div>
+        </div>
+        <div style="flex:1 1 240px;min-width:230px;padding:14px 16px">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px">HIGHEST €/USER ON THE PAGE</div>
+          <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">One bound policy is worth two unlocks. It also earns without a marketplace existing, which makes it the cheapest hedge against v2 not happening at all.</div>
+        </div>
+      </div>
+      <div style="border-top:2.5px solid #17130F;padding:12px 16px;font:700 13.5px/1.5 Archivo,sans-serif;background:#FFD24A;text-wrap:pretty">Have the conversation in month 3 — before v2 design. What the insurer needs in that file determines the export screen.</div>
+    </div>
+
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+      <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:2.5px solid #17130F;background:#EDE4D6">
+        <div style="flex:none;width:30px;height:30px;border:2.5px solid #17130F;border-radius:8px;display:flex;align-items:center;justify-content:center;font:700 13px Archivo,sans-serif;background:#12A594;color:#F3ECE0">M5</div>
+        <div style="font:700 18px Archivo,sans-serif;letter-spacing:-.01em">Organisation seats — invoiced, not sold</div>
+        <div style="margin-left:auto;font:500 10px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:5px 10px;background:#fff">€0 OR €29/MO</div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap">
+        <div style="flex:1 1 240px;min-width:230px;padding:14px 16px;border-right:2px solid rgba(23,19,15,.12)">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px">TWO PRICES, ONE PRODUCT</div>
+          <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Free forever for associations under ~500 objects, with a badge. €29/mo invoiced for anyone with a budget line: schools, clubs, games cafés, subsidised tool and toy libraries, shops.</div>
+        </div>
+        <div style="flex:1 1 240px;min-width:230px;padding:14px 16px;border-right:2px solid rgba(23,19,15,.12)">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px">ATTACHED COST</div>
+          <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Three transactional emails, roles, an invoice, and support someone expects an answer to. Off the App Store, so no 15% — and no IAP rules either.</div>
+        </div>
+        <div style="flex:1 1 240px;min-width:230px;padding:14px 16px">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px">WHAT YOU'RE ACTUALLY BUYING</div>
+          <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Distribution. Each org puts a rendered object card in front of 300–400 local, object-obsessed members every month, and it converts on meter 1.</div>
+        </div>
+      </div>
+      <div style="border-top:2.5px solid #17130F;padding:12px 16px;font:700 13.5px/1.5 Archivo,sans-serif;background:#fff;text-wrap:pretty">Count members reached, not seats sold. If you ever optimise this for seat revenue you've traded a growth channel for €7k.</div>
+    </div>
+  </div>
+
+  <p style="max-width:760px;font:400 13px/1.6 Archivo,sans-serif;color:#6E6458;margin:20px 0 0;text-wrap:pretty">Deliberately absent: <strong>no transaction take rate</strong> (you'd have to force the deal in-app, and you've said you won't), <strong>no ads against inventory</strong>, <strong>no subscription on the catalogue</strong>, <strong>no promoted listings until the index has real supply</strong>. Each of those is a live option that costs more trust than it earns at your scale.</p>
+</div>
+
+<div style="padding:46px 0 40px;border-bottom:2px solid rgba(23,19,15,.12)">
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#8A7F70;margin-bottom:12px">02 · the boundary</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:34px;line-height:1;letter-spacing:-.03em;margin:0 0 18px">Exactly where free ends</div>
+  <p style="max-width:720px;font:400 15px/1.65 Archivo,sans-serif;color:#3A2F26;margin:0 0 18px;text-wrap:pretty">This is the single most consequential page of the model, because it's the only one users read. The rule: <strong>the free tier is a complete product at a smaller size, never a crippled product at full size.</strong> Nothing is teased, blurred, watermarked or locked behind a "Pro" chip.</p>
+  <div style="display:flex;flex-wrap:wrap;gap:14px">
+    <div style="flex:1 1 320px;min-width:300px;border:2.5px solid #17130F;border-radius:16px;padding:16px 17px;background:#fff;box-shadow:4px 4px 0 #17130F">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;margin-bottom:8px;color:#0E6E5E">FREE, FOREVER, NO ACCOUNT</div>
+      <div style="font:700 16px Archivo,sans-serif;margin-bottom:10px">Up to 100 objects — everything works</div>
+      <div style="font:400 13.5px/1.7 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">All 14 item types · full type-specific detail fields · 3D shelf and sleeve rendering · photo-first add flow · 100 lookup credits a month · lending and handshakes · one wishlist · receive and open any shared object link · iCloud sync · CSV import</div>
+    </div>
+    <div style="flex:1 1 320px;min-width:300px;border:2.5px solid #17130F;border-radius:16px;padding:16px 17px;background:#17130F;color:#F3ECE0;box-shadow:4px 4px 0 #FF5B2E">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;margin-bottom:8px;color:#FFD24A">BEHIND THE €29.99 UNLOCK</div>
+      <div style="font:700 16px Archivo,sans-serif;margin-bottom:10px">Scale, sharing and getting data out</div>
+      <div style="font:400 13.5px/1.7 Archivo,sans-serif;color:rgba(243,236,224,.88);text-wrap:pretty">Unlimited objects · multiple named collections · 300 credits a month · shared and collaborative wishlists · public shelf links · full export (CSV, PDF, insurance format) · valuation totals · custom fields · priority in the type-proposal queue</div>
+    </div>
+  </div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#FFD24A;padding:18px 20px;box-shadow:5px 5px 0 #17130F;max-width:860px;margin:18px 0 0">
+    <div style="font:700 15px/1.55 Archivo,sans-serif;text-wrap:pretty">The cap is a <em>ceiling</em>, not a wall: at object 101 the app doesn't stop — it saves the object, shows it, and tells you the next one needs the unlock. Nobody ever loses work they've already typed in. That single behaviour is worth more than any pricing tweak on this page.</div>
+  </div>
+  <p style="max-width:760px;font:400 13px/1.6 Archivo,sans-serif;color:#6E6458;margin:16px 0 0;text-wrap:pretty">Why 100 and not 25: audience C — the inherited crate, one shoebox of coins — must be able to finish their whole collection for free and love you for it. They're the ones who tell audience A about the app. A cap that catches casual users converts worse and costs you the word of mouth.</p>
+</div>
+
+<div style="padding:46px 0 40px;border-bottom:2px solid rgba(23,19,15,.12)">
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#8A7F70;margin-bottom:12px">03 · three years</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:34px;line-height:1;letter-spacing:-.03em;margin:0 0 18px">The model, run forward</div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#17130F;color:#F3ECE0;padding:18px 20px;box-shadow:5px 5px 0 #FF5B2E;max-width:1000px;margin:0 0 8px">
+    <div style="display:flex;gap:14px;padding:0 0 10px;border-bottom:2px solid rgba(243,236,224,.3)">
+      <div style="flex:1;font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#FFD24A">BASE CASE · NET OF APPLE'S CUT AND DIRECT COSTS</div>
+      <div style="flex:none;width:110px;text-align:right;font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#FFD24A">YEAR 1</div>
+      <div style="flex:none;width:110px;text-align:right;font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#FFD24A">YEAR 2</div>
+      <div style="flex:none;width:110px;text-align:right;font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#FFD24A">YEAR 3</div>
+    </div>
+    <div style="display:flex;gap:14px;align-items:baseline;padding:9px 0;border-bottom:1.5px solid rgba(243,236,224,.16)">
+      <div style="flex:1;font:400 13.5px/1.4 Archivo,sans-serif;color:rgba(243,236,224,.8)">Cumulative downloads</div>
+      <div style="flex:none;width:110px;text-align:right;font:700 14px 'DM Mono',monospace">25,000</div>
+      <div style="flex:none;width:110px;text-align:right;font:700 14px 'DM Mono',monospace">70,000</div>
+      <div style="flex:none;width:110px;text-align:right;font:700 14px 'DM Mono',monospace">140,000</div>
+    </div>
+    <div style="display:flex;gap:14px;align-items:baseline;padding:9px 0;border-bottom:1.5px solid rgba(243,236,224,.16)">
+      <div style="flex:1;font:400 13.5px/1.4 Archivo,sans-serif;color:rgba(243,236,224,.8)">M1 · unlocks at €29.99 (cumulative payers)</div>
+      <div style="flex:none;width:110px;text-align:right;font:700 14px 'DM Mono',monospace">990</div>
+      <div style="flex:none;width:110px;text-align:right;font:700 14px 'DM Mono',monospace">2,800</div>
+      <div style="flex:none;width:110px;text-align:right;font:700 14px 'DM Mono',monospace">5,600</div>
+    </div>
+    <div style="display:flex;gap:14px;align-items:baseline;padding:9px 0;border-bottom:1.5px solid rgba(243,236,224,.16)">
+      <div style="flex:1;font:400 13.5px/1.4 Archivo,sans-serif;color:rgba(243,236,224,.8)">M1 revenue</div>
+      <div style="flex:none;width:110px;text-align:right;font:700 14px 'DM Mono',monospace">€25,200</div>
+      <div style="flex:none;width:110px;text-align:right;font:700 14px 'DM Mono',monospace">€28,000</div>
+      <div style="flex:none;width:110px;text-align:right;font:700 14px 'DM Mono',monospace">€36,000</div>
+    </div>
+    <div style="display:flex;gap:14px;align-items:baseline;padding:9px 0;border-bottom:1.5px solid rgba(243,236,224,.16)">
+      <div style="flex:1;font:400 13.5px/1.4 Archivo,sans-serif;color:rgba(243,236,224,.8)">M2 · lookup credits</div>
+      <div style="flex:none;width:110px;text-align:right;font:700 14px 'DM Mono',monospace">€800</div>
+      <div style="flex:none;width:110px;text-align:right;font:700 14px 'DM Mono',monospace">€2,200</div>
+      <div style="flex:none;width:110px;text-align:right;font:700 14px 'DM Mono',monospace">€4,500</div>
+    </div>
+    <div style="display:flex;gap:14px;align-items:baseline;padding:9px 0;border-bottom:1.5px solid rgba(243,236,224,.16)">
+      <div style="flex:1;font:400 13.5px/1.4 Archivo,sans-serif;color:rgba(243,236,224,.8)">M3 · market data subscribers (avg active)</div>
+      <div style="flex:none;width:110px;text-align:right;font:700 14px 'DM Mono',monospace">—</div>
+      <div style="flex:none;width:110px;text-align:right;font:700 14px 'DM Mono',monospace">560</div>
+      <div style="flex:none;width:110px;text-align:right;font:700 14px 'DM Mono',monospace">1,450</div>
+    </div>
+    <div style="display:flex;gap:14px;align-items:baseline;padding:9px 0;border-bottom:1.5px solid rgba(243,236,224,.16)">
+      <div style="flex:1;font:400 13.5px/1.4 Archivo,sans-serif;color:rgba(243,236,224,.8)">M3 revenue</div>
+      <div style="flex:none;width:110px;text-align:right;font:700 14px 'DM Mono',monospace">—</div>
+      <div style="flex:none;width:110px;text-align:right;font:700 14px 'DM Mono',monospace">€31,400</div>
+      <div style="flex:none;width:110px;text-align:right;font:700 14px 'DM Mono',monospace">€79,000</div>
+    </div>
+    <div style="display:flex;gap:14px;align-items:baseline;padding:9px 0;border-bottom:1.5px solid rgba(243,236,224,.16)">
+      <div style="flex:1;font:400 13.5px/1.4 Archivo,sans-serif;color:rgba(243,236,224,.8)">M4 · insurance referrals (policies bound)</div>
+      <div style="flex:none;width:110px;text-align:right;font:700 14px 'DM Mono',monospace">—</div>
+      <div style="flex:none;width:110px;text-align:right;font:700 14px 'DM Mono',monospace">€18,000</div>
+      <div style="flex:none;width:110px;text-align:right;font:700 14px 'DM Mono',monospace">€31,000</div>
+    </div>
+    <div style="display:flex;gap:14px;align-items:baseline;padding:9px 0;border-bottom:1.5px solid rgba(243,236,224,.16)">
+      <div style="flex:1;font:400 13.5px/1.4 Archivo,sans-serif;color:rgba(243,236,224,.8)">M5 · invoiced organisations</div>
+      <div style="flex:none;width:110px;text-align:right;font:700 14px 'DM Mono',monospace">—</div>
+      <div style="flex:none;width:110px;text-align:right;font:700 14px 'DM Mono',monospace">€5,200</div>
+      <div style="flex:none;width:110px;text-align:right;font:700 14px 'DM Mono',monospace">€15,600</div>
+    </div>
+    <div style="display:flex;gap:14px;align-items:baseline;padding:9px 0;border-bottom:1.5px solid rgba(243,236,224,.16)">
+      <div style="flex:1;font:400 13.5px/1.4 Archivo,sans-serif;color:rgba(243,236,224,.8)">Direct costs — lookups, data licences, index, mail, Apple dev</div>
+      <div style="flex:none;width:110px;text-align:right;font:700 14px 'DM Mono',monospace;color:#FF5B2E">−€2,100</div>
+      <div style="flex:none;width:110px;text-align:right;font:700 14px 'DM Mono',monospace;color:#FF5B2E">−€16,000</div>
+      <div style="flex:none;width:110px;text-align:right;font:700 14px 'DM Mono',monospace;color:#FF5B2E">−€39,000</div>
+    </div>
+    <div style="display:flex;gap:14px;align-items:baseline;padding:11px 0 2px">
+      <div style="flex:1;font:700 14px/1.4 Archivo,sans-serif;color:#F3ECE0">Net</div>
+      <div style="flex:none;width:110px;text-align:right;font:700 15px 'DM Mono',monospace;color:#FFD24A">≈ €24k</div>
+      <div style="flex:none;width:110px;text-align:right;font:700 15px 'DM Mono',monospace;color:#FFD24A">≈ €69k</div>
+      <div style="flex:none;width:110px;text-align:right;font:700 15px 'DM Mono',monospace;color:#FFD24A">≈ €128k</div>
+    </div>
+  </div>
+  <p style="max-width:760px;font:400 13px/1.6 Archivo,sans-serif;color:#6E6458;margin:14px 0 22px;text-wrap:pretty">Year 3 is the first year this is a salary plus a budget to pay someone else for something. Note the shape: revenue starts as one-time and becomes recurring, which is the right direction — but only because the recurring part has a real cost behind it.</p>
+
+  <div style="font:700 15px Archivo,sans-serif;margin:0 0 10px">The two cases either side</div>
+  <div style="display:flex;flex-wrap:wrap;gap:14px">
+    <div style="flex:1 1 320px;min-width:300px;border:2.5px solid #17130F;border-radius:16px;padding:15px 16px;background:#fff;box-shadow:4px 4px 0 #17130F">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;margin-bottom:8px">DOWNSIDE · HALF THE DOWNLOADS, NO INSURANCE DEAL</div>
+      <div style="font:700 16px Archivo,sans-serif;margin-bottom:7px">€11k → €22k → €35k</div>
+      <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Still cash-positive from month two, because the only fixed costs are €99/year and your evenings. That's the point of a model with no staff and no burn: the downside is disappointing, never fatal.</div>
+    </div>
+    <div style="flex:1 1 320px;min-width:300px;border:2.5px solid #17130F;border-radius:16px;padding:15px 16px;background:#0E6E5E;color:#F3ECE0;box-shadow:4px 4px 0 #17130F">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;margin-bottom:8px;color:#FFD24A">UPSIDE · ONE CATEGORY MOMENT OR ONE PRESS HIT</div>
+      <div style="font:700 16px Archivo,sans-serif;margin-bottom:7px">€60k → €210k → €450k</div>
+      <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:rgba(243,236,224,.9);text-wrap:pretty">10× downloads with identical pricing. The multiple never comes from the price — it comes from one community adopting you wholesale, or the 3D shelf being the thing people post. Design for that; don't budget for it.</div>
+    </div>
+  </div>
+</div>
+
+<div style="padding:46px 0 40px;border-bottom:2px solid rgba(23,19,15,.12)">
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#8A7F70;margin-bottom:12px">04 · unit economics</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:34px;line-height:1;letter-spacing:-.03em;margin:0 0 18px">What one user is worth,<br>and what one costs</div>
+  <div style="display:flex;flex-wrap:wrap;gap:14px;margin:0 0 18px">
+    <div style="flex:1 1 200px;min-width:190px;border:2.5px solid #17130F;border-radius:16px;padding:15px 16px;background:#fff;box-shadow:4px 4px 0 #17130F">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:8px">REVENUE PER DOWNLOAD</div>
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:32px;letter-spacing:-.03em;line-height:1">€1.04</div>
+      <div style="font:400 12.5px/1.5 Archivo,sans-serif;color:#3A2F26;margin-top:7px">Year one, all meters. Rises to ≈€1.90 by year three as subscriptions and referrals layer on the same install base.</div>
+    </div>
+    <div style="flex:1 1 200px;min-width:190px;border:2.5px solid #17130F;border-radius:16px;padding:15px 16px;background:#fff;box-shadow:4px 4px 0 #17130F">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:8px">COST OF A USER WHO NEVER PAYS</div>
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:32px;letter-spacing:-.03em;line-height:1">€0.35</div>
+      <div style="font:400 12.5px/1.5 Archivo,sans-serif;color:#3A2F26;margin-top:7px">≈12 lookups in their first week, then silence. Storage and sync are Apple's problem, which is the whole reason this works.</div>
+    </div>
+    <div style="flex:1 1 200px;min-width:190px;border:2.5px solid #17130F;border-radius:16px;padding:15px 16px;background:#FFD24A;box-shadow:4px 4px 0 #17130F">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;margin-bottom:8px">BREAK-EVEN RATIO</div>
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:32px;letter-spacing:-.03em;line-height:1">1 : 72</div>
+      <div style="font:400 12.5px/1.5 Archivo,sans-serif;margin-top:7px">One €29.99 unlock pays for 72 users who never spend a cent. You are structurally allowed to be extremely generous with the free tier.</div>
+    </div>
+    <div style="flex:1 1 200px;min-width:190px;border:2.5px solid #17130F;border-radius:16px;padding:15px 16px;background:#fff;box-shadow:4px 4px 0 #17130F">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:8px">LIFETIME VALUE OF A CATALOGUER</div>
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:32px;letter-spacing:-.03em;line-height:1">€78</div>
+      <div style="font:400 12.5px/1.5 Archivo,sans-serif;color:#3A2F26;margin-top:7px">Unlock + a credit pack + 7 months of market data + a 1-in-8 chance of an insurance referral. Deep collections are the only user segment worth optimising for.</div>
+    </div>
+  </div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#17130F;color:#F3ECE0;padding:20px 22px;box-shadow:5px 5px 0 #FF5B2E;max-width:860px">
+    <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:24px;line-height:1.15;letter-spacing:-.02em;text-wrap:pretty">Every meter in this model is priced off <em>objects catalogued</em>, not users acquired. So there is exactly one growth metric: median objects per user. Everything else is downstream of it.</div>
+  </div>
+</div>
+
+<div style="padding:46px 0 40px;border-bottom:2px solid rgba(23,19,15,.12)">
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#8A7F70;margin-bottom:12px">05 · sequence</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:34px;line-height:1;letter-spacing:-.03em;margin:0 0 18px">When each meter<br>switches on</div>
+  <div style="display:flex;flex-direction:column;max-width:880px;margin:20px 0 6px">
+    <div style="display:flex;gap:14px;align-items:flex-start">
+      <div style="flex:none;display:flex;flex-direction:column;align-items:center;width:30px">
+        <div style="width:30px;height:30px;border:2.5px solid #17130F;border-radius:999px;display:flex;align-items:center;justify-content:center;font:700 12px Archivo,sans-serif;background:#FFD24A">1</div>
+        <div style="width:2.5px;flex:1;min-height:26px;background:#17130F"></div>
+      </div>
+      <div style="flex:1;padding-bottom:20px">
+        <div style="font:700 15px Archivo,sans-serif;margin-bottom:5px">v1 launch — M1 and M2 only</div>
+        <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;max-width:720px;text-wrap:pretty">Two SKUs total: the unlock and the credit pack. No accounts, no server-side entitlement, no subscription plumbing. Ship the credit meter even at zero price so the counter exists in the wild from day one.</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:14px;align-items:flex-start">
+      <div style="flex:none;display:flex;flex-direction:column;align-items:center;width:30px">
+        <div style="width:30px;height:30px;border:2.5px solid #17130F;border-radius:999px;display:flex;align-items:center;justify-content:center;font:700 12px Archivo,sans-serif;background:#FFD24A">2</div>
+        <div style="width:2.5px;flex:1;min-height:26px;background:#17130F"></div>
+      </div>
+      <div style="flex:1;padding-bottom:20px">
+        <div style="font:700 15px Archivo,sans-serif;margin-bottom:5px">Month 3 — the two conversations, before any v2 code</div>
+        <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;max-width:720px;text-wrap:pretty">Two specialist collectibles insurers: what must an itemised export contain, and what do you pay per introduction. One market-data provider: what does a licence cost per thousand lookups. Those two answers set M3's price and M4's existence — and neither needs a line of code.</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:14px;align-items:flex-start">
+      <div style="flex:none;display:flex;flex-direction:column;align-items:center;width:30px">
+        <div style="width:30px;height:30px;border:2.5px solid #17130F;border-radius:999px;display:flex;align-items:center;justify-content:center;font:700 12px Archivo,sans-serif;background:#FFD24A">3</div>
+        <div style="width:2.5px;flex:1;min-height:26px;background:#17130F"></div>
+      </div>
+      <div style="flex:1;padding-bottom:20px">
+        <div style="font:700 15px Archivo,sans-serif;margin-bottom:5px">Month 8 gate — M3 slice one, read-only</div>
+        <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;max-width:720px;text-wrap:pretty">Only if latent supply ≥8% and latent demand ≥30%. Ship comps, price history and the insurance export as the subscription — no listings, no index, no moderation. M4 turns on with it, as one line on the export screen.</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:14px;align-items:flex-start">
+      <div style="flex:none;display:flex;flex-direction:column;align-items:center;width:30px">
+        <div style="width:30px;height:30px;border:2.5px solid #17130F;border-radius:999px;display:flex;align-items:center;justify-content:center;font:700 12px Archivo,sans-serif;background:#FFD24A">4</div>
+        <div style="width:2.5px;flex:1;min-height:26px;background:#17130F"></div>
+      </div>
+      <div style="flex:1;padding-bottom:20px">
+        <div style="font:700 15px Archivo,sans-serif;margin-bottom:5px">Month 12 — M5, invoiced by hand</div>
+        <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;max-width:720px;text-wrap:pretty">Roles, a queue, three emails. Free for associations from the first day; invoice the first five budget-holding orgs manually in a spreadsheet. Do not build billing for five customers.</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:14px;align-items:flex-start">
+      <div style="flex:none;display:flex;flex-direction:column;align-items:center;width:30px">
+        <div style="width:30px;height:30px;border:2.5px solid #17130F;border-radius:999px;display:flex;align-items:center;justify-content:center;font:700 12px Archivo,sans-serif;background:#FF5B2E;color:#F3ECE0">5</div>
+      </div>
+      <div style="flex:1;padding-bottom:4px">
+        <div style="font:700 15px Archivo,sans-serif;margin-bottom:5px">Month 15 — decide what you're building, once, with data</div>
+        <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;max-width:720px;text-wrap:pretty">Index with real supply, or seller tools with no market, or an org product. The meters above earn in all three futures, which is the actual reason to choose this model over any single-bet alternative.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="padding:46px 0 40px;border-bottom:2px solid rgba(23,19,15,.12)">
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#8A7F70;margin-bottom:12px">06 · the rules</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:34px;line-height:1;letter-spacing:-.03em;margin:0 0 18px">Four lines that don't move</div>
+  <div style="display:flex;flex-wrap:wrap;gap:14px;margin:0 0 22px">
+    <div style="flex:1 1 200px;min-width:190px;box-sizing:border-box;border:2.5px solid #17130F;border-radius:16px;padding:15px 16px;background:#17130F;color:#F3ECE0;box-shadow:4px 4px 0 #FF5B2E">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;margin-bottom:8px;color:#FFD24A">RULE 1</div>
+      <div style="font:700 15px Archivo,sans-serif;margin-bottom:7px">Never rent what costs nothing</div>
+      <div style="font:400 13px/1.55 Archivo,sans-serif;color:rgba(243,236,224,.85);text-wrap:pretty">No subscription on the catalogue. If the servers vanish tomorrow, a paying user's collection still opens, still syncs, still exports.</div>
+    </div>
+    <div style="flex:1 1 200px;min-width:190px;box-sizing:border-box;border:2.5px solid #17130F;border-radius:16px;padding:15px 16px;background:#fff;box-shadow:4px 4px 0 #17130F">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;margin-bottom:8px">RULE 2</div>
+      <div style="font:700 15px Archivo,sans-serif;margin-bottom:7px">Never earn from the deal closing</div>
+      <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">No take rate, no forced checkout. Two people finishing in a car park must cost you exactly nothing — otherwise you spend years fighting your own users.</div>
+    </div>
+    <div style="flex:1 1 200px;min-width:190px;box-sizing:border-box;border:2.5px solid #17130F;border-radius:16px;padding:15px 16px;background:#fff;box-shadow:4px 4px 0 #17130F">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;margin-bottom:8px">RULE 3</div>
+      <div style="font:700 15px Archivo,sans-serif;margin-bottom:7px">Never monetise the inventory itself</div>
+      <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">No ads against someone's objects, no selling or licensing what they own. The privacy promise is load-bearing — it's half of why anyone types 200 objects into a phone.</div>
+    </div>
+    <div style="flex:1 1 200px;min-width:190px;box-sizing:border-box;border:2.5px solid #17130F;border-radius:16px;padding:15px 16px;background:#fff;box-shadow:4px 4px 0 #17130F">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;margin-bottom:8px">RULE 4</div>
+      <div style="font:700 15px Archivo,sans-serif;margin-bottom:7px">Never take work away from someone</div>
+      <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Objects already entered stay visible, editable and exportable forever, at any tier. A cap is on adding, never on keeping.</div>
+    </div>
+  </div>
+
+  <sc-if value="{{ showRisks }}" hint-placeholder-val="{{ true }}">
+  <div style="border-top:2px solid rgba(23,19,15,.12);padding-top:28px">
+    <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:26px;line-height:1.05;letter-spacing:-.03em;margin:0 0 14px">Where this model breaks</div>
+    <div style="display:flex;flex-wrap:wrap;gap:14px">
+      <div style="flex:1 1 320px;min-width:300px;border:2.5px solid #17130F;border-radius:16px;padding:15px 16px;background:#EDE4D6">
+        <div style="font:700 15px Archivo,sans-serif;margin-bottom:6px">If nobody reaches 100 objects</div>
+        <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">The whole model rests on the cap being reachable. If median objects per user at day 30 comes in under 30, the problem is the add flow, not the price — and no repricing will save it. Fix onboarding and importers first.</div>
+      </div>
+      <div style="flex:1 1 320px;min-width:300px;border:2.5px solid #17130F;border-radius:16px;padding:15px 16px;background:#EDE4D6">
+        <div style="font:700 15px Archivo,sans-serif;margin-bottom:6px">If market data licences are expensive</div>
+        <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">M3 is the only meter with a cost you don't control. If a licence lands above ~€3/subscriber/month, drop live comps and sell the insurance export and portfolio history alone — same price, cost you own.</div>
+      </div>
+      <div style="flex:1 1 320px;min-width:300px;border:2.5px solid #17130F;border-radius:16px;padding:15px 16px;background:#EDE4D6">
+        <div style="font:700 15px Archivo,sans-serif;margin-bottom:6px">If insurers won't pay for introductions</div>
+        <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">M4 is a quarter of year-two revenue and rests on two conversations you haven't had. Have them in month 3 so a no costs you nothing but a rewrite of this page.</div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+</div>
+
+<div style="padding:46px 0 10px">
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#8A7F70;margin-bottom:12px">07 · founding prices</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:34px;line-height:1;letter-spacing:-.03em;margin:0 0 18px">Price goes up as the<br>app gets bigger</div>
+  <p style="max-width:760px;font:400 15px/1.65 Archivo,sans-serif;color:#3A2F26;margin:0 0 16px;text-wrap:pretty">Yes — do this. A rising price is the single most effective conversion mechanic a paid app has, it's honest here because the app genuinely gains capability over the same period, and it fixes the one real weakness of a one-time unlock: you get paid once, at whatever price you happened to set while you knew least.</p>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#FFD24A;padding:20px 22px;box-shadow:5px 5px 0 #17130F;max-width:860px;margin:0 0 22px">
+    <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:25px;line-height:1.14;letter-spacing:-.02em;text-wrap:pretty">One change to your plan: trigger on <em>unlocks sold</em>, not users. A user count can be 10,000 people who never paid — raising the price on the back of that is raising it before you've proved anything.</div>
+    <div style="font:400 14px/1.55 Archivo,sans-serif;margin-top:12px;max-width:660px">Unlocks sold is the same number you wanted (a headcount that means you're comfortable), except every unit of it is evidence that the price works. It's also the only number you can see the same day, in App Store Connect, without instrumentation.</div>
+  </div>
+
+  <div style="font:700 15px Archivo,sans-serif;margin:0 0 10px">The ladder — three steps, then stop</div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#17130F;color:#F3ECE0;padding:18px 20px;box-shadow:5px 5px 0 #FF5B2E;max-width:1000px;margin:0 0 8px">
+    <div style="display:flex;gap:14px;padding:0 0 10px;border-bottom:2px solid rgba(243,236,224,.3)">
+      <div style="flex:none;width:150px;font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#FFD24A">COHORT</div>
+      <div style="flex:none;width:150px;font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#FFD24A">TRIGGER TO CLOSE IT</div>
+      <div style="flex:none;width:110px;font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#FFD24A">UNLOCK</div>
+      <div style="flex:none;width:110px;font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#FFD24A">MARKET DATA</div>
+      <div style="flex:1;font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#FFD24A">WHAT THEY'RE BUYING INTO</div>
+    </div>
+    <div style="display:flex;gap:14px;align-items:flex-start;padding:12px 0;border-bottom:1.5px solid rgba(243,236,224,.16)">
+      <div style="flex:none;width:150px;font:700 14px Archivo,sans-serif;color:#FFD24A">Founding<br><span style="font:500 10px 'DM Mono',monospace;color:rgba(243,236,224,.6)">MONTHS 1–6</span></div>
+      <div style="flex:none;width:150px;font:400 13px/1.45 Archivo,sans-serif;color:rgba(243,236,224,.8)">First <strong style="color:#F3ECE0">1,000 unlocks</strong> sold, or 6 months, whichever comes first</div>
+      <div style="flex:none;width:110px;font:700 15px 'DM Mono',monospace">€19.99</div>
+      <div style="flex:none;width:110px;font:700 13px 'DM Mono',monospace;color:rgba(243,236,224,.8)">€4.99/mo<br>for life</div>
+      <div style="flex:1;font:400 13px/1.5 Archivo,sans-serif;color:rgba(243,236,224,.8)">A catalogue with no market data, no comps, no org features. They're paying for a promise and taking the risk with you — the discount is the payment for that risk, not a marketing trick.</div>
+    </div>
+    <div style="display:flex;gap:14px;align-items:flex-start;padding:12px 0;border-bottom:1.5px solid rgba(243,236,224,.16)">
+      <div style="flex:none;width:150px;font:700 14px Archivo,sans-serif">Early<br><span style="font:500 10px 'DM Mono',monospace;color:rgba(243,236,224,.6)">TO ~MONTH 14</span></div>
+      <div style="flex:none;width:150px;font:400 13px/1.45 Archivo,sans-serif;color:rgba(243,236,224,.8)">First <strong style="color:#F3ECE0">4,000 unlocks</strong>, or the day market data ships</div>
+      <div style="flex:none;width:110px;font:700 15px 'DM Mono',monospace">€24.99</div>
+      <div style="flex:none;width:110px;font:700 13px 'DM Mono',monospace;color:rgba(243,236,224,.8)">€5.99/mo<br>for life</div>
+      <div style="flex:1;font:400 13px/1.5 Archivo,sans-serif;color:rgba(243,236,224,.8)">A proven catalogue with importers, shared shelves and a year of fixes behind it. Still no market layer. Price rises because the tool got better, and that sentence is the whole justification.</div>
+    </div>
+    <div style="display:flex;gap:14px;align-items:flex-start;padding:12px 0 2px">
+      <div style="flex:none;width:150px;font:700 14px Archivo,sans-serif">Standard<br><span style="font:500 10px 'DM Mono',monospace;color:rgba(243,236,224,.6)">FOREVER AFTER</span></div>
+      <div style="flex:none;width:150px;font:400 13px/1.45 Archivo,sans-serif;color:rgba(243,236,224,.8)">No further rises. This is the price.</div>
+      <div style="flex:none;width:110px;font:700 15px 'DM Mono',monospace;color:#FFD24A">€29.99</div>
+      <div style="flex:none;width:110px;font:700 13px 'DM Mono',monospace;color:#FFD24A">€6.99/mo</div>
+      <div style="flex:1;font:400 13px/1.5 Archivo,sans-serif;color:rgba(243,236,224,.8)">The full model from section 01, with comps, valuations, insurance export and the index. The €29.99 was always the real price — the two steps below it were paid rehearsals.</div>
+    </div>
+  </div>
+  <p style="max-width:760px;font:400 13px/1.6 Archivo,sans-serif;color:#6E6458;margin:14px 0 24px;text-wrap:pretty">Cost of the discount, on the base case: ~1,000 founding unlocks at €10 off is <strong>€8,500 of forgone revenue in year one</strong> — about a third of year-one net. That is the price of the mechanic, and it buys you a fast, motivated first cohort plus a genuine reason to talk to press and communities. Worth it; not free.</p>
+
+  <div style="font:700 15px Archivo,sans-serif;margin:0 0 10px">What each cohort keeps forever — the part that has to be airtight</div>
+  <div style="display:flex;flex-wrap:wrap;gap:14px;margin:0 0 24px">
+    <div style="flex:1 1 200px;min-width:190px;box-sizing:border-box;border:2.5px solid #17130F;border-radius:16px;padding:15px 16px;background:#fff;box-shadow:4px 4px 0 #17130F">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:8px">M1 · THE UNLOCK</div>
+      <div style="font:700 15px Archivo,sans-serif;margin-bottom:7px">Nothing to do — it's already permanent</div>
+      <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">A non-consumable is bought, not licensed. Raising its price never touches anyone who already owns it, and it restores on every future device at €0. This is the easy meter.</div>
+    </div>
+    <div style="flex:1 1 200px;min-width:190px;box-sizing:border-box;border:2.5px solid #17130F;border-radius:16px;padding:15px 16px;background:#0E6E5E;color:#F3ECE0;box-shadow:4px 4px 0 #17130F">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;margin-bottom:8px;color:#FFD24A">M3 · MARKET DATA</div>
+      <div style="font:700 15px Archivo,sans-serif;margin-bottom:7px">Founding rate, locked, for as long as they stay</div>
+      <div style="font:400 13px/1.55 Archivo,sans-serif;color:rgba(243,236,224,.9);text-wrap:pretty">Apple lets you raise a subscription price for new subscribers while preserving the old one for existing ones. Use it. A locked €4.99 that never rises is the perk with actual teeth — and the reason a founding buyer stays subscribed for years.</div>
+    </div>
+    <div style="flex:1 1 200px;min-width:190px;box-sizing:border-box;border:2.5px solid #17130F;border-radius:16px;padding:15px 16px;background:#fff;box-shadow:4px 4px 0 #17130F">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:8px">M2 · CREDITS</div>
+      <div style="font:700 15px Archivo,sans-serif;margin-bottom:7px">Never in the ladder</div>
+      <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Credits are a cost pass-through. Raising them looks like gouging and earns you nothing worth having. One price, everywhere, forever — and give the founding cohort a permanent double allowance instead.</div>
+    </div>
+    <div style="flex:1 1 200px;min-width:190px;box-sizing:border-box;border:2.5px solid #17130F;border-radius:16px;padding:15px 16px;background:#fff;box-shadow:4px 4px 0 #17130F">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:8px">THE BADGE</div>
+      <div style="font:700 15px Archivo,sans-serif;margin-bottom:7px">Founder №&nbsp;0341</div>
+      <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Numbered, in the app, on their shared shelf links. Costs nothing, can never be bought later, and this audience — people who catalogue and number things — is precisely the audience that cares.</div>
+    </div>
+  </div>
+
+  <div style="font:700 15px Archivo,sans-serif;margin:0 0 10px">How to actually run it</div>
+  <div style="display:flex;flex-direction:column;max-width:880px;margin:0 0 22px">
+    <div style="display:flex;gap:14px;align-items:flex-start">
+      <div style="flex:none;display:flex;flex-direction:column;align-items:center;width:30px">
+        <div style="width:30px;height:30px;border:2.5px solid #17130F;border-radius:999px;display:flex;align-items:center;justify-content:center;font:700 12px Archivo,sans-serif;background:#FFD24A">1</div>
+        <div style="width:2.5px;flex:1;min-height:24px;background:#17130F"></div>
+      </div>
+      <div style="flex:1;padding-bottom:18px">
+        <div style="font:700 15px Archivo,sans-serif;margin-bottom:5px">Say the ceiling out loud from day one</div>
+        <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;max-width:720px;text-wrap:pretty">"€19.99 for the first 1,000. It becomes €29.99." On the App Store page, in the unlock sheet, in every community post. A rising price only converts if people knew it was rising — otherwise it's just a price change that annoys whoever missed it.</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:14px;align-items:flex-start">
+      <div style="flex:none;display:flex;flex-direction:column;align-items:center;width:30px">
+        <div style="width:30px;height:30px;border:2.5px solid #17130F;border-radius:999px;display:flex;align-items:center;justify-content:center;font:700 12px Archivo,sans-serif;background:#FFD24A">2</div>
+        <div style="width:2.5px;flex:1;min-height:24px;background:#17130F"></div>
+      </div>
+      <div style="flex:1;padding-bottom:18px">
+        <div style="font:700 15px Archivo,sans-serif;margin-bottom:5px">Announce the rise two weeks out, and then do it</div>
+        <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;max-width:720px;text-wrap:pretty">"Founding price ends on the 14th" is the best-converting message a paid app ever sends — expect a spike in the final week that partly pays for the discount. Then actually raise it. One deadline you don't honour and the next one earns nothing.</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:14px;align-items:flex-start">
+      <div style="flex:none;display:flex;flex-direction:column;align-items:center;width:30px">
+        <div style="width:30px;height:30px;border:2.5px solid #17130F;border-radius:999px;display:flex;align-items:center;justify-content:center;font:700 12px Archivo,sans-serif;background:#FFD24A">3</div>
+        <div style="width:2.5px;flex:1;min-height:24px;background:#17130F"></div>
+      </div>
+      <div style="flex:1;padding-bottom:18px">
+        <div style="font:700 15px Archivo,sans-serif;margin-bottom:5px">Flip the price by hand, not by counter</div>
+        <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;max-width:720px;text-wrap:pretty">You watch unlocks in App Store Connect and change the price yourself on a chosen date. No server, no live counter, no "347 spots left" widget — a stale or manipulable countdown is worse than none, and an automated flip will fire on the worst possible morning.</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:14px;align-items:flex-start">
+      <div style="flex:none;display:flex;flex-direction:column;align-items:center;width:30px">
+        <div style="width:30px;height:30px;border:2.5px solid #17130F;border-radius:999px;display:flex;align-items:center;justify-content:center;font:700 12px Archivo,sans-serif;background:#FF5B2E;color:#F3ECE0">4</div>
+      </div>
+      <div style="flex:1;padding-bottom:4px">
+        <div style="font:700 15px Archivo,sans-serif;margin-bottom:5px">Let the storefronts ladder separately</div>
+        <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;max-width:720px;text-wrap:pretty">1,000 unlocks is a global count, but the price tiers are per-market (section 02 of the business plan). Raise the family-A storefronts on the ladder and leave price-sensitive markets at their local floor — those users were never the ones making you comfortable.</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#17130F;color:#F3ECE0;padding:20px 22px;box-shadow:5px 5px 0 #FF5B2E;max-width:880px">
+    <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#FFD24A;margin-bottom:10px">THE FOUR WAYS THIS GOES WRONG</div>
+    <div style="font:400 14px/1.7 Archivo,sans-serif;color:rgba(243,236,224,.88);text-wrap:pretty"><strong style="color:#F3ECE0">More than three steps</strong> and it stops reading as a founding price and starts reading as a pricing gimmick — pick three, publish them, stop. <strong style="color:#F3ECE0">Rolling it back</strong> when sales slow teaches everyone to wait for the next sale; if €29.99 turns out to be wrong, fix it with a proper permanent price change, not by reopening the promo. <strong style="color:#F3ECE0">Raising while the app is still rough</strong> — the trigger must be unlocks sold <em>and</em> the app being visibly better than at launch, because "it got better" is the only sentence that makes step two defensible. <strong style="color:#F3ECE0">Raising before the cap converts</strong> — if unlock conversion among users who hit 100 objects is under 15%, a higher price is not what's wrong, and the ladder will just make the hole deeper.</div>
+  </div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showRisks&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Content&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    return { showRisks: this.props.showRisks ?? true };
+  }
+}
+</script>
+</body>
+</html>

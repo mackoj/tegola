@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#EAE3D6}
+a{color:#2B44D6}a:hover{color:#FF5B2E}
+.as-page{width:1100px;margin:0 auto;padding:0 0 90px;font-family:Archivo,system-ui,sans-serif;color:#17130F}
+.as-sec{padding:46px 0 40px;border-bottom:2px solid rgba(23,19,15,.12)}
+.as-lab{font:500 10px 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#8A7F70;margin-bottom:12px}
+.as-h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:34px;line-height:1;letter-spacing:-.03em;margin:0 0 18px}
+.as-h3{font:700 15px Archivo,sans-serif;margin:26px 0 8px}
+.as-p{max-width:720px;font:400 15px/1.65 Archivo,sans-serif;color:#3A2F26;margin:0 0 14px;text-wrap:pretty}
+.as-note{max-width:720px;font:400 13px/1.6 Archivo,sans-serif;color:#6E6458;margin:0 0 14px;text-wrap:pretty}
+.as-f{border:2.5px solid #17130F;border-radius:16px;background:#fff;box-shadow:4px 4px 0 #17130F;margin:0 0 18px;max-width:860px;overflow:hidden}
+.as-fh{display:flex;align-items:center;gap:12px;padding:11px 16px;border-bottom:2.5px solid #17130F;background:#EDE4D6}
+.as-fn{font:700 14px Archivo,sans-serif}
+.as-fw{font:400 12px Archivo,sans-serif;color:#6E6458}
+.as-fc{margin-left:auto;font:500 10px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:4px 9px;background:#fff;white-space:nowrap}
+.as-fv{padding:16px 18px;font:400 15px/1.55 Archivo,sans-serif;color:#17130F;white-space:pre-wrap;text-wrap:pretty}
+.as-fv.big{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:24px;letter-spacing:-.02em;line-height:1.1}
+.as-fv.mono{font:500 13px/1.7 'DM Mono',monospace}
+.as-fb{padding:12px 18px 14px;border-top:2px solid rgba(23,19,15,.12);font:400 12.5px/1.55 Archivo,sans-serif;color:#6E6458;text-wrap:pretty}
+.as-alts{display:flex;flex-wrap:wrap;gap:8px;padding:0 18px 14px}
+.as-alt{border:2px dashed #17130F;border-radius:999px;padding:6px 11px;font:500 12.5px Archivo,sans-serif;color:#3A2F26}
+.as-alt small{font:500 9px 'DM Mono',monospace;color:#8A7F70;margin-left:6px;letter-spacing:.08em}
+.as-shots{display:flex;flex-wrap:wrap;gap:22px;margin:22px 0 6px;align-items:flex-start}
+.as-shot{flex:none;width:250px;height:540px;border:2.5px solid #17130F;border-radius:20px;box-shadow:5px 5px 0 #17130F;overflow:hidden;position:relative;padding:18px 18px 0}
+.as-shn{font:500 9px 'DM Mono',monospace;letter-spacing:.13em;margin-bottom:9px;opacity:.7}
+.as-sht{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:21px;line-height:1.02;letter-spacing:-.025em;min-height:64px;text-wrap:balance}
+.as-shp{position:absolute;left:27px;top:126px;width:196px;height:426px;border:2.5px solid #17130F;border-radius:24px;background:#F3ECE0;overflow:hidden;box-shadow:4px 4px 0 #17130F}
+.as-scale{position:absolute;top:0;left:0;width:393px;height:852px;transform:scale(.5);transform-origin:top left}
+.as-cap{font:400 12px/1.5 Archivo,sans-serif;color:#6E6458;margin-top:10px;width:250px;text-wrap:pretty}
+.as-grid{display:flex;flex-wrap:wrap;gap:14px;margin:18px 0 6px}
+.as-card{flex:1 1 300px;min-width:280px;border:2.5px solid #17130F;border-radius:16px;background:#fff;box-shadow:4px 4px 0 #17130F;padding:15px 16px}
+.as-ck{font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:8px}
+.as-cn{font:700 16px Archivo,sans-serif;margin-bottom:7px}
+.as-cv{font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty}
+.as-kv{display:flex;gap:0;border-bottom:2px solid rgba(23,19,15,.12);padding:10px 0;font:400 13.5px/1.5 Archivo,sans-serif}
+.as-kv:last-child{border-bottom:none}
+.as-k{flex:0 0 190px;font:500 11px 'DM Mono',monospace;letter-spacing:.08em;color:#8A7F70;padding-top:2px}
+.as-v{flex:1;color:#17130F;text-wrap:pretty}
+.as-beat{display:flex;gap:14px;align-items:flex-start;border:2.5px solid #17130F;border-radius:14px;background:#fff;padding:13px 15px;margin-bottom:10px;max-width:860px}
+.as-bt{flex:none;width:58px;font:700 12px 'DM Mono',monospace;background:#FFD24A;border:2.5px solid #17130F;border-radius:8px;padding:4px 0;text-align:center}
+.as-bv{font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty}
+.as-bv strong{color:#17130F}
+.as-q{border:2.5px solid #17130F;border-radius:16px;background:#17130F;color:#F3ECE0;padding:16px 17px;box-shadow:5px 5px 0 #FF5B2E;margin-bottom:12px;max-width:860px}
+.as-qk{font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#FFD24A;margin-bottom:8px}
+.as-qt{font:700 16px/1.35 Archivo,sans-serif;margin-bottom:7px;text-wrap:pretty}
+.as-qv{font:400 13.5px/1.6 Archivo,sans-serif;color:rgba(243,236,224,.82);text-wrap:pretty}
+</style>
+</helmet>
+
+<div class="as-page">
+
+<div class="as-sec" style="padding-top:60px">
+  <div class="as-lab">App Store brief · the vitrine · for review · September 2026</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:64px;line-height:.92;letter-spacing:-.04em;max-width:860px">What a stranger<br>sees before they<br>decide</div>
+  <p class="as-p" style="font-size:17px;margin-top:22px">Assume the app is built. This page is every field of the App Store product page, filled in as it would ship — <strong>name, subtitle, ten screenshots, description, keywords, price, privacy</strong> — with the character limit next to each and the reason for each choice underneath.</p>
+  <p class="as-note">The listing is v1: a catalogue and a lending ledger, no money anywhere. Every phone is the live prototype running with selling off. Counters are live — edit any field and the number updates. Dashed chips are the alternatives I didn't pick; argue for them.</p>
+  <div class="as-grid" style="max-width:860px">
+    <div class="as-card" style="background:#FFD24A"><div class="as-ck">THE ONE LINE</div><div class="as-cn">Know what you own, and who has it.</div><div class="as-cv">Everything on this page is a longer or shorter version of that sentence. If a field doesn't serve it, it's cut.</div></div>
+    <div class="as-card"><div class="as-ck">THE THREE READERS</div><div class="as-cn">Hardcore, hobbyist, owner</div><div class="as-cv">The hardcore reads the description. The hobbyist reads screenshot one. The owner reads the subtitle and nothing else. Each gets one thing written for them.</div></div>
+  </div>
+</div>
+
+<div class="as-sec">
+  <div class="as-lab">01 · The two lines that do the work</div>
+  <div class="as-h2">Name and subtitle</div>
+  <p class="as-p">These two lines are what's indexed for search and what's read on a phone in a list of six other results. The name carries the brand plus the one search term we can't afford to lose; the subtitle carries the promise.</p>
+
+  <div class="as-f">
+    <div class="as-fh"><div class="as-fn">App Name</div><div class="as-fw">shown everywhere · indexed</div><div class="as-fc">{{ nName }} / 30</div></div>
+    <div class="as-fv big" data-field="name">CLCTN: Collection Catalogue</div>
+    <div class="as-alts">
+      <div class="as-alt">CLCTN – Catalogue &amp; Lend<small>24</small></div>
+      <div class="as-alt">CLCTN<small>5 · PURIST</small></div>
+      <div class="as-alt">CLCTN – Your Shelf, On Purpose<small>30</small></div>
+    </div>
+    <div class="as-fb">The brand alone is five letters with no vowels — nobody types it into search until they've heard of it. So the name spends its remaining characters on the two words people <em>do</em> type: "collection" and "catalogue". Apple indexes the name heavier than the keyword field, which is why these two words don't appear again anywhere else.</div>
+  </div>
+
+  <div class="as-f">
+    <div class="as-fh"><div class="as-fn">Subtitle</div><div class="as-fw">under the name · indexed</div><div class="as-fc">{{ nSub }} / 30</div></div>
+    <div class="as-fv big" data-field="sub">What you own, and who has it</div>
+    <div class="as-alts">
+      <div class="as-alt">The shelf, not the spreadsheet<small>30</small></div>
+      <div class="as-alt">Catalogue what you collect<small>26</small></div>
+      <div class="as-alt">Catalogue, lend, keep track<small>27</small></div>
+    </div>
+    <div class="as-fb">The promise, in the words of the person who doesn't identify as a collector: the inherited-crate owner. "Who has it" is the line no competitor can write, because none of them has a lending ledger — it's the differentiator stated as a benefit rather than a feature. "The shelf, not the spreadsheet" is the wittier line and the one I'd pick for a poster; it's second here because it names the enemy instead of the user.</div>
+  </div>
+</div>
+
+<div class="as-sec">
+  <div class="as-lab">02 · The vitrine</div>
+  <div class="as-h2">Ten screenshot slots,<br>nine used</div>
+  <p class="as-p">Screenshots are the page. Most people never expand the description, and the first three are visible without scrolling — so those three carry the whole pitch: <strong>the shelf, one object, adding one.</strong> Then the four things nobody else does. Then trust.</p>
+  <p class="as-note">Composition rule: one headline per shot, never more than seven words, in the app's own type on the app's own paper. No feature bullets on the image, no arrows, no device colour choices — the phone frame is ink, like everything else. The tenth slot stays empty on purpose; a listing that ends on "trust" ends stronger than one that ends on "and also".</p>
+  <div class="as-shots">
+    <div><div class="as-shot" style="background:#F3ECE0"><div class="as-shn">01 · SEEN FIRST</div><div class="as-sht">Your whole collection, on one shelf</div><div class="as-shp"><div class="as-scale"><dc-import name="35_Collections App" screen="home" selling="{{ no }}" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div></div><div class="as-cap">Collections as objects, counted. The hobbyist's shot: "mine could look like that".</div></div>
+    <div><div class="as-shot" style="background:#FFD24A"><div class="as-shn">02 · SEEN FIRST</div><div class="as-sht">Every object, front to back</div><div class="as-shp"><div class="as-scale"><dc-import name="35_Collections App" screen="item" selling="{{ no }}" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div></div><div class="as-cap">The 3D sleeve does the selling. Three tabs visible: Overview, Details, History.</div></div>
+    <div><div class="as-shot" style="background:#F3ECE0"><div class="as-shn">03 · SEEN FIRST</div><div class="as-sht">Add one in ten seconds</div><div class="as-shp"><div class="as-scale"><dc-import name="35_Collections App" screen="scan" selling="{{ no }}" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div></div><div class="as-cap">Photo first. The lookup toggle is visible — a privacy promise made in the viewfinder.</div></div>
+    <div><div class="as-shot" style="background:#17130F;color:#F3ECE0"><div class="as-shn">04</div><div class="as-sht">Fields built for your hobby, not for "items"</div><div class="as-shp"><div class="as-scale"><dc-import name="35_Collections App" screen="addform" selling="{{ no }}" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div></div><div class="as-cap">Real grading scales, steppers, chips. The hardcore collector's shot.</div></div>
+    <div><div class="as-shot" style="background:#F3ECE0"><div class="as-shn">05</div><div class="as-sht">Know who has it, and when it's due back</div><div class="as-shp"><div class="as-scale"><dc-import name="35_Collections App" screen="lending" selling="{{ no }}" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div></div><div class="as-cap">The lending ledger. The one screen no competitor has.</div></div>
+    <div><div class="as-shot" style="background:#0E6E5E;color:#F3ECE0"><div class="as-shn">06</div><div class="as-sht">Keep the hunt in one place</div><div class="as-shp"><div class="as-scale"><dc-import name="35_Collections App" screen="wishlist" selling="{{ no }}" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div></div><div class="as-cap">Wanted objects, dashed. Shareable as a link.</div></div>
+    <div><div class="as-shot" style="background:#F3ECE0"><div class="as-shn">07</div><div class="as-sht">From a stamp to a Porsche</div><div class="as-shp"><div class="as-scale"><dc-import name="35_Collections App" screen="types" selling="{{ no }}" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div></div><div class="as-cap">All the types in one list — breadth, shown rather than claimed.</div></div>
+    <div><div class="as-shot" style="background:#FFD24A"><div class="as-shn">08 · TRUST</div><div class="as-sht">Nothing is confirmed on your behalf</div><div class="as-shp"><div class="as-scale"><dc-import name="35_Collections App" screen="review" selling="{{ no }}" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div></div><div class="as-cap">The review queue. Rare for a store page to show doubt; it's the most honest thing on it.</div></div>
+    <div><div class="as-shot" style="background:#F3ECE0"><div class="as-shn">09 · TRUST</div><div class="as-sht">Share one object. No account needed.</div><div class="as-shp"><div class="as-scale"><dc-import name="35_Collections App" screen="received" selling="{{ no }}" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div></div><div class="as-cap">What a link looks like to a friend with nothing installed.</div></div>
+  </div>
+  <p class="as-note" style="margin-top:22px">Export spec: 6.9" at 1320 × 2868, portrait, headline set in Bricolage Grotesque 800 at 112px, phone at 1.0 scale bleeding off the bottom edge. Same nine shots re-composed for 6.5" and iPad if we ship iPad; no landscape.</p>
+</div>
+
+<div class="as-sec">
+  <div class="as-lab">03 · The words</div>
+  <div class="as-h2">Promo, description,<br>keywords, what's new</div>
+
+  <div class="as-f">
+    <div class="as-fh"><div class="as-fn">Promotional Text</div><div class="as-fw">above the description · editable without a release</div><div class="as-fc">{{ nPromo }} / 170</div></div>
+    <div class="as-fv" data-field="promo">Founding price: the full unlock is €19.99 for the first 1,000 collectors, then it rises. One collection of fifty objects is free, with everything in it.</div>
+    <div class="as-fb">The only field we can change without shipping a build, so it holds the only thing that changes: the price. When the founding tier closes, this line becomes the next price. Never a feature claim here — those belong in the description where they can't quietly drift.</div>
+  </div>
+
+  <div class="as-f">
+    <div class="as-fh"><div class="as-fn">Description</div><div class="as-fw">first 3 lines visible, then "more"</div><div class="as-fc">{{ nDesc }} / 4000</div></div>
+    <div class="as-fv" data-field="desc">CLCTN is a catalogue for people who own things on purpose.
+
+It answers four questions about everything on your shelf: what is it, where is it, who has it, and what happened to it.<sc-if value="{{ fourteen }}" hint-placeholder-val="{{ true }}"> Vinyl, comics, trading cards, coins, stamps, watches, board games, video games, figurines, books, cameras, sneakers, synths, cars — fourteen collection types, each with the fields and grading scales its collectors actually use.</sc-if><sc-if value="{{ five }}" hint-placeholder-val="{{ false }}"> Vinyl, comics, coins, board games and watches at launch — one more type every month, each with the fields and grading scales its collectors actually use.</sc-if>
+
+ADD ONE IN TEN SECONDS
+Point the camera at the object. CLCTN proposes the pressing, the edition, the year — you confirm it. Barcode when there is one, typing when there isn't. Anything the app guessed stays marked until you agree with it.
+
+BUILT FOR YOUR HOBBY
+A comic gets a CGC grade. A coin gets a Sheldon grade and a mint mark. A record gets a Goldmine grade, a pressing and a matrix number. No free-text field where a real scale exists. If nothing fits, build your own type field by field — or keep a mixed shelf where every object carries its own.
+
+KNOW WHO HAS IT
+Lend anything with a due date. Both sides confirm the hand-off and the return, so nothing on your shelf changes because someone else tapped something. Everyone you lend to gets a page and a track record.
+
+KEEP THE HISTORY
+Lent, returned scratched, serviced, regraded, repaired. Events add to the object's story instead of overwriting a field. Ten years from now you'll know exactly what happened to it.
+
+THE HUNT
+A wishlist for what you're after, with priority. Share it as a link: the friend who opens it sees which ones they already own, and you learn nothing until they choose to tell you.
+
+YOURS, PRIVATELY
+Your catalogue lives in your iCloud. No account. No server copy of your shelf. Photos stay on your phone unless you ask for a lookup. Export everything as CSV whenever you like. Works offline.
+
+FREE FOR ONE COLLECTION
+One collection of up to fifty objects, free, with every feature above. CLCTN Complete unlocks unlimited collections and objects, one-tap import from Discogs, PriceCharting, CollX and Collectr, and exports. One payment. No subscription.
+
+Made by one collector, in the open. Something missing for your hobby? hello@clctn.app</div>
+    <div class="as-fb">Three lines show before "more": the first sentence is the positioning, the second is the four questions. Nobody should need to tap. Caps headers because the store strips all formatting — they're the only way to make it scannable. The reading order is the three readers in reverse: hobby depth for the hardcore, lending for the hobbyist, privacy and price for the owner who's suspicious of apps. No word in the name or subtitle is repeated here — it earns nothing in search a second time.</div>
+  </div>
+
+  <div class="as-f">
+    <div class="as-fh"><div class="as-fn">Keywords</div><div class="as-fw">hidden · comma-separated, no spaces</div><div class="as-fc">{{ nKw }} / 100</div></div>
+    <div class="as-fv mono" data-field="kw">collector,inventory,vinyl,comics,coins,lending,wishlist,records,cards,stamps,watches,boardgame,grade</div>
+    <div class="as-fb">The hobbies people search by name, plus the two verbs. "Collection" and "catalogue" are deliberately absent — the name already indexes them. Singulars only; Apple matches plurals for free. Re-cut this field per storefront: the French list swaps "records" for "disques" and drops "boardgame".</div>
+  </div>
+
+  <div class="as-f">
+    <div class="as-fh"><div class="as-fn">What's New</div><div class="as-fw">version 1.0</div><div class="as-fc">{{ nNew }} / 4000</div></div>
+    <div class="as-fv" data-field="new">1.0 — The first shelf.
+
+• Collection types with the grading scales their collectors use
+• Add by photo, barcode or by hand
+• Import from Discogs, PriceCharting, CollX and Collectr
+• Lending with two-sided confirmation and due dates
+• Wishlists you can share as a link
+• iCloud sync, CSV export, works offline
+
+Something missing for your hobby? Propose a type from inside the app — the most-wanted ones ship as official types, and your objects move over with every value intact.</div>
+    <div class="as-fb">Written so the 1.1 note can be one line: "Added: Cameras." Each new type is a release note, a community post and a free launch moment — twelve of them if we ship five types first.</div>
+  </div>
+</div>
+
+<div class="as-sec">
+  <div class="as-lab">04 · The facts</div>
+  <div class="as-h2">Price, category,<br>privacy</div>
+  <div class="as-grid" style="max-width:860px">
+    <div class="as-card">
+      <div class="as-ck">PRICE</div>
+      <div class="as-cn">Free, with one in-app purchase</div>
+      <div class="as-cv">Free tier is one collection of fifty objects with every feature — a real product, not a trial. The unlock is a one-time purchase, listed on the store page under In-App Purchases so it's visible before download.</div>
+    </div>
+    <div class="as-card" style="background:#17130F;color:#F3ECE0;box-shadow:4px 4px 0 #FF5B2E">
+      <div class="as-ck" style="color:#FFD24A">IN-APP PURCHASE · NON-CONSUMABLE</div>
+      <div class="as-cn">CLCTN Complete <span style="font:500 10px 'DM Mono',monospace;color:#FFD24A;margin-left:6px">{{ nIap }} / 30</span></div>
+      <div class="as-cv" style="color:rgba(243,236,224,.85)"><span data-field="iap" style="display:none">CLCTN Complete</span>Display description <span style="font:500 10px 'DM Mono',monospace;color:#FFD24A">{{ nIapD }} / 45</span>: "<span data-field="iapd">Unlimited collections, import, exports</span>"<br><br>€19.99 founding (first 1,000 unlocks or 6 months) → €24.99 → €29.99. Not a subscription. The subscription, if it ever exists, is v2's market data and is not on this page.</div>
+    </div>
+  </div>
+  <div class="as-f" style="margin-top:18px">
+    <div class="as-fh"><div class="as-fn">App Store Connect · remaining fields</div></div>
+    <div style="padding:6px 18px 8px">
+      <div class="as-kv"><div class="as-k">PRIMARY CATEGORY</div><div class="as-v"><strong>Lifestyle.</strong> Where the collector apps and their users are. <em>Alt:</em> Utilities — smaller, easier to chart in, but nobody browses it for a hobby.</div></div>
+      <div class="as-kv"><div class="as-k">SECONDARY CATEGORY</div><div class="as-v"><strong>Productivity.</strong> Catches the "inventory" searcher — the owner with a crate and a spreadsheet.</div></div>
+      <div class="as-kv"><div class="as-k">AGE RATING</div><div class="as-v">4+. No user-generated content is public; share links are one-to-one.</div></div>
+      <div class="as-kv"><div class="as-k">APP PRIVACY</div><div class="as-v"><strong>Data Not Linked to You → Photos or Videos → App Functionality</strong>, declared only because the optional lookup sends one frame to identify an object. Everything else is iCloud private database, which is the user's, not ours. <strong>Tracking: No.</strong> This label is a selling point; screenshot 03 makes the same promise in the viewfinder.</div></div>
+      <div class="as-kv"><div class="as-k">DEVICES</div><div class="as-v">iPhone. iPad and Mac follow when the shelf has a layout for a wide screen, not before.</div></div>
+      <div class="as-kv"><div class="as-k">SUPPORT URL</div><div class="as-v">clctn.app/help — a single page: the four questions, import formats, "how do I get my data out".</div></div>
+      <div class="as-kv"><div class="as-k">MARKETING URL</div><div class="as-v">clctn.app</div></div>
+      <div class="as-kv"><div class="as-k">COPYRIGHT</div><div class="as-v">© 2026 Macko</div></div>
+      <div class="as-kv"><div class="as-k">SIGN-IN FOR REVIEW</div><div class="as-v">None required — there is no account. Review notes below.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="as-sec">
+  <div class="as-lab">05 · Five doors into the same shop</div>
+  <div class="as-h2">Custom product pages</div>
+  <p class="as-p">Apple lets a listing have alternate pages with their own screenshots and promo text, each with its own link. One per launch community: the link posted in the vinyl forum lands on a page where the first screenshot is a record shelf. Name, subtitle and description stay the same — only the first shot, its headline and the promo line change.</p>
+  <div class="as-grid">
+    <div class="as-card"><div class="as-ck">VINYL</div><div class="as-cn">"Every pressing, every matrix number"</div><div class="as-cv">Shot 01 becomes a records collection. Promo: "Import your Discogs collection in one tap. Grades stay Goldmine."</div></div>
+    <div class="as-card"><div class="as-ck">COMICS</div><div class="as-cn">"CGC grades, key issues, gaps in the run"</div><div class="as-cv">Shot 01 becomes a comics shelf. Promo: "Import from CollX. See which issues you're missing."</div></div>
+    <div class="as-card"><div class="as-ck">COINS</div><div class="as-cn">"Sheldon grades and mint marks, ×N"</div><div class="as-cv">Shot 01 shows a bulk lot with per-copy grades. Promo: "Built for quantity — coins, not 'items'."</div></div>
+    <div class="as-card"><div class="as-ck">BOARD GAMES</div><div class="as-cn">"Know who has your copy of Brass"</div><div class="as-cv">Shot 01 becomes the lending screen — this community lends more than any other. Promo leads with the ledger, not the catalogue.</div></div>
+    <div class="as-card"><div class="as-ck">WATCHES</div><div class="as-cn">"Service history, on the watch, forever"</div><div class="as-cv">Shot 01 becomes the item detail on the History tab. Promo: "Every service, every strap, every owner."</div></div>
+  </div>
+</div>
+
+<div class="as-sec">
+  <div class="as-lab">06 · Optional, and I think worth it</div>
+  <div class="as-h2">App preview, 22 seconds</div>
+  <p class="as-p">Autoplays muted before screenshot 01, so it's really screenshot zero. One take, real screen capture, no hands, no music that matters. It answers "what does it feel like" — the one thing stills can't.</p>
+  <div class="as-beat"><div class="as-bt">0–4s</div><div class="as-bv"><strong>The shelf.</strong> Scroll two collections. The vinyl box tilts as it passes. No text.</div></div>
+  <div class="as-beat"><div class="as-bt">4–11s</div><div class="as-bv"><strong>Add.</strong> Camera opens on a record sleeve; the match card slides up with pressing and year; one tap confirms; the object lands on the shelf. This is the "ten seconds" claim, demonstrated in seven.</div></div>
+  <div class="as-beat"><div class="as-bt">11–17s</div><div class="as-bv"><strong>Lend.</strong> Open the object, "Lend to…", pick a person, set a date. The row turns dashed. The other phone's confirmation shows as a notification — the handshake made visible.</div></div>
+  <div class="as-beat"><div class="as-bt">17–22s</div><div class="as-bv"><strong>History.</strong> Swipe to the History tab: lent, returned, regraded. Hold. Fade to the wordmark on paper. End card copy: "Know what you own."</div></div>
+  <p class="as-note" style="margin-top:14px">Full shot list and the clip plan for social live in the <a href="04_Video Playbook.dc.html">video playbook</a>; this is only what goes on the store page.</p>
+</div>
+
+<div class="as-sec">
+  <div class="as-lab">07 · Housekeeping</div>
+  <div class="as-h2">Review notes and<br>the French storefront</div>
+  <div class="as-f">
+    <div class="as-fh"><div class="as-fn">Notes for App Review</div><div class="as-fw">the reviewer reads this, nobody else</div></div>
+    <div class="as-fv" style="font-size:14px">No account or sign-in exists; all data is stored in the user's private iCloud database.
+
+The camera is used to add objects. The "Look it up" toggle in the viewfinder sends a single frame to our identification service only when enabled; it is off by default and the sent image is not retained.
+
+To test lending without a second device: add any object → "Lend to…" → pick "Demo contact". The confirmation arrives after 10 seconds in review builds.
+
+The in-app purchase "CLCTN Complete" is a non-consumable; sandbox purchase unlocks a second collection immediately.
+
+Share links (clctn.app/s/…) open a web view of one object and require nothing installed.</div>
+  </div>
+  <div class="as-f">
+    <div class="as-fh"><div class="as-fn">France storefront</div><div class="as-fw">the home market · fields that change</div></div>
+    <div style="padding:6px 18px 8px">
+      <div class="as-kv"><div class="as-k">NOM <span style="color:#17130F">{{ nNameFr }}/30</span></div><div class="as-v" style="font:700 16px Archivo,sans-serif" data-field="nameFr">CLCTN – Catalogue &amp; prêt</div></div>
+      <div class="as-kv"><div class="as-k">SOUS-TITRE <span style="color:#17130F">{{ nSubFr }}/30</span></div><div class="as-v" style="font:700 16px Archivo,sans-serif" data-field="subFr">Ce que vous avez, et qui l'a</div></div>
+      <div class="as-kv"><div class="as-k">MOTS-CLÉS <span style="color:#17130F">{{ nKwFr }}/100</span></div><div class="as-v" style="font:500 13px/1.7 'DM Mono',monospace;overflow-wrap:anywhere" data-field="kwFr">collectionneur,inventaire,vinyle,disques,bd,comics,pièces,monnaie,timbres,montres,prêt,cartes,état</div></div>
+      <div class="as-kv"><div class="as-k">DESCRIPTION</div><div class="as-v">Same structure, rewritten rather than translated — "catalogue" and "prêt" carry the same double duty in French. Grading scales stay in their original names; French collectors use CGC and Goldmine too.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="as-sec" style="border-bottom:none">
+  <div class="as-lab">08 · Where I want your eye</div>
+  <div class="as-h2">Three open questions</div>
+  <div class="as-q">
+    <div class="as-qk">Q1 · THE NAME</div>
+    <div class="as-qt">Is "CLCTN" a brand or a handicap?</div>
+    <div class="as-qv">Five consonants. Unpronounceable on first sight, unsearchable until known, and it's why the name field spends 22 characters explaining itself. <strong>My answer:</strong> keep it, because it looks like a catalogue number, and once you've heard it said out loud you never forget how it's spelled. I'm aware that's the argument every bad name makes.</div>
+  </div>
+  <div class="as-q">
+    <div class="as-qk">Q2 · SCREENSHOT ONE</div>
+    <div class="as-qt">Shelf first, or object first?</div>
+    <div class="as-qv">The shelf shows breadth and looks like a product. The object shows the 3D sleeve, which is the only thing on the page that makes people stop scrolling. <strong>My answer:</strong> shelf, because it answers "what is this" and the object answers "why is this nice" — and the order of those two questions matters more than which one is prettier. You've watched more people scroll store pages than I have.</div>
+  </div>
+  <div class="as-q">
+    <div class="as-qk">Q3 · THE FIFTY-OBJECT LINE</div>
+    <div class="as-qt">Should the free tier's ceiling be on the store page at all?</div>
+    <div class="as-qv">Naming the limit is honest and pre-empts the one-star "bait" review. It also tells the hardcore collector, before he's downloaded, that the free app isn't for him. <strong>My answer:</strong> name it, in the last section, in plain numbers — and let the founding price directly above it do the reassuring.</div>
+  </div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;launchTypes&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Fourteen types&quot;,&quot;Five at launch&quot;],&quot;default&quot;:&quot;Fourteen types&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Description&quot;}}">
+class Component extends DCLogic {
+  state = { n: {} };
+  componentDidMount() {
+    this._m = () => {
+      const n = {};
+      document.querySelectorAll('[data-field]').forEach(el => { n[el.dataset.field] = el.innerText.replace(/\n{3,}/g, '\n\n').trim().length; });
+      this.setState({ n });
+    };
+    this._m();
+    this._t = setTimeout(this._m, 1500);
+  }
+  componentDidUpdate(prev) {
+    if (prev.launchTypes !== this.props.launchTypes) setTimeout(this._m, 60);
+  }
+  componentWillUnmount() { clearTimeout(this._t); }
+  renderVals() {
+    const n = this.state.n, f = k => n[k] == null ? '…' : String(n[k]);
+    const five = (this.props.launchTypes || 'Fourteen types') === 'Five at launch';
+    return {
+      no: false, five, fourteen: !five,
+      nName: f('name'), nSub: f('sub'), nPromo: f('promo'), nDesc: f('desc'), nKw: f('kw'), nNew: f('new'),
+      nIap: f('iap'), nIapD: f('iapd'), nNameFr: f('nameFr'), nSubFr: f('subFr'), nKwFr: f('kwFr')
+    };
+  }
+}
+</script>
+</body>
+</html>

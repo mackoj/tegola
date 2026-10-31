@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#EAE3D6}a{color:#2B44D6}a:hover{color:#FF5B2E}</style>
+</helmet>
+
+<div style="width:1360px;margin:0 auto;padding:60px 28px 100px;font-family:Archivo,system-ui,sans-serif;color:#17130F">
+
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70">CLCTN · IDENTIFICATION PIPELINE · COMPANION TO THE TECHNICAL BLUEPRINT · SEPTEMBER 2026</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:66px;line-height:.92;letter-spacing:-.045em;margin:16px 0 0;max-width:1040px;text-wrap:balance">Nobody sells the thing you need. Build it out of free parts.</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:860px;margin-top:20px;text-wrap:pretty">The camera can be infinite — hold the phone up, sweep the crate, review after. What decides whether that is a feature or a chore is not the capture UI. It is <strong>how many of the forty objects come back identified without you touching them</strong>. This document is about that number: where the data comes from, what runs on the phone, and the confidence bands that feed the review queue.</div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:860px;margin-top:14px;text-wrap:pretty">The headline finding: there is no general product-identification service worth building on, and the ones that exist would cost more per user than a user pays. The workable answer is per-type free corpora, on-device matching, and a server call only for the last five percent.</div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">01 · WHAT THE BIG PLATFORMS ACTUALLY SELL</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:860px;margin-bottom:20px;text-wrap:pretty">Each of these was evaluated as the primary matcher for capture. Only the last one survives that test — and it is the one that costs nothing.</div>
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <sc-for list="{{ vendors }}" as="v" hint-placeholder-count="5">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;overflow:hidden;box-shadow:5px 5px 0 #17130F">
+        <div style="display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;padding:14px 20px;background:#17130F;color:#F3ECE0">
+          <div style="font-family:'DM Mono',monospace;font-weight:500;font-size:18px;letter-spacing:-.01em">{{ v.name }}</div>
+          <div style="font:400 12.5px Archivo,sans-serif;opacity:.55">{{ v.what }}</div>
+          <div style="margin-left:auto;font:500 9px 'DM Mono',monospace;letter-spacing:.1em;border-radius:999px;padding:4px 11px;border:2px solid {{ v.tone }};color: {{ v.tone }}">{{ v.verdict }}</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 300px">
+          <div style="padding:17px 20px;border-right:2px solid #E0D6C4">
+            <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;margin-bottom:9px">WHAT IT GIVES YOU</div>
+            <div style="font:400 13.5px/1.6 Archivo,sans-serif;text-wrap:pretty">{{ v.gives }}</div>
+          </div>
+          <div style="padding:17px 20px;border-right:2px solid #E0D6C4">
+            <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;margin-bottom:9px">WHY IT IS NOT THE ANSWER</div>
+            <div style="font:400 13.5px/1.6 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ v.why }}</div>
+          </div>
+          <div style="padding:17px 20px;background:#FBF6EC">
+            <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;margin-bottom:9px">PRICE</div>
+            <div style="font:400 13px/1.6 'DM Mono',monospace;text-wrap:pretty">{{ v.price }}</div>
+            <div style="font:400 12.5px/1.55 Archivo,sans-serif;color:#6E6458;margin-top:9px;text-wrap:pretty">{{ v.role }}</div>
+          </div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">02 · THE ARITHMETIC THAT SETTLES IT</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:860px;margin-bottom:20px;text-wrap:pretty">Infinite capture multiplies queries by the size of the crate. That is the whole problem with a per-query matcher: <strong>the faster the capture gets, the more it costs you</strong>. A one-time-purchase product cannot have a cost curve that rises with engagement.</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px">
+    <sc-for list="{{ costCards }}" as="c" hint-placeholder-count="3">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#0C0A08;color:#F3ECE0;padding:22px;box-shadow:5px 5px 0 #C2371F">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;opacity:.55">{{ c.k }}</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:44px;line-height:1;letter-spacing:-.04em;margin:12px 0 0;color:#FFD24A">{{ c.big }}</div>
+        <div style="font:400 13.5px/1.6 Archivo,sans-serif;opacity:.78;margin-top:10px;text-wrap:pretty">{{ c.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;padding:20px 22px;box-shadow:5px 5px 0 #17130F">
+    <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;margin-bottom:12px">SERVER-SIDE MATCHING, ONE USER, LIFETIME — AT A {{ crateLabel }} SESSION SIZE</div>
+    <div style="display:flex;flex-wrap:wrap;gap:10px">
+      <sc-for list="{{ costRows }}" as="r" hint-placeholder-count="4">
+        <div style="flex:1 1 240px;border:2px solid #17130F;border-radius:14px;padding:14px 16px;background:#FBF6EC">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.1em;color:#8A7F70">{{ r.k }}</div>
+          <div style="font-family:'DM Mono',monospace;font-weight:500;font-size:24px;letter-spacing:-.02em;margin-top:7px">{{ r.v }}</div>
+          <div style="font:400 12.5px/1.5 Archivo,sans-serif;color:#3A2F26;margin-top:6px;text-wrap:pretty">{{ r.b }}</div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="font:400 13.5px/1.65 Archivo,sans-serif;color:#3A2F26;margin-top:16px;max-width:900px;text-wrap:pretty">Against a €29.99 one-time unlock, a serious collector cataloguing two thousand objects consumes a third of the purchase price in lookups alone — before storage, before the nightly valuation job, before a single support email. Market B's rule was already written for this: <em>local matching is not an optimisation, it is the business model</em>.</div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">03 · WHERE THE DATA ACTUALLY LIVES, PER TYPE</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:10px;text-wrap:pretty">There is no universal corpus and there does not need to be one. <strong>Each type already has a community that built the database</strong>, and most of them publish bulk dumps you can index once and ship. This table belongs next to the type manifest — it is the same shape of decision, one row per type, data rather than code.</div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:900px;margin-bottom:22px;text-wrap:pretty">Read the <strong>LOCAL IDENTIFIER</strong> column first. It is the fastest route in every row, and in nine of fourteen it is a string printed on the object that OCR can read without any visual matching at all.</div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;overflow:hidden;box-shadow:5px 5px 0 #17130F">
+    <div style="display:grid;grid-template-columns:150px 1fr 200px 150px 300px;background:#17130F;color:#F3ECE0;font:500 9.5px 'DM Mono',monospace;letter-spacing:.1em">
+      <div style="padding:13px 16px">TYPE</div>
+      <div style="padding:13px 16px">CORPUS, BEST FIRST</div>
+      <div style="padding:13px 16px">ACCESS &amp; LICENCE</div>
+      <div style="padding:13px 16px">BULK / IMAGES</div>
+      <div style="padding:13px 16px">LOCAL IDENTIFIER — THE FAST PATH</div>
+    </div>
+    <sc-for list="{{ corpora }}" as="c" hint-placeholder-count="14">
+      <div style="display:grid;grid-template-columns:150px 1fr 200px 150px 300px;border-top:2px solid #E0D6C4;background:#fff;align-items:start">
+        <div style="padding:14px 16px;font:700 14px/1.25 Archivo,sans-serif">{{ c.type }}</div>
+        <div style="padding:14px 16px;font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ c.corpus }}</div>
+        <div style="padding:14px 16px;font:400 12px/1.55 'DM Mono',monospace;color:#3A2F26;text-wrap:pretty">{{ c.licence }}</div>
+        <div style="padding:14px 16px">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.08em;border-radius:999px;padding:4px 9px;display:inline-block;border:2px solid #17130F;background: {{ c.bulkBg }};color: {{ c.bulkFg }}">{{ c.bulk }}</div>
+        </div>
+        <div style="padding:14px 16px;font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ c.ident }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">04 · THE PIPELINE — SIX STAGES, EACH ONE A CHANCE TO STOP</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:22px;text-wrap:pretty">A capture enters at S0 and exits the moment a stage returns above threshold. Almost everything exits by S3. The stages are ordered by cost, not by cleverness — the cheapest thing that can answer is always tried first, and <strong>the only stage that costs you money is the one almost nothing reaches</strong>.</div>
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <sc-for list="{{ stages }}" as="s" hint-placeholder-count="6">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;overflow:hidden;box-shadow:5px 5px 0 {{ s.shadow }}">
+        <div style="display:grid;grid-template-columns:120px 1fr 190px 170px">
+          <div style="padding:20px 16px;background:#17130F;color:#F3ECE0;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px">
+            <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:30px;line-height:1;letter-spacing:-.03em">{{ s.n }}</div>
+            <div style="font:500 8.5px 'DM Mono',monospace;letter-spacing:.12em;opacity:.5">STAGE</div>
+          </div>
+          <div style="padding:18px 20px;border-right:2px solid #E0D6C4">
+            <div style="font:700 17px/1.25 Archivo,sans-serif;text-wrap:pretty">{{ s.t }}</div>
+            <div style="font:400 12px 'DM Mono',monospace;color:#2B44D6;margin-top:7px;text-wrap:pretty">{{ s.api }}</div>
+            <div style="font:400 13.5px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:10px;text-wrap:pretty">{{ s.b }}</div>
+          </div>
+          <div style="padding:18px 20px;border-right:2px solid #E0D6C4;background:#FBF6EC">
+            <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;margin-bottom:8px">BUDGET</div>
+            <div style="font-family:'DM Mono',monospace;font-weight:500;font-size:19px;letter-spacing:-.01em">{{ s.latency }}</div>
+            <div style="font:400 12.5px/1.5 Archivo,sans-serif;color:#3A2F26;margin-top:7px">{{ s.cost }}</div>
+          </div>
+          <div style="padding:18px 20px">
+            <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;margin-bottom:8px">EXITS HERE</div>
+            <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:32px;line-height:1;letter-spacing:-.03em">{{ s.share }}</div>
+            <div style="font:400 12px/1.5 Archivo,sans-serif;color:#6E6458;margin-top:6px;text-wrap:pretty">{{ s.shareNote }}</div>
+          </div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+  <div style="font:400 13px/1.6 Archivo,sans-serif;color:#6E6458;max-width:900px;margin-top:14px;text-wrap:pretty">Share figures are targets to instrument against, not measurements. The one that matters is S5: if more than a few percent of captures reach the network, the local corpus for that type is wrong and the fix is the index, not the endpoint.</div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">05 · CONFIDENCE BANDS — WHAT TURNS A PILE INTO A COLLECTION</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:8px;text-wrap:pretty">This is the gate on shipping infinite capture. <strong>A sweep that produces forty review cards has not saved anyone time — it has moved the work and added a chore.</strong> The mode only earns its place if the top band absorbs most of the crate silently.</div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:900px;margin-bottom:20px;text-wrap:pretty">Auto-commit threshold is currently set at <strong>{{ thresholdLabel }}</strong>. Move it in Tweaks to see how the crate splits.</div>
+  <div style="display:flex;flex-direction:column;gap:11px">
+    <sc-for list="{{ bands }}" as="b" hint-placeholder-count="4">
+      <div style="border:2.5px solid #17130F;border-radius:18px;overflow:hidden;background:#fff;box-shadow:5px 5px 0 #17130F">
+        <div style="display:grid;grid-template-columns:200px 1fr 260px 150px;align-items:stretch">
+          <div style="padding:18px 20px;display:flex;flex-direction:column;justify-content:center;background: {{ b.bg }};color: {{ b.fg }}">
+            <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;opacity:.7">{{ b.range }}</div>
+            <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:23px;line-height:1.05;letter-spacing:-.03em;margin-top:8px;text-wrap:balance">{{ b.name }}</div>
+          </div>
+          <div style="padding:18px 20px;border-right:2px solid #E0D6C4">
+            <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;margin-bottom:8px">WHAT THE APP DOES</div>
+            <div style="font:400 13.5px/1.6 Archivo,sans-serif;text-wrap:pretty">{{ b.does }}</div>
+          </div>
+          <div style="padding:18px 20px;border-right:2px solid #E0D6C4;background:#FBF6EC">
+            <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;margin-bottom:8px">WHAT THE USER SEES</div>
+            <div style="font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ b.sees }}</div>
+          </div>
+          <div style="padding:18px 20px;display:flex;flex-direction:column;justify-content:center">
+            <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:34px;line-height:1;letter-spacing:-.03em">{{ b.count }}</div>
+            <div style="font:400 11.5px/1.45 Archivo,sans-serif;color:#6E6458;margin-top:6px">of {{ crateLabel }} captured</div>
+          </div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">06 · INDEX SIZE — THE CONSTRAINT THAT SHAPES THE DOWNLOAD</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:20px;text-wrap:pretty">Vinyl is the worst case at roughly two million releases. Order-of-magnitude figures, to establish which parts ship in the binary and which download on first use of a type.</div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px">
+    <sc-for list="{{ indexSizes }}" as="i" hint-placeholder-count="4">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;padding:18px">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">{{ i.k }}</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:34px;line-height:1;letter-spacing:-.035em;margin:10px 0 0">{{ i.size }}</div>
+        <div style="font:400 12.5px/1.55 Archivo,sans-serif;color:#3A2F26;margin-top:9px;text-wrap:pretty">{{ i.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#0C0A08;color:#F3ECE0;padding:22px 24px;box-shadow:5px 5px 0 #0E6E5E">
+    <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;color:#FFD24A;margin-bottom:12px">THE RULE THAT FALLS OUT OF IT</div>
+    <div style="font:400 15px/1.7 Archivo,sans-serif;max-width:940px;text-wrap:pretty">Text indexes ship. Embedding indexes download per type, on first use, over Wi-Fi, with a visible size before the tap — the same contract as an offline map. A type whose embedding index cannot be squeezed under about 150 MB does not get visual matching at all; it gets OCR and barcode, and that is an acceptable type profile, exactly as empty <span style="font-family:'DM Mono',monospace">providers</span> is an acceptable type profile today.</div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">07 · WHAT THIS CHANGES IN THE BLUEPRINT</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+    <sc-for list="{{ changes }}" as="c" hint-placeholder-count="6">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;padding:18px">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#C2371F">{{ c.k }}</div>
+        <div style="font:700 15px/1.3 Archivo,sans-serif;margin-top:8px;text-wrap:pretty">{{ c.t }}</div>
+        <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">{{ c.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">08 · STILL OPEN</div>
+  <div style="display:flex;flex-direction:column;gap:11px">
+    <sc-for list="{{ open }}" as="o" hint-placeholder-count="5">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#FBF6EC;padding:18px 20px;display:flex;gap:18px;align-items:baseline">
+        <div style="flex:none;font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;width:52px">{{ o.k }}</div>
+        <div style="flex:1">
+          <div style="font:700 16px/1.3 Archivo,sans-serif;text-wrap:pretty">{{ o.q }}</div>
+          <div style="font:400 13.5px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:7px;max-width:900px;text-wrap:pretty">{{ o.b }}</div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;crateSize&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:40,&quot;min&quot;:5,&quot;max&quot;:400,&quot;step&quot;:5,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Crate model&quot;,&quot;unit&quot;:&quot; objects&quot;},&quot;autoCommitThreshold&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:0.92,&quot;min&quot;:0.6,&quot;max&quot;:0.99,&quot;step&quot;:0.01,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Crate model&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const crate = this.props.crateSize ?? 40;
+    const th = this.props.autoCommitThreshold ?? 0.92;
+    const perQuery = 0.0045;
+    const money = (n) => (n < 1 ? '$' + n.toFixed(2) : '$' + n.toFixed(n < 100 ? 2 : 0));
+
+    // Illustrative distribution, re-split by the threshold the reader picks.
+    const clean = Math.round(crate * Math.max(0, Math.min(0.97, 1.86 - th * 1.02)));
+    const glance = Math.round(crate * 0.11);
+    const ranked = Math.round(crate * 0.07);
+    const unknown = Math.max(0, crate - clean - glance - ranked);
+
+    return {
+      crateLabel: crate + '-object',
+      thresholdLabel: th.toFixed(2),
+
+      vendors: [
+        { name: 'Google Cloud Vision — Product Search', what: 'hosted visual similarity', verdict: 'FALLBACK ONLY', tone: '#FFD24A',
+          gives: 'Genuine visual product matching: you upload a product set, it returns ranked similar items with scores. The technique is exactly what capture needs.',
+          why: 'It matches against a catalogue you supply. Google sells the matcher, not the data — you would still have to build, host and keep current a corpus of every pressing, issue and mintage. And it is a network round trip per object.',
+          price: '$4.50 / 1,000 queries\n$0.10 / 1,000 images stored per month\nfirst 1,000 free',
+          role: 'Reasonable as the server-side S5 fallback once you already have the corpus. Never as the primary.' },
+        { name: 'Google Lens', what: 'the thing everyone means', verdict: 'NO OFFICIAL API', tone: '#FF9B8A',
+          gives: 'Nothing directly. Google does not publish a Lens API. Cloud Vision does OCR, labels and web detection — it is not Lens and does not return product matches from the shopping index.',
+          why: 'Third-party scrapers (SerpApi, Apify, ScrapeBadger) do resell it, returning title, page URL, source domain, thumbnail and a price when the match is a shopping result. But it is unofficial, per-query priced, and one Google layout change takes your core loop down.',
+          price: 'scrapers ~$2–10 / 1,000\nplus ToS risk you cannot price',
+          role: 'Emergency last resort behind your own endpoint, if at all. Not something a paid product depends on.' },
+        { name: 'Amazon Rekognition Custom Labels', what: 'AutoML image classifier', verdict: 'WRONG SHAPE', tone: '#FF9B8A',
+          gives: 'You upload labelled images, it trains a model, you call one inference API with a MinConfidence you tune. No ML expertise required.',
+          why: 'It is built for tens or hundreds of classes — logos, machine parts, brand assets. You have millions of near-identical SKUs and a new one every week. Retraining is not a per-release operation, and the model has no concept of a catalogue.',
+          price: 'training + hosted inference hours\nbilled while the endpoint is warm',
+          role: 'None. Dismissed, and worth recording as dismissed so it does not get re-proposed.' },
+        { name: 'Amazon Product Advertising API', what: 'retail catalogue', verdict: 'GATED', tone: '#FF9B8A',
+          gives: 'Product data and images for items Amazon sells, keyed by ASIN or barcode.',
+          why: 'Access requires qualifying affiliate sales, which a one-time-purchase app will never generate. The catalogue is current retail — it has almost nothing to say about a 1972 pressing, a graded coin, or a boxed figure from a defunct line.',
+          price: 'free, but gated behind sales you will not make',
+          role: 'None for identification. Marginally interesting for sealed modern stock only.' },
+        { name: 'Apple Vision + VisionKit, on device', what: 'the one that wins', verdict: 'PRIMARY', tone: '#B9F0C9',
+          gives: 'Barcode detection across every symbology, accurate-level text recognition, and image feature-print embeddings you can compare by distance — the same technique Product Search sells, running locally.',
+          why: 'It is not a why-not. The catch is that it identifies nothing on its own: it produces text and vectors, and you supply what they are matched against. Section 03 is that supply.',
+          price: '$0.00\nno network, no account, works in a basement',
+          role: 'Stages S1, S2 and S4 of the pipeline. Everything else in this document exists to feed it.' }
+      ],
+
+      costCards: [
+        { k: 'PER OBJECT, HOSTED MATCHING', big: '$0.0045', b: 'Vision Product Search list price in the 1k–5M tier. Sounds like nothing. It is the per-object cost of a feature designed to make objects cheap to add.' },
+        { k: 'PER OBJECT, ON DEVICE', big: '$0.00', b: 'Barcode, OCR and feature-print all run on the neural engine. The marginal cost of the forty-first record is the same as the first.' },
+        { k: 'THE CURVE', big: 'inverted', b: 'Server matching makes your best users your most expensive users. On-device makes engagement free. That is the whole argument in one line.' }
+      ],
+
+      costRows: [
+        { k: 'ONE CRATE SESSION', v: money(crate * perQuery), b: crate + ' objects, one hosted query each. Invisible on its own.' },
+        { k: 'A 400-RECORD COLLECTION', v: money(400 * perQuery), b: 'The onboarding story from the video playbook — "400 records, one evening".' },
+        { k: 'A 2,000-OBJECT COLLECTOR', v: money(2000 * perQuery), b: 'Roughly a third of a €29.99 unlock, spent before you have earned anything else.' },
+        { k: 'RE-SCANS AND RETRIES', v: '× 1.3–1.8', b: 'Real sweeps double-capture. Every retry is another billed query; on device it is free.' }
+      ],
+
+      corpora: (() => {
+        const Y = { bulk: 'BULK + IMAGES', bulkBg: '#B9F0C9', bulkFg: '#17130F' };
+        const T = { bulk: 'BULK, NO IMGS', bulkBg: '#FFD24A', bulkFg: '#17130F' };
+        const A = { bulk: 'API ONLY', bulkBg: '#fff', bulkFg: '#6E6458' };
+        const N = { bulk: 'NO CORPUS', bulkBg: '#FF9B8A', bulkFg: '#17130F' };
+        return [
+          { type: 'Vinyl & CD', corpus: 'MusicBrainz for the metadata, Cover Art Archive for the sleeves. Discogs as enrichment for pressings and matrix detail, never as the index.', licence: 'MB data: CC0\nCAA: open, no auth\nDiscogs data: CC0', ...Y,
+            ident: 'Barcode on anything post-1980. Otherwise the catalogue number printed on the spine and label — OCR reads it directly, and it is near-unique.' },
+          { type: 'Comics', corpus: 'Grand Comics Database for series, issues and indicia. Comic Vine for covers and modern coverage.', licence: 'GCD: CC BY-SA dumps\nComic Vine: free key, rate-limited', ...T,
+            ident: 'Barcode on modern issues. Older ones: series title plus issue number off the cover, which OCR handles well because cover logos are large.' },
+          { type: 'Books', corpus: 'Open Library. Complete, monthly dumps, covers API on top.', licence: 'data: public domain\ncovers: free, rate-limited', ...Y,
+            ident: 'ISBN barcode, or the ISBN printed on the copyright page. The easiest type in the app.' },
+          { type: 'Trading cards — MTG', corpus: 'Scryfall. Daily bulk JSON of every card, every printing, with image URIs.', licence: 'Scryfall data: CC0\nimages: WotC, usage permitted', ...Y,
+            ident: 'Set symbol plus collector number printed bottom-left on modern frames. OCR that and you have an exact printing, not just a card.' },
+          { type: 'Trading cards — Pokémon', corpus: 'pokemontcg.io. Free API with images, full set coverage.', licence: 'free API key\nno bulk dump', ...A,
+            ident: 'Set code and card number, bottom of the card. Same trick as MTG.' },
+          { type: 'Coins', corpus: 'Numista is the best structured source. Colnect is broader and messier.', licence: 'Numista: API key, T&Cs\nno redistribution', ...A,
+            ident: 'No printed identifier. Denomination, country and date are struck on the coin — OCR gets the year reliably, the rest needs visual matching against obverse/reverse images.' },
+          { type: 'Stamps', corpus: 'Colnect, StampWorld. Catalogue numbering fragments across Michel, Scott and Yvert by region.', licence: 'commercial T&Cs\nno open dump', ...A,
+            ident: 'Denomination and country text on the stamp. Visual matching does the heavy lifting here — stamps are small, uniform in shape and visually distinctive.' },
+          { type: 'Video games', corpus: 'IGDB for metadata and cover art, MobyGames for the long tail.', licence: 'IGDB: free key via Twitch\nMobyGames: API, limited', ...A,
+            ident: 'Barcode on the case. Sealed or loose cartridges: title text plus platform, OCR off the label.' },
+          { type: 'LEGO', corpus: 'Rebrickable for sets, parts and inventories. BrickLink for market data.', licence: 'Rebrickable: free CSV downloads\nBrickLink: API, account', ...T,
+            ident: 'Set number printed large on the box corner. One of the cleanest OCR targets in the whole app.' },
+          { type: 'Watches', corpus: 'No open corpus. WatchBase and Chrono24 are commercial and closed.', licence: '—', ...N,
+            ident: 'Reference number engraved on the caseback, serial between the lugs. OCR on a macro shot is the entire strategy, matched against a small curated list of the brands people actually collect.' },
+          { type: 'Sneakers', corpus: 'None worth the name — already recorded in the blueprint as a deliberately manual type.', licence: '—', ...N,
+            ident: 'Style code on the box label and the inner tongue tag. OCR that string and a plain web search resolves it; no visual model needed, and none would help.' },
+          { type: 'Cameras', corpus: 'Camera-wiki is a wiki, not a database. No structured source.', licence: '—', ...N,
+            ident: 'Model name on the top plate or front, serial on the baseplate. OCR plus a hand-built list of a few thousand models covers almost every collection.' },
+          { type: 'Figurines & toys', corpus: 'Nothing general. Line-specific fan databases exist and do not federate.', licence: '—', ...N,
+            ident: 'Barcode if boxed. Loose: manual entry, and the no-match screen is the designed outcome rather than a failure.' },
+          { type: 'Wine', corpus: 'Vivino is closed. No open label corpus exists.', licence: '—', ...N,
+            ident: 'Producer, appellation and vintage off the label. Pure OCR into free-text fields — identification here means transcription, not matching.' }
+        ];
+      })(),
+
+      stages: [
+        { n: 'S0', t: 'Capture, with no shutter', api: 'AVCaptureSession · stability + scene-change detection', shadow: '#17130F',
+          b: 'The phone is held up and swept. A new object entering frame plus half a second of stability fires a frame automatically. The shutter is the slow part of capture — it is a deliberate act per object, and removing it is the single largest speed win available.',
+          latency: '~0 ms added', cost: 'free', share: '—', shareNote: 'Entry point for everything.' },
+        { n: 'S1', t: 'Barcode', api: 'VNDetectBarcodesRequest · symbologies from the type manifest', shadow: '#0E6E5E',
+          b: 'Only the symbologies the current type declares are enabled — the blueprint already says enabling everything slows detection and produces false reads. A hit gives an exact identifier and jumps straight to the local lookup.',
+          latency: '10–40 ms', cost: 'free', share: '~45%', shareNote: 'Of modern, boxed or sealed objects. Near zero on vintage.' },
+        { n: 'S2', t: 'Text recognition', api: 'VNRecognizeTextRequest · accurate level, per-type language hints', shadow: '#0E6E5E',
+          b: 'The insight the whole document rests on: almost everything a person collects has its name printed on it. Spines, labels, covers, tongue tags, casebacks. Reading that text is free, offline, instant, and works on a 1972 pressing that has no barcode at all.',
+          latency: '80–250 ms', cost: 'free', share: '—', shareNote: 'Feeds S3 rather than exiting itself.' },
+        { n: 'S3', t: 'Local full-text match', api: 'SQLite FTS5 · BM25, session priors as a rank boost', shadow: '#2B44D6',
+          b: 'The recognised text is queried against the type corpus already on the device. Session context collapses the candidate set hard: you are standing at one crate, so the type is locked and the last five matches predict the next — same artist run, same box set, same series. Feeding recent matches in as a rank boost is nearly free accuracy.',
+          latency: '<10 ms', cost: 'free', share: '~40%', shareNote: 'The workhorse. Most captures end here.' },
+        { n: 'S4', t: 'Visual tiebreak', api: 'VNGenerateImageFeaturePrint · cosine against a quantised cover index', shadow: '#2B44D6',
+          b: 'Used two ways: to choose between the top few text candidates when they differ only by pressing or printing, and as the primary when OCR returns nothing — a sleeve set entirely in stylised type, a coin, a stamp. This is Product Search, on the phone, at zero marginal cost.',
+          latency: '30–60 ms', cost: 'free', share: '~10%', shareNote: 'Higher on coins and stamps, near zero on books.' },
+        { n: 'S5', t: 'Your endpoint', api: 'one call to CLCTN · fronting the same corpora, scraper of last resort', shadow: '#C2371F',
+          b: 'Reached only when everything above misses. It queries the full corpora server-side, and only then considers a Lens scraper. This is the one stage with a bill attached, which is exactly why it is last and why it is yours rather than a vendor the app calls directly.',
+          latency: '400–1500 ms', cost: 'billed', share: '<5%', shareNote: 'If it exceeds this, fix the index, not the endpoint.' }
+      ],
+
+      bands: [
+        { range: '≥ ' + th.toFixed(2), name: 'Commit silently', bg: '#0E6E5E', fg: '#F3ECE0', count: String(clean),
+          does: 'Written straight into the collection as a finished object, with provider fields filled and auto flags set. Never enters the review queue.',
+          sees: 'A tick and the counter ticking up. No card, no decision, no interruption to the sweep.' },
+        { range: '0.70 – ' + th.toFixed(2), name: 'Commit, flag for a glance', bg: '#FFD24A', fg: '#17130F', count: String(glance),
+          does: 'Saved and searchable immediately, with a needs-a-glance flag. The identification is almost certainly right; the risk is a wrong pressing, not a wrong record.',
+          sees: 'In the collection already. A small marker on the row, and a "check 4 items" line at the top of the review queue they can ignore forever.' },
+        { range: '0.40 – 0.70', name: 'Ranked candidates', bg: '#2B44D6', fg: '#F3ECE0', count: String(ranked),
+          does: 'Enters the review queue with two or three ranked candidates attached. Visually identical unsures are grouped adjacent so a run of the same object resolves in one gesture.',
+          sees: 'A swipe stack: big photo, one candidate, right to accept, left for alternatives. Not a form — a form here is what kills the mode.' },
+        { range: '< 0.40', name: 'Unidentified, kept anyway', bg: '#C2371F', fg: '#F3ECE0', count: String(unknown),
+          does: 'Saved as an object with a photo and a type and nothing else. It is in the collection, it is counted, and it is never lost — the pile is preserved, not rejected.',
+          sees: 'The existing "tidy later" framing. These are the only ones that genuinely need typing, and there should be very few.' }
+      ],
+
+      indexSizes: [
+        { k: 'TEXT INDEX, VINYL', size: '~90 MB', b: 'Two million rows of title, artist, catalogue number and barcode in FTS5, compressed. Ships in the binary or as a first-launch download.' },
+        { k: 'EMBEDDINGS, NAÏVE', size: '~6 GB', b: '768-dimension float32 per cover. Unusable, and the reason a hosted service looks tempting until you price it.' },
+        { k: 'EMBEDDINGS, QUANTISED', size: '~130 MB', b: 'Reduced to 64 dimensions at int8. Accuracy loss is small when the embedding is only breaking ties between text candidates.' },
+        { k: 'SMALLER TYPES', size: '2–20 MB', b: 'MTG, LEGO, Pokémon, books by ISBN. These ship whole without anyone noticing, and they are most of the catalogue.' }
+      ],
+
+      changes: [
+        { k: 'RULE 07 — EXTEND', t: 'Capture has four strategies, not three', b: 'The derived-not-switched principle holds, but the manifest now needs an OCR strategy between barcode and visual: non-empty symbologies, then an identifier pattern, then providers, then manual.' },
+        { k: 'MANIFEST — ADD', t: 'lookup.identifierPattern', b: 'A regex per type for the string printed on the object — catalogue number, style code, set number, reference. OCR output is tested against it before any search runs. Data, not code, like everything else in the manifest.' },
+        { k: 'MANIFEST — ADD', t: 'lookup.localCorpus', b: 'Which shipped or downloadable index this type matches against, and its size. Empty is legal and means OCR into free-text fields — wine, figurines, cameras.' },
+        { k: 'CAPTUREFEATURE', t: 'Sweep replaces rapid', b: 'Mode becomes single / sweep. Sweep has no shutter action at all; the reducer receives frames from a stability detector and appends to the queue with a confidence score attached.' },
+        { k: 'REVIEWQUEUEFEATURE', t: 'Swipe stack, grouped by similarity', b: 'The queue only ever contains the two bottom bands. Sort by visual similarity rather than capture time so runs of the same object resolve together.' },
+        { k: 'NEW DEPENDENCY', t: 'identificationClient', b: 'Wraps S1 through S5 behind one async call returning a ranked result with a confidence. The reducer never knows which stage answered, which keeps the stage order a tuning decision rather than an architectural one.' }
+      ],
+
+      open: [
+        { k: 'Q1', q: 'Which type gets the prototype?', b: 'Vinyl is the flagship and the hardest. LEGO or MTG would prove the whole pipeline in a weekend — clean printed identifier, free bulk data with images, small index. My instinct is to validate on LEGO and ship on vinyl.' },
+        { k: 'Q2', q: 'Does the embedding index download, or do you skip visual matching in v1?', b: 'OCR plus FTS alone probably clears eighty percent on vinyl. Shipping without S4 is a real option and removes the entire index-download problem from the first release.' },
+        { k: 'Q3', q: 'Is S5 a paid-tier gate or a silent fallback?', b: 'It is the only metered thing in the app, which makes it tempting to charge for — and charging for it puts you back next to the subscription scanners the response plan positions against. Probably silent, with a soft cap.' },
+        { k: 'Q4', q: 'Who builds and hosts the corpus dumps?', b: 'Turning MusicBrainz into a shipped FTS index is a recurring build job, not a one-off. It needs a schedule, a version, and a way for old app versions to keep working against an old index.' },
+        { k: 'Q5', q: 'What is the honest auto-commit threshold?', b: 'Everything above is illustrative. The number can only come from a few hundred real captures with hand-labelled truth. Until that exists, the bands are a design, not a claim.' }
+      ]
+    };
+  }
+}
+
+</script>
+</body>
+</html>

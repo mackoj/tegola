@@ -1,0 +1,95 @@
+id: video-media
+name:
+  singular: Film
+  plural: Films
+  collection: The Shelf
+mark: "OOP"
+icon: reel
+# See 51_Video Media.dc.html. Built on subtypes (48).
+
+duplicates: rows          # same film, different format/edition = different object
+
+spine:
+  title: Title
+  subtitle: Format        # the subtype
+  year: Released          # this release, not the film
+
+conditions: [Sealed, Mint, Near mint, Very good, Good, Fair, Poor]
+allowMissing: true
+
+signatures:
+  - renderer: ladder
+    axes: [mediaCondition, caseCondition, sleeveCondition]
+  - renderer: set
+    binds: inserts
+
+searchable: [title, director, year, label, edition, cut, spineNo, place]
+related: [director, label, spineNo]
+placeLabel: Where it is
+
+fields:
+  - { key: director,  label: Director,   type: text, auto: true }
+  - { key: studio,    label: Studio,     type: text, auto: true }
+  - { key: label,     label: Label,      type: text, note: "Criterion, Arrow, Pioneer" }
+  - { key: edition,   label: Edition,    type: text, note: never auto-filled }
+  - { key: cut,       label: Cut,        type: text, note: "theatrical, director's, final" }
+  - { key: standard,  label: Standard,   type: choice, options: [NTSC, PAL, SECAM] }
+  - { key: regionCode, label: Region,    type: choice, options: ["0","1","2","3","4","5","6","7","8",A,B,C,free], note: narrowed per subtype }
+  - { key: aspect,    label: Aspect,     type: choice, options: ["4:3","1.85","2.39",open matte] }
+  - { key: discs,     label: Discs,      type: int }
+  - { key: packaging, label: Packaging,  type: choice, note: options come from subtype presets }
+  - { key: slipcover, label: Slipcover,  type: bool }
+  - { key: spineNo,   label: Spine no.,  type: text }
+  - { key: exRental,  label: Ex-rental,  type: bool }
+  - { key: mediaCondition,  label: Tape / disc, type: scale, ladderAxis: 1 }
+  - { key: caseCondition,   label: Case,        type: scale, ladderAxis: 2 }
+  - { key: sleeveCondition, label: Sleeve,      type: scale, ladderAxis: 3 }
+  - { key: inserts,   label: What's inside, type: set, slotsFrom: subtype }
+  - { key: watchLog,  label: Watched,    type: log, entry: [date, note, cut] }
+
+subtypes:
+  - key: vhs
+    label: VHS
+    presets: { regionCode: hidden, packaging: [slipcase, clamshell, big box], parts: [sleeve, shell, tape, insert], clock: mediaRot }
+    adds:
+      - { key: tapeSpeed, type: choice, options: [SP, LP, EP] }
+      - { key: printMark, type: text }
+  - key: betamax
+    label: Betamax
+    presets: { regionCode: hidden, packaging: [slipcase, clamshell], parts: [sleeve, shell, tape], clock: mediaRot }
+    adds:
+      - { key: tapeSpeed, type: choice, options: [βI, βII, βIII] }
+      - { key: betaHifi, type: bool }
+  - key: laserdisc
+    label: LaserDisc
+    presets: { standard: [NTSC, PAL], regionCode: hidden, packaging: [single jacket, gatefold, box set], parts: [jacket, discs, inner sleeves, obi, insert], clock: discRot }
+    adds:
+      - { key: sides, type: int }
+      - { key: encoding, type: choice, options: [CAV, CLV, CLV-ext] }
+      - { key: obi, type: bool }
+  - key: ced
+    label: CED
+    presets: { standard: [NTSC], regionCode: hidden, packaging: [caddy], parts: [sleeve, caddy, disc], clock: mediaRot }
+    adds:
+      - { key: caddyCondition, type: scale, replaces: caseCondition }
+  - key: dvd
+    label: DVD
+    presets: { regionCode: ["0","1","2","3","4","5","6","7","8"], packaging: [keepcase, snapper, digipak, steelbook, box set], lookup: barcode, clock: discRot }
+    adds:
+      - { key: layers, type: choice, options: [DVD-5, DVD-9] }
+  - key: hd-dvd
+    label: HD DVD
+    presets: { regionCode: hidden, packaging: [keepcase, slipcover], lookup: barcode, clock: discRot-pending }
+    adds:
+      - { key: combo, type: bool }
+  - key: blu-ray
+    label: Blu-ray
+    presets: { regionCode: [A, B, C, free], packaging: [keepcase, steelbook, mediabook, digipak, box set], lookup: [barcode, spineNo], clock: discRot }
+    adds:
+      - { key: limitedNo, type: text, unique: true }
+  - key: uhd
+    label: 4K UHD
+    presets: { regionCode: hidden, packaging: [keepcase, steelbook, mediabook], lookup: barcode, clock: discRot-pending }
+    adds:
+      - { key: hdr, type: set, options: [HDR10, HDR10+, Dolby Vision] }
+      - { key: bdIncluded, type: bool }

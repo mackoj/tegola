@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#EAE3D6}a{color:#2B44D6}a:hover{color:#FF5B2E}</style>
+</helmet>
+
+<div style="width:1360px;margin:0 auto;padding:60px 28px 100px;font-family:Archivo,system-ui,sans-serif;color:#17130F">
+
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70">CLCTN · IDEA BACKLOG · ON-DEVICE ML · NOT YET COMMITTED</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:66px;line-height:.92;letter-spacing:-.045em;margin:16px 0 0;max-width:1000px;text-wrap:balance">Little brains we might borrow.</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:860px;margin-top:20px;text-wrap:pretty">Desert Ant Labs ships small on-device models as drop-in SDKs for iOS, Android and web. Three of the seven are interesting to CLCTN, one of those is interesting enough to plan around, and the rest are noise for a collection app. <strong>Nothing on this page is a decision</strong> — it is a page of maybes kept in one place so the C2C conversation does not restart from zero.</div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:860px;margin-top:14px;text-wrap:pretty">The reason it is worth a page at all is the commercial shape: on-device means no marginal server cost, no data leaving the phone, and it works offline — which is the same near-zero-infra posture the Technical Blueprint already commits to. A cloud moderation or PII API would break that posture; this does not.</div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">00 · WHY THIS VENDOR IS EVEN ON THE PAGE</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:840px;margin-bottom:20px;text-wrap:pretty">Four facts, each of which would individually be enough to disqualify most vendors if it were the other way round.</div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+    <sc-for list="{{ why }}" as="w" hint-placeholder-count="4">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;padding:18px">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">{{ w.k }}</div>
+        <div style="font:700 15px/1.3 Archivo,sans-serif;margin-top:8px;text-wrap:pretty">{{ w.t }}</div>
+        <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">{{ w.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">01 · THE WHOLE CATALOGUE, TRIAGED</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:840px;margin-bottom:20px;text-wrap:pretty">Seven products. The <strong>skip</strong> rows are listed rather than omitted so nobody re-evaluates them in six months — the audio models are for editors and recorders, and CLCTN is neither.</div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;overflow:hidden;box-shadow:5px 5px 0 #17130F">
+    <div style="display:grid;grid-template-columns:150px 1fr 320px 130px 140px;background:#17130F;color:#F3ECE0;font:500 9.5px 'DM Mono',monospace;letter-spacing:.1em">
+      <div style="padding:13px 16px">MODEL</div>
+      <div style="padding:13px 16px">WHAT IT DOES</div>
+      <div style="padding:13px 16px">WHAT IT WOULD DO FOR CLCTN</div>
+      <div style="padding:13px 16px">AVAILABLE</div>
+      <div style="padding:13px 16px">VERDICT</div>
+    </div>
+    <sc-for list="{{ models }}" as="m" hint-placeholder-count="7">
+      <div style="display:grid;grid-template-columns:150px 1fr 320px 130px 140px;border-top:2px solid #E0D6C4;background:#fff;align-items:start">
+        <div style="padding:15px 16px">
+          <div style="font-family:'DM Mono',monospace;font-weight:500;font-size:16px;letter-spacing:-.01em">{{ m.name }}</div>
+        </div>
+        <div style="padding:15px 16px;font:400 13px/1.55 Archivo,sans-serif;text-wrap:pretty">{{ m.does }}</div>
+        <div style="padding:15px 16px;font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ m.forUs }}</div>
+        <div style="padding:15px 16px;font:400 12px/1.5 'DM Mono',monospace;color:#3A2F26;white-space:pre-line">{{ m.avail }}</div>
+        <div style="padding:15px 16px">
+          <div style="display:inline-block;font:500 9px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:4px 10px;background:{{ m.tone }}">{{ m.verdict }}</div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">02 · REDACT — THE ONLY ONE WORTH PLANNING AROUND</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:880px;margin-bottom:10px;text-wrap:pretty">The obvious framing is privacy hygiene. The framing that actually justifies the integration is <strong>revenue protection</strong>: the day CLCTN takes a cut of a sale, every buyer and seller has an incentive to move the deal off-platform, and the way they do it is by typing a phone number into a chat box. Redact catches that at the keyboard, on the device, in 24 languages.</div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:880px;margin-bottom:22px;text-wrap:pretty">This is the leak Vinted spends real money fighting. Doing it on-device is strictly better than doing it server-side: it is cheaper, it works before the message is sent rather than after, and it means the PII never reaches our infrastructure — so the GDPR answer stops being "we process it carefully" and becomes "we do not process it."</div>
+
+  <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:24px">
+    <sc-for list="{{ redactUses }}" as="r" hint-placeholder-count="4">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+        <div style="display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;background:#17130F;color:#F3ECE0;padding:14px 20px">
+          <div style="font:500 9.5px 'DM Mono',monospace;letter-spacing:.12em;opacity:.55">{{ r.n }}</div>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:21px;letter-spacing:-.02em">{{ r.title }}</div>
+          <div style="margin-left:auto;font:500 9px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #FFD24A;color:#FFD24A;border-radius:999px;padding:4px 10px">{{ r.when }}</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0">
+          <div style="padding:18px 20px;border-right:2px solid #E0D6C4">
+            <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;margin-bottom:8px">THE HOOK</div>
+            <div style="font:400 13.5px/1.6 Archivo,sans-serif;text-wrap:pretty">{{ r.hook }}</div>
+          </div>
+          <div style="padding:18px 20px;border-right:2px solid #E0D6C4">
+            <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;margin-bottom:8px">BEHAVIOUR</div>
+            <div style="font:400 13.5px/1.6 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ r.behaviour }}</div>
+          </div>
+          <div style="padding:18px 20px">
+            <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;margin-bottom:8px">WHY NOT THE OBVIOUS WAY</div>
+            <div style="font:400 13.5px/1.6 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ r.trap }}</div>
+          </div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#0C0A08;color:#F3ECE0;padding:24px;box-shadow:5px 5px 0 #2B44D6;overflow-x:auto">
+    <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:16px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;opacity:.5">MESSAGECOMPOSER.SWIFT · SKETCH, NOT AN API CONTRACT</div>
+      <div style="margin-left:auto;font:500 8.5px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #FFD24A;color:#FFD24A;border-radius:999px;padding:3px 9px">WARN, DO NOT BLOCK</div>
+    </div>
+    <div style="font:400 12.5px/1.8 'DM Mono',monospace;white-space:pre-wrap;max-width:1040px">{{ sketch }}</div>
+    <div style="font:400 12.5px/1.6 Archivo,sans-serif;opacity:.55;margin-top:16px;max-width:900px;text-wrap:pretty">Reads as one dependency in the TCA sense — <span style="font-family:'DM Mono',monospace">@Dependency(\.redactor)</span>, a live client wrapping the SDK, a test client returning fixtures. No reducer knows a model is involved.</div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">03 · THE WATCH LIST</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:840px;margin-bottom:20px;text-wrap:pretty">Both of these are listed as unreleased on every platform. Neither is plannable, both change what we would build if they land — so they get a note rather than a slot.</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+    <sc-for list="{{ watch }}" as="w" hint-placeholder-count="2">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #FF5B2E;padding:22px">
+        <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:12px">
+          <div style="font-family:'DM Mono',monospace;font-weight:500;font-size:19px;letter-spacing:-.01em">{{ w.name }}</div>
+          <div style="margin-left:auto;font:500 9px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:4px 10px;background:#EAE3D6">{{ w.status }}</div>
+        </div>
+        <div style="font:400 14px/1.6 Archivo,sans-serif;text-wrap:pretty">{{ w.body }}</div>
+        <div style="height:2px;background:#E0D6C4;margin:16px 0"></div>
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;margin-bottom:6px">IF IT SHIPS, IT REPLACES</div>
+        <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ w.replaces }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">04 · WHAT WOULD HAVE TO BE TRUE</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:840px;margin-bottom:20px;text-wrap:pretty">Open questions, in the order they would need answering. Items one and two can be settled in an afternoon with the public SDK and would tell us whether the rest of this page matters.</div>
+  <div style="display:flex;flex-direction:column;gap:10px">
+    <sc-for list="{{ questions }}" as="q" hint-placeholder-count="6">
+      <div style="display:grid;grid-template-columns:54px 1fr 300px;border:2.5px solid #17130F;border-radius:14px;background:#fff;align-items:center">
+        <div style="font:500 13px 'DM Mono',monospace;color:#8A7F70;padding:16px 0 16px 18px">{{ q.n }}</div>
+        <div style="font:700 14.5px/1.45 Archivo,sans-serif;padding:16px 18px 16px 0;text-wrap:pretty">{{ q.q }}</div>
+        <div style="font:400 13px/1.55 Archivo,sans-serif;color:#6E6458;padding:16px 18px;border-left:2px solid #E0D6C4;text-wrap:pretty">{{ q.why }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="margin-top:44px;border:2.5px solid #17130F;border-radius:18px;background:#FFD24A;padding:26px;box-shadow:5px 5px 0 #17130F">
+    <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;color:#6E5A1E">THE ONE-LINE VERSION</div>
+    <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:30px;line-height:1.15;letter-spacing:-.025em;margin-top:10px;max-width:1000px;text-wrap:balance">Redact ships with C2C messaging or C2C messaging ships without a leak defence. Moderator and Schemer are bets on someone else's roadmap — build neither into a plan.</div>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showSkips&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Content&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const skips = this.props.showSkips ?? true;
+    const models = [
+      { name: "Redact", does: "Multilingual PII redaction across all 24 official EU languages.", forUs: "Strips phone numbers, emails, IBANs and addresses out of buyer↔seller messages before they send — the leak that moves deals off-platform and takes the commission with them.", avail: "iOS · Android\nWeb / Node", verdict: "SHIP WITH C2C", tone: "#FFD24A" },
+      { name: "Moderator", does: "Flags nudity in an image before it is uploaded.", forUs: "Every C2C photo upload is a liability the day it opens. One incident in a collectibles app does damage out of all proportion to its frequency.", avail: "Unreleased", verdict: "WATCH", tone: "#fff" },
+      { name: "Schemer", does: "Turns free-form text into a structured schema.", forUs: "Not a selling feature — a cataloguing one. Paste a messy marketplace description or your own notes, get title, set, year, condition and variant filled in. Could also make CSV import tolerate arbitrary column names.", avail: "Unreleased", verdict: "WATCH", tone: "#fff" },
+      { name: "Emo", does: "Suggests emoji from text, multilingual.", forUs: "Nothing the app is short of. The design system does not use emoji.", avail: "iOS · Android\nWeb / Node", verdict: "SKIP", tone: "#EAE3D6" },
+      { name: "Shapes", does: "Recognises a shape from a single stroke.", forUs: "No drawing surface anywhere in the twenty-four screens.", avail: "iOS · Android\nWeb / Node", verdict: "SKIP", tone: "#EAE3D6" },
+      { name: "Clear", does: "Speech enhancement: denoise, dereverb, 48 kHz.", forUs: "Only if listings ever carry spoken video. They do not, and the Video Playbook is about marketing output rather than user uploads.", avail: "iOS · Android\nWeb / Node", verdict: "SKIP", tone: "#EAE3D6" },
+      { name: "Uhm / Align", does: "Filler-word detection and word-timestamp refinement in audio.", forUs: "Tools for an editor or a transcription product. CLCTN is neither.", avail: "iOS only", verdict: "SKIP", tone: "#EAE3D6" }
+    ];
+    return {
+      models: skips ? models : models.filter(m => m.verdict !== "SKIP"),
+      why: [
+        { k: "PRICE", t: "Free to 100k devices", b: "Per SDK, monthly active devices, unlimited inference per user. We will not be near that ceiling in year one, and if we are, we have bigger invoices to worry about." },
+        { k: "TOPOLOGY", t: "Runs on the phone", b: "No inference server, no per-call cost, no latency budget, works on a train. Matches the infra posture the blueprint already assumes." },
+        { k: "JURISDICTION", t: "EU lab, EU languages", b: "A Dutch lab, and Redact covers all 24 official EU languages rather than English plus best effort. Relevant for a French company selling into France first." },
+        { k: "EXIT", t: "Open weights", b: "Published on Hugging Face, so the vendor disappearing is an inconvenience rather than a rewrite. Rare enough to be worth writing down." }
+      ],
+      redactUses: [
+        { n: "R1", title: "Contact details in chat", when: "AT C2C LAUNCH", hook: "The message composer, on every keystroke pause — before the send action ever fires.", behaviour: "Detected spans are highlighted in the composer with an inline note: keep it in CLCTN and the purchase is covered. Send still works.", trap: "Silently rewriting someone's message is a bug report and a trust problem. Warn, log the signal, let them send." },
+        { n: "R2", title: "Photos of paperwork", when: "AT C2C LAUNCH", hook: "Listing photo picker, after OCR of the selected image.", behaviour: "Collectors photograph certificates, invoices and shipping labels. Flag the visible name or address and offer a blur before the photo goes public.", trap: "Auto-blurring destroys detail that is sometimes the point of the photo — a signed certificate is the value. Offer, do not apply." },
+        { n: "R3", title: "Support and report bodies", when: "OPTIONAL, LATER", hook: "Any free-text field whose contents leave the device and land in an inbox we operate.", behaviour: "Scrub before transmission so our own support tooling never becomes a PII store with retention obligations.", trap: "Cheap to add, easy to forget, and the one that quietly reduces what a future audit is even about." },
+        { n: "R4", title: "The privacy claim itself", when: "MARKETING", hook: "The website's privacy line, once the integration is real.", behaviour: "\"Your messages are screened on your phone. We never see them.\" Verifiable, unusual, and it differentiates against every marketplace that screens server-side.", trap: "Do not write the line before the code exists. It is the kind of claim that gets checked." }
+      ],
+      sketch: [
+        "// Dependency, not a direct SDK call — the reducer stays testable.",
+        "case .composerChanged(text):",
+        "  state.draft = text",
+        "  return .run { send in",
+        "    let spans = try await redactor.scan(text, locale: .current)",
+        "    await send(.piiDetected(spans))   // [.phone, .email, .iban, .address]",
+        "  }",
+        "  .debounce(id: Debounce.pii, for: .milliseconds(400), scheduler: mainQueue)",
+        "",
+        "case let .piiDetected(spans):",
+        "  state.warnedSpans = spans        // highlight in place",
+        "  state.canSend = true             // never gate the send button",
+        "  return .none"
+      ].join("\n"),
+      watch: [
+        { name: "Moderator", status: "UNRELEASED", body: "Nudity flagged before upload, on-device. For a marketplace with open photo uploads this is arguably more urgent than Redact — but it is listed as unreleased on iOS, Android and web, so it cannot carry a launch requirement.", replaces: "Whatever manual reporting queue we would otherwise staff at launch. Until then, plan for human review and treat the model as an upgrade rather than a dependency." },
+        { name: "Schemer", status: "UNRELEASED", body: "Free-form text to a structured schema, on-device. The largest friction in CLCTN is not selling, it is the first hundred items — and this is the model that makes a pasted paragraph become a filled form.", replaces: "Part of the manual add-item flow and possibly the CSV column mapper. Worth an early-access email now precisely because it touches onboarding rather than C2C." }
+      ],
+      questions: [
+        { n: "01", q: "How large is the Redact model on disk, and what does it do to the app download?", why: "A collection app competes on feeling light. An on-device model that adds tens of megabytes needs to be worth it or be downloaded on first C2C use." },
+        { n: "02", q: "How good is French recall on phone numbers written as prose?", why: "\"zero six, then twelve twelve twelve twelve\" is how people actually evade filters. Test it before the claim in R4 is written anywhere." },
+        { n: "03", q: "Does the licence cover a paid app and a marketplace take rate?", why: "Free to 100k devices is the headline; commercial licensing has its own contact address, which usually means conditions. Read it before it is load-bearing." },
+        { n: "04", q: "Do we want the warning at all, or do we want the signal?", why: "Detecting a contact-detail exchange is also a fraud and abuse signal. Knowing how often it happens may be worth more than preventing it." },
+        { n: "05", q: "Android and web parity at the time we need it?", why: "Redact is listed on all three today. The Technical Blueprint is Swift-first, so this matters only when a second client exists." },
+        { n: "06", q: "Ask for Schemer early access now?", why: "One email. It is the only one of the seven that touches onboarding, which is where the app lives or dies." }
+      ]
+    };
+  }
+}
+
+</script>
+</body>
+</html>

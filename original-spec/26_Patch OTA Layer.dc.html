@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#EAE3D6}a{color:#2B44D6}a:hover{color:#FF5B2E}</style>
+</helmet>
+
+<div style="width:1360px;margin:0 auto;padding:60px 28px 100px;font-family:Archivo,system-ui,sans-serif;color:#17130F">
+
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70">CLCTN · ARCHITECTURE · OTA PATCH LAYER · 19 SEP 2026</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:66px;line-height:.92;letter-spacing:-.045em;margin:16px 0 0;max-width:1040px;text-wrap:balance">The right tool. Possibly for the wrong half of the problem.</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-top:20px;text-wrap:pretty">Patch compiles the Swift you changed to WebAssembly and runs it on-device in WasmKit, leaving the signed binary untouched. It slots into the layering from <a href="23_Android via Swift.dc.html">Android via Swift</a> without disturbing it — <strong>as long as one rule holds: <span style="font-family:'DM Mono',monospace">clctn-shared</span> must never learn that Patch exists.</strong></div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:900px;margin-top:14px;text-wrap:pretty">But the dev-loop case you're describing deserves a harder look than the tool does. Section 02 is the one that decides this, and it turns on a single question about how you actually work.</div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">00 · THE VERDICT, BEFORE THE DETAIL</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+    <sc-for list="{{ verdicts }}" as="v" hint-placeholder-count="3">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;padding:22px">
+        <div style="display:inline-block;font:500 9px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:4px 10px;background:{{ v.tone }}">{{ v.tag }}</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:23px;letter-spacing:-.02em;line-height:1.1;margin-top:14px;text-wrap:pretty">{{ v.t }}</div>
+        <div style="font:400 14px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:10px;text-wrap:pretty">{{ v.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">01 · WHAT IT ACTUALLY IS</div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+    <sc-for list="{{ facts }}" as="f" hint-placeholder-count="8">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;padding:18px">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">{{ f.k }}</div>
+        <div style="font-family:'DM Mono',monospace;font-weight:500;font-size:19px;letter-spacing:-.02em;margin-top:8px">{{ f.v }}</div>
+        <div style="font:400 12.5px/1.55 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">{{ f.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">02 · THE GATE — WHAT IS ACTUALLY SLOW IN YOUR LOOP</div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#FFD24A;padding:24px 26px;box-shadow:5px 5px 0 #17130F;max-width:1000px;margin-bottom:20px">
+    <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:30px;line-height:1.1;letter-spacing:-.025em;text-wrap:pretty">Do you write code away from your Mac? Everything on this page is a footnote to that question.</div>
+  </div>
+  <div style="font:400 16px/1.7 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:12px;text-wrap:pretty">You framed this as "the delay of App Store Connect", but App Store Connect is not in a solo developer's inner loop and never has to be. Xcode installs to a paired iPhone over Wi-Fi in seconds, free, with a debugger attached. Internal TestFlight needs no review at all. Neither of those is the 48-hour wait Patch was built to eliminate.</div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:900px;margin-bottom:22px;text-wrap:pretty">Where Patch genuinely wins is the case your message actually hints at: <strong>an LLM session running somewhere that isn't your laptop, and a phone in your hand that isn't near it.</strong> If that's the working pattern, nothing else closes that gap. If your Mac is with you, most of this is solved already and Patch's dev value drops sharply.</div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;overflow:hidden;box-shadow:5px 5px 0 #17130F">
+    <div style="display:grid;grid-template-columns:250px 130px 1fr 1fr;background:#17130F;color:#F3ECE0;font:500 9.5px 'DM Mono',monospace;letter-spacing:.1em">
+      <div style="padding:13px 16px">ROUTE ONTO THE PHONE</div>
+      <div style="padding:13px 16px">LATENCY</div>
+      <div style="padding:13px 16px">WHAT IT NEEDS</div>
+      <div style="padding:13px 16px">WHERE IT FAILS YOU</div>
+    </div>
+    <sc-for list="{{ routes }}" as="r" hint-placeholder-count="5">
+      <div style="display:grid;grid-template-columns:250px 130px 1fr 1fr;border-top:2px solid #E0D6C4;background:{{ r.bg }};align-items:start">
+        <div style="padding:14px 16px;font:700 14px/1.35 Archivo,sans-serif;text-wrap:pretty">{{ r.name }}</div>
+        <div style="padding:14px 16px;font-family:'DM Mono',monospace;font-weight:500;font-size:14px">{{ r.latency }}</div>
+        <div style="padding:14px 16px;font:400 12.5px/1.6 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ r.needs }}</div>
+        <div style="padding:14px 16px;font:400 12.5px/1.6 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ r.fails }}</div>
+      </div>
+    </sc-for>
+  </div>
+  <div style="font:400 14px/1.65 Archivo,sans-serif;color:#6E6458;max-width:900px;margin-top:16px;text-wrap:pretty">One detail that matters for expectations: a patch <strong>applies on next launch</strong>, not live. The loop is push, quit the app, reopen — fast, but it is not hot reload, and there is no debugger attached to interpreted code. Print-and-look, not breakpoints.</div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">03 · WHERE IT SITS — AND THE ONE RULE THAT PROTECTS ANDROID</div>
+  <div style="font:400 16px/1.7 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:20px;text-wrap:pretty">Your instinct to have <span style="font-family:'DM Mono',monospace">clctn-shared</span> be the thing that updates is right, and the good news is that it costs nothing structurally: <strong>the SDK never goes in the shared package.</strong> Integration is two lines in the app's entry point; the build engine reaches the rest from outside. So the shared core keeps building for Android with no Apple and no Patch symbol anywhere in its graph.</div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#0C0A08;color:#F3ECE0;padding:26px;box-shadow:5px 5px 0 #2B44D6;overflow-x:auto">
+    <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;opacity:.5;margin-bottom:18px">THE LAYERING · WHO KNOWS ABOUT PATCH</div>
+    <div style="font:400 12.5px/1.85 'DM Mono',monospace;white-space:pre-wrap;max-width:1060px">{{ layering }}</div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px">
+    <sc-for list="{{ layerNotes }}" as="l" hint-placeholder-count="3">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;padding:18px">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">{{ l.k }}</div>
+        <div style="font:700 15px/1.35 Archivo,sans-serif;margin-top:8px;text-wrap:pretty">{{ l.t }}</div>
+        <div style="font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">{{ l.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">04 · THE FINGERPRINT CONTRACT — THE PART THAT WILL BITE AN LLM WORKFLOW</div>
+  <div style="font:400 16px/1.7 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:12px;text-wrap:pretty">Every patch is built against a hash of your native shell. Change native code and the hash moves; a moved hash means no patch until you ship a new binary. The docs are blunt that this is the one problem everyone hits — and an agent-driven session is a machine for producing exactly the changes that move it.</div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:900px;margin-bottom:22px;text-wrap:pretty">For a TCA codebase the line falls somewhere unusually legible, which is the best thing on this page: <strong><span style="font-family:'DM Mono',monospace">State</span> and <span style="font-family:'DM Mono',monospace">Action</span> behave like a schema, and everything downstream of them is fluid.</strong></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #0E6E5E;overflow:hidden">
+      <div style="background:#0E6E5E;color:#F3ECE0;padding:14px 20px">
+        <div style="font-family:'DM Mono',monospace;font-weight:500;font-size:16px">FLUID · ships over the air</div>
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;opacity:.8;margin-top:5px">FINGERPRINT-STABLE — PATCH AND KEEP MOVING</div>
+      </div>
+      <div style="padding:6px 0">
+        <sc-for list="{{ fluid }}" as="f" hint-placeholder-count="6">
+          <div style="padding:13px 20px;border-bottom:2px solid #F0EAE0">
+            <div style="font-family:'DM Mono',monospace;font-weight:500;font-size:14px">{{ f.t }}</div>
+            <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;margin-top:5px;text-wrap:pretty">{{ f.b }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #FF5B2E;overflow:hidden">
+      <div style="background:#17130F;color:#F3ECE0;padding:14px 20px">
+        <div style="font-family:'DM Mono',monospace;font-weight:500;font-size:16px">FROZEN · needs a real build</div>
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;opacity:.55;margin-top:5px">MOVES THE FINGERPRINT — RE-REGISTER AND REINSTALL</div>
+      </div>
+      <div style="padding:6px 0">
+        <sc-for list="{{ frozen }}" as="f" hint-placeholder-count="6">
+          <div style="padding:13px 20px;border-bottom:2px solid #F0EAE0">
+            <div style="font-family:'DM Mono',monospace;font-weight:500;font-size:14px">{{ f.t }}</div>
+            <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;margin-top:5px;text-wrap:pretty">{{ f.b }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#0E6E5E;color:#F3ECE0;padding:22px 24px;box-shadow:5px 5px 0 #17130F;max-width:1000px;margin-top:18px">
+    <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;color:#FFD24A;margin-bottom:10px">THE SIDE EFFECT WORTH MORE THAN THE TOOL</div>
+    <div style="font:400 16px/1.7 Archivo,sans-serif;opacity:.92;text-wrap:pretty">This contract is good discipline whether or not you ever adopt Patch. "Settle the state shape, then churn the logic and the views" is how a TCA app should be built anyway, and it is precisely the habit an LLM session tends to break — agents love adding a stored property to solve a view problem. Patch turns that tendency into an immediate, visible cost, which is a strange but genuine argument in its favour.</div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">05 · WHAT IN CLCTN SPECIFICALLY WON'T PATCH</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:20px;text-wrap:pretty">Measured coverage across 24 real apps is 74.6% of SwiftUI view bodies, but the spread runs 45% to 98% and the losers are all the same shape: apps heavy in native-wrapped views. Worth predicting where CLCTN lands before adopting, because our most distinctive screens are exactly the expensive kind.</div>
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px">
+    <sc-for list="{{ clctnFit }}" as="c" hint-placeholder-count="6">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;padding:18px;display:flex;gap:14px;align-items:flex-start">
+        <div style="flex:none;width:34px;height:34px;border:2.5px solid #17130F;border-radius:999px;display:flex;align-items:center;justify-content:center;font:700 14px Archivo,sans-serif;background:{{ c.tone }}">{{ c.mark }}</div>
+        <div>
+          <div style="font:700 15px/1.35 Archivo,sans-serif;text-wrap:pretty">{{ c.t }}</div>
+          <div style="font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:7px;text-wrap:pretty">{{ c.b }}</div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+  <div style="font:400 14px/1.65 Archivo,sans-serif;color:#6E6458;max-width:900px;margin-top:16px;text-wrap:pretty">Important nuance from the docs, and the most-misunderstood point: a view that can't lower is never broken — it renders natively from the bundled binary, and it can still be moved, resized, shown and hidden over the air. Only its internals are frozen. So the camera and the 3D box don't block anything; they just don't change from a patch.</div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">06 · DEV-ONLY, OR ALL THE WAY — FOUR POSTURES</div>
+  <div style="font:400 16px/1.7 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:20px;text-wrap:pretty">Your plan is posture A, and it has one property worth naming out loud: <strong>it pays the whole cost and collects the smaller half of the benefit.</strong> The fingerprint discipline, the hybrid execution model and the setup are all paid in dev; the thing Patch is actually famous for — fixing a crash for everyone in two minutes instead of two days — is deliberately left on the table.</div>
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <sc-for list="{{ postures }}" as="p" hint-placeholder-count="4">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+        <div style="display:flex;align-items:center;gap:12px;padding:14px 18px;background:#EDE4D6;border-bottom:2.5px solid #17130F;flex-wrap:wrap">
+          <div style="width:30px;height:30px;border:2.5px solid #17130F;border-radius:8px;display:flex;align-items:center;justify-content:center;font:700 13px Archivo,sans-serif;background:{{ p.tone }}">{{ p.k }}</div>
+          <div style="font:700 18px Archivo,sans-serif;letter-spacing:-.01em">{{ p.name }}</div>
+          <div style="margin-left:auto;font:500 10px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:5px 10px;background:#fff">{{ p.cost }}</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr)">
+          <div style="padding:15px 18px;border-right:2px solid #E0D6C4">
+            <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px">WHAT IT MEANS</div>
+            <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ p.what }}</div>
+          </div>
+          <div style="padding:15px 18px;border-right:2px solid #E0D6C4">
+            <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px">WHAT YOU GET</div>
+            <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ p.get }}</div>
+          </div>
+          <div style="padding:15px 18px">
+            <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px">WHAT YOU GIVE UP</div>
+            <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ p.give }}</div>
+          </div>
+        </div>
+        <div style="border-top:2.5px solid #17130F;padding:12px 18px;font:700 13.5px/1.5 Archivo,sans-serif;background:{{ p.footBg }};color:{{ p.footFg }};text-wrap:pretty">{{ p.foot }}</div>
+      </div>
+    </sc-for>
+  </div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#0C0A08;color:#F3ECE0;padding:24px 26px;box-shadow:5px 5px 0 #FFD24A;max-width:1000px;margin-top:18px">
+    <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;color:#FFD24A;margin-bottom:10px">RECOMMENDATION</div>
+    <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:26px;line-height:1.14;letter-spacing:-.02em;text-wrap:pretty">{{ postureLine }}</div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">07 · WHAT THIS DOES TO THE ANDROID PLAN</div>
+  <div style="display:grid;grid-template-columns:1.05fr .95fr;gap:16px;align-items:start">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #2B44D6;padding:28px">
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:30px;letter-spacing:-.03em;line-height:1.08;text-wrap:balance">Nothing, if the rule in section 03 holds. And Android doesn't want it anyway.</div>
+      <div style="font:400 15px/1.7 Archivo,sans-serif;color:#3A2F26;margin-top:16px;text-wrap:pretty">Patch exists to route around App Store review. Play has no equivalent bottleneck for a developer testing their own work — internal distribution lands in minutes, and a direct install lands in seconds. The Android dev loop is already the fast one.</div>
+      <div style="font:400 15px/1.7 Archivo,sans-serif;color:#3A2F26;margin-top:14px;text-wrap:pretty">So this is not a layer you'd ever mirror in Kotlin. It is an iOS-side compensation for an iOS-side problem, sitting above the shared core rather than inside it — which is the same position SwiftUI, StoreKit and Vision already occupy in the split.</div>
+      <div style="height:2px;background:#E0D6C4;margin:22px 0"></div>
+      <div style="font:400 13.5px/1.6 Archivo,sans-serif;color:#6E6458;text-wrap:pretty">The one thing to watch: if <span style="font-family:'DM Mono',monospace">patchcli</span> ever asks you to annotate, restructure or add an import inside <span style="font-family:'DM Mono',monospace">clctn-shared</span> to improve coverage, decline. Coverage in the shared core is worth less than the shared core staying portable.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <sc-for list="{{ androidNotes }}" as="a" hint-placeholder-count="3">
+        <div style="border:2.5px solid #17130F;border-radius:16px;background:#EAE3D6;padding:20px">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">{{ a.k }}</div>
+          <div style="font:700 15px/1.35 Archivo,sans-serif;margin-top:8px;text-wrap:pretty">{{ a.t }}</div>
+          <div style="font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">{{ a.b }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">08 · THE ACTUAL CHANGE TO MAKE</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:20px;text-wrap:pretty">One block in the Technical Blueprint, in the same shape as the resizability and portability constraints already there. It costs nothing now and keeps both the adopt and the drop decisions one config change away.</div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#0C0A08;color:#F3ECE0;padding:24px;box-shadow:5px 5px 0 #FF5B2E;overflow-x:auto">
+    <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;opacity:.5;margin-bottom:16px">BLUEPRINT · OTA PATCH LAYER · PROPOSED WORDING</div>
+    <div style="font:400 12.5px/1.85 'DM Mono',monospace;white-space:pre-wrap;max-width:1060px">{{ constraint }}</div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px">
+    <sc-for list="{{ steps }}" as="s" hint-placeholder-count="4">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;padding:18px">
+        <div style="display:flex;align-items:baseline;gap:10px">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">{{ s.n }}</div>
+          <div style="margin-left:auto;font:500 9px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:3px 9px;background:{{ s.tone }}">{{ s.when }}</div>
+        </div>
+        <div style="font:700 15px/1.35 Archivo,sans-serif;margin-top:10px;text-wrap:pretty">{{ s.t }}</div>
+        <div style="font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">{{ s.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:14px">09 · VERIFY BEFORE COMMITTING — THINGS THIS PAGE ASSUMES</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <sc-for list="{{ questions }}" as="q" hint-placeholder-count="6">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#EAE3D6;padding:18px">
+        <div style="display:flex;gap:10px;align-items:baseline">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">{{ q.n }}</div>
+          <div style="font:700 15px/1.45 Archivo,sans-serif;text-wrap:pretty">{{ q.q }}</div>
+        </div>
+        <div style="font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">{{ q.why }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="font:400 12.5px/1.7 Archivo,sans-serif;color:#8A7F70;margin-top:44px;max-width:900px;text-wrap:pretty">Sources: <a href="https://docs.patchrelease.com">Patch documentation</a> — coverage census, the compatibility fingerprint, and the Apple-compliance note citing DPLA §3.3.1(B) — plus <a href="https://patchrelease.com">patchrelease.com</a> for pricing and the CI example. Coverage figures are the vendor's own published census at pinned commits; treat them as a good-faith measurement, not an independent one. Related: <a href="23_Android via Swift.dc.html">Android via Swift</a> for the package split this page sits on, and <a href="16_Technical Blueprint.dc.html">Technical Blueprint</a> for the target list.</div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1416,&quot;height&quot;:900},&quot;posture&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Dev only, compiled out of release&quot;,&quot;Dev and TestFlight beta&quot;,&quot;Full production hotfix channel&quot;,&quot;Don't adopt&quot;],&quot;default&quot;:&quot;Dev only, compiled out of release&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Decision&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const posture = this.props.posture ?? "Dev only, compiled out of release";
+    const lines = {
+      "Dev only, compiled out of release": "Start at posture A, exactly as you proposed — but write it so C is a one-line change, not a project. Dev-only gives you the remote loop with zero App Store exposure, and the moment you have real users and a crash you can't reach, flipping the flag should be a decision rather than an integration.",
+      "Dev and TestFlight beta": "Posture B is the quiet best of both: the loop you want plus real patch behaviour tested on other people's devices before it ever matters, and still nothing interpreted in the App Store build. It costs one extra channel in the config and is the posture I would actually run.",
+      "Full production hotfix channel": "Posture C collects the benefit Patch exists for — and for a solo developer who is remote a lot, a crash you can fix from a phone in two minutes is worth more than the dev loop ever will be. Accept the tail risk consciously: your entire business is one app on one store.",
+      "Don't adopt": "Defensible. If your Mac travels with you, Xcode already installs to your phone in seconds with a debugger attached, and this is a dependency, a hybrid execution model and a new failure mode in exchange for solving a problem you don't have. Revisit the day you ship and get your first unreachable crash report."
+    };
+    return {
+      postureLine: lines[posture] ?? lines["Dev only, compiled out of release"],
+      verdicts: [
+        { tag: "ARCHITECTURALLY SAFE", tone: "#B9F0C9", t: "It doesn't touch the shared core", b: "The SDK belongs in the iOS app target's entry point and nowhere else. clctn-shared keeps building for Android with no Patch symbol in its graph — so this layer costs the portability plan nothing." },
+        { tag: "CHECK THE PREMISE", tone: "#FFD24A", t: "Your bottleneck may not be review", b: "Xcode to a paired iPhone is seconds and internal TestFlight needs no review. Patch's dev win is real only when your Mac isn't with you — which may well be your situation, but decide it deliberately." },
+        { tag: "THE COUNTER-PROPOSAL", tone: "#EAE3D6", t: "Dev-only is the half with less payoff", b: "You'd pay the fingerprint discipline and the hybrid execution risk in development, then decline the two-minute production hotfix that is the tool's actual reason to exist." }
+      ],
+      facts: [
+        { k: "MECHANISM", v: "Swift → WASM", b: "The CLI compiles the changed Swift to WebAssembly; the SDK runs it on-device in WasmKit. The signed binary is never modified." },
+        { k: "COVERAGE", v: "74.6%", b: "Of SwiftUI view bodies across a 24-app census, 82.5% element-level. Spread runs 45% to 98% depending on how native-wrapped the app is." },
+        { k: "FALLBACK", v: "Never breaks", b: "Code that can't lower stays native and renders from the bundled binary. A missing or corrupt module falls back to the shipped version." },
+        { k: "APPLY TIME", v: "Next launch", b: "Cached on-device, works offline. Not hot reload — quit and reopen. No debugger on interpreted code." },
+        { k: "ROLLBACK", v: "One click", b: "Fleet-wide, to any prior module, in under a minute with no resubmission. The genuinely compelling production feature." },
+        { k: "COMPLIANCE", v: "DPLA §3.3.1(B)", b: "The interpreted-code provision CodePush and Expo have used for a decade. Same clause Shorebird cites for Flutter." },
+        { k: "COST FOR YOU", v: "€0", b: "Hobby tier is free to 100 devices, unlimited updates. A solo dev in dev-only mode is one or two devices — cost is not a factor in this decision." },
+        { k: "OPEN SOURCE", v: "MIT / Apache-2.0", b: "SDK and engine both public, self-hosting documented. Meaningful de-risking if the company disappears — though you'd still be running it." }
+      ],
+      routes: [
+        { name: "Xcode → paired iPhone", latency: "~30 s", bg: "#F5FBF6", needs: "Mac awake, same network or a paired device over Wi-Fi. Full debugger, breakpoints, instruments.", fails: "Only when the Mac isn't with you. This is the route Patch is competing against, and it is very hard to beat." },
+        { name: "Internal TestFlight", latency: "10–25 min", bg: "#fff", needs: "Archive, upload, App Store Connect processing. No review for internal testers.", fails: "Too slow for a tight loop, fine for a daily. The processing wait is the part you can't compress." },
+        { name: "External TestFlight", latency: "hours – 1 day", bg: "#fff", needs: "Beta App Review on first build of a version.", fails: "Not an inner-loop tool at all. Relevant only when other people are testing." },
+        { name: "App Store release", latency: "~1–2 days", bg: "#fff", needs: "Full review. Variable and occasionally much worse.", fails: "This is the thing Patch was built to route around — and it is not in your dev loop today." },
+        { name: "patchcli from CI", latency: "~1–2 min", bg: "#FFFBEA", needs: "A merge, a macOS runner, an API key. No Xcode on your side, no Mac in the room.", fails: "Only patches fingerprint-compatible changes. Anything that moves the native shell drops you back to TestFlight." }
+      ],
+      layering: [
+        "clctn-app  (iOS app target)",
+        "  └── import PatchSDK          ← the ONLY place it appears",
+        "      Patch.configure(...)     ← two lines, inside #if DEBUG for posture A",
+        "",
+        "  clctn-ios                    ← SwiftUI views, AVFoundation, StoreKit, Vision",
+        "    · no PatchSDK import       · most view bodies lower and ship OTA",
+        "",
+        "    clctn-shared               ← reducers, models, valuation, CSV, sync",
+        "      · no PatchSDK import     · no Apple framework import",
+        "      · still builds for Android, Linux, Wasm",
+        "      · patched from OUTSIDE by the build engine, not from within",
+        "",
+        "  The build engine reaches shared code without the package depending on it.",
+        "  Deleting the two lines in clctn-app removes the layer completely."
+      ].join("\n"),
+      layerNotes: [
+        { k: "WHY IT WORKS", t: "Integration is at the entry point", b: "patchcli init registers the app, adds the package and inserts the startup call in the App struct. Nothing asks a domain module to import anything." },
+        { k: "THE RULE", t: "No PatchSDK below clctn-app", b: "One grep in CI enforces it. The moment the shared package imports an iOS-only SDK, the Android build dies and the portability constraint is quietly gone." },
+        { k: "THE BONUS", t: "Shared code is the best-covered code", b: "Pure value types, async/await, no OS calls — exactly the profile that lowers cleanly. The portability discipline you already committed to is also what makes this layer effective." }
+      ],
+      fluid: [
+        { t: "SwiftUI view bodies", b: "Structure, layout, ordering, styling, navigation, sheets, toolbars. Add, remove, reorder, re-flow the hierarchy freely." },
+        { t: "Copy and string literals", b: "Lifted out of native slot source and carried by the patch. Rewriting labels is always fingerprint-stable." },
+        { t: "Design tokens in value position", b: "Theme.Colors.ink, Theme.Font.body(...), radius constants — resolved natively and fed to the view. A restyle is a patch." },
+        { t: "Reducer and effect logic", b: "Business rules, validation, pricing, comp matching, async/await effects — the computation inside functions that lower." },
+        { t: "Control flow in a body", b: "if / if let / switch, gestures, onAppear, onChange, task. Conditional UI is fully authorable over the air." },
+        { t: "Bindings to existing state", b: "Rebinding a control to a property that already exists. The property existing is the condition — see the other column." }
+      ],
+      frozen: [
+        { t: "A new stored property on State", b: "The single most common LLM edit in a TCA app, and it moves the fingerprint every time. Treat State as a schema with a migration cost." },
+        { t: "A new Action case", b: "Same reason. Design the action surface deliberately rather than growing it mid-session, which is good practice independently." },
+        { t: "Any changed method signature", b: "Including in dependency protocols. The patch calls into linked symbols — change the symbol and the call no longer lines up." },
+        { t: "New SPM dependency or framework", b: "Nothing can be linked over the air. A new package is always a store build." },
+        { t: "Entitlements and Info.plist keys", b: "The OS reads the signed values at launch. A patch cannot conjure a camera permission the binary never declared." },
+        { t: "An Xcode or toolchain upgrade", b: "The compiler version is part of the hash. Register and release from the same environment, and re-register after every upgrade." }
+      ],
+      clctnFit: [
+        { mark: "✓", tone: "#B9F0C9", t: "Shelf, list, detail, forms, wishlist", b: "Ordinary SwiftUI over value types with design-system tokens. This is the high-coverage profile, and it is most of the 53 screens." },
+        { mark: "✓", tone: "#B9F0C9", t: "Valuation, CSV import, comp matching", b: "Pure computation over rows in the shared core. The best-covered code in the codebase and also the most likely to need a quick correction." },
+        { mark: "✓", tone: "#B9F0C9", t: "Lending, handshakes, share flows", b: "Navigation, sheets, state machines. Fully authorable over the air, including the copy — which is where most iteration actually happens." },
+        { mark: "✗", tone: "#FF9B8A", t: "Camera capture and viewfinder", b: "AVFoundation behind a representable. It renders, moves and hides via patch; its internals are frozen. Shelf-scan capture work needs real builds." },
+        { mark: "✗", tone: "#FF9B8A", t: "The 3D vinyl box and any Metal", b: "Custom Shape paths, Layout geometry and Metal shaders are native by definition. If the box uses a custom shader, that file never patches." },
+        { mark: "✗", tone: "#FF9B8A", t: "On-device ML and StoreKit", b: "Vision, Foundation Models, entitlement logic. Frozen internals, and the parts where a wrong patch would be most expensive anyway." }
+      ],
+      postures: [
+        { k: "A", tone: "#FFD24A", name: "Dev only, compiled out of the release build", cost: "YOUR PROPOSAL", what: "PatchSDK behind #if DEBUG or a separate scheme. The App Store binary has no interpreted layer and no SDK.", get: "The remote loop, at zero policy risk. Nothing in the shipped app differs from a normal native build.", give: "The entire production benefit, and you still pay fingerprint discipline plus a dev build whose execution model isn't the one you ship.", foot: "Sound, and the right place to start — provided the code is arranged so posture C is a flag flip rather than a re-integration.", footBg: "#FFD24A", footFg: "#17130F" },
+        { k: "B", tone: "#B9F0C9", name: "Dev plus a TestFlight beta channel", cost: "+1 CHANNEL", what: "SDK compiled into beta builds, pointed at a beta channel. Still stripped from the App Store build.", get: "Everything in A, plus patch behaviour exercised on other people's devices and networks before it could ever matter.", give: "Still no production hotfix. Slightly more config, and beta builds that differ from release builds.", foot: "The quiet best of both, and what I'd actually run once anyone other than you is testing.", footBg: "#0E6E5E", footFg: "#F3ECE0" },
+        { k: "C", tone: "#FF5B2E", name: "Full production hotfix channel", cost: "TAIL RISK", what: "SDK ships to users. Staged rollouts, canary channel, one-click fleet rollback, error-spike alerts.", get: "The reason the tool exists: a crash fixed for everyone in minutes, from anywhere, with no review — worth far more to a remote solo dev than any dev loop.", give: "An interpreted layer in your shipped app, a vendor in your critical path, and dependence on a policy provision that has held for a decade but is not a guarantee.", foot: "The honest high-value option. Adopt it when you have users, not before — and read the self-hosting docs first so the vendor isn't a single point of failure.", footBg: "#fff", footFg: "#17130F" },
+        { k: "D", tone: "#EAE3D6", name: "Don't adopt", cost: "FREE", what: "Xcode to device, internal TestFlight for the daily, and a disciplined preview-driven loop.", get: "No new dependency, no hybrid execution, no fingerprint failure mode, one less thing to maintain alone.", give: "The remote-without-a-Mac case entirely, and the production hotfix. If neither describes you, you give up nothing.", foot: "Genuinely defensible, and the right answer if your laptop travels with you. Revisit after the first unreachable crash report.", footBg: "#fff", footFg: "#17130F" }
+      ],
+      androidNotes: [
+        { k: "NO MIRROR NEEDED", t: "Play has no review wall in the loop", b: "Internal distribution and direct install make the Android dev loop fast by default. There is nothing to compensate for, so no Kotlin equivalent is ever required." },
+        { k: "SAME SHELF", t: "It sits where SwiftUI sits", b: "Above the shared core, in the iOS-only column of the package split. That column already exists and already has a rule attached to it." },
+        { k: "THE ASYMMETRY", t: "Two loops, two speeds", b: "Adopting Patch brings the iOS loop up to roughly Android's default speed. Worth knowing so you don't later read the difference as a Patch benefit." }
+      ],
+      constraint: [
+        "OTA PATCH LAYER",
+        "",
+        "  · PatchSDK is imported in exactly one file: the iOS app target's entry",
+        "    point. Never in clctn-ios, never in clctn-shared. Enforced by a grep in CI.",
+        "  · clctn-shared must build with no Patch and no Apple symbol in its graph.",
+        "    Coverage in the shared core is never a reason to change its imports.",
+        "  · State and Action are treated as a schema. Adding a stored property or an",
+        "    action case is a store release — plan the shape, then churn the logic.",
+        "  · Every working session ends with one plain build, no patch layer, on a real",
+        "    device. Interpreted execution is not the execution model you ship.",
+        "  · Register the fingerprint from the same shell and toolchain used to release,",
+        "    and re-register after every Xcode upgrade.",
+        "",
+        "  Consequence: the App Store build can drop the layer entirely by deleting two",
+        "  lines, and can adopt production hotfixes by changing one flag."
+      ].join("\n"),
+      steps: [
+        { n: "STEP 01", when: "THIS WEEK", tone: "#B9F0C9", t: "Answer the gate question", b: "Do you write code away from your Mac often enough to matter? If no, close this page and revisit after launch. Everything below assumes yes." },
+        { n: "STEP 02", when: "FREE", tone: "#B9F0C9", t: "Paste the constraint into the blueprint", b: "It is worth having even under posture D — the State-as-schema rule and the no-SDK-below-the-app-target rule are good architecture on their own." },
+        { n: "STEP 03", when: "ONE AFTERNOON", tone: "#FFD24A", t: "Trial it on the current prototype", b: "Hobby tier is free. Run patchcli init, check what patchcli build --verbose says about clctn-shared coverage, and confirm the shared package needs no import. That single check validates this whole page." },
+        { n: "STEP 04", when: "AT LAUNCH", tone: "#EAE3D6", t: "Re-decide the posture", b: "With real users the calculus inverts: the production hotfix becomes the valuable half. Make it a deliberate decision rather than inheriting whatever dev left behind." }
+      ],
+      questions: [
+        { n: "Q1", q: "Does the build engine reach code in local SPM packages?", why: "This whole page assumes clctn-shared is patchable without importing anything. Highly likely given how the CLI works, but it is the load-bearing assumption — verify it in the step-03 trial before anything else." },
+        { n: "Q2", q: "Are non-View.body functions really hot-swappable?", why: "The marketing says business logic ships OTA; the coverage page describes hot-swapping View.body getters specifically. Reducer logic sits between those two statements — check what patchcli build --verbose reports for a reducer." },
+        { n: "Q3", q: "How does a TCA reducer body classify?", why: "Reducers are structs conforming to a protocol with a body property. Whether that counts as a patchable body or native code decides how much of the architecture is fluid." },
+        { n: "Q4", q: "Does sqlite-data / GRDB code stay native?", why: "Anything touching file handles is classified native. If the persistence layer demotes, it also means schema-adjacent edits keep moving the fingerprint." },
+        { n: "Q5", q: "What does the hybrid execution model cost in confidence?", why: "Debug builds running interpreted WASM are not the binary you ship. Worth one deliberate test of the same flow both ways before trusting the loop." },
+        { n: "Q6", q: "How real is self-hosting as an exit?", why: "Open source under MIT and Apache-2.0 is meaningful, but running your own update backend is work you would not want. Read the self-hosting page before posture C, not after." }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

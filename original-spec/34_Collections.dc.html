@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#EAE3D6}
+a{color:#2B44D6}a:hover{color:#FF5B2E}
+.dv-turn{padding:48px 52px 40px;border-bottom:2px solid rgba(23,19,15,.12)}
+.dv-thd{display:flex;align-items:baseline;gap:10px;margin:0 0 8px}
+.dv-tid{font:600 10px 'DM Mono',monospace;padding:4px 8px;background:#17130F;color:#F3ECE0;border-radius:5px;text-decoration:none}
+.dv-tname{font:700 14px Archivo,sans-serif;color:#17130F}
+.dv-opts{display:flex;flex-wrap:wrap;gap:34px;align-items:flex-start}
+.dv-opt{flex:none;display:flex;flex-direction:column;gap:10px;scroll-margin-top:16px}
+.dv-oid{display:inline-block;margin-right:8px;vertical-align:1px;font:600 10.5px 'DM Mono',monospace;padding:3px 7px;background:rgba(23,19,15,.1);color:#17130F;border-radius:5px;text-decoration:none}
+.dv-olabel{display:block;font:400 12px/1.45 Archivo,sans-serif;color:rgba(23,19,15,.6);max-width:393px;text-wrap:pretty}
+.dv-opt:target .dv-oid{background:#FF5B2E;color:#F3ECE0}
+.dv-next{margin:26px 0 0;font:400 12.5px/1.6 Archivo,sans-serif;color:rgba(23,19,15,.55)}
+</style>
+</helmet>
+
+<section class="dv-turn" id="t18">
+  <div class="dv-thd"><a class="dv-tid" href="#t18">18</a><span class="dv-tname">Migrating a custom type onto the official one</span></div>
+  <p style="margin:0 0 26px;max-width:820px;font:400 13px/1.6 Archivo,sans-serif;color:rgba(23,19,15,.62);text-wrap:pretty">The missing half of <a href="#15a">15a</a>. A proposal shipping is only good news if the person who proposed it doesn't pay for it — so this screen exists to make the promise visible <em>before</em> anything moves: every field shown, every mapping named, the one lossy case surfaced rather than buried. The screen is the diff, not a progress bar.</p>
+  <div class="dv-opts">
+    <div class="dv-opt" id="18a">
+      <div class="dv-olabel"><a class="dv-oid" href="#18a">18a</a>Field-by-field remap. Four states carry it: <strong>exact</strong>, <strong>renamed</strong> (matched on values, not labels), <strong>upgraded</strong> (a text field becoming a real log), and <strong>kept</strong> — your invented field survives as a custom field on the official type. Grading scales are the only genuinely lossy mapping, so they get their own block and a manual override.</div>
+      <dc-import name="35_Collections App" screen="migrate" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+  </div>
+  <p class="dv-next">Two calls. Migration is offered, never imposed — a borrower who downloaded someone's community type six months ago has their own habits, and a silent upgrade is a betrayal. And the 30-day reversal needs a real snapshot on disk, which is the only part of this with engineering cost worth naming.</p>
+</section>
+
+<section class="dv-turn" id="t17">
+  <div class="dv-thd"><a class="dv-tid" href="#t17">17</a><span class="dv-tname">The five screens the Response Plan asks for</span></div>
+  <p style="margin:0 0 26px;max-width:820px;font:400 13px/1.6 Archivo,sans-serif;color:rgba(23,19,15,.62);text-wrap:pretty">Five features, seven screens. The import is the one that matters: it turns the app's worst problem — a shelf that costs work before it gives pleasure — into ninety seconds, using the catalogue of the one competitor we were never going to beat. The other four each attach to a meter: receipts and the value chart to the subscription, the disposal sheet to the introduction fee, the instant lane to the buyback referral. The through-line is <strong>every number carries its source</strong>, and where there is no source we show nothing rather than a confident guess.</p>
+  <div class="dv-opts">
+    <div class="dv-opt" id="17a">
+      <div class="dv-olabel"><a class="dv-oid" href="#17a">17a</a>Where the import starts. Discogs is given the whole card because it's the one that will carry the launch; the honest part is the second row — what comes across, and what doesn't.</div>
+      <dc-import name="35_Collections App" screen="importsrc" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="17b">
+      <div class="dv-olabel"><a class="dv-oid" href="#17b">17b</a>Running. Three counters, because a collector wants to know the match quality, not just the progress. Ambiguous pressings queue rather than block — they still count and still show.</div>
+      <dc-import name="35_Collections App" screen="importrun" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="17c">
+      <div class="dv-olabel"><a class="dv-oid" href="#17c">17c</a>The payoff, and the most important ninety seconds in the product. It ends by pointing at the one thing Discogs can't do — put the watches next to the records.</div>
+      <dc-import name="35_Collections App" screen="importdone" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="17d">
+      <div class="dv-olabel"><a class="dv-oid" href="#17d">17d</a>A price receipt. A range rather than a number, the sales behind it, and a source that has <em>no</em> match saying so out loud. This screen is the credibility argument in one view.</div>
+      <dc-import name="35_Collections App" screen="receipt" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="17e">
+      <div class="dv-olabel"><a class="dv-oid" href="#17e">17e</a>Value over time — the chart nobody else can draw, because nobody else holds the whole shelf. Unsourced types are shown as held, not quietly averaged in.</div>
+      <dc-import name="35_Collections App" screen="value" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="17f">
+      <div class="dv-olabel"><a class="dv-oid" href="#17f">17f</a>The mixed disposal sheet: five objects, three types, one act. The "who sees this" block restates D29 in the place where the user is actually deciding, and the fee is flat and per-introduction.</div>
+      <dc-import name="35_Collections App" screen="disposal" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="17g">
+      <div class="dv-olabel"><a class="dv-oid" href="#17g">17g</a>The instant lane. The app tells you not to bother listing a €14 game and shows what the alternative actually costs in weeks. Honesty here is what makes the whole sell feature trustworthy.</div>
+      <dc-import name="35_Collections App" screen="instant" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+  </div>
+  <p class="dv-next">Three things I'd want your call on. The import needs a real answer on scope — four connectors is a quarter of work, one (Discogs) is a fortnight and covers the launch market. The €2 flat introduction fee in <a href="#17f">17f</a> is a placeholder: flat keeps it honest but caps upside on a €340 watch, so a banded fee may be fairer. And <a href="#17g">17g</a> assumes a buyback partner exists with an API — worth a phone call before it goes in the plan.</p>
+</section>
+
+<section class="dv-turn" id="t16">
+  <div class="dv-thd"><a class="dv-tid" href="#t16">16</a><span class="dv-tname">Wishlists, and the index underneath them</span></div>
+  <p style="margin:0 0 26px;max-width:820px;font:400 13px/1.6 Archivo,sans-serif;color:rgba(23,19,15,.62);text-wrap:pretty">A wishlist is a collection of objects you don't own — same types, same fields, one flag. That one flag buys three things at once: a shareable hunt list, a reason for a for-sale search index, and the shape of lending from someone else's shelf. Not-yours reads as a <strong>dashed edge and no drop shadow</strong> everywhere it appears — the cheapest possible rule, and it holds from a 44px thumb to a full row.</p>
+  <div class="dv-opts">
+    <div class="dv-opt" id="16a">
+      <div class="dv-olabel"><a class="dv-oid" href="#16a">16a</a>The wishlist itself. Priority and a price cap per object, and the one line that matters: three of twelve are for sale right now. Nothing here touches value, insurance or stats.</div>
+      <dc-import name="35_Collections App" screen="wishlist" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="16b">
+      <div class="dv-olabel"><a class="dv-oid" href="#16b">16b</a>Shared, seen by someone else — matched against their shelf. They learn what you want; they learn nothing about what you have. Owned rows get actions, the rest stay dashed and inert.</div>
+      <dc-import name="35_Collections App" screen="wishshare" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="16c">
+      <div class="dv-olabel"><a class="dv-oid" href="#16c">16c</a>Searching what people will sell. The infra note is the point: the index holds <em>offers</em>, not shelves — an object enters when its owner marks it available and leaves when they don't.</div>
+      <dc-import name="35_Collections App" screen="market" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="16d">
+      <div class="dv-olabel"><a class="dv-oid" href="#16d">16d</a>The hit. Fires only on print, grade and cap together — near misses stay silent, or the alert becomes noise and gets switched off in a week.</div>
+      <dc-import name="35_Collections App" screen="hit" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="16e">
+      <div class="dv-olabel"><a class="dv-oid" href="#16e">16e</a>The library idea, sketched not built: a reservation is a queued lend, so it reuses the handshake and adds only a waiting line. Marked <em>not built</em> on the screen itself.</div>
+      <dc-import name="35_Collections App" screen="reserve" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+  </div>
+  <p class="dv-next">Two things I'd want your call on. First: does a wishlist live inside the Shelf tab as a collection with a flag, or is it its own destination? I've built it as a collection, which keeps the tab bar at five. Second: 16c means publishing a for-sale index — that's the first piece of shared infrastructure in the app, and it's hard to take back once people are searching it.</p>
+</section>
+
+<section class="dv-turn" id="t15">
+  <div class="dv-thd"><a class="dv-tid" href="#t15">15</a><span class="dv-tname">Proposing a type</span></div>
+  <p style="margin:0 0 26px;max-width:820px;font:400 13px/1.6 Archivo,sans-serif;color:rgba(23,19,15,.62);text-wrap:pretty">Yes — and 14c already sets it up, because a custom type <em>is</em> a proposal that hasn't been sent. Two things make this work rather than become a dead suggestion box: you send the shape and never the shelf, and adopting someone's draft counts for more than voting on it.</p>
+  <div class="dv-opts">
+    <div class="dv-opt" id="15a">
+      <div class="dv-olabel"><a class="dv-oid" href="#15a">15a</a>The offer, the public board, and the four-step ladder from Proposed to Shipped. Closed proposals say why — cassettes became a format option on Vinyl rather than a type.</div>
+      <dc-import name="35_Collections App" screen="propose" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+  </div>
+  <p class="dv-next">The line I'd hold to: when a proposal ships, the proposer's objects migrate into the real type with every value intact. A contribution that costs you your own data is a tax, and nobody pays it twice.</p>
+</section>
+
+<section class="dv-turn" id="t14">
+  <div class="dv-thd"><a class="dv-tid" href="#t14">14</a><span class="dv-tname">All fourteen types, and the two edge cases</span></div>
+  <p style="margin:0 0 26px;max-width:820px;font:400 13px/1.6 Archivo,sans-serif;color:rgba(23,19,15,.62);text-wrap:pretty">Read off the real YAML — each row uses that type's own spine labels, its <code style="font-family:'DM Mono',monospace;font-size:11px">mark</code>, its gradient, its grading scale and its two most-quoted fields. Then your two questions: mixed collections (yes) and no matching type (three routes).</p>
+  <div class="dv-opts">
+    <div class="dv-opt" id="14a">
+      <div class="dv-olabel"><a class="dv-oid" href="#14a">14a</a>Fourteen rows, one shape — a stamp and a Porsche in the same 70px. Only the three bulk hobbies show ×N, and they're exactly the three that can't be lent as a single object.</div>
+      <dc-import name="35_Collections App" screen="types" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="14b">
+      <div class="dv-olabel"><a class="dv-oid" href="#14b">14b</a>Mixed collections — the collection has no type, every object carries its own. Sorting falls back to the six shared fields; stats group by type, because averaging a Porsche and a stamp is a lie.</div>
+      <dc-import name="35_Collections App" screen="mixed" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="14c">
+      <div class="dv-olabel"><a class="dv-oid" href="#14c">14c</a>No type fits — borrow the nearest, build your own field by field, or own it as a bare Thing. Custom types are YAML we haven't written yet, so a popular one becomes the next shipped type.</div>
+      <dc-import name="35_Collections App" screen="notype" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+  </div>
+  <p class="dv-next">Sneakers is the type to design against for 14c: its own YAML says there's no usable provider, so every sneaker is entered by hand. Whatever the no-match flow becomes, one whole type lives in it permanently.</p>
+</section>
+
+<section class="dv-turn" id="t13">
+  <div class="dv-thd"><a class="dv-tid" href="#t13">13</a><span class="dv-tname">Configurable — but still with a default</span></div>
+  <p style="margin:0 0 26px;max-width:820px;font:400 13px/1.6 Archivo,sans-serif;color:rgba(23,19,15,.62);text-wrap:pretty">Worth saying plainly: configurability isn't a substitute for choosing. Most people never open settings, so whatever ships underneath <em>is</em> their bar forever. So both — a one-tap personality question that lands you on a sensible arrangement, and a real editor buried in settings for the few who care. <strong>E</strong> stays the default under all of it.</p>
+  <div class="dv-opts">
+    <div class="dv-opt" id="13a">
+      <div class="dv-olabel"><a class="dv-oid" href="#13a">13a</a>The question, asked once — three profiles matching your three audiences, each showing the bar it produces. Plus the four rules that stop this from fragmenting the app.</div>
+      <dc-import name="35_Collections App" screen="tabpick" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="13b">
+      <div class="dv-olabel"><a class="dv-oid" href="#13b">13b</a>The editor — four slots, a bench of spares, and two welded positions: Shelf first, shutter centre. Muscle memory in a record shop beats anyone's preference.</div>
+      <dc-import name="35_Collections App" screen="tabedit" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+  </div>
+  <p class="dv-next">The one genuinely new idea in here: the bar can drift on its own. Three loans in a month and Activity offers itself — once, dismissible, never again. That covers the people who'd benefit from a different bar but would never go looking for one.</p>
+</section>
+
+<section class="dv-turn" id="t12">
+  <div class="dv-thd"><a class="dv-tid" href="#t12">12</a><span class="dv-tname">Five slots, two spoken for</span></div>
+  <p style="margin:0 0 26px;max-width:820px;font:400 13px/1.6 Archivo,sans-serif;color:rgba(23,19,15,.62);text-wrap:pretty">Shelf and Scan are fixed. Seven candidates for the other three, each scored against your three audiences — hardcore, hobbyist, and the person who just wants to know what they have. A tab has to pay off for at least two of them.</p>
+  <div class="dv-opts">
+    <div class="dv-opt" id="12a">
+      <div class="dv-olabel"><a class="dv-oid" href="#12a">12a</a>The pool, then three assembled bars — <strong>D</strong> the hunter's bar (Wants), <strong>E</strong> Find promoted into the bar, <strong>F</strong> the social read (People + Insights). Scroll for the audience verdicts.</div>
+      <dc-import name="35_Collections App" screen="tabs2" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+  </div>
+  <p class="dv-next">Only E passes all three audiences. D locks out the casual owner; F is the most enjoyable but bets the bar on a social network that doesn't exist yet.</p>
+</section>
+
+<section class="dv-turn" id="t11">
+  <div class="dv-thd"><a class="dv-tid" href="#t11">11</a><span class="dv-tname">The tab bar, recounted</span></div>
+  <p style="margin:0 0 26px;max-width:820px;font:400 13px/1.6 Archivo,sans-serif;color:rgba(23,19,15,.62);text-wrap:pretty">You're right about Lent, Stats and Me. The test I used: a tab earns its slot by being somewhere you <em>go</em>, not something you <em>read</em>. Stats is a read, Me is a drawer, and Lent is a state objects are in — not a place. Three ways out, with where each exile lands.</p>
+  <div class="dv-opts">
+    <div class="dv-opt" id="11a">
+      <div class="dv-olabel"><a class="dv-oid" href="#11a">11a</a>All three side by side — <strong>A</strong> two tabs and a shutter, <strong>B</strong> Shelf · Out · Market, <strong>C</strong> no bar at all. My vote is on the screen; scroll it.</div>
+      <dc-import name="35_Collections App" screen="tabs" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+  </div>
+  <p class="dv-next">Say a letter and I'll rebuild the affected screens on it — the shelf gains a stats card or a pull-down, and the lending log gets renamed and widened to hold borrowed objects too.</p>
+</section>
+
+<section class="dv-turn" id="t10">
+  <div class="dv-thd"><a class="dv-tid" href="#t10">10</a><span class="dv-tname">The last two gaps</span></div>
+  <p style="margin:0 0 26px;max-width:820px;font:400 13px/1.6 Archivo,sans-serif;color:rgba(23,19,15,.62);text-wrap:pretty">Two holes in this app: the shop with no signal, and the things on your shelves that aren't yours.</p>
+  <div class="dv-opts">
+    <div class="dv-opt" id="10a">
+      <div class="dv-olabel"><a class="dv-oid" href="#10a">10a</a><strong>No signal, still working</strong> — a record-shop basement is the worst network and the place you need the app most. The barcode read; only the lookup failed, so four objects save with what you know and the questions queue.</div>
+      <dc-import name="35_Collections App" screen="offline" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="10b">
+      <div class="dv-olabel"><a class="dv-oid" href="#10b">10b</a><strong>Borrowed, not owned</strong> — the lending log's missing half. Dashed borders instead of solid, never in your totals, never sellable. Two years with Anne's Coltrane is the entry you'd rather not read.</div>
+      <dc-import name="35_Collections App" screen="borrowed" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+  </div>
+  <p class="dv-next">The gap list I can see is empty. What's left isn't drawing — it's two decisions: which sell business (A / B / C), and whether the nudge system ships. Both want your judgement, not another screen.</p>
+</section>
+
+<section class="dv-turn" id="t9">
+  <div class="dv-thd"><a class="dv-tid" href="#t9">9</a><span class="dv-tname">Six more, read off the backlog</span></div>
+  <p style="margin:0 0 26px;max-width:820px;font:400 13px/1.6 Archivo,sans-serif;color:rgba(23,19,15,.62);text-wrap:pretty">Three screens the board owed, plus three the repo's TODO asks for by name: <strong>B1</strong> (our own chrome instead of the system's), <strong>B4</strong> (what the 3D object is actually for), and the deep-link arrival <code style="font-family:'DM Mono',monospace;font-size:11px">navigation.md</code> describes but nothing draws.</p>
+  <div class="dv-opts">
+    <div class="dv-opt" id="9a">
+      <div class="dv-olabel"><a class="dv-oid" href="#9a">9a</a><strong>Capturing the scan</strong> — 24 angles on a ring, 18 filled, and a coach line that says which way to walk. Eighteen is already enough, so “Good enough” is a real button, not a compromise.</div>
+      <dc-import name="35_Collections App" screen="capture" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="9b">
+      <div class="dv-olabel"><a class="dv-oid" href="#9b">9b</a><strong>B4, answered</strong> — the object is an inspection tool. Condition claims pin to the spot on the sleeve they describe, and the listing reuses the same object read-only. This is the case for fixing the 3D (D3) rather than re-platforming it (E2).</div>
+      <dc-import name="35_Collections App" screen="inspect" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="9c">
+      <div class="dv-olabel"><a class="dv-oid" href="#9c">9c</a><strong>Insurance export</strong> — the one place money stops being optional, because someone else has to read it. Three valuation bases with three different totals, and the disclaimer sits on page one.</div>
+      <dc-import name="35_Collections App" screen="insure" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="9d">
+      <div class="dv-olabel"><a class="dv-oid" href="#9d">9d</a><strong>A shelf with two owners</strong> — both see everything, but every object belongs to exactly one of you. That tag is dead weight until the day it isn't: the split is drawn from it, and only the nine joint buys need a conversation.</div>
+      <dc-import name="35_Collections App" screen="coshelf" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="9e">
+      <div class="dv-olabel"><a class="dv-oid" href="#9e">9e</a><strong>B1 · chrome</strong> — five states of the bars in the house style: big title, scrolled, over the dark stage, inside a modal (Close, not Back), and the bottom bar with its round presenting shutter.</div>
+      <dc-import name="35_Collections App" screen="chrome" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="9f">
+      <div class="dv-olabel"><a class="dv-oid" href="#9f">9f</a><strong>An incoming link</strong> — <code style="font-family:'DM Mono',monospace;font-size:11px">collections://item/malibu?tab=market</code> arriving as a sheet over the tab you were on. Close returns you, not the app's idea of home.</div>
+      <dc-import name="35_Collections App" screen="link" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+  </div>
+  <p class="dv-next">Still open: the marketplace depth (A / B / C), the nudge system, and part F's pressure test — one dense playlist screen and one magic-link sheet — which is the real test of whether this aesthetic belongs to a family or just to this app.</p>
+</section>
+
+<section class="dv-turn" id="t8">
+  <div class="dv-thd"><a class="dv-tid" href="#t8">8</a><span class="dv-tname">Six missing flows</span></div>
+  <p style="margin:0 0 26px;max-width:820px;font:400 13px/1.6 Archivo,sans-serif;color:rgba(23,19,15,.62);text-wrap:pretty">The gaps I flagged, plus three the log doesn't cover yet: what happens when a loan closes, who a borrower <em>is</em> across years, and the first hour with 482 objects already on your shelves.</p>
+  <div class="dv-opts">
+    <div class="dv-opt" id="8a">
+      <div class="dv-olabel"><a class="dv-oid" href="#8a">8a</a><strong>D24 received</strong> — the link opened by someone with no app. Spinnable scan, asking price, offer button; Tom's note and what he paid never travelled.</div>
+      <dc-import name="35_Collections App" screen="received" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="8b">
+      <div class="dv-olabel"><a class="dv-oid" href="#8b">8b</a><strong>D5 promote</strong> — the graded coin leaves the pile. ×12 becomes ×11 and one real item, stated in three steps so nothing feels lost.</div>
+      <dc-import name="35_Collections App" screen="promote" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="8c">
+      <div class="dv-olabel"><a class="dv-oid" href="#8c">8c</a><strong>The return handshake</strong> — closing a loan asks the one question that matters (did it come back intact) and shows exactly what gets written to history.</div>
+      <dc-import name="35_Collections App" screen="return" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="8d">
+      <div class="dv-olabel"><a class="dv-oid" href="#8d">8d</a><strong>A person, over years</strong> — every loan Jeff has ever had, his return rate, and an honest one-liner. The lending log turned inside out.</div>
+      <dc-import name="35_Collections App" screen="person" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="8e">
+      <div class="dv-olabel"><a class="dv-oid" href="#8e">8e</a><strong>First hour</strong> — bring the list you already have. Nothing imported is marked confirmed, which is what makes 128 records survivable (D11).</div>
+      <dc-import name="35_Collections App" screen="import" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="8f">
+      <div class="dv-olabel"><a class="dv-oid" href="#8f">8f</a><strong>After a sale</strong> — sold items leave the shelf and stay in the archive, so a scan in a shop can still tell you that you once owned this.</div>
+      <dc-import name="35_Collections App" screen="sold" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+  </div>
+  <p class="dv-next">Next candidates, all unwritten in the log: the 3D capture flow itself (guided turntable pass), an insurance/valuation export, and what a collection looks like when two people share it.</p>
+</section>
+
+<section class="dv-turn" id="t7">
+  <div class="dv-thd"><a class="dv-tid" href="#t7">7</a><span class="dv-tname">The rest of the open log — D14, D3/D15/D20, D24/D25, D5</span></div>
+  <p style="margin:0 0 26px;max-width:820px;font:400 13px/1.6 Archivo,sans-serif;color:rgba(23,19,15,.62);text-wrap:pretty">One change reaches back into earlier turns: per <strong>D14</strong> the swatch row is no longer an editor on the detail screen — it shows the current pressing and the picker moved into Edit, where Cancel means something. Every earlier item screenshot inherits that.</p>
+  <div class="dv-opts">
+    <div class="dv-opt" id="7a">
+      <div class="dv-olabel"><a class="dv-oid" href="#7a">7a</a><strong>D14</strong> — the display case. Actions only: Share, Edit, Lend, Sell. Drag the sleeve; the swatch is now a read-out, not a control.</div>
+      <dc-import name="35_Collections App" screen="item" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="7b">
+      <div class="dv-olabel"><a class="dv-oid" href="#7b">7b</a><strong>D14</strong> — the form it opens. Cancel / Save, spine on top, disc colour as a real choice field. The swatches work here.</div>
+      <dc-import name="35_Collections App" screen="edititem" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="7c">
+      <div class="dv-olabel"><a class="dv-oid" href="#7c">7c</a><strong>D3 + D15 + D20</strong> — Details rebuilt in four blocks: fixed spine, type fields with their types, logged events showing only the latest, and a structured tracklist with a runtime.</div>
+      <dc-import name="35_Collections App" screen="item" tab="details" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="7d">
+      <div class="dv-olabel"><a class="dv-oid" href="#7d">7d</a><strong>D24 + D25</strong> — two payloads stated as two different acts, the include list, and the card itself. <code style="font-family:'DM Mono',monospace;font-size:11px">paid</code> is off by default and says so in red.</div>
+      <dc-import name="35_Collections App" screen="share" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="7e">
+      <div class="dv-olabel"><a class="dv-oid" href="#7e">7e</a><strong>D5</strong> — a quantity-mode collection. Counts instead of rows, no lending, no selling, and the promote-to-item escape hatch spelled out at the bottom.</div>
+      <dc-import name="35_Collections App" screen="quantity" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+  </div>
+  <p class="dv-next">That closes every decision in the log that had a screen owing. Remaining gaps I can see: the promote-a-coin-to-its-own-item flow (D5), what a shared card looks like <em>received</em> by someone without the app (D24), and the pro/B2B desk under the D5 rules.</p>
+</section>
+
+<section class="dv-turn" id="t6">
+  <div class="dv-thd"><a class="dv-tid" href="#t6">6</a><span class="dv-tname">Nudges — the review queue earns its own notifications</span></div>
+  <p style="margin:0 0 26px;max-width:820px;font:400 13px/1.6 Archivo,sans-serif;color:rgba(23,19,15,.62);text-wrap:pretty">Yes — and the review queue is exactly what makes it safe, because it means every nudge can name a real unfinished object instead of begging you to come back. One rule: <strong>no specific thing to finish, no notification.</strong> No streaks, no daily goals, nothing when the queue is empty. That's the difference between a nudge and a slot machine.</p>
+  <div class="dv-opts">
+    <div class="dv-opt" id="6a">
+      <div class="dv-olabel"><a class="dv-oid" href="#6a">6a</a>Four nudges that earned their send — nameless photos, a three-week UNVERIFIED, a loan that became an adoption, and one milestone. Scroll for the rules and the tone control.</div>
+      <dc-import name="35_Collections App" screen="nudge" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="6b">
+      <div class="dv-olabel"><a class="dv-oid" href="#6b">6b</a>Options gains a Nudges row, sitting with the other things you can switch off. Tap it to reach <a class="dv-oid" href="#6a">6a</a>.</div>
+      <dc-import name="35_Collections App" screen="settings" hint-size="393px,852px"></dc-import>
+    </div>
+  </div>
+  <p class="dv-next">The lending nudge is the one I'd ship first — it's the only one that's about losing something, and D15's event log already gives you the dates it needs. Tone options are Dry / Plain / Off; "Dry" is what you're reading.</p>
+</section>
+
+<section class="dv-turn" id="t5">
+  <div class="dv-thd"><a class="dv-tid" href="#t5">5</a><span class="dv-tname">Where does "Look it up" live?</span></div>
+  <p style="margin:0 0 26px;max-width:820px;font:400 13px/1.6 Archivo,sans-serif;color:rgba(23,19,15,.62);text-wrap:pretty">Your instinct is right that it isn't the same <em>kind</em> of thing: barcode and photo are answers to <strong>what am I pointing at</strong>, while lookup is <strong>what happens to the shot afterwards</strong> — which is also why it carries a privacy question your other two modes don't. All three live in the app now; the Tweaks panel switches the crate screen between them.</p>
+  <div class="dv-opts">
+    <div class="dv-opt" id="5a">
+      <div class="dv-olabel"><a class="dv-oid" href="#5a">5a</a><strong>Three tabs</strong> — as built. Best discovery: nobody can miss it. But it puts a network decision on the same row as two lens choices, and a car owner has to know not to tap it.</div>
+      <dc-import name="35_Collections App" screen="crate" lookupUI="tab" crate="{{ yes }}" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="5b">
+      <div class="dv-olabel"><a class="dv-oid" href="#5b">5b</a><strong>Two tabs, lookup as a switch</strong> in the photo bar — honest about what it is, states the privacy consequence in words, and it's sticky. Costs you a glance to find it the first time.</div>
+      <dc-import name="35_Collections App" screen="crate" lookupUI="toggle" crate="{{ yes }}" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="5c">
+      <div class="dv-olabel"><a class="dv-oid" href="#5c">5c</a><strong>Two tabs, per-shot offer</strong> — every unidentified thumbnail wears IDENTIFY?. Discovery arrives at the moment it's useful, and it's opt-in per object, so the car photo simply never gets tapped. More taps if you want it on everything.</div>
+      <dc-import name="35_Collections App" screen="crate" lookupUI="pershot" crate="{{ yes }}" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+  </div>
+  <p class="dv-next">My pick: <a class="dv-oid" href="#5c">5c</a> as the default with <a class="dv-oid" href="#5b">5b</a>'s switch living in Options for people who want it always-on — it gets you discovery without a tab, and per-object consent is the version that survives D13's "we may answer two days later". <a class="dv-oid" href="#5a">5a</a> is the one I'd drop: it's the only variant where a privacy choice is disguised as a camera mode.</p>
+</section>
+
+<section class="dv-turn" id="t4">
+  <div class="dv-thd"><a class="dv-tid" href="#t4">4</a><span class="dv-tname">Built from the decision log — D9–D13, D22, D26, D7</span></div>
+  <p style="margin:0 0 26px;max-width:820px;font:400 13px/1.6 Archivo,sans-serif;color:rgba(23,19,15,.62);text-wrap:pretty">Content drawn from the awkward types: <strong>comics</strong> (barcode, four printings, series/writer/publisher relations), <strong>LEGO</strong> (set number), <strong>watches</strong> (no identifier at all). Note I couldn't read <code style="font-family:'DM Mono',monospace;font-size:12px">the-collection</code> from this session — no local-file access surfaced — so these follow the docs, not the Swift.</p>
+
+  <div class="dv-opts">
+    <div class="dv-opt" id="4a">
+      <div class="dv-olabel"><a class="dv-oid" href="#4a">4a</a><strong>D9 + D12</strong> — three add modes, and <code style="font-family:'DM Mono',monospace;font-size:11px">ADD TO</code> is now a control you correct before raising the phone. Live: tap Photo.</div>
+      <dc-import name="35_Collections App" screen="scan" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="4b">
+      <div class="dv-olabel"><a class="dv-oid" href="#4b">4b</a><strong>D12 + D11</strong> — photo-first for watches: the shutter <em>is</em> the add button, crate mode stays open, the strip fills with items that already exist in a needs-details state.</div>
+      <dc-import name="35_Collections App" screen="crate" crate="{{ yes }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="4c">
+      <div class="dv-olabel"><a class="dv-oid" href="#4c">4c</a><strong>D11</strong> — the review queue crate mode owes you. UNVERIFIED and NEEDS DETAILS are different flags, and each row says why it isn't confirmed.</div>
+      <dc-import name="35_Collections App" screen="review" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="4d">
+      <div class="dv-olabel"><a class="dv-oid" href="#4d">4d</a><strong>D22</strong> — the record-shop answer, unprompted: you already own Saga #1, but the 2nd printing, so this is a different item. Related rows come from the type's <code style="font-family:'DM Mono',monospace;font-size:11px">related:</code> key — series, writer, publisher.</div>
+      <dc-import name="35_Collections App" screen="match" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="4e">
+      <div class="dv-olabel"><a class="dv-oid" href="#4e">4e</a><strong>D13</strong> — enrichment answering two days late. Suggested values sit above a locked block of what you typed; the sheet can't offer to overwrite it.</div>
+      <dc-import name="35_Collections App" screen="enrich" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="4f">
+      <div class="dv-olabel"><a class="dv-oid" href="#4f">4f</a><strong>D26 + D18/D21</strong> — tokens plus free text, and every result names what matched: a note, a brand, a single track. That's the payoff for indexing everything.</div>
+      <dc-import name="35_Collections App" screen="search" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="4g">
+      <div class="dv-olabel"><a class="dv-oid" href="#4g">4g</a><strong>D7, for you to judge</strong> — the mark at tile size, then SF Symbols in the house style at 22px and 16px. Verdict at the bottom of the screen.</div>
+      <dc-import name="35_Collections App" screen="icons" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+  </div>
+
+  <p class="dv-next">Still open from the log and not yet designed: <strong>D14</strong> (detail as display case + its Edit form), <strong>D24/D25</strong> (share card, two payloads, the <code style="font-family:'DM Mono',monospace;font-size:11px">paid</code> privacy default), <strong>D3/D15/D20</strong> (spine vs fields, event rows, structured lists), <strong>D5</strong> (quantity types locked out of lending and selling). Say which and I'll take it next.</p>
+</section>
+
+<section class="dv-turn" id="t2">
+  <div class="dv-thd"><a class="dv-tid" href="#t2">2</a><span class="dv-tname">Your notes, built in</span></div>
+  <p style="margin:0 0 26px;max-width:780px;font:400 13px/1.6 Archivo,sans-serif;color:rgba(23,19,15,.62);text-wrap:pretty">The style is now written down as a system in <strong><a href="00_Design System.dc.html">Design System</a></strong> — palette, type, surfaces, sticker rules, the object hero, six principles. Two of those principles come straight from your feedback: <em>money is optional</em> and <em>an account is optional</em>. Both are switches in <a class="dv-oid" href="#2h">2h</a>, and <a class="dv-oid" href="#2g">2g</a> shows the whole app with selling off.</p>
+
+  <div class="dv-opts">
+    <div class="dv-opt" id="2a">
+      <div class="dv-olabel"><a class="dv-oid" href="#2a">2a</a>Item detail now has tabs, and the disc is modelled behind the sleeve. Pick the pressing colour — splatter, marbled, coke-bottle, picture disc. Drag it in <a class="dv-oid" href="#1a">1a</a>.</div>
+      <dc-import name="35_Collections App" screen="item" tab="overview" disc="{{ two }}" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="2b">
+      <div class="dv-olabel"><a class="dv-oid" href="#2b">2b</a>Details tab — everything the record knows about itself, including your own notes and where it physically sits.</div>
+      <dc-import name="35_Collections App" screen="item" tab="details" disc="{{ three }}" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="2c">
+      <div class="dv-olabel"><a class="dv-oid" href="#2c">2c</a>History tab — acquisition, scans and every loan on one thread. This is the "keep an eye on it" feature.</div>
+      <dc-import name="35_Collections App" screen="item" tab="history" disc="{{ four }}" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="2d">
+      <div class="dv-olabel"><a class="dv-oid" href="#2d">2d</a>Stats, Collection tab — decades, genres, oldest piece, completeness, and what's missing from your catalogue. Not a euro in sight.</div>
+      <dc-import name="35_Collections App" screen="stats" statsTab="coll" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="2e">
+      <div class="dv-olabel"><a class="dv-oid" href="#2e">2e</a>Creating a collection, step 2 — typed custom fields. Key, label and type (text / number / yes-no / list / date / photo / link / money).</div>
+      <dc-import name="35_Collections App" screen="newfields" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="2f">
+      <div class="dv-olabel"><a class="dv-oid" href="#2f">2f</a>Scan, "Look it up" mode — no barcode needed; it matches the cover, box or silhouette against the web.</div>
+      <dc-import name="35_Collections App" screen="scan" scanMode="look" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="2g">
+      <div class="dv-olabel"><a class="dv-oid" href="#2g">2g</a>Selling switched off — the value banner becomes a count, the Market tab and Sell button disappear. Nothing else moves.</div>
+      <dc-import name="35_Collections App" screen="home" selling="{{ no }}" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="2h">
+      <div class="dv-olabel"><a class="dv-oid" href="#2h">2h</a>Options — account optional and offline by default, selling as a switch, pro mode, per-type fields, language.</div>
+      <dc-import name="35_Collections App" screen="settings" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="2i">
+      <div class="dv-olabel"><a class="dv-oid" href="#2i">2i</a>Pro mode — same screens, palette rotated −52°. You always know which hat you're wearing. Compare with <a class="dv-oid" href="#1m">1m</a>.</div>
+      <dc-import name="35_Collections App" screen="sellC" pro="{{ yes }}" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="2j">
+      <div class="dv-olabel"><a class="dv-oid" href="#2j">2j</a>Pro mode on the shelf — hue shift applies app-wide, not just to dealer screens.</div>
+      <dc-import name="35_Collections App" screen="home" pro="{{ yes }}" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+  </div>
+
+  <p class="dv-next">Try next: "open the design system as a page I can hand to a developer" · "make pro mode a real toggle inside <a class="dv-oid" href="#1a">1a</a>" · "add figurine + sneaker material swatches like the vinyl ones" · "design the sharing link a non-user sees"</p>
+</section>
+
+<section class="dv-turn" id="t1">
+  <div class="dv-thd"><a class="dv-tid" href="#t1">1</a><span class="dv-tname">Collections — first pass</span></div>
+  <p style="margin:0 0 26px;max-width:760px;font:400 13px/1.6 Archivo,sans-serif;color:rgba(23,19,15,.62);text-wrap:pretty">iPhone 15 (393×852), English. Direction: <strong>collector zine</strong> — heavy display type, hard black outlines, sticker chips, one saturated colour per collection. Delicious Library's warmth without the fake wood. <a class="dv-oid" href="#1a">1a</a> is live: tap through it. Everything else is the same component frozen on one screen.</p>
+
+  <div class="dv-opts">
+    <div class="dv-opt" id="1a">
+      <div class="dv-olabel"><a class="dv-oid" href="#1a">1a</a>Working prototype — tap the shelf, open Malibu, drag the 3D sleeve, lend it, scan, stats.</div>
+      <dc-import name="35_Collections App" screen="home" interactive="{{ yes }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="1b">
+      <div class="dv-olabel"><a class="dv-oid" href="#1b">1b</a>Item detail — the sleeve as a thin box: printed spine, dot-pattern front carrying artist / album / year / format, and an open right edge showing the disc colour through the gap. Special editions sparkle when you tap them.</div>
+      <dc-import name="35_Collections App" screen="item" interactive="{{ yes }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="1c">
+      <div class="dv-olabel"><a class="dv-oid" href="#1c">1c</a>Out of the house — the sharing log. What, to whom, since when, and <em>why</em> you let it go.</div>
+      <dc-import name="35_Collections App" screen="lending" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="1d">
+      <div class="dv-olabel"><a class="dv-oid" href="#1d">1d</a>Lend sheet — the "why" field is required by design; it's what makes the log worth reading later.</div>
+      <dc-import name="35_Collections App" screen="lendsheet" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="1e">
+      <div class="dv-olabel"><a class="dv-oid" href="#1e">1e</a>Collection view — the shelf. Sleeve-first grid, record peeking out, status stickers on the artwork.</div>
+      <dc-import name="35_Collections App" screen="collection" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="1f">
+      <div class="dv-olabel"><a class="dv-oid" href="#1f">1f</a>Stats — value over time, where the money sits, and a plain-language read on your lending habits.</div>
+      <dc-import name="35_Collections App" screen="stats" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="1g">
+      <div class="dv-olabel"><a class="dv-oid" href="#1g">1g</a>Scan — you flagged auto-fill as a risk, so the scan proposes matches and you confirm. Nothing saves silently.</div>
+      <dc-import name="35_Collections App" screen="scan" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="1h">
+      <div class="dv-olabel"><a class="dv-oid" href="#1h">1h</a>Add form — AUTO chips mark what came from Discogs; condition and price are always yours to type.</div>
+      <dc-import name="35_Collections App" screen="addform" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="1i">
+      <div class="dv-olabel"><a class="dv-oid" href="#1i">1i</a>New collection type — picking a type picks the field set, per your spec.</div>
+      <dc-import name="35_Collections App" screen="newtype" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="1j">
+      <div class="dv-olabel"><a class="dv-oid" href="#1j">1j</a>Empty state — first run, before there's anything to be proud of.</div>
+      <dc-import name="35_Collections App" screen="empty" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+  </div>
+
+  <div class="dv-thd" style="margin:44px 0 8px"><a class="dv-tid" href="#t1" style="background:#FF5B2E">1·sell</a><span class="dv-tname">Three depths for the sell side — pick one, or stage them A → B → C</span></div>
+  <div class="dv-opts">
+    <div class="dv-opt" id="1k">
+      <div class="dv-olabel"><a class="dv-oid" href="#1k">1k</a><strong>A — Watch &amp; link out.</strong> No transactions, no liability, ships day one. Price alerts are the hook.</div>
+      <dc-import name="35_Collections App" screen="sellA" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="1l">
+      <div class="dv-olabel"><a class="dv-oid" href="#1l">1l</a><strong>B — C2C listing.</strong> Your 3D scan is the listing. Offers inbox, ratings, commission on sales.</div>
+      <dc-import name="35_Collections App" screen="sellB" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+    <div class="dv-opt" id="1m">
+      <div class="dv-olabel"><a class="dv-oid" href="#1m">1m</a><strong>C — Pro / B2B desk.</strong> Verified shops bid on bundles. Fewer, bigger transactions; dark chrome to signal "pro mode".</div>
+      <dc-import name="35_Collections App" screen="sellC" interactive="{{ no }}" hint-size="393px,852px"></dc-import>
+    </div>
+  </div>
+
+  <p class="dv-next">Try next: "make <a class="dv-oid" href="#1e">1e</a> a list view with prices" · "push <a class="dv-oid" href="#1b">1b</a> further on the 3D — full-screen viewer" · "drop the marketplace, keep <a class="dv-oid" href="#1k">1k</a>" · "show me the iPad split view" · "translate everything to French"</p>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() { return { yes: true, no: false, two: 2, three: 3, four: 4 }; }
+}
+</script>
+</body>
+</html>

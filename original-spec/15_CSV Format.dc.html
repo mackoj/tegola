@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#EAE3D6}a{color:#2B44D6}a:hover{color:#FF5B2E}</style>
+</helmet>
+
+<div style="width:1100px;margin:0 auto;padding:60px 28px 90px;font-family:Archivo,system-ui,sans-serif;color:#17130F">
+
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70">CLCTN · IMPORT FORMAT · AUGUST 2026</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:64px;line-height:.92;letter-spacing:-.045em;margin:16px 0 0;max-width:860px;text-wrap:balance">One required column. Everything else is a favour to yourself.</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:730px;margin-top:20px;text-wrap:pretty">Every collector who has kept a list for more than a year has it in a spreadsheet, and no two of those spreadsheets look alike. So the format below is not a requirement — it is the shape we <em>publish</em>, for people starting fresh, while the importer reads whatever columns already exist. A format nobody can fail is worth more than a format that is elegant.</div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:730px;margin-top:14px;text-wrap:pretty">Give this page to anyone — it is the whole specification. Section 06 is the file itself, 07 is the prompt that converts a messy sheet into it, and 09 is the reason we may never have to pay for that conversion.</div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:16px">01 · THE WHOLE RULE</div>
+  <div style="display:flex;gap:14px;flex-wrap:wrap">
+    <div style="flex:1;min-width:300px;border:2.5px solid #17130F;border-radius:18px;background:#0E6E5E;color:#F3ECE0;padding:22px;box-shadow:5px 5px 0 #17130F">
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:34px;line-height:1;letter-spacing:-.035em">One row,<br>one object</div>
+      <div style="font:400 14px/1.6 Archivo,sans-serif;margin-top:14px;text-wrap:pretty">Not one row per photo, not one row per copy. Own three pressings of the same record? Three rows — they are three objects with three conditions and three prices.</div>
+    </div>
+    <div style="flex:1;min-width:300px;border:2.5px solid #17130F;border-radius:18px;background:#FFD24A;padding:22px;box-shadow:5px 5px 0 #17130F">
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:34px;line-height:1;letter-spacing:-.035em">A header row,<br>in any order</div>
+      <div style="font:400 14px/1.6 Archivo,sans-serif;margin-top:14px;text-wrap:pretty">First line names the columns. Case, accents and order are all irrelevant. <strong>Title</strong>, <strong>TITRE</strong> and <strong>name</strong> all land in the same place.</div>
+    </div>
+    <div style="flex:1;min-width:300px;border:2.5px solid #17130F;border-radius:18px;background:#fff;padding:22px;box-shadow:5px 5px 0 #17130F">
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:34px;line-height:1;letter-spacing:-.035em">Only <span style="font-family:'DM Mono',monospace;font-size:27px">name</span><br>is required</div>
+      <div style="font:400 14px/1.6 Archivo,sans-serif;margin-top:14px;text-wrap:pretty">A file with one column and four hundred rows is a valid import. You get four hundred objects waiting for detail, which is four hundred more than you had.</div>
+    </div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">02 · THE COLUMNS</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:730px;margin-bottom:20px;text-wrap:pretty">Twelve, and eleven of them optional. If a concept isn't here, it belongs in a column of your own — see section 04.</div>
+
+  <div style="border:2.5px solid #17130F;border-radius:18px;overflow:hidden;box-shadow:5px 5px 0 #17130F">
+    <div style="display:grid;grid-template-columns:150px 1fr 230px 92px;gap:0;background:#17130F;color:#F3ECE0;font:500 9.5px 'DM Mono',monospace;letter-spacing:.1em">
+      <div style="padding:12px 16px">COLUMN</div>
+      <div style="padding:12px 16px">WHAT IT HOLDS</div>
+      <div style="padding:12px 16px">EXAMPLE</div>
+      <div style="padding:12px 16px">STATUS</div>
+    </div>
+    <sc-for list="{{ cols }}" as="c" hint-placeholder-count="12">
+      <div style="display:grid;grid-template-columns:150px 1fr 230px 92px;gap:0;border-top:2px solid #E0D6C4;background: {{ c.bg }};align-items:start">
+        <div style="padding:13px 16px;font:500 13px 'DM Mono',monospace;font-weight:500">{{ c.k }}</div>
+        <div style="padding:13px 16px;font:400 13.5px/1.5 Archivo,sans-serif;text-wrap:pretty">{{ c.b }}</div>
+        <div style="padding:13px 16px;font:400 12px/1.45 'DM Mono',monospace;color:#6E6458">{{ c.ex }}</div>
+        <div style="padding:13px 16px"><span style="font:500 8.5px 'DM Mono',monospace;letter-spacing:.08em;border:2px solid #17130F;border-radius:999px;padding:3px 7px;background: {{ c.tagBg }};color: {{ c.tagFg }};white-space:nowrap">{{ c.tag }}</span></div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">03 · WHAT WE SORT OUT WITHOUT ASKING</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:730px;margin-bottom:20px;text-wrap:pretty">Every one of these is a dialog box a lesser importer would show you. None of them is a question you should have to answer about your own file.</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px">
+    <sc-for list="{{ tolerant }}" as="t" hint-placeholder-count="6">
+      <div style="border:2.5px solid #17130F;border-radius:15px;background:#fff;padding:16px">
+        <div style="font:700 14px Archivo,sans-serif">{{ t.t }}</div>
+        <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;margin-top:7px;text-wrap:pretty">{{ t.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:16px">04 · THE COLUMN WE DON'T RECOGNISE</div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#17130F;color:#F3ECE0;padding:26px;box-shadow:5px 5px 0 #FF5B2E">
+    <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:38px;line-height:1;letter-spacing:-.035em;max-width:700px;text-wrap:balance">We keep it. All of it.</div>
+    <div style="font:400 15px/1.65 Archivo,sans-serif;margin-top:16px;max-width:730px;text-wrap:pretty">An unmatched column becomes a field of your own, attached to every object in the file, named exactly what you named it. <strong>Étagère</strong>, <strong>Prêté à</strong>, <strong>Rayure ?</strong> — someone spent years filling those in. Discarding them because they aren't in our twelve would be the single most insulting thing this app could do on day one.</div>
+    <div style="font:400 14px/1.6 Archivo,sans-serif;opacity:.75;margin-top:14px;max-width:730px;text-wrap:pretty">The consequence to accept: collections arrive with fields we can't compute on. That's correct. Storing a fact we don't understand is cheaper than losing it.</div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:16px">05 · THE FIVE THINGS THE IMPORTER NEVER DOES</div>
+  <div style="display:flex;flex-direction:column;gap:10px">
+    <sc-for list="{{ nevers }}" as="n" hint-placeholder-count="5">
+      <div style="display:flex;gap:16px;align-items:baseline;border:2.5px solid #17130F;border-radius:15px;background:#fff;padding:16px 18px">
+        <div style="flex:none;font:500 11px 'DM Mono',monospace;color:#C2371F;letter-spacing:.1em">{{ n.n }}</div>
+        <div style="flex:1">
+          <div style="font:700 15px Archivo,sans-serif">{{ n.t }}</div>
+          <div style="font:400 13.5px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:6px;text-wrap:pretty">{{ n.b }}</div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">06 · THE TEMPLATE</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:730px;margin-bottom:20px;text-wrap:pretty">This is the file we hand out — a header row and five example rows: a fully filled-in object, one where only the year is known, a second copy of something held as its own row rather than a quantity, twelve genuinely interchangeable coins that <em>do</em> belong on one row, and a last row carrying nothing but a name and a type, to prove that counts as a valid entry. Anyone can delete the examples and start typing.</div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#0C0A08;color:#F3ECE0;padding:22px;box-shadow:5px 5px 0 #17130F;overflow-x:auto">
+    <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;opacity:.5;margin-bottom:14px">CLCTN-TEMPLATE.CSV</div>
+    <sc-for list="{{ lines }}" as="l" hint-placeholder-count="6">
+      <div style="font:400 12.5px/1.9 'DM Mono',monospace;white-space:pre;color: {{ l.fg }}">{{ l.t }}</div>
+    </sc-for>
+  </div>
+  <div style="font:400 13px/1.6 Archivo,sans-serif;color:#6E6458;margin-top:14px;max-width:730px;text-wrap:pretty">Also published as an Excel file and a Numbers file with the same columns, because telling a collector to "just save it as CSV" is where half of them stop.</div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">07 · THE PROMPT WE PUBLISH WITH IT</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:760px;margin-bottom:8px;text-wrap:pretty">Some files are past mechanical rescue: merged cells, three collections in one sheet, condition and price in the same string, fifteen years of shorthand only the owner understands. Writing a parser for those is a year of work. Handing the owner a prompt is an afternoon.</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:760px;margin-bottom:22px;text-wrap:pretty">So we publish the prompt beside the template. The collector pastes it into whichever assistant they already pay for, along with their own sheet, and gets back a file this importer reads cleanly. It costs us nothing to run, it improves every time those models improve, and — the part that matters — <strong>their spreadsheet never comes near us</strong>. The conversion happens in their account, on their terms.</div>
+
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#0C0A08;color:#F3ECE0;padding:24px;box-shadow:5px 5px 0 #2B44D6;overflow-x:auto">
+    <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:16px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;opacity:.5">CLCTN-CONVERSION-PROMPT.TXT</div>
+      <div style="margin-left:auto;font:500 8.5px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #FFD24A;color:#FFD24A;border-radius:999px;padding:3px 9px">ONE TAP TO COPY, IN APP</div>
+    </div>
+    <sc-for list="{{ prompt }}" as="p" hint-placeholder-count="14">
+      <div style="font:400 12.5px/1.75 'DM Mono',monospace;color: {{ p.fg }};margin-bottom: {{ p.mb }};white-space:pre-wrap;max-width:900px">{{ p.t }}</div>
+    </sc-for>
+  </div>
+
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin:34px 0 8px">07b · THE PER-TYPE APPENDIX</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:760px;margin-bottom:20px;text-wrap:pretty">This is where the prompt earns its keep. <em>Condition</em> and <em>identifier</em> mean something different in every collecting world, and a model told what they mean produces data close enough to ours to price against. Only the block matching the collection gets appended — a vinyl collector never reads the watch rules.</div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;overflow:hidden;box-shadow:5px 5px 0 #17130F">
+    <div style="display:grid;grid-template-columns:170px 1fr 1fr;background:#17130F;color:#F3ECE0;font:500 9.5px 'DM Mono',monospace;letter-spacing:.1em">
+      <div style="padding:12px 16px">TYPE</div>
+      <div style="padding:12px 16px">CONDITION MEANS</div>
+      <div style="padding:12px 16px">IDENTIFIER MEANS</div>
+    </div>
+    <sc-for list="{{ perType }}" as="t" hint-placeholder-count="9">
+      <div style="display:grid;grid-template-columns:170px 1fr 1fr;border-top:2px solid #E0D6C4;background: {{ t.bg }};align-items:start">
+        <div style="padding:13px 16px;font:700 13.5px Archivo,sans-serif">{{ t.k }}</div>
+        <div style="padding:13px 16px;font:400 12.5px/1.55 Archivo,sans-serif;text-wrap:pretty">{{ t.c }}</div>
+        <div style="padding:13px 16px;font:400 12.5px/1.55 Archivo,sans-serif;text-wrap:pretty">{{ t.i }}</div>
+      </div>
+    </sc-for>
+  </div>
+  <div style="border:2.5px solid #17130F;border-radius:16px;background:#FFD24A;padding:20px;box-shadow:5px 5px 0 #17130F;margin-top:16px">
+    <div style="font:700 16px Archivo,sans-serif;margin-bottom:9px">The line we have to hold</div>
+    <div style="font:400 14px/1.65 Archivo,sans-serif;max-width:800px;text-wrap:pretty">The prompt says <strong>never invent</strong> four separate times, because a language model's instinct is to be helpful and fill the gap. A hallucinated purchase price is worse than an empty cell — it looks like a fact the owner supplied, it flows into insurance totals, and nobody ever catches it. Anything the model was unsure about arrives flagged, at the top of the collection, in the owner's face.</div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">08 · THE TUTORIAL</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:760px;margin-bottom:22px;text-wrap:pretty">Published as one page with five screenshots, and shown inside the app the moment someone taps <em>Copy the prompt</em>. Written for a collector who has used ChatGPT twice and is not sure whether this is going to break something.</div>
+  <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px">
+    <sc-for list="{{ steps }}" as="s" hint-placeholder-count="5">
+      <div style="display:flex;gap:18px;border:2.5px solid #17130F;border-radius:16px;background:#fff;padding:18px 20px;box-shadow:4px 4px 0 #17130F">
+        <div style="flex:none;width:44px;height:44px;border:2.5px solid #17130F;border-radius:11px;background: {{ s.bg }};color: {{ s.fg }};display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:22px">{{ s.n }}</div>
+        <div style="flex:1">
+          <div style="font:700 17px Archivo,sans-serif;letter-spacing:-.01em">{{ s.t }}</div>
+          <div style="font:400 14px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:7px;max-width:800px;text-wrap:pretty">{{ s.b }}</div>
+          <div style="font:400 12.5px/1.55 'DM Mono',monospace;color:#6E6458;margin-top:9px;max-width:800px;text-wrap:pretty">{{ s.note }}</div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+  <div style="font:500 9.5px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;margin-bottom:10px">AND THE THREE THINGS THAT WILL GO WRONG</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+    <sc-for list="{{ wrong }}" as="w" hint-placeholder-count="3">
+      <div style="border:2.5px solid #17130F;border-radius:15px;background:#EDE4D6;padding:16px">
+        <div style="font:700 14px Archivo,sans-serif;color:#C2371F">{{ w.t }}</div>
+        <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;margin-top:7px;text-wrap:pretty">{{ w.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">09 · OR THE MODEL ALREADY ON THE PHONE</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:760px;margin-bottom:10px;text-wrap:pretty">You said you don't want to pay to host a model. You don't have to — <strong>Apple ships one inside iOS 26</strong>, and the Foundation Models framework hands it to us at no inference cost. Worth the afternoon you're planning to give it, because it changes the shape of the feature. It is also beta software with a hard OS floor, which is why it changes the shape rather than replacing it.</div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:760px;margin-bottom:22px;text-wrap:pretty">Four things in that documentation matter to us, in descending order of how much they matter.</div>
+
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:16px">
+    <sc-for list="{{ apple }}" as="a" hint-placeholder-count="4">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background: {{ a.bg }};color: {{ a.fg }};padding:22px;box-shadow:5px 5px 0 {{ a.sh }}">
+        <div style="font:500 9.5px 'DM Mono',monospace;letter-spacing:.12em;opacity:.65">{{ a.k }}</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:27px;line-height:1.04;letter-spacing:-.03em;margin-top:10px;text-wrap:balance">{{ a.t }}</div>
+        <div style="font:400 13.5px/1.6 Archivo,sans-serif;margin-top:11px;text-wrap:pretty">{{ a.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="font:500 9.5px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;margin:26px 0 10px">THE FINE PRINT THAT DECIDES IT</div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px">
+    <sc-for list="{{ fine }}" as="f" hint-placeholder-count="4">
+      <div style="border:2.5px solid #17130F;border-radius:14px;background:#EDE4D6;padding:15px">
+        <div style="font:500 8.5px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">{{ f.k }}</div>
+        <div style="font:700 14px/1.3 Archivo,sans-serif;margin-top:7px;text-wrap:pretty">{{ f.t }}</div>
+        <div style="font:400 12.5px/1.55 Archivo,sans-serif;color:#3A2F26;margin-top:7px;text-wrap:pretty">{{ f.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#FFD24A;padding:24px;box-shadow:5px 5px 0 #17130F">
+    <div style="font:700 18px Archivo,sans-serif;margin-bottom:10px">What I'd test first, in this order</div>
+    <div style="font:400 14.5px/1.7 Archivo,sans-serif;max-width:840px;text-wrap:pretty">Take one genuinely awful real spreadsheet. <strong>One:</strong> define the twelve columns as a <span style="font-family:'DM Mono',monospace;font-size:13px">@Generable</span> struct with a <span style="font-family:'DM Mono',monospace;font-size:13px">@Guide</span> on every property and convert a single row — if guided generation holds, the malformed-output problem is gone permanently. <strong>Two:</strong> feed it thirty rows in batches and check whether the <em>type</em> label stays consistent across batch boundaries, because that is the thing a chunked loop breaks and the thing that decides whether the import lands as one collection or four. <strong>Three:</strong> hand it a photo of a handwritten page. If that works even badly, it is a feature no competitor has, aimed precisely at the collector nobody else can reach.</div>
+    <div style="font:400 13px/1.6 Archivo,sans-serif;color:#6E6458;margin-top:14px;max-width:840px;text-wrap:pretty">What none of it changes: the published prompt stays. On-device is a shortcut for recent iPhones running an OS that is still in beta — the floor has to work on a 2020 handset and on a Mac, and section 08 is that floor.</div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">10 · HOW CLEVER THIS ACTUALLY HAS TO BE</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:760px;margin-bottom:10px;text-wrap:pretty">Reading the sections above, the importer looks like it needs to be the smartest thing in the app. It needs to be close to the <em>least</em> smart — and every place we were tempted to add intelligence is a place to add a list or a screen instead.</div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:760px;margin-bottom:22px;text-wrap:pretty">Three layers, in descending order of cleverness required. The last one requires none.</div>
+
+  <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:16px">
+    <sc-for list="{{ layers }}" as="l" hint-placeholder-count="3">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background: {{ l.bg }};color: {{ l.fg }};padding:22px;box-shadow:5px 5px 0 {{ l.sh }}">
+        <div style="display:flex;gap:20px;align-items:baseline;flex-wrap:wrap">
+          <div style="font:500 9.5px 'DM Mono',monospace;letter-spacing:.12em;opacity:.6">{{ l.k }}</div>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:26px;line-height:1;letter-spacing:-.03em">{{ l.t }}</div>
+          <div style="margin-left:auto;font:500 9px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid currentColor;border-radius:999px;padding:4px 10px;opacity:.85">{{ l.cost }}</div>
+        </div>
+        <div style="font:400 14px/1.65 Archivo,sans-serif;margin-top:13px;max-width:840px;text-wrap:pretty">{{ l.b }}</div>
+        <div style="font:400 13px/1.6 Archivo,sans-serif;opacity:.7;margin-top:9px;max-width:840px;text-wrap:pretty">{{ l.why }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#FFD24A;padding:24px;box-shadow:5px 5px 0 #17130F">
+    <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:32px;line-height:1.02;letter-spacing:-.035em;max-width:780px;text-wrap:balance">Put the intelligence in the screen, not the code.</div>
+    <div style="font:400 14.5px/1.7 Archivo,sans-serif;margin-top:15px;max-width:840px;text-wrap:pretty">A mediocre guess shown plainly, with one tap to correct it, beats an excellent guess made silently. The collector knows what <strong>ETAGERE</strong> means and we never will — so the mapping screen is not a confirmation step bolted onto the importer, it <em>is</em> the importer. Everything behind it can be boring.</div>
+    <div style="font:400 13px/1.6 Archivo,sans-serif;color:#6E6458;margin-top:14px;max-width:840px;text-wrap:pretty">Which leaves exactly one thing that needs real care, and it is not cleverness — it is the discipline in section 05. Never overwrite, never merge, never invent, undo the whole batch for thirty days. A dumb importer with those four rules is trustworthy. A brilliant one without them is not.</div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:16px">11 · WHAT I NEED DECIDED</div>
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px">
+    <sc-for list="{{ questions }}" as="q" hint-placeholder-count="5">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#FFD24A;padding:20px;box-shadow:5px 5px 0 #17130F">
+        <div style="font:500 9.5px 'DM Mono',monospace;letter-spacing:.12em;color:#6E6458">{{ q.k }}</div>
+        <div style="font:700 17px/1.3 Archivo,sans-serif;margin-top:9px;text-wrap:pretty">{{ q.t }}</div>
+        <div style="font:400 13.5px/1.6 Archivo,sans-serif;margin-top:9px;text-wrap:pretty">{{ q.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const req = { bg: '#FFF9E8', tagBg: '#0E6E5E', tagFg: '#F3ECE0', tag: 'REQUIRED' };
+    const opt = { bg: '#fff', tagBg: 'transparent', tagFg: '#17130F', tag: 'OPTIONAL' };
+    return {
+      cols: [
+        { k: 'name', b: 'What the thing is, in your own words. No parsing, no splitting into artist and title — the words you would use to find it on a shelf.', ex: 'Television — Marquee Moon', ...req },
+        { k: 'type', b: 'Which collection it joins. Unknown values create a new collection rather than failing; blank lands in Unsorted.', ex: 'Vinyl', ...opt },
+        { k: 'quantity', b: 'Only for genuinely interchangeable things — coins, sleeves, spare parts. Blank means one.', ex: '12', ...opt },
+        { k: 'condition', b: 'Free text. We read the common grading scales — VG+, NM, CIB, PSA 9 — and leave anything else as written.', ex: 'VG+ / sleeve VG', ...opt },
+        { k: 'paid', b: 'What it cost you. The number that makes insurance conversations short and arguments with yourself honest.', ex: '18,50', ...opt },
+        { k: 'currency', b: 'Three letters, per row, for collections bought across borders. Blank uses your account currency.', ex: 'EUR', ...opt },
+        { k: 'acquired', b: 'When it arrived. A bare year is fine and common — most people remember 2011, not 14 March 2011.', ex: '14/03/2011  ·  2011', ...opt },
+        { k: 'identifier', b: 'Any code that identifies it: barcode, ISBN, catalogue number, Discogs release, certification number.', ex: '8122-79362-4', ...opt },
+        { k: 'location', b: 'Where it physically is. The column that turns a catalogue into something you can actually use at home.', ex: 'Salon · étagère B', ...opt },
+        { k: 'value', b: 'Your own figure, if you disagree with the market. Never overwritten by our valuation — it wins on your screen.', ex: '65', ...opt },
+        { k: 'notes', b: 'Anything. Provenance, damage, the story of buying it. Length is not a problem.', ex: 'Bought in Bordeaux, split seam', ...opt },
+        { k: 'photo', b: 'Filename of an image sitting beside the CSV, or a URL. Matched on import; missing files are reported, not fatal.', ex: 'marquee-moon.jpg', ...opt }
+      ],
+      tolerant: [
+        { t: 'Commas or semicolons', b: 'French and German Excel writes semicolons and calls it CSV. Both are read, plus tabs, detected from the file rather than asked about.' },
+        { t: 'Decimal commas', b: '18,50 and 18.50 are the same eighteen euros fifty. Thousands separators in either convention are stripped.' },
+        { t: 'Currency symbols in the number', b: '€18,50 and 18,50 € both parse. The symbol also sets the currency for that row if no currency column exists.' },
+        { t: 'Any date order', b: 'DD/MM/YYYY, MM/DD/YYYY, ISO, or a bare year. Ambiguous files are resolved once, by asking about the file rather than about 214 rows.' },
+        { t: 'Encodings that predate you', b: 'UTF-8, UTF-16, and Latin-1 — the encoding that turns every é into a question mark in every other importer.' },
+        { t: 'Mess at the edges', b: 'Blank rows, trailing empty columns, a title line above the header, totals in the last row. All recognised and skipped.' }
+      ],
+      nevers: [
+        { n: 'NEVER 01', t: 'Overwrite anything you typed in the app', b: 'Import only ever adds. If a row looks like an object you already have, it is flagged as a possible duplicate and left alone until you say so.' },
+        { n: 'NEVER 02', t: 'Merge duplicates on its own judgement', b: 'Two rows that look identical stay two objects. Deciding you own one copy instead of two is not a decision an importer gets to make.' },
+        { n: 'NEVER 03', t: 'Invent a value', b: 'A blank paid column stays blank. It does not become a market estimate wearing the costume of something you told us.' },
+        { n: 'NEVER 04', t: 'Reject the file over bad rows', b: 'Rows we cannot read are imported as names-only and pushed to the top of your collection so you fix them while you still remember the file.' },
+        { n: 'NEVER 05', t: 'Keep a copy of your file', b: 'Parsed on your device, discarded when the import finishes. The spreadsheet never reaches a server of ours, because it never needs to.' }
+      ],
+      lines: [
+        { t: 'name;type;quantity;condition;paid;currency;acquired;identifier;location;value;notes;photo', fg: '#FFD24A' },
+        { t: 'Television — Marquee Moon;Vinyl;;VG+;18,50;EUR;14/03/2011;8122-79362-4;Salon étagère B;65;Split seam;mm.jpg', fg: '#F3ECE0' },
+        { t: 'Omega Seamaster 300;Watch;;;;;1998;;;;Grandfather\u2019s;', fg: '#F3ECE0' },
+        { t: 'Zelda: Ocarina of Time;Retro Games;;CIB;40;EUR;2019;NUS-P-CZLF;Bureau;;Second copy, for playing;', fg: '#F3ECE0' },
+        { t: '5 francs Semeuse 1960;Coins;12;TTB;;;;G.770;Classeur 2;;Interchangeable, one row;', fg: '#F3ECE0' },
+        { t: 'Le Mystère de la Grande Pyramide;Comics;;;;;;;;;;', fg: '#8A7F70' }
+      ],
+      prompt: [
+        { t: 'You are converting a personal collection inventory into the CLCTN import format.\nThe file below was kept by its owner over many years and is not tidy. Your job is\nfaithful translation, not improvement.', fg: '#FFD24A', mb: '18px' },
+        { t: 'OUTPUT', fg: '#8A7F70', mb: '4px' },
+        { t: 'A single CSV and nothing else. No commentary, no code fence, no summary.\nSemicolon-separated, UTF-8. First line exactly:\n\nname;type;quantity;condition;paid;currency;acquired;identifier;location;value;notes;photo', fg: '#F3ECE0', mb: '18px' },
+        { t: 'RULES', fg: '#8A7F70', mb: '4px' },
+        { t: '1.  One row per physical object. Several identical interchangeable units (coins,\n    sleeves, spares) stay one row with a quantity. Distinct copies of the same\n    title become separate rows, even where the source had one line.', fg: '#F3ECE0', mb: '10px' },
+        { t: '2.  Only name is required. Leave every cell you cannot fill completely empty.\n    Never invent, estimate, infer or "helpfully" complete a price, a date, a\n    condition or an identifier. An empty cell is a correct answer.', fg: '#F3ECE0', mb: '10px' },
+        { t: '3.  name is what the owner would say out loud, in their language, with their\n    accents and their abbreviations. Do not normalise it to a catalogue title,\n    do not translate it, do not reorder it into Artist - Title.', fg: '#F3ECE0', mb: '10px' },
+        { t: '4.  Information that fits no column goes into notes, prefixed with the original\n    column heading, e.g.  Etagere: B3 | Pret a: Marc.  Discard nothing.', fg: '#F3ECE0', mb: '10px' },
+        { t: '5.  paid: digits with a decimal comma, no currency symbol. Put the three-letter\n    code in currency. acquired: DD/MM/YYYY, or a bare year when that is all the\n    source knows. quantity: blank means one, so leave it blank.', fg: '#F3ECE0', mb: '10px' },
+        { t: '6.  Where the source states a grade on a recognised scale, copy it verbatim into\n    condition. Do not convert between scales and do not translate a description\n    into a grade.', fg: '#F3ECE0', mb: '10px' },
+        { t: '7.  type: use the same short label for every row of the same kind of object. If\n    one sheet holds several kinds, label each row for what it actually is.', fg: '#F3ECE0', mb: '10px' },
+        { t: '8.  Rows you cannot confidently read: still output them, with name filled in as\n    best you can and the word UNSURE at the start of notes. Never silently drop\n    a row, and never merge two rows you suspect are the same object.', fg: '#F3ECE0', mb: '18px' },
+        { t: 'THEN APPLY THE APPENDIX FOR THIS COLLECTION TYPE:', fg: '#8A7F70', mb: '4px' },
+        { t: '[ appendix block pasted here — see 07b ]\n\nHere is the inventory:', fg: '#2B9E88', mb: '0' }
+      ],
+      perType: [
+        { k: 'Vinyl & CD', c: 'Goldmine scale, verbatim: M, NM, VG+, G. Media and sleeve are often graded separately and written as VG+/VG — keep both, exactly as found.', i: 'Catalogue number from the spine or label, or a Discogs release id. Barcode only if that is all there is.', bg: '#fff' },
+        { k: 'Watches', c: 'Descriptive, not scaled: unpolished, service dial, hairlines, box and papers. Never turn prose into a grade.', i: 'Reference number first, serial number in notes rather than here — a serial is not something to share by default.', bg: '#FBF6EC' },
+        { k: 'Comics & books', c: 'CGC or CBCS numeric grade if slabbed, kept with the label (CGC 9.4). Raw copies stay descriptive: FN, spine roll, foxing.', i: 'ISBN for books. For comics, series plus issue number belongs in name; the certification number goes here.', bg: '#fff' },
+        { k: 'Retro games', c: 'Completeness first, because that is what moves the price: CIB, loose, sealed, manual only. Then any wear noted.', i: 'The publisher\u2019s product code (NUS-P-, SLES-, DMG-) in preference to a barcode — it disambiguates region.', bg: '#FBF6EC' },
+        { k: 'Trading cards', c: 'Grader, grade and slab: PSA 9, BGS 9.5, CGC 10. Raw cards say raw, plus centering or edge notes if the owner made them.', i: 'Set code plus card number (SV3-021). Certification number when slabbed, since that is the resale identity.', bg: '#fff' },
+        { k: 'Coins & banknotes', c: 'Sheldon scale where used (MS-63, AU-50, VF), or the European equivalents (SUP, TTB, TB) left in the owner\u2019s own convention.', i: 'Catalogue reference — KM, Gadoury, Pick — and mint mark. Denomination and year belong in name.', bg: '#FBF6EC' },
+        { k: 'Stamps', c: 'Hinged state and centering, in the owner\u2019s words: MNH, MH, used, fine centering. Never invent a catalogue grade.', i: 'Yvert, Scott or Michel number. These collections almost always already carry one — it is the most reliable identifier in this table.', bg: '#fff' },
+        { k: 'Toys & figures', c: 'Box state carries most of the value: MISB, MIB, opened complete, loose. Yellowing and paint wear go in notes.', i: 'Manufacturer item number (Hasbro, Bandai, Lego set number) rather than a barcode.', bg: '#FBF6EC' },
+        { k: 'Wine & spirits', c: 'Fill level, label condition, capsule: neck fill, slight seepage, label torn. Vintage is part of name, not condition.', i: 'Bottle size and appellation in notes; leave identifier empty unless the source has a real reference.', bg: '#fff' }
+      ],
+      steps: [
+        { n: '1', t: 'Get your list out of wherever it lives', b: 'Excel, Numbers, Google Sheets, Notes — anything. If it is already a spreadsheet, use File then Export and pick CSV. If it is a Word document or a note, copying the text is enough; the assistant can read prose.', note: 'STUCK HERE? SKIP TO STEP 2 AND PASTE THE SHEET STRAIGHT INTO THE CHAT — IT USUALLY WORKS.', bg: '#0E6E5E', fg: '#F3ECE0' },
+        { n: '2', t: 'Open the assistant you already use', b: 'ChatGPT, Claude, Gemini, Le Chat — all of them do this, and the free tier is enough for a few hundred rows. You do not need to pay for anything to convert your collection.', note: 'ON A COMPUTER RATHER THAN A PHONE IF YOU HAVE THE CHOICE — FILE UPLOADS ARE EASIER THERE.', bg: '#2B44D6', fg: '#F3ECE0' },
+        { n: '3', t: 'Paste our prompt, then attach or paste your list underneath', b: 'The prompt goes first, your data goes after it. That order matters: it tells the assistant what the job is before it sees the mess. Then send.', note: 'THE PROMPT IS LONG AND LOOKS TECHNICAL. YOU DO NOT NEED TO READ IT OR CHANGE ANYTHING IN IT.', bg: '#FFD24A', fg: '#17130F' },
+        { n: '4', t: 'Save what comes back as a .csv file', b: 'You will get a block of text with semicolons in it. Copy it into a blank TextEdit or Notepad document and save it with .csv at the end of the filename. On a phone, tap and hold the block to copy it.', note: 'TEXTEDIT ON MAC: FORMAT THEN MAKE PLAIN TEXT FIRST, OR THE FILE WILL NOT OPEN CORRECTLY.', bg: '#FF5B2E', fg: '#F3ECE0' },
+        { n: '5', t: 'Bring it back here and check the first screen', b: 'Import, then A spreadsheet, then choose your file. The mapping screen shows what landed where before anything is saved. Anything the assistant was unsure about sits at the top of your collection, marked, waiting for you.', note: 'ONE TAP UNDOES THE ENTIRE BATCH FOR THIRTY DAYS. NOTHING YOU DO HERE IS PERMANENT.', bg: '#17130F', fg: '#F3ECE0' }
+      ],
+      wrong: [
+        { t: 'It explains instead of converting', b: 'You get a friendly paragraph about your collection and no CSV. Reply with: "Output only the CSV, no commentary." It complies immediately.' },
+        { t: 'It stops halfway', b: 'Long lists get truncated. Reply "continue from row 150" and paste the two halves together. Or convert in chunks of a hundred from the start.' },
+        { t: 'It fills in prices you never wrote', b: 'The one real failure. Check the paid column against a few rows you remember before importing. Our mapping screen shows you the file before it saves anything.' }
+      ],
+      apple: [
+        { k: 'THE ONE THAT CHANGES EVERYTHING', t: 'Guided generation guarantees the shape', b: 'Declare our twelve columns as a @Generable Swift struct and the framework gives strong guarantees that the model returns an instance of that type. Better still, @Guide(description:) annotates each property — so "never infer a price, leave it nil" stops being a plea in a prompt and becomes part of the schema. The whole failure category in section 08 disappears.', bg: '#17130F', fg: '#F3ECE0', sh: '#FF5B2E' },
+        { k: 'THE COST QUESTION, ANSWERED', t: 'On-device means you pay nothing, ever', b: 'No API bill, no per-user cost, no rate limit to engineer around, and no promise to make about what happens to their file — it never leaves the phone. This is the answer to your hosting worry, and a better one than the thing you were avoiding.', bg: '#0E6E5E', fg: '#F3ECE0', sh: '#17130F' },
+        { k: 'THE CONSTRAINT, AND ITS ESCAPE HATCH', t: 'Small context — but Private Cloud Compute exists', b: 'A four-hundred-row inventory will not fit in one prompt, so we batch and resume, which also gives us a real progress bar. And when a file is genuinely too big, PrivateCloudComputeLanguageModel routes to a larger context window on Apple\u2019s infrastructure — still no bill for us, still a privacy story we can state plainly. It needs an entitlement, and it is Beta.', bg: '#fff', fg: '#17130F', sh: '#17130F' },
+        { k: 'THE ONE WORTH GETTING EXCITED ABOUT', t: 'It reads images too', b: 'Attachment and ImageAttachmentContent let a prompt carry an image alongside descriptive text. Which means a photograph of a handwritten ledger, a binder page, or a typed inventory from 1994 becomes an import. Half the serious collections in France are on paper and nobody is serving them. Also Beta.', bg: '#FBF6EC', fg: '#17130F', sh: '#17130F' }
+      ],
+      fine: [
+        { k: 'FLOOR', t: 'iOS 26 · iPadOS 26 · macOS 26', b: 'Plus a device that supports Apple Intelligence. Anyone below that line gets the tutorial, which is exactly why section 08 is not optional.' },
+        { k: 'MATURITY', t: 'Beta, and labelled as such', b: 'Apple\u2019s own page says the information is preliminary and subject to change. Attachments, PCC and the dynamic profile API all carry Beta. Fine to build on, wrong to promise on.' },
+        { k: 'GATE', t: 'SystemLanguageModel availability', b: 'Checked at runtime before we offer the button. Unsupported device, model not downloaded, Apple Intelligence switched off — three states, one graceful fallback to the prompt.' },
+        { k: 'BONUS', t: 'Tool calling, later', b: 'A Tool can query a local or online database mid-generation, so the model could resolve a vague name against our identifier lookup while converting. Genuinely useful, firmly out of scope for a first test.' }
+      ],
+      layers: [
+        { k: 'LAYER 1', t: 'Reading the file', cost: 'A WEEKEND · USE A LIBRARY', b: 'This needs tolerance, not intelligence — and tolerance is a finite list written down in advance. Section 03 is that entire list: separators, encodings, decimal commas, date orders, junk at the edges. Nothing on it is a judgement call, so nothing on it needs to be smart.', why: 'Do not write this by hand. A CSV parser is the most solved problem in software and every clever line we add is a line that breaks on a file we never imagined.', bg: '#fff', fg: '#17130F', sh: '#17130F' },
+        { k: 'LAYER 2', t: 'Matching their columns to ours', cost: 'A DICTIONARY, NOT A MODEL', b: 'TITRE to name, ETAT to condition, PRIX ACHAT to paid, ACQUIS to acquired. A few hundred synonyms per language, kept in a plain list. When a collector reports a column we missed, someone adds one line and ships it — no retraining, no tuning, no mystery.', why: 'The temptation here is fuzzy matching or embeddings. Resist it: a similarity score nobody can read is unfixable by anyone but you, and it will be wrong at the exact moment you are asleep.', bg: '#0E6E5E', fg: '#F3ECE0', sh: '#17130F' },
+        { k: 'LAYER 3', t: 'The assistant route', cost: 'NO PARSER AT ALL', b: 'This is the part that surprised me. With guided generation the framework returns a typed Swift struct we defined — there is no text to parse, so there is no parsing to get wrong. The pasted-prompt route still produces a CSV, but that lands back in Layer 1, which already exists.', why: 'The intelligence here is rented, not built. It improves when Apple and the model vendors improve, on their budget, and we maintain a prompt file instead of a codebase.', bg: '#17130F', fg: '#F3ECE0', sh: '#FF5B2E' }
+      ],
+      questions: [
+        { k: 'DECISION 1', t: 'Do we publish twelve columns, or six?', b: 'Twelve is complete; six (name, type, condition, paid, acquired, notes) fits on a screen and never intimidates anyone. The importer reads both regardless — this is purely about what the template and the help page show.' },
+        { k: 'DECISION 2', t: 'Does photo-by-filename ship in v1?', b: 'It means accepting a folder or a zip, not just a file, and it is the one column that makes an imported collection look like the app\u2019s own. Everything else here is text and cheap.' },
+        { k: 'DECISION 3', t: 'Should export produce exactly this file?', b: 'Round-tripping means a collector can leave with a file identical in shape to the one they arrived with. Cheap to build, and the strongest possible answer to "am I locked in?".' },
+        { k: 'DECISION 4', t: 'Does the on-device route ship in v1, or wait?', b: 'If your Foundation Models test works, one-tap conversion costs us nothing and the tutorial becomes a fallback rather than the main path. The cost is Swift work and a second code path to maintain — plus the awkward job of explaining to someone on an older iPhone why they get the manual route. Test first, decide after; the published prompt is what ships either way.' },
+        { k: 'DECISION 5', t: 'Do we ever accept a photo of a paper inventory?', b: 'Multimodal on-device prompting makes it technically possible, and it reaches the collector nobody else is reaching — the one whose forty years of cataloguing is in a ring binder. It is also the highest-risk data we could ingest, since nothing about a photo of handwriting can be validated. Worth prototyping before it becomes a roadmap promise.' }
+      ]
+    };
+  }
+}
+
+</script>
+</body>
+</html>

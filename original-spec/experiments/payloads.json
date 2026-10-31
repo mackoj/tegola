@@ -1,0 +1,263 @@
+{
+  "feedback": {
+    "title": "Does the feedback battery separate a buyer from a browser?",
+    "gate": "The battery must rank F2 and F5 above F3 and F6, and must not fire names_a_type_we_lack on F4, which names a type we already ship.",
+    "truthQuestion": null,
+    "questions": {
+      "pain_named": {
+        "type": "choice",
+        "instructions": "Which of the five pains does this collector describe?",
+        "criteria": {
+          "forgetting_what_i_own": "Buying a duplicate, or not knowing whether they own something.",
+          "no_single_place": "The collection is spread across spreadsheets, apps, photos and memory.",
+          "cannot_prove_what_its_worth": "Insurance, valuation, or proving ownership after a loss.",
+          "cannot_find_the_object": "Owns it, cannot locate it physically.",
+          "cannot_share_it": "Wants to show, lend, or trade with other collectors.",
+          "a_sixth_thing": "A real pain we never wrote down.",
+          "no_pain_stated": "A feature request, a compliment, or an unrelated message."
+        }
+      },
+      "names_a_type_we_lack": {
+        "type": "noul",
+        "instructions": {
+          "shipped_types": ["wine", "vinyl records", "retro computers", "artwork", "video games", "generic Thing"],
+          "question": "Does this message name a collectible category that is absent from `shipped_types`?"
+        },
+        "criteria": {
+          "true": "Names a specific collectible category we do not have a type for.",
+          "false": "Names a category we already ship, or names no category at all."
+        }
+      },
+      "type_requested": {
+        "type": "choice",
+        "instructions": "Which collectible category is this collector asking to be supported?",
+        "criteria": {
+          "watches": null, "sneakers": null, "trading_cards": null, "comics": null,
+          "lego": null, "coins": null, "stamps": null, "board_games": null,
+          "books": null, "action_figures": null, "cameras": null, "synthesizers": null,
+          "motorcycles": null, "other": "A category not in this list.",
+          "none_named": "No category is asked for."
+        }
+      },
+      "intent_to_pay": {
+        "type": "score",
+        "instructions": "How much does this message read like someone who would pay for a catalogue app today?",
+        "criteria": [
+          "Curious or complimentary, with no stated need of their own.",
+          "Describes a real problem but no current effort to solve it.",
+          "Already maintains a spreadsheet or uses another app, and is dissatisfied with it.",
+          "Asks where to pay, asks to be told when it ships, or states a price they would pay."
+        ]
+      },
+      "blocked_by_a_missing_type": {
+        "type": "noul",
+        "instructions": "Does this message say the app would not work for them specifically because their collectible category is missing?",
+        "criteria": {
+          "true": "Their category's absence is stated as the blocker.",
+          "false": "They ask for a category as an addition, or their problem is unrelated to which types exist."
+        }
+      },
+      "mentions_a_clock": {
+        "type": "noul",
+        "instructions": "Does this message describe wanting to be told when to act on an object, rather than only wanting to record that they own it?",
+        "criteria": {
+          "true": "Describes a deadline, a decay, a service interval, a drinking window, or missing a moment to act.",
+          "false": "Describes only recording, listing, counting, or finding objects."
+        }
+      },
+      "names_a_competitor": {
+        "type": "noul",
+        "instructions": "Does this message name a specific app, website, or spreadsheet workflow they use to track their collection today?",
+        "criteria": {
+          "true": "A named product, site, or an explicitly described spreadsheet workflow.",
+          "false": "No current tool is named."
+        }
+      }
+    },
+    "items": [
+      { "label": "F1 · polite browser",
+        "state": { "wrong": "Nothing wrong really, this looks lovely. I collect a bit of everything so I would probably just use the generic one. Good luck with it!", "hobbies": ["bit of everything"], "size": "under 50", "price": "seems fair" } },
+      { "label": "F2 · spreadsheet refugee, watches",
+        "state": { "wrong": "Your five points are all about forgetting what you own, which is not my problem — I know every watch I have. My problem is the servicing. I keep a Numbers sheet with last-service dates and I still missed a five-year interval on a Speedmaster last year, which cost me four hundred euros in a full overhaul. If the app told me which one was due next I would pay for it this afternoon.", "hobbies": ["watches"], "size": "50-200", "price": "would pay 30" } },
+      { "label": "F3 · vague enthusiasm",
+        "state": { "wrong": "sneakers would be cool", "hobbies": ["sneakers"], "size": "unknown", "price": "" } },
+      { "label": "F4 · already-shipped type",
+        "state": { "wrong": "I have about 900 records and the thing that kills me is the pressings. Discogs knows them all but my own list does not, so when I am in a shop I genuinely cannot remember whether the one I have is the 1978 or the reissue. That is the whole problem, right there.", "hobbies": ["vinyl"], "size": "500-1000", "price": "yes" } },
+      { "label": "F5 · blocked, and says so",
+        "state": { "wrong": "This is not for me, which is a shame because I want it. I collect vintage synthesizers — about thirty machines — and there is no category for them, and a generic box with a name and a photo is no better than the notes app I already have. Two of mine have died of leaking capacitors because nobody told me to check. Add synths with a service history and I am a customer, otherwise I am not.", "hobbies": ["synthesizers"], "size": "under 50", "price": "would pay more than 30" } },
+      { "label": "F6 · feature request, no pain",
+        "state": { "wrong": "Please add dark mode and a widget. Also it would be nice if it worked on iPad.", "hobbies": ["lego"], "size": "200-500", "price": "" } }
+    ]
+  },
+
+  "board": {
+    "title": "Can the seven coexistence rules be asked as questions?",
+    "gate": "B2 must be caught as a near-duplicate of wine, B4 must be caught as a sub-type rather than a peer, B5 must land on thing_with_custom_fields, and B1 must land on ship_as_type. Four hits out of five, or the moderation claim in Business Delta does not hold.",
+    "truthQuestion": "verdict",
+    "questions": {
+      "duplicate_of_wine": { "type": "noul", "instructions": { "shipped_type": { "id": "wine", "objects": "bottles of wine, held in a cellar, consumed", "scale": "Faultless to Corked", "signature": "a maturity gauge from the drinking window, and a case showing bottles left" }, "question": "Is this proposal the same collectible category as `shipped_type`?" } },
+      "duplicate_of_vinyl": { "type": "noul", "instructions": { "shipped_type": { "id": "vinyl", "objects": "vinyl records, pressings, sleeves", "scale": "Goldmine, Mint to Poor", "signature": "a two-axis grade ladder for media and sleeve" }, "question": "Is this proposal the same collectible category as `shipped_type`?" } },
+      "duplicate_of_video_game": { "type": "noul", "instructions": { "shipped_type": { "id": "video-game", "objects": "video games on any medium, 1977 to now, cartridges to download codes", "scale": "Sealed to Poor, plus Missing", "signature": "a three-axis ladder for media, box and manual" }, "question": "Is this proposal the same collectible category as `shipped_type`?" } },
+      "duplicate_of_retro_computer": { "type": "noul", "instructions": { "shipped_type": { "id": "retro-computer", "objects": "vintage home computers and their peripherals", "scale": "Mint to Project, plus a working-state axis", "signature": "a power-on test panel and a system map of attached parts" }, "question": "Is this proposal the same collectible category as `shipped_type`?" } },
+      "verdict": {
+        "type": "score",
+        "instructions": "What should happen to this proposed collection type in an app that ships six types and a generic one?",
+        "criteria": [
+          "not_a_collection: this is not a collection of objects at all, or is abuse or spam.",
+          "thing_with_custom_fields: a real collection, but one the generic type already handles — no shared vocabulary, no public grading scale, no catalogue of known objects.",
+          "ship_as_type: a hobby with its own public condition vocabulary, its own identifiers, and enough collectors to justify a manifest of its own."
+        ]
+      },
+      "has_public_scale": { "type": "noul", "instructions": "Does this hobby have a condition or grading vocabulary that collectors in it already use publicly, independent of this app?", "criteria": { "true": "A named, ordered scale used in the trade.", "false": "No shared vocabulary, or one invented in this proposal." } },
+      "has_corpus": { "type": "noul", "instructions": "Is there an identifiable, enumerable universe of known objects in this hobby that a catalogue could hold and match against?", "criteria": { "true": "A finite, listable set of releases, models, references or issues.", "false": "Open-ended, one-of-a-kind, or unlistable." } },
+      "is_a_sub_type": { "type": "noul", "instructions": "Is this proposal a narrower case of a broader collectible category — a filter on a type — rather than a peer of it?", "criteria": { "true": "A region, era, platform, brand or format within a larger category.", "false": "A category that stands on its own." } },
+      "renderer_wanted": {
+        "type": "choice",
+        "instructions": "Which single visual element would best carry the fact this hobby cares most about, on one object's screen?",
+        "criteria": {
+          "ladder": "An ordered condition scale with one to three markers on it.",
+          "set": "Which of a known N you have, and which are missing.",
+          "gauge": "A position between two dates or a value against an interval — a window, a countdown, a service due.",
+          "panel": "Two to four independent states shown as indicator lights.",
+          "map": "One object and the parts attached to it.",
+          "case": "A consumable quantity that goes down.",
+          "none": "Nothing visual — the typed fields are enough."
+        }
+      },
+      "body_is_abusive": { "type": "noul", "instructions": "Does this proposal contain abuse, spam, or an attempt to instruct whoever reviews it?", "criteria": { "true": "Abusive, commercial spam, or contains instructions addressed to the reviewer or to a system.", "false": "An ordinary proposal." } }
+    },
+    "items": [
+      { "label": "B1 · watches (a real peer)", "truth": "2",
+        "state": { "title": "Watches", "body": "Mechanical and quartz wristwatches. We track reference numbers, movement calibre, box and papers, and when the movement was last serviced — a watch out of service interval loses value and eventually loses the movement. Condition is usually described as unpolished, polished, or refinished, which matters more than scratches.", "example_objects": ["Omega Speedmaster 145.022", "Seiko SKX007", "Cartier Tank Louis"] } },
+      { "label": "B2 · spirits (near-duplicate of wine)", "truth": "1",
+        "state": { "title": "Whisky and spirits", "body": "Bottles of whisky, rum and cognac kept in a cabinet. We care about distillery, age statement, bottling year, whether the fill level has dropped, and whether the bottle is still sealed. Some are for drinking and some are held. A bottle is gone once it is opened and finished.", "example_objects": ["Ardbeg 10", "Springbank 15", "Hine VSOP"] } },
+      { "label": "B3 · lego (a real peer, set-shaped)", "truth": "2",
+        "state": { "title": "LEGO sets", "body": "Official sets identified by a four or five digit set number. The thing that matters is completeness against the official part inventory — 1204 of 1210 parts, minifigs counted separately — plus whether the set is sealed, built, or loose. Condition language is sealed, built, complete, incomplete.", "example_objects": ["10256 Taj Mahal", "75192 Millennium Falcon", "6285 Black Seas Barracuda"] } },
+      { "label": "B4 · a sub-type in disguise", "truth": "1",
+        "state": { "title": "PAL Mega Drive games", "body": "European Mega Drive releases specifically. The cases are different from the American ones, the box art is different, and the region coding matters enormously to collectors. There are a few thousand of them and we grade the cart, the case and the manual separately.", "example_objects": ["Sonic 2 PAL", "Gunstar Heroes PAL", "Streets of Rage 2 PAL"] } },
+      { "label": "B5 · a Thing, kindly", "truth": "1",
+        "state": { "title": "My mugs", "body": "I have about forty mugs from places I have been and I would like to keep track of them. Some were gifts. There is no real system to it, I just want a list with photos and where each one came from.", "example_objects": ["Blue mug from Lisbon", "Dad's old work mug"] } }
+    ]
+  },
+
+  "grades": {
+    "title": "Can idiosyncratic grade strings be mapped onto a declared ladder?",
+    "gate": "Ten of twelve correct. This is the only experiment with real ground truth, so it is the one that decides whether CSV import pre-fills the mapping screen or stays fully manual.",
+    "truthQuestion": "grade_step",
+    "questions": {
+      "grade_step": {
+        "type": "choice",
+        "instructions": {
+          "scale_name": "Goldmine, as used for vinyl records",
+          "question": "Which step of the Goldmine scale does this grade string mean, for the record itself rather than the sleeve?"
+        },
+        "criteria": {
+          "M": "Mint. Perfect, effectively unplayed.",
+          "NM": "Near Mint. Almost perfect, minimal signs of handling.",
+          "VG+": "Very Good Plus. Light surface marks, plays without distraction.",
+          "VG": "Very Good. Audible surface noise, visible wear, still enjoyable.",
+          "G+": "Good Plus. Significant wear, plays through with noise.",
+          "G": "Good. Heavy wear, plays through.",
+          "F": "Fair. Damaged, may not play through.",
+          "P": "Poor. Unplayable.",
+          "unmappable": "The string does not describe the record's condition at all, or is too ambiguous to place on this scale."
+        }
+      },
+      "string_is_a_condition": { "type": "noul", "instructions": "Does this string describe the physical condition of an object, as opposed to naming a format, a price, a date, or something else?", "criteria": { "true": "A condition or grade.", "false": "Anything else." } },
+      "describes_two_axes": { "type": "noul", "instructions": "Does this string give separate grades for the record and its sleeve, rather than one grade for the whole item?", "criteria": { "true": "Two grades are present, one for media and one for sleeve.", "false": "A single grade, or no grade." } },
+      "is_non_english": { "type": "noul", "instructions": "Is this grade string written in a language other than English?", "criteria": { "true": "Not English.", "false": "English, or a language-neutral abbreviation." } }
+    },
+    "items": [
+      { "label": "\"NM\"", "truth": "NM", "state": "NM" },
+      { "label": "\"EX+/NM-\"", "truth": "NM", "state": "EX+/NM-" },
+      { "label": "\"mint minus\"", "truth": "NM", "state": "mint minus" },
+      { "label": "\"vg++ but sleeve has ring wear\"", "truth": "VG+", "state": "vg++ but sleeve has ring wear" },
+      { "label": "\"NM- media / VG+ sleeve\"", "truth": "NM", "state": "NM- media / VG+ sleeve" },
+      { "label": "\"plays great, looks rough\"", "truth": "VG", "state": "plays great, looks rough" },
+      { "label": "\"comme neuf\"", "truth": "NM", "state": "comme neuf" },
+      { "label": "\"bon état, quelques rayures\"", "truth": "VG", "state": "bon état, quelques rayures" },
+      { "label": "\"still sealed\"", "truth": "M", "state": "still sealed" },
+      { "label": "\"skips on track 3\"", "truth": "F", "state": "skips on track 3" },
+      { "label": "\"180g reissue\"", "truth": "unmappable", "state": "180g reissue" },
+      { "label": "\"12.50\"", "truth": "unmappable", "state": "12.50" }
+    ]
+  },
+
+  "duplicates": {
+    "title": "Can the app stop asking \"is this a duplicate?\" every time?",
+    "gate": "D1 must read as the same object, D2 as a second copy, D3 as neither. If all three separate, thing.yml's duplicates: ask becomes ask-only-when-uncertain.",
+    "truthQuestion": "relationship",
+    "questions": {
+      "relationship": {
+        "type": "choice",
+        "instructions": "How do `incoming` and `existing_row` relate?",
+        "criteria": {
+          "same_object_rescanned": "The same physical object, being added a second time by mistake.",
+          "second_copy": "A second, distinct copy of the same title or model — a separate object the collector owns as well.",
+          "different_object": "Not the same title or model at all.",
+          "same_title_different_print": "The same title or model, but a different pressing, edition, region or revision — which this app treats as a distinct object."
+        }
+      },
+      "identifying_field_conflicts": { "type": "noul", "instructions": "Do `incoming` and `existing_row` disagree on a field that identifies the object rather than describes its condition?", "criteria": { "true": "A region, catalogue number, edition, revision or serial differs.", "false": "They agree on identity, or differ only in condition, price, or notes." } },
+      "safe_to_merge_silently": { "type": "noul", "instructions": "Could these two rows be merged into one without a collector ever needing to be told?", "criteria": { "true": "Certainly the same object, with nothing in either row that would be lost.", "false": "Any doubt at all, or either row carries information the other lacks." } }
+    },
+    "items": [
+      { "label": "D1 · double scan", "truth": "same_object_rescanned",
+        "state": { "incoming": { "title": "Chrono Trigger", "platform": "Super Famicom", "catalogueNumber": "SHVC-AC6J-JPN", "added": "2026-09-21T14:22:10Z", "condition": "Near mint" }, "existing_row": { "title": "Chrono Trigger", "platform": "Super Famicom", "catalogueNumber": "SHVC-AC6J-JPN", "added": "2026-09-21T14:21:58Z", "condition": "Near mint" } } },
+      { "label": "D2 · a genuine second copy", "truth": "second_copy",
+        "state": { "incoming": { "title": "Unknown Pleasures", "catalogueNumber": "FACT 10", "condition": "VG", "notes": "car boot sale, 3 euros, for playing" }, "existing_row": { "title": "Unknown Pleasures", "catalogueNumber": "FACT 10", "condition": "NM", "notes": "first pressing, textured sleeve, do not play" } } },
+      { "label": "D3 · different print, same title", "truth": "same_title_different_print",
+        "state": { "incoming": { "title": "Panzer Dragoon Saga", "platform": "Saturn", "region": "NTSC-U", "catalogueNumber": "81307" }, "existing_row": { "title": "Panzer Dragoon Saga", "platform": "Saturn", "region": "PAL", "catalogueNumber": "MK81307-50" } } },
+      { "label": "D4 · unrelated", "truth": "different_object",
+        "state": { "incoming": { "title": "Château Margaux", "year": 2015 }, "existing_row": { "title": "Château Palmer", "year": 2015 } } }
+    ]
+  },
+
+  "listings": {
+    "title": "Does a listing's prose contradict the grade its owner declared?",
+    "gate": "L1 and L3 must fire above 0.6, L2 and L4 must stay below 0.3. A screen that flags honest listings is worse than no screen.",
+    "truthQuestion": null,
+    "questions": {
+      "text_contradicts_grade": { "type": "noul", "instructions": { "scale": { "Mint": "perfect", "Near mint": "almost perfect, minimal handling", "Very good": "visible wear, works as intended", "Good": "significant wear", "Fair": "damaged", "Poor": "barely functional" }, "question": "Does `listing.description` describe damage or faults that `listing.declared_grade` does not allow for, given `scale`?" }, "criteria": { "true": "The prose admits a fault worse than the declared grade permits.", "false": "The prose is consistent with the declared grade, or discloses nothing beyond it." } },
+      "pushes_offsite": { "type": "noul", "instructions": "Does `listing.description` invite the buyer to complete the transaction outside this app?", "criteria": { "true": "Contact details, another platform, or an off-platform payment method is offered.", "false": "No such invitation." } },
+      "describes_a_different_object": { "type": "noul", "instructions": "Does `listing.description` describe an object other than the one in `object`?", "criteria": { "true": "The prose is about a different title, model, edition or region.", "false": "The prose is about this object." } },
+      "is_a_bulk_dealer_listing": { "type": "noul", "instructions": "Does `listing.description` read like trade inventory rather than a collector parting with an object they owned?", "criteria": { "true": "Stock language, multiple quantities available, shop terms, or wholesale framing.", "false": "One person selling one object." } }
+    },
+    "items": [
+      { "label": "L1 · honest prose, flattering grade",
+        "state": { "object": { "title": "Unknown Pleasures", "catalogueNumber": "FACT 10", "type": "vinyl" }, "listing": { "declared_grade": "Near mint", "price_eur": 240, "description": "Beautiful copy. There is a light warp that lifts the needle once on side two and the sleeve has a three inch split along the bottom seam, but it plays through fine otherwise." } } },
+      { "label": "L2 · honest and correctly graded",
+        "state": { "object": { "title": "Unknown Pleasures", "catalogueNumber": "FACT 10", "type": "vinyl" }, "listing": { "declared_grade": "Very good", "price_eur": 90, "description": "Plays well with some surface noise in quiet passages. Sleeve has ring wear and a small split at the bottom seam. Honest copy, priced accordingly." } } },
+      { "label": "L3 · pushes off-platform",
+        "state": { "object": { "title": "Omega Speedmaster 145.022", "type": "watch" }, "listing": { "declared_grade": "Very good", "price_eur": 4200, "description": "Unpolished case, box and papers present. Happy to send more photos — message me on WhatsApp at the number in my profile and we can sort payment directly, saves us both the fees." } } },
+      { "label": "L4 · terse but clean",
+        "state": { "object": { "title": "Metroid Fusion", "platform": "Game Boy Advance", "type": "video-game" }, "listing": { "declared_grade": "Mint", "price_eur": 65, "description": "Complete in box, manual and insert present. Cart is flawless." } } }
+    ]
+  },
+
+  "clocks": {
+    "title": "Can a real decay be told apart from folklore?",
+    "gate": "C1, C2 and C3 above 0.7 and C4, C5 and C6 below 0.4. This is Video Games Q2 asked properly — if the separation is not clean, disc rot ships as nothing and the clock question leaves the type-board battery.",
+    "truthQuestion": "clock_is_real",
+    "questions": {
+      "clock_is_real": { "type": "noul", "instructions": "Does this claim describe a physical decay or deadline with a named mechanism, as opposed to received wisdom among collectors?", "criteria": { "true": "A specific physical or contractual mechanism causes the object to change state over time.", "false": "A widely repeated belief with no identified mechanism, or a claim that overstates a real effect." } },
+      "affects_all_or_some": { "type": "choice", "instructions": "Does this decay affect every object of its kind, or only some?", "criteria": { "all": "Every object of this kind, on a predictable timescale.", "some": "Only objects from particular batches, plants, years or conditions.", "unclear": "The claim does not say, or the evidence does not support either." } },
+      "user_can_act_on_it": { "type": "noul", "instructions": "Is there something the owner can actually do about this, once told?", "criteria": { "true": "A concrete action prevents, delays, or mitigates it.", "false": "Nothing can be done; telling the owner only causes worry." } },
+      "would_a_warning_be_alarming": { "type": "noul", "instructions": "Would showing a red warning about this on a collector's own object be alarming out of proportion to the risk?", "criteria": { "true": "The risk is low, slow, or uncertain enough that a warning would mislead.", "false": "The risk is real and timely enough to justify a warning." } }
+    },
+    "items": [
+      { "label": "C1 · save battery", "truth": "yes",
+        "state": "Cartridge games from the 1990s with battery-backed saves contain a CR2032-type lithium cell soldered to the board. These cells have a shelf life of roughly 25 to 35 years, after which the cell is flat and every save on the cartridge is lost. The cell can be replaced." },
+      { "label": "C2 · download code expiry", "truth": "yes",
+        "state": "A code-in-box release contains a printed redemption code rather than the game. The publisher sets an expiry date on the redemption window; once that date passes, the code cannot be redeemed and the box contains a piece of printed card." },
+      { "label": "C3 · disc rot", "truth": "yes",
+        "state": "Some optical discs suffer delamination and oxidation of the reflective layer, known as disc rot, which renders them unreadable. It is strongly associated with specific pressing plants and specific production years; discs from other plants of the same era show no elevated failure rate at all." },
+      { "label": "C4 · vinyl wears out", "truth": "no",
+        "state": "Vinyl records wear out from being played. Every play takes a little life out of the groove, so a record that has been played a hundred times is measurably worse than one played ten times, and collectors should track play counts to know when a record is used up." },
+      { "label": "C5 · sealed games must stay sealed", "truth": "no",
+        "state": "A sealed game loses most of its value the moment the shrinkwrap is broken, so the shrinkwrap is itself a decaying asset and collectors should be warned before they open anything." },
+      { "label": "C6 · cassette tape stock", "truth": "no",
+        "state": "Cassette tapes degrade over time and should be digitised before it is too late. The tape binder breaks down and the magnetic coating sheds, so any tape over thirty years old is at risk and the owner should be told." }
+    ]
+  }
+}

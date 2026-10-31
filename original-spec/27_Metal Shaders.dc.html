@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#EAE3D6}a{color:#2B44D6}a:hover{color:#FF5B2E}</style>
+</helmet>
+
+<div style="width:1360px;margin:0 auto;padding:60px 28px 100px;font-family:Archivo,system-ui,sans-serif;color:#17130F">
+
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70">CLCTN · SIDE QUEST · METAL SHADERS &amp; WHIMSY · 19 SEP 2026</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:66px;line-height:.92;letter-spacing:-.045em;margin:16px 0 0;max-width:1040px;text-wrap:balance">Whimsy is a budget, not a material.</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-top:20px;text-wrap:pretty">The design system's first promise is <em>"the app itself stays quiet so the artwork shouts."</em> A shader is the single easiest way to break that promise, because a good one is tempting to leave running. So the answer to <strong>where</strong> is mostly an answer to <strong>how few</strong> — and the honest number is three.</div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:900px;margin-top:14px;text-wrap:pretty">Both effects you named are the right instincts. The halftone already exists in the system as a CSS-ish rule waiting to become real print. The vinyl's matter is the one place in the app where a surface deserves to be simulated rather than drawn.</div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">00 · THE BUDGET</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+    <sc-for list="{{ budget }}" as="b" hint-placeholder-count="3">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;padding:22px">
+        <div style="display:inline-block;font:500 9px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:4px 10px;background:{{ b.tone }}">{{ b.tag }}</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:23px;letter-spacing:-.02em;line-height:1.1;margin-top:14px;text-wrap:pretty">{{ b.t }}</div>
+        <div style="font:400 14px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:10px;text-wrap:pretty">{{ b.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">01 · THE FOUR TOOLS, AND WHAT EACH ONE COSTS</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:20px;text-wrap:pretty">SwiftUI gives three shader entry points plus a couple of adjacent things people reach for instead. Picking the cheapest one that does the job is most of the performance work.</div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+    <sc-for list="{{ tools }}" as="t" hint-placeholder-count="4">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;padding:18px;box-shadow:4px 4px 0 {{ t.shadow }}">
+        <div style="font-family:'DM Mono',monospace;font-weight:500;font-size:15px;letter-spacing:-.01em">{{ t.api }}</div>
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.1em;color:#8A7F70;margin-top:6px">{{ t.cost }}</div>
+        <div style="height:2px;background:#E0D6C4;margin:13px 0"></div>
+        <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ t.b }}</div>
+        <div style="height:2px;background:#E0D6C4;margin:13px 0"></div>
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;margin-bottom:5px">USE IT FOR</div>
+        <div style="font:400 12.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ t.use }}</div>
+      </div>
+    </sc-for>
+  </div>
+  <div style="font:400 14px/1.65 Archivo,sans-serif;color:#6E6458;max-width:900px;margin-top:16px;text-wrap:pretty">Two traps worth knowing before you write any Metal. <strong>A distortion effect does not move hit testing</strong> — the view still responds where it was, not where it appears, so never warp anything tappable. And <strong>shader functions live in the compiled <span style="font-family:'DM Mono',monospace">.metallib</span></strong>, which means they are frozen in the signed binary: the parked <a href="26_Patch OTA Layer.dc.html">OTA layer</a> could never change one. Shader work is always a real release.</div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">02 · THE DISK — WHAT MAKES MATTER READ AS MATTER</div>
+  <div style="display:grid;grid-template-columns:1.05fr .95fr;gap:16px;align-items:start;margin-bottom:16px">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#0C0A08;color:#F3ECE0;padding:28px;box-shadow:5px 5px 0 #0E6E5E">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;opacity:.5">THE ONE THING THAT SELLS VINYL</div>
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:34px;letter-spacing:-.03em;line-height:1.05;margin-top:14px;text-wrap:balance">The highlight is a smear, not a spot.</div>
+      <div style="font:400 15px/1.7 Archivo,sans-serif;opacity:.84;margin-top:16px;text-wrap:pretty">A record's grooves are thousands of concentric micro-ridges, so light doesn't bounce off it like a sphere — it stretches <em>tangentially</em>, into a long arc that follows the grooves and sweeps around the disk as it tilts. That anisotropic streak is the entire tell. Get it right and a flat circle reads as vinyl; get it wrong and the most beautiful 3D model still reads as a black plastic plate.</div>
+      <div style="font:400 15px/1.7 Archivo,sans-serif;opacity:.84;margin-top:12px;text-wrap:pretty">Three supporting details, in order of payoff: the dark is never pure black (warm plum-brown in the shadow, matching the paper's warmth); fine concentric rings at sub-pixel frequency, generated rather than drawn; and a <strong>matte paper label against the gloss</strong> — the contrast of two finishes is what makes both believable.</div>
+      <div style="height:2px;background:#2E2823;margin:22px 0"></div>
+      <div style="font:400 13.5px/1.6 Archivo,sans-serif;opacity:.6;text-wrap:pretty">All of it is reachable with a single <span style="font-family:'DM Mono',monospace">layerEffect</span> over a flat circle, driven by one angle. No mesh, no lighting rig, no RealityKit — and it runs on a list thumbnail, which the model never will.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <sc-for list="{{ diskNotes }}" as="d" hint-placeholder-count="4">
+        <div style="border:2.5px solid #17130F;border-radius:16px;background:{{ d.bg }};padding:20px">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">{{ d.k }}</div>
+          <div style="font:700 15px/1.35 Archivo,sans-serif;margin-top:8px;text-wrap:pretty">{{ d.t }}</div>
+          <div style="font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">{{ d.b }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  <sc-if value="{{ showCode }}" hint-placeholder-val="{{ true }}">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#0C0A08;color:#F3ECE0;padding:24px;box-shadow:5px 5px 0 #FFD24A;overflow-x:auto">
+      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:16px;flex-wrap:wrap">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;opacity:.5">SKETCH · GROOVE SHEEN · layerEffect</div>
+        <div style="margin-left:auto;font:500 8.5px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #FFD24A;color:#FFD24A;border-radius:999px;padding:3px 9px">SHAPE OF IT, NOT COPY-PASTE</div>
+      </div>
+      <div style="font:400 12.5px/1.8 'DM Mono',monospace;white-space:pre-wrap;max-width:1060px">{{ vinylCode }}</div>
+    </div>
+  </sc-if>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">03 · THE DOTS — PROMOTING THE HALFTONE FROM DECORATION TO PRINT</div>
+  <div style="font:400 16px/1.7 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:12px;text-wrap:pretty">The system already specifies halftone as dots at 6–9px on colour fields and cover art, never on paper. As a fixed-size dot pattern that's wallpaper. As a shader it becomes an actual <strong>print screen</strong>: dot radius driven by the luminance underneath, so the image is reproduced in ink rather than merely textured.</div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:900px;margin-bottom:22px;text-wrap:pretty">Three details separate a convincing halftone from a dotty filter, and all three are one line each.</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px">
+    <sc-for list="{{ halftoneRules }}" as="h" hint-placeholder-count="3">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;padding:20px;box-shadow:4px 4px 0 #E5457B">
+        <div style="font-family:'DM Mono',monospace;font-weight:500;font-size:16px">{{ h.k }}</div>
+        <div style="font:700 15px/1.35 Archivo,sans-serif;margin-top:9px;text-wrap:pretty">{{ h.t }}</div>
+        <div style="font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">{{ h.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+  <sc-if value="{{ showCode }}" hint-placeholder-val="{{ true }}">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#0C0A08;color:#F3ECE0;padding:24px;box-shadow:5px 5px 0 #2B44D6;overflow-x:auto">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;opacity:.5;margin-bottom:16px">SKETCH · DUOTONE HALFTONE · layerEffect</div>
+      <div style="font:400 12.5px/1.8 'DM Mono',monospace;white-space:pre-wrap;max-width:1060px">{{ halftoneCode }}</div>
+    </div>
+  </sc-if>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">04 · WHERE TO PUT IT — RANKED</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:20px;text-wrap:pretty">Your actual question. Ranked by payoff per unit of risk: the top three are the budget, the rest are what you earn later if the first three hold up on a real device in real light.</div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;overflow:hidden;box-shadow:5px 5px 0 #17130F">
+    <div style="display:grid;grid-template-columns:52px 210px 210px 120px 1fr;background:#17130F;color:#F3ECE0;font:500 9.5px 'DM Mono',monospace;letter-spacing:.1em">
+      <div style="padding:13px 14px">#</div>
+      <div style="padding:13px 14px">SURFACE</div>
+      <div style="padding:13px 14px">EFFECT</div>
+      <div style="padding:13px 14px">DURATION</div>
+      <div style="padding:13px 14px">WHY IT SURVIVES THE HUNDREDTH TIME</div>
+    </div>
+    <sc-for list="{{ placements }}" as="p" hint-placeholder-count="7">
+      <div style="display:grid;grid-template-columns:52px 210px 210px 120px 1fr;border-top:2px solid #E0D6C4;background:{{ p.bg }};align-items:start">
+        <div style="padding:14px;font-family:'DM Mono',monospace;font-weight:500;font-size:15px;color:{{ p.nc }}">{{ p.n }}</div>
+        <div style="padding:14px;font:700 14px/1.35 Archivo,sans-serif;text-wrap:pretty">{{ p.where }}</div>
+        <div style="padding:14px;font:400 12.5px/1.55 'DM Mono',monospace;color:#3A2F26;text-wrap:pretty">{{ p.what }}</div>
+        <div style="padding:14px;font:400 12px/1.5 'DM Mono',monospace;color:#6E6458">{{ p.dur }}</div>
+        <div style="padding:14px;font:400 12.5px/1.6 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ p.why }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#17130F;color:#F3ECE0;padding:24px 26px;box-shadow:5px 5px 0 #FF5B2E;margin-top:18px">
+    <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;color:#FFD24A;margin-bottom:14px">NEVER — AND THIS LIST MATTERS MORE THAN THE ONE ABOVE</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+      <sc-for list="{{ never }}" as="n" hint-placeholder-count="6">
+        <div style="border-left:2.5px solid #FF5B2E;padding-left:14px">
+          <div style="font:700 14px/1.35 Archivo,sans-serif;text-wrap:pretty">{{ n.t }}</div>
+          <div style="font:400 13px/1.6 Archivo,sans-serif;opacity:.78;margin-top:6px;text-wrap:pretty">{{ n.b }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">05 · SIX RULES THAT KEEP IT LOOKING DESIGNED</div>
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px">
+    <sc-for list="{{ rules }}" as="r" hint-placeholder-count="6">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;padding:18px;display:flex;gap:14px;align-items:flex-start">
+        <div style="flex:none;width:34px;height:34px;border:2.5px solid #17130F;border-radius:8px;display:flex;align-items:center;justify-content:center;font:700 14px Archivo,sans-serif;background:{{ r.tone }}">{{ r.n }}</div>
+        <div>
+          <div style="font:700 15px/1.35 Archivo,sans-serif;text-wrap:pretty">{{ r.t }}</div>
+          <div style="font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:7px;text-wrap:pretty">{{ r.b }}</div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">06 · WHAT WILL BITE YOU</div>
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px">
+    <sc-for list="{{ bites }}" as="b" hint-placeholder-count="6">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#EAE3D6;padding:18px">
+        <div style="display:flex;align-items:baseline;gap:10px">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">{{ b.k }}</div>
+          <div style="margin-left:auto;font:500 9px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:3px 9px;background:{{ b.tone }}">{{ b.sev }}</div>
+        </div>
+        <div style="font:700 15px/1.35 Archivo,sans-serif;margin-top:9px;text-wrap:pretty">{{ b.t }}</div>
+        <div style="font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">{{ b.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">07 · WHAT I'D BUILD, IN ORDER</div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#FFD24A;padding:24px 26px;box-shadow:5px 5px 0 #17130F;max-width:1000px;margin-bottom:20px">
+    <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:27px;line-height:1.12;letter-spacing:-.025em;text-wrap:pretty">{{ intensityLine }}</div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+    <sc-for list="{{ steps }}" as="s" hint-placeholder-count="4">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;padding:18px">
+        <div style="display:flex;align-items:baseline;gap:10px">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">{{ s.n }}</div>
+          <div style="margin-left:auto;font:500 9px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:3px 9px;background:{{ s.tone }}">{{ s.when }}</div>
+        </div>
+        <div style="font:700 15px/1.35 Archivo,sans-serif;margin-top:10px;text-wrap:pretty">{{ s.t }}</div>
+        <div style="font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">{{ s.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+  <div style="font:400 14px/1.65 Archivo,sans-serif;color:#6E6458;max-width:900px;margin-top:20px;text-wrap:pretty">One open question I'd want your call on before building: you uploaded a <span style="font-family:'DM Mono',monospace">vinyl.usdz</span>, which suggests a real 3D disk somewhere. My recommendation is that the shader and the model do <strong>different jobs</strong> — the shader everywhere the disk appears small or often, the model reserved for exactly one hero moment where the object is the whole screen. Using the model in a list is the version of this that gets uninstalled.</div>
+
+  <div style="font:400 12.5px/1.7 Archivo,sans-serif;color:#8A7F70;margin-top:44px;max-width:900px;text-wrap:pretty">Related: <a href="00_Design System.dc.html">Design System</a> for the halftone rule and the rule of one, <a href="26_Patch OTA Layer.dc.html">Patch OTA Layer</a> (parked) for why shader files are always a real release. Code here is sketch-level — the shape of the maths, not compilable Metal; exact API signatures should be checked against the current SDK.</div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1416,&quot;height&quot;:900},&quot;intensity&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Restrained&quot;,&quot;Balanced&quot;,&quot;Playful&quot;],&quot;default&quot;:&quot;Restrained&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Direction&quot;},&quot;showCode&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Content&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const intensity = this.props.intensity ?? "Restrained";
+    const intensityLines = {
+      "Restrained": "Build one: the groove sheen on the item hero. Ship it, live with it for two weeks, and see whether you still smile at it. If yes, add the ink-press on capture success. That is the whole plan — and a single perfect effect reads as craft, where five good ones read as a demo.",
+      "Balanced": "Build the three in the budget: groove sheen on the hero, ink-press on capture, halftone on the share card. They touch three different moments and never appear together on a screen, so the app gains a personality without gaining noise.",
+      "Playful": "Take the top five, but hold the line on the rules in section 05 — especially one shader per screen and nothing running at rest on a scrolling surface. Playful should mean more moments, never longer ones; the fastest way to look cheap is a permanent effect, not a bold one."
+    };
+    return {
+      showCode: this.props.showCode ?? true,
+      intensityLine: intensityLines[intensity] ?? intensityLines["Restrained"],
+      budget: [
+        { tag: "THE NUMBER", tone: "#B9F0C9", t: "Three effects, whole app", b: "One material (the disk), one moment (an object landing in the collection), one signature (the halftone on shared artwork). A fourth needs to displace one of those, not join them." },
+        { tag: "THE TEST", tone: "#FFD24A", t: "Would it survive the hundredth time?", b: "Delight that repeats on every scroll stops being delight in about a day and becomes latency you can feel. Whimsy belongs at events, not on surfaces." },
+        { tag: "THE SYSTEM RULE", tone: "#EAE3D6", t: "Colour fields and artwork only", b: "The design system already draws this line for halftone — never on paper, never under body copy. Metal doesn't earn an exemption; it just makes breaking it easier." }
+      ],
+      tools: [
+        { api: ".colorEffect", shadow: "#0E6E5E", cost: "CHEAPEST · PER PIXEL", b: "Gets a position and the colour at that position. No neighbours, no sampling. Pure recolouring maths.", use: "Duotone, posterise, paper grain, tint sweeps, a dot grid that ignores what's underneath." },
+        { api: ".layerEffect", shadow: "#2B44D6", cost: "MEDIUM · SAMPLES", b: "Gets a sampler for the whole layer, so it can read pixels other than its own. This is what real halftone and the groove sheen need.", use: "Luminance-driven halftone, bloom, ink edges, anisotropic highlights, chromatic offset." },
+        { api: ".distortionEffect", shadow: "#FF5B2E", cost: "DEAREST · MOVES PIXELS", b: "Returns a new sampling position, warping the layer. Needs a max-sample-offset hint or it clips.", use: "A brief swell on confirmation, a sleeve sliding out, a ripple. Never on anything tappable." },
+        { api: "Canvas / MeshGradient", shadow: "#E5457B", cost: "OFTEN THE RIGHT ANSWER", b: "Not shaders. Immediate-mode drawing and a mesh of colours — far easier to reason about and usually enough.", use: "Reach here first. If Canvas does it, the Metal file is complexity you didn't need." }
+      ],
+      diskNotes: [
+        { k: "DETAIL 01", bg: "#fff", t: "Tangential, not radial", b: "The highlight runs along the groove direction — perpendicular to the radius. Getting the axis backwards is the single most common mistake, and it instantly reads as plastic." },
+        { k: "DETAIL 02", bg: "#fff", t: "Warm black, never #000", b: "The palette's ink is #17130F. Push the disk's shadow toward plum-brown and it sits in the same world as the paper instead of punching a hole in it." },
+        { k: "DETAIL 03", bg: "#fff", t: "The label is the contrast", b: "Matte, flat, untouched by the sheen — and the accent colour the collection owns. Two finishes on one object is what makes the glossy half believable." },
+        { k: "DETAIL 04", bg: "#B9F0C9", t: "Drive it from one number", b: "A single angle, fed by a slow ambient drift, a scroll offset or the device's motion. One input keeps it coherent and makes Reduce Motion a matter of freezing that number." }
+      ],
+      vinylCode: [
+        "// One angle in, a disk out. Sample positions are in the layer's space.",
+        "",
+        "[[ stitchable ]] half4 grooveSheen(float2 pos, SwiftUI::Layer layer,",
+        "                                  float2 center, float radius,",
+        "                                  float angle, half4 ink, half4 label) {",
+        "",
+        "  float2 v = pos - center;",
+        "  float  r = length(v) / radius;              // 0 at spindle, 1 at edge",
+        "  float  t = atan2(v.y, v.x);                 // angle around the disk",
+        "",
+        "  if (r > 1.0)  return layer.sample(pos);     // outside — untouched",
+        "  if (r < 0.32) return label;                 // matte paper label, flat",
+        "",
+        "  // Grooves: fine concentric rings. Frequency must scale with size,",
+        "  // or it aliases into moire the moment the view animates.",
+        "  float grooves = 0.5 + 0.5 * sin(r * radius * 2.6);",
+        "",
+        "  // The tell: an ANISOTROPIC streak that follows the groove direction.",
+        "  // Two lobes, opposite sides, narrow — pow() sharpens the falloff.",
+        "  float lobe  = abs(cos(t - angle));",
+        "  float sheen = pow(lobe, 22.0) * smoothstep(0.34, 0.92, r);",
+        "",
+        "  half4 base = mix(ink, half4(0.14, 0.10, 0.12, 1.0), half(grooves * 0.22));",
+        "  return base + half4(half3(sheen * 0.85), 0.0);",
+        "}",
+        "",
+        "// SwiftUI side:",
+        "//   .layerEffect(ShaderLibrary.grooveSheen(.float2(c), .float(r),",
+        "//                .float(angle), .color(.ink), .color(collection.accent)),",
+        "//                maxSampleOffset: .zero)"
+      ].join("\n"),
+      halftoneRules: [
+        { k: "15°", t: "Rotate the dot grid", b: "Printers angle the screen to avoid moire, and so must you — an axis-aligned grid beats against the pixel grid and shimmers on scroll. Fifteen degrees also just looks printed." },
+        { k: "L → r", t: "Radius follows luminance", b: "Dark areas grow fat dots, light areas shrink them. This is the difference between reproducing an image in ink and stamping a pattern over it." },
+        { k: "pt", t: "Dot pitch in points", b: "Size the cell in points and pass the scale in, so the dots stay 6–9pt across every device and Dynamic Type setting. Pixel-sized dots change meaning between phones." }
+      ],
+      halftoneCode: [
+        "[[ stitchable ]] half4 halftone(float2 pos, SwiftUI::Layer layer,",
+        "                                float pitch, half4 paper, half4 accent) {",
+        "",
+        "  const float a = 0.2618;                     // 15 degrees, in radians",
+        "  float2x2 rot = float2x2( cos(a), -sin(a), sin(a), cos(a) );",
+        "",
+        "  float2 grid = rot * pos / pitch;            // into rotated cell space",
+        "  float2 cell = floor(grid) + 0.5;",
+        "  float2 back = transpose(rot) * cell * pitch;",
+        "",
+        "  half4 src = layer.sample(back);             // sample the CELL, not the pixel",
+        "  float lum = dot(float3(src.rgb), float3(0.299, 0.587, 0.114));",
+        "",
+        "  float r = sqrt(1.0 - lum) * 0.52;           // dark -> big dot",
+        "  float d = distance(grid, cell);",
+        "  float m = 1.0 - smoothstep(r - 0.06, r + 0.06, d);   // soft edge, no jaggies",
+        "",
+        "  return mix(paper, accent, half(m) * src.a);  // two inks. never three.",
+        "}"
+      ].join("\n"),
+      placements: [
+        { n: "01", nc: "#0E6E5E", bg: "#F5FBF6", where: "Item detail — the object hero", what: "grooveSheen, angle from a slow ambient drift", dur: "continuous, one view", why: "The one screen where the object is the entire point and nothing else is competing. A single large surface, on screen deliberately, with no scrolling underneath it. This is the effect that justifies the whole side quest." },
+        { n: "02", nc: "#0E6E5E", bg: "#F5FBF6", where: "Capture / add confirmation", what: "ink-press — radial swell + halftone bloom", dur: "≈ 420 ms, once", why: "The emotional peak of the app: a thing you own becoming a thing you've catalogued. A press of ink landing on paper is exactly the zine metaphor, and it's over before it can annoy anyone." },
+        { n: "03", nc: "#0E6E5E", bg: "#F5FBF6", where: "Shared card / price-list export", what: "duotone halftone over the artwork", dur: "render-time only", why: "Costs nothing at runtime because it's baked into an image, and it travels — every shared card is the app's visual signature arriving in someone else's chat. The highest reach-per-millisecond effect available." },
+        { n: "04", nc: "#8A7F70", bg: "#fff", where: "The ★ GRAIL sticker", what: "a single sheen pass across the foil", dur: "≈ 900 ms, on appear only", why: "Rarity deserves one flourish, and the system already treats grail as special. Strictly on appear — a looping shimmer turns a badge of honour into a casino." },
+        { n: "05", nc: "#8A7F70", bg: "#fff", where: "Empty states", what: "slow halftone drift on the accent field", dur: "continuous, low frequency", why: "The one place with no content to compete with and a job to do — an empty shelf should feel like an invitation. Cheap, and it stops the moment anything is added." },
+        { n: "06", nc: "#8A7F70", bg: "#fff", where: "Stats / total value", what: "halftone fill inside the number's colour field", dur: "static", why: "A colour field, which the system permits, and it makes a large number feel printed rather than computed. Static — an animated total looks like it's still loading." },
+        { n: "07", nc: "#C2371F", bg: "#FFF6F3", where: "Collection headers", what: "halftone wash in the collection's accent", dur: "static, if at all", why: "Tempting and borderline. It's a colour field so the rule allows it, but it appears on every scroll and sits above list content. Only if it is completely static and it survives the hundredth-time test — which I doubt." }
+      ],
+      never: [
+        { t: "Anything behind text", b: "Not headings, not body, not labels. Contrast must never depend on where a dot happened to land, and this is where shader work most often breaks accessibility." },
+        { t: "Tab bar, nav bar, buttons", b: "Chrome must be boring. A shimmering control reads as a loading state, and a distorted one doesn't tap where it looks." },
+        { t: "List rows at rest", b: "The scrolling surface is the app's spine. Any per-pixel work there is paid on every frame, on every device, forever." },
+        { t: "The camera viewfinder", b: "It fights the thing the camera is for, and later the shelf-segmentation model. The viewfinder shows reality, unedited." },
+        { t: "Paper backgrounds", b: "Already forbidden by the design system and the rule is correct: paper is the ground everything else sits on. Texture it and nothing can sit on it." },
+        { t: "Loading and progress", b: "A fancy spinner makes waiting feel designed-for, which means waiting feels expected. Make it fast and plain instead." }
+      ],
+      rules: [
+        { n: "1", tone: "#FFD24A", t: "One shader per screen, maximum", b: "The direct descendant of the rule of one accent. Two effects on one screen never read as twice as crafted — they read as a settings panel someone forgot to turn off." },
+        { n: "2", tone: "#FFD24A", t: "A moment or a hero, never a surface", b: "Either it lasts under about 600 ms, or it lives on exactly one large element that the user chose to look at. Anything else is texture, and texture is the thing the system already forbids." },
+        { n: "3", tone: "#FFD24A", t: "Every shader has a flat fallback", b: "Reduce Motion freezes the driving value; thermal pressure or an old device drops to a static fill. The design must be complete without the effect — the shader is the last 5%, never the idea." },
+        { n: "4", tone: "#FFD24A", t: "It has to work at 44 pt", b: "If the halftone turns to mush on a list thumbnail, it isn't part of the identity — it's a detail-screen decoration, and it should be scoped accordingly rather than scaled down." },
+        { n: "5", tone: "#FFD24A", t: "Two inks, never three", b: "Halftone output is paper plus the collection's accent. The moment a third colour enters, the print metaphor collapses and it looks like a photo filter." },
+        { n: "6", tone: "#FF5B2E", t: "Ship it, then live with it a fortnight", b: "Shader delight is impossible to judge on the day you write it. The only real test is whether you're still pleased on day fourteen — and the honest answer is sometimes no." }
+      ],
+      bites: [
+        { k: "PERFORMANCE", sev: "HIGH", tone: "#FF9B8A", t: "Shaders force offscreen rendering", b: "Each effect is a render pass. On a scrolling list that's per-frame, per-cell work, and it shows up as jank on exactly the devices your market-B users carry." },
+        { k: "ACCESSIBILITY", sev: "HIGH", tone: "#FF9B8A", t: "Reduce Motion is not optional", b: "Any continuously animating effect needs an honest static path. Same for Increase Contrast — if the halftone reduces legibility of anything, it must drop out entirely." },
+        { k: "BATTERY / HEAT", sev: "MEDIUM", tone: "#FFD24A", t: "Continuous means continuously", b: "An always-on effect keeps the GPU awake for as long as the screen is. Fine for one detail view; genuinely costly on a browsing surface at 120 Hz." },
+        { k: "ALIASING", sev: "MEDIUM", tone: "#FFD24A", t: "Fine patterns shimmer", b: "Grooves and dots are high-frequency by nature. Scale the frequency with the view and soften every edge with smoothstep, or scrolling turns them into static." },
+        { k: "SHIPPING", sev: "MEDIUM", tone: "#FFD24A", t: "Metal is frozen in the binary", b: "Shader source compiles into the app's metallib. No OTA layer could ever change one — a tweak to a dot pitch is a full release, so get the parameters into Swift and out of Metal." },
+        { k: "TASTE", sev: "THE REAL ONE", tone: "#FF9B8A", t: "It will look best the week you build it", b: "Novelty is doing a lot of the work in your first reaction. Budget for deleting one of the three; a design system this disciplined is damaged more by one effect too many than by one too few." }
+      ],
+      steps: [
+        { n: "STEP 01", when: "HALF A DAY", tone: "#B9F0C9", t: "Groove sheen on a flat circle", b: "No USDZ, no RealityKit. A layerEffect over a Circle with one angle parameter. If this doesn't sell the material, nothing downstream will — and it's the cheapest possible test." },
+        { n: "STEP 02", when: "HALF A DAY", tone: "#B9F0C9", t: "Halftone as a reusable modifier", b: "One function, parameters in Swift, applied to a cover-art view. Check it at 44 pt and at full screen. Then check it while scrolling, which is where it will fail." },
+        { n: "STEP 03", when: "ONE DAY", tone: "#FFD24A", t: "The ink-press moment", b: "The hardest of the three, because it's choreography rather than maths: swell, halftone bloom, settle, with the haptic landing on the same frame as the peak." },
+        { n: "STEP 04", when: "TWO WEEKS LATER", tone: "#EAE3D6", t: "Delete one", b: "Come back with fresh eyes and remove whichever effect you stopped noticing. That deletion is the step that keeps this looking like a design system rather than a showcase." }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

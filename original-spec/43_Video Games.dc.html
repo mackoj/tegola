@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#EAE3D6}a{color:#2B44D6}a:hover{color:#FF5B2E}</style>
+</helmet>
+
+<div style="width:1360px;margin:0 auto;padding:60px 28px 100px;font-family:Archivo,system-ui,sans-serif;color:#17130F">
+
+  <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+    <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70">CLCTN · TYPE MANIFEST · VIDEO GAME · SEPTEMBER 2026</div>
+    <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#F3ECE0;background:linear-gradient(150deg,#2B44D6,#6E2440);border-radius:999px;padding:5px 12px">CIB · THE LIBRARY</div>
+    <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;border:2px solid #C2371F;color:#C2371F;border-radius:999px;padding:4px 11px">SUPERSEDES RETRO GAME</div>
+  </div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:66px;line-height:.92;letter-spacing:-.045em;margin:16px 0 0;max-width:1020px;text-wrap:balance">Retro is a date that keeps moving.</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-top:20px;text-wrap:pretty">A type called <em>retro game</em> has to answer a question the app has no business asking: how old is old enough. In 2026 that line sits somewhere around the PS2, and it will have moved again by the time the type ships. Meanwhile a 1997 Saturn game and a 2019 Switch game are collected by the same person, in the same room, with the same anxieties — completeness, region, edition, and whether the thing still works. <strong>So the type is video game, the whole medium, and the era becomes a field rather than a boundary.</strong></div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:900px;margin-top:14px;text-wrap:pretty">Written against <span style="font-family:'DM Mono',monospace">vinyl.yml</span> for shape and <span style="font-family:'DM Mono',monospace">retro-computer.yml</span> for the clock. This page also settles the signature question raised in One Roof, section 09: the CIB triptych is withdrawn and the game gets the generic ladder instead.</div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">01 · WHY THE OLD CUT WAS WRONG</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:20px;text-wrap:pretty">Four separate failures, each of which on its own would be a reason to widen the type. Together they make "retro" indefensible as a category boundary.</div>
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px">
+    <sc-for list="{{ wrong }}" as="w" hint-placeholder-count="4">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #2B44D6;overflow:hidden">
+        <div style="display:flex;align-items:baseline;gap:12px;padding:13px 20px;background:#17130F;color:#F3ECE0">
+          <div style="font:500 9.5px 'DM Mono',monospace;letter-spacing:.12em;opacity:.55">{{ w.n }}</div>
+          <div style="font:700 16px Archivo,sans-serif">{{ w.t }}</div>
+        </div>
+        <div style="padding:18px 20px">
+          <div style="font:400 13.5px/1.65 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ w.b }}</div>
+          <div style="margin-top:14px;padding-top:13px;border-top:2px solid #E0D6C4">
+            <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;margin-bottom:7px">WHAT IT COSTS TO KEEP THE OLD CUT</div>
+            <div style="font:400 12.5px/1.6 'DM Mono',monospace;color:#C2371F;text-wrap:pretty">{{ w.cost }}</div>
+          </div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">02 · FIVE MEDIA, ONE TYPE</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:920px;margin-bottom:10px;text-wrap:pretty">The real design problem isn't the date, it's the <strong>media</strong>: a cartridge, a disc, a big PC box, a handheld card and a download code want different completeness, different lookup and different decay. One field — <span style="font-family:'DM Mono',monospace;font-size:15px">media</span> — resolves all of it, because the rules that vary are exactly the rules the kit already parameterises.</div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:920px;margin-bottom:22px;text-wrap:pretty">Pick a medium. The two signatures, the clock, the lookup strategy and the hard part all change; the slots, the verbs and the scale do not.</div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px">
+    <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="5">
+      <div onClick="{{ t.pick }}" style="cursor:pointer;font:600 12.5px Archivo,sans-serif;border:2.5px solid #17130F;border-radius:999px;padding:9px 16px;background: {{ t.bg }};color: {{ t.fg }}">{{ t.name }}</div>
+    </sc-for>
+  </div>
+
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+    <div style="display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;padding:18px 24px;background:#17130F;color:#F3ECE0">
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:24px;letter-spacing:-.03em">{{ exTitle }}</div>
+      <div style="font:400 15px Archivo,sans-serif;opacity:.65">{{ exSub }}</div>
+      <div style="margin-left:auto;font-family:'DM Mono',monospace;font-weight:500;font-size:15px;color:#FFD24A">{{ exYears }}</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1.25fr 1fr;gap:0">
+      <div style="padding:24px;border-right:2.5px solid #17130F">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:4px">SIGNATURE 1 · LADDER · {{ axisCount }} AXES · LAST STEP MEANS MISSING</div>
+        <div style="font:400 12.5px/1.5 Archivo,sans-serif;color:#3A2F26;margin-bottom:12px;text-wrap:pretty">{{ ladderNote }}</div>
+        <div style="display:flex;gap:4px;margin-bottom:6px">
+          <sc-for list="{{ steps }}" as="s" hint-placeholder-count="8">
+            <div style="flex:1;text-align:center">
+              <div style="font:600 10px 'DM Mono',monospace;padding:7px 0;border:2.5px solid #17130F;border-radius:8px;background: {{ s.bg }};color: {{ s.fg }}">{{ s.n }}</div>
+              <div style="font:700 13px 'DM Mono',monospace;height:18px;margin-top:3px;color:#0E6E5E">{{ s.mark }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;font:500 9.5px 'DM Mono',monospace;letter-spacing:.1em;color:#6E6458;padding-bottom:20px;border-bottom:2px solid #E0D6C4">
+          <sc-for list="{{ legend }}" as="l" hint-placeholder-count="3">
+            <div>{{ l }}</div>
+          </sc-for>
+        </div>
+
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin:20px 0 4px">SIGNATURE 2 · SET · WHAT SHOULD BE IN THE BOX</div>
+        <div style="font:400 12.5px/1.5 Archivo,sans-serif;color:#3A2F26;margin-bottom:12px;text-wrap:pretty">{{ setNote }}</div>
+        <div style="display:flex;gap:7px;flex-wrap:wrap">
+          <sc-for list="{{ slots }}" as="sl" hint-placeholder-count="6">
+            <div style="border:2.5px solid #17130F;border-radius:10px;padding:9px 12px;min-width:74px;text-align:center;background: {{ sl.bg }};color: {{ sl.fg }}">
+              <div style="font:500 8.5px 'DM Mono',monospace;letter-spacing:.1em;opacity:.7">{{ sl.mark }}</div>
+              <div style="font:600 11.5px Archivo,sans-serif;margin-top:3px">{{ sl.n }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="font:400 12px/1.55 Archivo,sans-serif;color:#6E6458;margin-top:12px;text-wrap:pretty">{{ setCount }}</div>
+      </div>
+
+      <div style="padding:24px;display:flex;flex-direction:column;gap:16px">
+        <div style="border:2.5px solid #17130F;border-radius:16px;padding:16px 18px;background: {{ clockBg }};color: {{ clockFg }}">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;opacity:.72">THE ONE CLOCK · RENDERS IN THE STATUS SLOT · ESTIMATE</div>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:23px;line-height:1.08;letter-spacing:-.03em;margin-top:9px;text-wrap:balance">{{ clockName }}</div>
+          <div style="font:400 12.5px/1.55 Archivo,sans-serif;margin-top:8px;opacity:.92;text-wrap:pretty">{{ clockNote }}</div>
+        </div>
+        <div style="border:2.5px solid #17130F;border-radius:16px;padding:16px 18px;background:#FBF6EC">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">HOW IT IS IDENTIFIED</div>
+          <div style="font:400 12.5px/1.72 'DM Mono',monospace;color:#17130F;margin-top:10px;white-space:pre-wrap">{{ lookupCode }}</div>
+        </div>
+        <div style="border:2.5px solid #17130F;border-radius:16px;padding:16px 18px;background:#FFD24A">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#6E5A2E">THE HARD PART</div>
+          <div style="font:400 13px/1.6 Archivo,sans-serif;color:#17130F;margin-top:8px;text-wrap:pretty">{{ hard }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="font:400 13px/1.6 Archivo,sans-serif;color:#6E6458;max-width:920px;margin-top:16px;text-wrap:pretty">Note what stays put across all five: one scale, one clock, two signatures, the same seven slots. The medium changes the <em>content</em> of each, never the count — which is the One Roof contract holding under the widest type in the catalogue.</div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">03 · VIDEO-GAME.YML</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:20px;text-wrap:pretty">Fourteen fields, no new primitive. <span style="font-family:'DM Mono',monospace">mediaRules</span> is the only unusual key: a lookup table keyed on the <span style="font-family:'DM Mono',monospace">media</span> field that selects which insert slots, which clock formula and which identifier strategy apply. It is data, not code, and it is the reason one type can hold five media without five branches in the app.</div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#0C0A08;color:#F3ECE0;padding:22px 24px;box-shadow:5px 5px 0 #6E2440;overflow-x:auto">
+    <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:14px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;color:#FFD24A">RESOURCES/TYPES/VIDEO-GAME.YML</div>
+      <div style="margin-left:auto;font:500 8.5px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #FFD24A;color:#FFD24A;border-radius:999px;padding:3px 9px">REPLACES RETRO-GAME</div>
+    </div>
+    <div style="font:400 12.5px/1.72 'DM Mono',monospace;white-space:pre">id: video-game
+name:
+  singular: Game
+  plural: Games
+  collection: The Library
+mark: "CIB"
+icon: cartridge
+gradient: [indigo, claret]
+
+# Same title, different region or print = different object.
+duplicates: rows
+
+spine:
+  title: Title
+  subtitle: Platform          # not the publisher — this is how shelves are read
+  year: Released              # this print, not the game's first release
+  acquired: Acquired on
+  paid: Paid
+  value: Value
+
+# One scale, shared by every axis and every medium. Missing is a step, so
+# completeness and condition are the same question asked once.
+conditions: [Sealed, Mint, Near mint, Very good, Good, Fair, Poor]
+allowMissing: true
+
+# Signatures — see One Roof, section 09. Two is the cap, and the clock
+# is not one of them: it renders in the status slot like every other clock.
+signatures:
+  - renderer: ladder
+    axes: [mediaCondition, boxCondition, manualCondition]
+  - renderer: set
+    binds: inserts            # slots come from mediaRules, below
+
+# The era is a consequence of the medium, never a boundary. This table is
+# what lets one type cover 1977 to now without a second type.
+mediaRules:
+  cartridge:
+    identifier: catalogueNumber
+    inserts: [manual, map, insert, regCard, dustSleeve, spineCard]
+    clock: saveBattery        # lithium cell, ~25-35 yrs
+  optical:
+    identifier: barcode
+    inserts: [manual, inlay, regCard, demoDisc, obi]
+    clock: discRot            # pressing-plant dependent, see Q2
+  floppy:
+    identifier: catalogueNumber
+    inserts: [manual, codeWheel, feelies, map, disks]
+    clock: mediaRot
+  card:
+    identifier: barcode
+    inserts: [manual, insert]
+    clock: none
+  code:
+    identifier: none          # a licence is not an object; the card is
+    inserts: [codeCard, sleeve]
+    clock: codeExpiry         # the only clock that can reach zero
+
+lookup:
+  symbologies: [ean13, upc-a, jan]
+  providers: [openvgdb]
+  localCorpus: releases.json  # ~180k releases, region-resolved
+  ocrFields: [title, platform, catalogueNumber]
+  identifierPattern: per-platform
+
+searchable: [title, subtitle, year, publisher, region, edition, place]
+placeLabel: Where it is
+related: [subtitle, publisher, series]
+
+fields:
+  - key: platform          | Platform          | text   | auto
+  - key: publisher         | Publisher         | text   | auto
+  - key: catalogueNumber   | Catalogue no.     | text   | auto · the real id
+  - key: region            | Region            | choice | NTSC-U, NTSC-J,
+                                                          PAL, region-free
+  - key: media             | Media             | choice | drives mediaRules
+  - key: edition           | Edition           | text   | first print, Greatest
+                                                          Hits, Platinum, budget
+  - key: revision          | Revision          | text   | cart rev / disc ver
+  - key: mediaCondition    | Cart / disc       | scale  | ladder axis 1
+  - key: boxCondition      | Box               | scale  | ladder axis 2
+  - key: manualCondition   | Manual            | scale  | ladder axis 3
+  - key: inserts           | What's inside     | set    | slots per medium
+  - key: slab              | Sealed / graded   | choice | None, Sealed ungraded,
+                                                          WATA, VGA
+  - key: saveBattery       | Save battery      | date   | feeds the clock
+  - key: playLog           | Played            | log    | [date, note, finished]
+
+supersedes:
+  - type: official/retro-game@1
+    fields:
+      cart      -> mediaCondition
+      box       -> boxCondition
+      manual    -> manualCondition
+      cib       -> (derived from the ladder; field removed)</div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">04 · IDENTITY — WHY TWO COPIES ARE NEVER THE SAME COPY</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:20px;text-wrap:pretty">This is the type's hardest problem and the one a title-based lookup gets wrong every time. Four axes of variation, all of which move the price by a multiple, none of which are visible in the title.</div>
+  <div style="border:2.5px solid #17130F;border-radius:16px;overflow:hidden;background:#fff;box-shadow:5px 5px 0 #17130F">
+    <div style="display:flex;border-bottom:2px solid rgba(23,19,15,.12);background:#17130F;color:#F3ECE0">
+      <div style="flex:0 0 190px;padding:11px 14px;font:500 11px 'DM Mono',monospace;letter-spacing:.06em;border-right:2px solid rgba(243,236,224,.14)">AXIS</div>
+      <div style="flex:1 1 0;padding:11px 14px;font:500 11px 'DM Mono',monospace;letter-spacing:.06em;border-right:2px solid rgba(243,236,224,.14)">THE SAME GAME, TWO OBJECTS</div>
+      <div style="flex:1 1 0;padding:11px 14px;font:500 11px 'DM Mono',monospace;letter-spacing:.06em">HOW THE TYPE SETTLES IT</div>
+    </div>
+    <sc-for list="{{ identity }}" as="i" hint-placeholder-count="4">
+      <div style="display:flex;border-bottom:2px solid rgba(23,19,15,.12)">
+        <div style="flex:0 0 190px;padding:12px 14px;font:500 11.5px/1.45 'DM Mono',monospace;letter-spacing:.05em;border-right:2px solid rgba(23,19,15,.1)">{{ i.k }}</div>
+        <div style="flex:1 1 0;padding:12px 14px;font:400 12.5px/1.5 Archivo,sans-serif;border-right:2px solid rgba(23,19,15,.1);text-wrap:pretty">{{ i.a }}</div>
+        <div style="flex:1 1 0;padding:12px 14px;font:400 12.5px/1.5 Archivo,sans-serif;text-wrap:pretty">{{ i.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">05 · THE SEALED MARKET — A POSITION, NOT A FEATURE</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;padding:20px 22px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:9px">WHAT THE TYPE DOES</div>
+      <div style="font:400 14px/1.65 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">A <span style="font-family:'DM Mono',monospace;font-size:13px">slab</span> field with four values, and <em>Sealed</em> as the top step of the ordinary condition scale. A graded slab shows as an outline on the ladder's marker — the same treatment comics and trading cards get, because it is the same fact. Nothing else: no price index, no population report, no grading-service integration.</div>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#17130F;color:#F3ECE0;box-shadow:5px 5px 0 #C2371F;padding:20px 22px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#FFD24A;margin-bottom:9px">WHY IT STOPS THERE</div>
+      <div style="font:400 14px/1.65 Archivo,sans-serif;color:rgba(243,236,224,.9);text-wrap:pretty">The sealed-and-graded end of this hobby is a speculative market with a live controversy attached, and building for it would make the app an instrument of that market rather than a catalogue of a collection. Supporting the field is honest — people own slabs. Ranking, valuing or celebrating them is a product decision I would not make for you without asking.</div>
+    </div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">06 · MIGRATION FROM RETRO GAME</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:20px;text-wrap:pretty">Nobody's collection moves. Three of the four fields map by name, the fourth is derived and disappears, and the <span style="font-family:'DM Mono',monospace">media</span> field is filled in from the platform — a Mega Drive game is a cartridge, a Dreamcast game is a disc — with a one-screen confirm for the handful of platforms that shipped both.</div>
+  <div style="display:flex;flex-wrap:wrap;gap:12px">
+    <sc-for list="{{ migration }}" as="m" hint-placeholder-count="4">
+      <div style="flex:1 1 260px;min-width:250px;box-sizing:border-box;border:2.5px solid #17130F;border-radius:16px;background:#fff;box-shadow:4px 4px 0 #0E6E5E;padding:16px 18px">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;margin-bottom:7px">{{ m.k }}</div>
+        <div style="font:700 15px Archivo,sans-serif;margin-bottom:6px;text-wrap:pretty">{{ m.t }}</div>
+        <div style="font:400 12.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ m.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">07 · OPEN QUESTIONS</div>
+  <div style="display:flex;flex-direction:column;gap:12px;max-width:1000px">
+    <sc-for list="{{ open }}" as="o" hint-placeholder-count="5">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#17130F;color:#F3ECE0;padding:17px 19px;box-shadow:5px 5px 0 #FF5B2E">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#FFD24A;margin-bottom:7px">{{ o.k }}</div>
+        <div style="font:700 16px/1.35 Archivo,sans-serif;margin-bottom:7px;text-wrap:pretty">{{ o.q }}</div>
+        <div style="font:400 13.5px/1.6 Archivo,sans-serif;color:rgba(243,236,224,.82);text-wrap:pretty">{{ o.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;medium&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Cartridge&quot;,&quot;Optical disc&quot;,&quot;Boxed PC&quot;,&quot;Handheld card&quot;,&quot;Download code&quot;],&quot;default&quot;:&quot;Cartridge&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Demonstration&quot;}}">
+class Component extends DCLogic {
+  state = { pick: null };
+
+  renderVals() {
+    const cream = '#F3ECE0';
+    const media = {
+      'Cartridge': {
+        title: 'Chrono Trigger', sub: 'Super Famicom · NTSC-J · first print', years: '1977 – 2001',
+        ladderNote: 'Cart, box and manual on one ladder. The gap between the markers is what a buyer actually negotiates over — a mint cart in a trashed box is a different object from the reverse, and this shows it in one line.',
+        axes: [['CART','●','Near mint'],['BOX','◐','Very good'],['MANUAL','○','Good']],
+        slots: [['MANUAL',1],['MAP',1],['INSERT',0],['REG CARD',0],['SLEEVE',1],['SPINE CARD',1]],
+        setNote: 'Six slots for this platform and region. The spine card is the one that matters here: a Japanese game without its obi is worth a fraction, and no title-based lookup will ever tell you that.',
+        clockName: 'Save battery · 31 years', clockBg: '#FFD24A', clockFg: '#17130F',
+        clockNote: 'The lithium cell behind the label dies at roughly 25–35 years and takes every save with it. Opt-in, labelled ESTIMATE, and it is the only clock this medium gets.',
+        lookup: 'identifier:  catalogueNumber\n             SHVC-AC6J-JPN\nbarcode:     none — predates retail EAN\nocr:         spine + label\ncorpus:      releases.json (region-resolved)',
+        hard: 'There is no barcode and often no legible serial. Identification is OCR on the spine plus a corpus lookup, then a human confirm — the same review queue wine uses for a soaked label.'
+      },
+      'Optical disc': {
+        title: 'Panzer Dragoon Saga', sub: 'Saturn · PAL · 4 discs', years: '1993 – 2013',
+        ladderNote: 'Same three axes, different nouns: disc, case, manual. A cracked jewel case is cheap to fix and collectors know it, so the box marker carries less weight here than on a cartridge — the ladder shows the shape, the buyer weighs it.',
+        axes: [['DISCS','●','Very good'],['CASE','◐','Good'],['MANUAL','○','Near mint']],
+        slots: [['MANUAL',1],['INLAY',1],['REG CARD',0],['DEMO DISC',0],['OBI',0]],
+        setNote: 'Five slots. Multi-disc releases count each disc as a slot of its own, which is the only way "complete" means anything on a four-disc game.',
+        clockName: 'Disc rot · watch', clockBg: '#FFD24A', clockFg: '#17130F',
+        clockNote: 'Certain pressing plants and certain years rot. The clock is per-plant rather than per-year, which makes it the least certain clock in the app — see Q2 before shipping it.',
+        lookup: 'identifier:  barcode (EAN-13 / JAN)\n             4974365812345\nfallback:    ring code on the inner hub\nproviders:   openvgdb\ncorpus:      releases.json',
+        hard: 'Barcodes were reused across reprints and budget re-releases. A scan gets you the title in one second and the wrong edition just as fast, so the edition field is always a confirm, never an auto-fill.'
+      },
+      'Boxed PC': {
+        title: 'The Secret of Monkey Island', sub: 'PC · 3.5" floppy · big box', years: '1981 – 2007',
+        ladderNote: 'The box is the object here, so the box marker leads. Note the manual marker sitting at the far end: on this medium the manual is usually the first thing lost and the most expensive thing to replace.',
+        axes: [['DISKS','●','Good'],['BOX','◐','Very good'],['MANUAL','○','Missing']],
+        slots: [['MANUAL',0],['CODE WHEEL',1],['FEELIES',1],['MAP',1],['DISKS',1]],
+        setNote: 'The copy-protection wheel and the feelies are not extras — they were the DRM, and a box without them is incomplete in the way a cartridge without its manual never quite is.',
+        clockName: 'Magnetic media · act', clockBg: '#C2371F', clockFg: '#F3ECE0',
+        clockNote: 'Floppies lose readability on a timescale that has already elapsed. The honest advice the clock gives is not "service it" but "image it now", which is the only clock in the app that recommends copying.',
+        lookup: 'identifier:  catalogueNumber\nbarcode:     sometimes, post-1990\nocr:         box front + spine\ncorpus:      releases.json (weak here)',
+        hard: 'The corpus is thin and the variants are endless — territory, language, disk format, budget reissue. This medium will lean hardest on the review queue and on community corrections.'
+      },
+      'Handheld card': {
+        title: 'Metroid Fusion', sub: 'Game Boy Advance · PAL', years: '1989 – now',
+        ladderNote: 'Two axes are the norm, not three: handheld boxes are cardboard and rarely survive, so most of this shelf is a cart marker and a Missing box marker — which is exactly what the last step of the scale is for.',
+        axes: [['CART','●','Mint'],['BOX','◐','Missing']],
+        slots: [['MANUAL',1],['INSERT',0]],
+        setNote: 'Two slots only. A type that declares fewer slots does not get a smaller signature — it gets a shorter one, and the honesty of "2 of 2" is worth more than padding.',
+        clockName: 'No clock declared', clockBg: '#EDE4D6', clockFg: '#17130F',
+        clockNote: 'Flash-based carts do not have a save battery and do not rot on any timescale that matters. The status slot falls back to the typed grade, and the chip shows the neutral swatch.',
+        lookup: 'identifier:  barcode (EAN-13)\n             045496731234\nserial:      on the cart label\nproviders:   openvgdb\ncorpus:      releases.json',
+        hard: 'Nothing, and that is the point: this is the easy medium. It is also the one that proves the type does not need an era boundary — a 2003 GBA game and a 2023 Switch card behave identically.'
+      },
+      'Download code': {
+        title: 'Xenoblade Chronicles 3', sub: 'Switch · code-in-box', years: '2007 – now',
+        ladderNote: 'One axis, because only one thing here has a condition: the box. The card inside is a yes-or-no, so it belongs to the set signature below rather than on a grading scale — a code card is never "very good", it is present, absent, or spent.',
+        axes: [['BOX','●','Mint']],
+        slots: [['CODE CARD',1],['SLEEVE',1]],
+        setNote: 'The smallest set in the catalogue. Kept because the sleeve is the only thing distinguishing a code-in-box release from a bare code, and that distinction is the whole object.',
+        clockName: 'Code expiry · gone', clockBg: '#17130F', clockFg: '#F3ECE0',
+        clockNote: 'The only clock in the app that can reach zero and stay there. When the redemption window closes, the object is a piece of printed card — which is a real thing to own, and the app should say so rather than pretend otherwise.',
+        lookup: 'identifier:  barcode on the box\nlicence:     never tracked — see Q4\nocr:         box front\ncorpus:      releases.json',
+        hard: 'Where collecting stops. A licence in an account is not an object and the app will not model it. A printed code card in a box is, and it gets a row like anything else — with a clock that tells the truth about it.'
+      }
+    };
+
+    const names = Object.keys(media);
+    const pick = this.state.pick || this.props.medium || 'Cartridge';
+    const m = media[pick] || media['Cartridge'];
+
+    const scale = ['SLD','MINT','NM','VG','GOOD','FAIR','POOR','—'];
+    const byStep = {};
+    m.axes.forEach(([label, glyph, cond]) => {
+      const key = { 'Sealed':'SLD', 'Mint':'MINT', 'Near mint':'NM', 'Very good':'VG', 'Good':'GOOD', 'Fair':'FAIR', 'Poor':'POOR', 'Missing':'—' }[cond];
+      byStep[key] = (byStep[key] || '') + glyph;
+    });
+
+    const filled = m.slots.filter(s => s[1]).length;
+
+    return {
+      wrong: [
+        { n: '01', t: 'The boundary moves every year', b: 'Whatever date defines "retro" needs re-deciding annually, in public, against a community that will disagree. A type whose membership changes with the calendar cannot have a stable manifest, a stable corpus or a stable name.', cost: 'An argument in the release notes every year, forever.' },
+        { n: '02', t: 'One collector, two shelves', b: 'The person cataloguing a Saturn library also owns Switch games, and wants them in one place with one search. Splitting on age splits the collection of almost every person who would use the type.', cost: 'The mixed-collection case the whole app is built on, broken inside a single hobby.' },
+        { n: '03', t: 'The anxieties are identical', b: 'Completeness, region, edition, whether the media still reads. A 2024 collector checking whether a code has expired is doing the same thing as a 1996 collector checking a save battery.', cost: 'Two types with the same fourteen fields — the near-duplicate the proposal checklist exists to catch.' },
+        { n: '04', t: 'The corpus does not split', b: 'Every usable release database covers the whole medium. Splitting the type means splitting one dataset down an arbitrary year and maintaining both halves.', cost: 'Twice the lookup work for none of the benefit.' }
+      ],
+
+      tabs: names.map(n => ({ name: n, pick: () => this.setState({ pick: n }), bg: n === pick ? '#17130F' : '#fff', fg: n === pick ? cream : '#17130F' })),
+
+      exTitle: m.title, exSub: m.sub, exYears: m.years,
+      axisCount: String(m.axes.length),
+      ladderNote: m.ladderNote,
+      steps: scale.map(n => ({ n, mark: byStep[n] || '', bg: byStep[n] ? '#0E6E5E' : '#fff', fg: byStep[n] ? cream : '#17130F' })),
+      legend: m.axes.map(([label, glyph, cond]) => glyph + ' ' + label + ' · ' + cond.toUpperCase()),
+
+      setNote: m.setNote,
+      slots: m.slots.map(([n, has]) => ({ n, mark: has ? 'PRESENT' : 'MISSING', bg: has ? '#B9F0C9' : '#EDE4D6', fg: '#17130F' })),
+      setCount: filled + ' of ' + m.slots.length + ' slots filled. The set signature never invents a slot — the list comes from mediaRules, so a platform that never shipped a map does not show an empty map.',
+
+      clockName: m.clockName, clockNote: m.clockNote, clockBg: m.clockBg, clockFg: m.clockFg,
+      lookupCode: m.lookup, hard: m.hard,
+
+      identity: [
+        { k: 'region', a: 'Chrono Trigger NTSC-U and Chrono Trigger NTSC-J are different objects with different boxes, different manuals and a 10× price gap.', b: 'A required field, and part of the object\'s identity rather than a detail. The corpus is region-resolved, so a match returns one region or asks.' },
+        { k: 'edition', a: 'First print, Player\'s Choice, Greatest Hits, Platinum, a budget reissue with a different box. Same barcode on several of them.', b: 'A free-text field with per-platform suggestions, always confirmed by the user after a barcode match. Never auto-filled.' },
+        { k: 'revision', a: 'Cart board revisions and disc versions differ in content — a patched version is a different artefact to a speedrunner or an archivist.' , b: 'Optional text, surfaced only when the platform is known to have revisions. Invisible on platforms where it is noise.' },
+        { k: 'catalogueNumber', a: 'The only string printed on the object that actually identifies it, and the one every serious collector already uses.', b: 'The type\'s real identifier for pre-barcode media, and the search field power users will live in.' }
+      ],
+
+      migration: [
+        { k: 'BY NAME', t: 'cart → mediaCondition', b: 'Same kind, same scale, renamed because a disc is not a cart. Values carry over untouched.' },
+        { k: 'BY NAME', t: 'box → boxCondition, manual → manualCondition', b: 'Unchanged in every way but the key. These are the two axes people already filled in.' },
+        { k: 'DERIVED, REMOVED', t: 'cib → the ladder', b: 'The old typed completeness grade was a summary of the other three fields. It becomes derived, and the field disappears — the one value that does not migrate, because it was never independent.' },
+        { k: 'INFERRED, CONFIRMED', t: 'platform → media', b: 'Filled in from a platform table. Correct for all but a handful of platforms that shipped both cartridges and discs; those get a single confirm screen listing the affected objects.' }
+      ],
+
+      open: [
+        { k: 'Q1', q: 'Is "Platform" the right subtitle, or is it the publisher?', b: 'Every collector I can picture reads their shelf by platform, and the mixed-type row has only one subtitle line to give. Leaning: platform, with publisher in the fields — but a PC-only collector might reasonably disagree, and they are the case where platform says nothing.' },
+        { k: 'Q2', q: 'Does disc rot survive contact with evidence?', b: 'It is real, well-documented for specific plants and years, and completely absent elsewhere. A clock that fires on a healthy disc is worse than no clock. Leaning: ship the type without it, collect plant codes from the corpus for a release, then decide with data.' },
+        { k: 'Q3', q: 'Does a sealed game belong on the same scale as a played one?', b: 'Sealed is the top step here, which quietly asserts that sealed is the best a game can be. A collector who plays their games would say a mint complete copy is better. This is a values question disguised as an enum, and section 05 is my answer to half of it.' },
+        { k: 'Q4', q: 'Do digital-only games get a row at all?', b: 'The type says no: a licence in an account is not an object, and a catalogue of licences is a spreadsheet the platform already owns. But a collector with 400 digital games would say their library is their collection. Leaning: hold the line, and revisit if the ask arrives twice.' },
+        { k: 'Q5', q: 'What does the 3D object show?', b: 'Five media means five silhouettes — a cart, a jewel case, a big box, a card, a slim box — and the rule allows one per type. Leaning: the silhouette is chosen by the media field rather than the type, which is a small, contained exception worth the honesty of the shelf looking right.' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

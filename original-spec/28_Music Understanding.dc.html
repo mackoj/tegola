@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#EAE3D6}a{color:#2B44D6}a:hover{color:#FF5B2E}</style>
+</helmet>
+
+<div style="width:1360px;margin:0 auto;padding:60px 28px 100px;font-family:Archivo,system-ui,sans-serif;color:#17130F">
+
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70">CLCTN · SIDE QUEST · MUSIC UNDERSTANDING × SHADERS · 19 SEP 2026</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:66px;line-height:.92;letter-spacing:-.045em;margin:16px 0 0;max-width:1040px;text-wrap:balance">Yes. And the animation is the least valuable thing it gives you.</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-top:20px;text-wrap:pretty">Music Understanding can absolutely drive the groove sheen — Apple names audio-reactive animation as a use for instrument activity outright, and a beat grid is exactly the "one number" the <a href="27_Metal Shaders.dc.html">shader page</a> said to drive the effect from. It fits almost suspiciously well.</div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:900px;margin-top:14px;text-wrap:pretty">But the same framework, run once at add-time, writes <strong>BPM and musical key onto every record in the collection</strong> — and for the crate-digging half of your audience that is a real feature, not a flourish. Apple's own closing list names organising a catalogue by tempo or key before it names anything visual. Section 04 is the one worth your time.</div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">00 · THE VERDICT</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+    <sc-for list="{{ verdicts }}" as="v" hint-placeholder-count="3">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;padding:22px">
+        <div style="display:inline-block;font:500 9px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:4px 10px;background:{{ v.tone }}">{{ v.tag }}</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:23px;letter-spacing:-.02em;line-height:1.1;margin-top:14px;text-wrap:pretty">{{ v.t }}</div>
+        <div style="font:400 14px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:10px;text-wrap:pretty">{{ v.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">01 · WHAT IT OUTPUTS, MAPPED TO SHADER INPUTS</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:20px;text-wrap:pretty">Six analysis areas. Four of them could plausibly drive something on screen; two of them should.</div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;overflow:hidden;box-shadow:5px 5px 0 #17130F">
+    <div style="display:grid;grid-template-columns:170px 250px 1fr 130px;background:#17130F;color:#F3ECE0;font:500 9.5px 'DM Mono',monospace;letter-spacing:.1em">
+      <div style="padding:13px 15px">ANALYSIS</div>
+      <div style="padding:13px 15px">WHAT YOU GET BACK</div>
+      <div style="padding:13px 15px">WHAT IT COULD DRIVE</div>
+      <div style="padding:13px 15px">VERDICT</div>
+    </div>
+    <sc-for list="{{ outputs }}" as="o" hint-placeholder-count="6">
+      <div style="display:grid;grid-template-columns:170px 250px 1fr 130px;border-top:2px solid #E0D6C4;background:{{ o.bg }};align-items:start">
+        <div style="padding:14px 15px;font:700 15px Archivo,sans-serif">{{ o.name }}</div>
+        <div style="padding:14px 15px;font:400 12px/1.6 'DM Mono',monospace;color:#3A2F26;text-wrap:pretty">{{ o.gives }}</div>
+        <div style="padding:14px 15px;font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ o.drives }}</div>
+        <div style="padding:14px 15px">
+          <div style="display:inline-block;font:500 9px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:4px 9px;background:{{ o.tone }}">{{ o.verdict }}</div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">02 · THE BLOCKER — WHERE DOES THE AUDIO COME FROM?</div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#FFD24A;padding:24px 26px;box-shadow:5px 5px 0 #17130F;max-width:1000px;margin-bottom:20px">
+    <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:29px;line-height:1.1;letter-spacing:-.025em;text-wrap:pretty">CLCTN is a catalogue. It currently plays nothing, owns no audio files, and has no player. Everything on this page is downstream of changing one of those three facts.</div>
+  </div>
+  <div style="font:400 15px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:20px;text-wrap:pretty">The session initialises from an <span style="font-family:'DM Mono',monospace">AVAsset</span> or a custom audio provider yielding PCM buffers. Both require audio you can actually read — which is a bigger ask than it sounds for a record collection, where the whole point is that the music is on a physical object in the room.</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+    <sc-for list="{{ sources }}" as="s" hint-placeholder-count="3">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 {{ s.shadow }};overflow:hidden">
+        <div style="padding:14px 18px;background:{{ s.tone }};border-bottom:2.5px solid #17130F">
+          <div style="font:700 17px Archivo,sans-serif;letter-spacing:-.01em">{{ s.name }}</div>
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;margin-top:5px;opacity:.7">{{ s.feas }}</div>
+        </div>
+        <div style="padding:16px 18px">
+          <div style="font:400 13.5px/1.6 Archivo,sans-serif;text-wrap:pretty">{{ s.b }}</div>
+          <div style="height:2px;background:#E0D6C4;margin:14px 0"></div>
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">THE CATCH</div>
+          <div style="font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:7px;text-wrap:pretty">{{ s.catch }}</div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">03 · THE RIGHT PATTERN — ANALYSE ONCE, ANIMATE FROM THE GRID</div>
+  <div style="font:400 16px/1.7 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:12px;text-wrap:pretty">The instinct is to treat this as a realtime audio visualiser. It isn't one, and that's an advantage. Analysis is a batch <span style="font-family:'DM Mono',monospace">await analyze()</span> over an asset; only loudness has a streaming API, delivering a value every 100 ms — which is 10 Hz, far too coarse to drive a 120 Hz shader directly.</div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:900px;margin-bottom:22px;text-wrap:pretty">So do what Final Cut does: analyse up front, keep the beat grid, and drive the shader from the <strong>known</strong> timestamps against the playhead. You get zero latency, perfect predictability, and the ability to <em>anticipate</em> a beat — start the sheen 80 ms early so it peaks on the downbeat, which is what makes it feel musical rather than reactive.</div>
+  <sc-if value="{{ showCode }}" hint-placeholder-val="{{ true }}">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#0C0A08;color:#F3ECE0;padding:24px;box-shadow:5px 5px 0 #0E6E5E;overflow-x:auto">
+      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:16px;flex-wrap:wrap">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;opacity:.5">SKETCH · BEAT GRID → SHEEN ANGLE</div>
+        <div style="margin-left:auto;font:500 8.5px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #FFD24A;color:#FFD24A;border-radius:999px;padding:3px 9px">SHAPE OF IT, NOT COMPILABLE</div>
+      </div>
+      <div style="font:400 12.5px/1.8 'DM Mono',monospace;white-space:pre-wrap;max-width:1060px">{{ code }}</div>
+    </div>
+  </sc-if>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px">
+    <sc-for list="{{ patternNotes }}" as="p" hint-placeholder-count="3">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;padding:18px">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">{{ p.k }}</div>
+        <div style="font:700 15px/1.35 Archivo,sans-serif;margin-top:8px;text-wrap:pretty">{{ p.t }}</div>
+        <div style="font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">{{ p.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">04 · THE BIGGER IDEA — TEMPO AND KEY AS CATALOGUE FIELDS</div>
+  <div style="display:grid;grid-template-columns:1.1fr .9fr;gap:16px;align-items:start">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#0E6E5E;color:#F3ECE0;padding:28px;box-shadow:5px 5px 0 #17130F">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;color:#FFD24A">THE PART THAT ISN'T A SIDE QUEST</div>
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:34px;letter-spacing:-.03em;line-height:1.05;margin-top:14px;text-wrap:balance">"124 BPM, A minor" is a search field, not an animation.</div>
+      <div style="font:400 15px/1.7 Archivo,sans-serif;opacity:.9;margin-top:16px;text-wrap:pretty">DJs and crate diggers are a meaningful slice of the vinyl audience, and the way they actually use a collection is to build sets: everything between 122 and 128 BPM, in a compatible key, that they haven't played in three months. No consumer catalogue app knows that about a physical record — the data simply doesn't exist in any release database with any reliability.</div>
+      <div style="font:400 15px/1.7 Archivo,sans-serif;opacity:.9;margin-top:12px;text-wrap:pretty">Run the analysis once, on whatever audio you can reach at add-time, and store <span style="font-family:'DM Mono',monospace">beatsPerMinute</span> and the <span style="font-family:'DM Mono',monospace">KeySignature</span> ranges as ordinary fields on the item. Every result is Codable, so the whole analysis serialises to JSON and sits next to the record forever. It costs nothing at render time and it works when nothing is playing.</div>
+      <div style="height:2px;background:rgba(243,236,224,.2);margin:22px 0"></div>
+      <div style="font:400 13.5px/1.6 Archivo,sans-serif;opacity:.72;text-wrap:pretty">Apple's own closing pitch lists "organise music catalogues by tempo or key" ahead of any visual use. When the framework authors name your product category first, that is worth more than a clever shader input.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <sc-for list="{{ metadataUses }}" as="m" hint-placeholder-count="4">
+        <div style="border:2.5px solid #17130F;border-radius:16px;background:{{ m.bg }};padding:20px">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">{{ m.k }}</div>
+          <div style="font:700 15px/1.35 Archivo,sans-serif;margin-top:8px;text-wrap:pretty">{{ m.t }}</div>
+          <div style="font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">{{ m.b }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;padding:20px 24px;box-shadow:5px 5px 0 #FF5B2E;max-width:1000px;margin-top:16px">
+    <div style="font:400 15px/1.7 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Worth saying plainly, though: this is a <strong>vinyl-and-CD-only feature in an app that also catalogues board games, comics and sneakers</strong>. It deepens one collection type at the cost of not generalising at all — which is a legitimate thing to do once, for the category you care most about, and a bad habit if it becomes the pattern.</div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">05 · WHAT IT COSTS, AND WHAT TO CHECK FIRST</div>
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px">
+    <sc-for list="{{ checks }}" as="c" hint-placeholder-count="6">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#EAE3D6;padding:18px">
+        <div style="display:flex;align-items:baseline;gap:10px">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">{{ c.k }}</div>
+          <div style="margin-left:auto;font:500 9px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:3px 9px;background:{{ c.tone }}">{{ c.sev }}</div>
+        </div>
+        <div style="font:700 15px/1.35 Archivo,sans-serif;margin-top:9px;text-wrap:pretty">{{ c.t }}</div>
+        <div style="font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">{{ c.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">06 · WHAT I'D DO</div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#0C0A08;color:#F3ECE0;padding:24px 26px;box-shadow:5px 5px 0 #FFD24A;max-width:1000px;margin-bottom:20px">
+    <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;color:#FFD24A;margin-bottom:10px">RECOMMENDATION</div>
+    <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:26px;line-height:1.14;letter-spacing:-.02em;text-wrap:pretty">{{ postureLine }}</div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+    <sc-for list="{{ steps }}" as="s" hint-placeholder-count="4">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;padding:18px">
+        <div style="display:flex;align-items:baseline;gap:10px">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">{{ s.n }}</div>
+          <div style="margin-left:auto;font:500 9px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:3px 9px;background:{{ s.tone }}">{{ s.when }}</div>
+        </div>
+        <div style="font:700 15px/1.35 Archivo,sans-serif;margin-top:10px;text-wrap:pretty">{{ s.t }}</div>
+        <div style="font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">{{ s.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+  <div style="font:400 14px/1.65 Archivo,sans-serif;color:#6E6458;max-width:900px;margin-top:20px;text-wrap:pretty">And the budget note, since this is the second side quest in a row: a beat-locked sheen <strong>does not add a fourth effect</strong> to the whimsy budget. It upgrades placement 01 — the item-detail hero — from an ambient drift to a musical one. That's the only reason it clears the bar.</div>
+
+  <div style="font:400 12.5px/1.7 Archivo,sans-serif;color:#8A7F70;margin-top:44px;max-width:900px;text-wrap:pretty">Source: the WWDC 2026 session transcript you attached (Music Understanding, Computational Music Team). Related: <a href="27_Metal Shaders.dc.html">Metal Shaders</a> for the effect this would drive, <a href="21_On-Device ML Ideas.dc.html">On-Device ML Ideas</a> for the wider "Apple already ships it free" pattern this is another instance of. Anything about Apple Music playback and PCM access is my inference, not stated in the session — verify before planning around it.</div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1416,&quot;height&quot;:900},&quot;posture&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Metadata first, animation later&quot;,&quot;Animation only&quot;,&quot;Skip entirely&quot;,&quot;Full DJ mode&quot;],&quot;default&quot;:&quot;Metadata first, animation later&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Decision&quot;},&quot;showCode&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Content&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const posture = this.props.posture ?? "Metadata first, animation later";
+    const lines = {
+      "Metadata first, animation later": "Treat this as a metadata feature that happens to unlock an animation. If a preview player ever exists, add BPM and key to the record as ordinary fields, ship the DJ-grade search on top, and only then spend an afternoon locking the sheen to the beat grid you already have sitting there.",
+      "Animation only": "Defensible if you never want the search complexity: play a preview, drive the sheen from the beat grid, throw the rest of the analysis away. It is the smaller idea, but it is also one afternoon and it makes the best screen in the app better.",
+      "Skip entirely": "Correct for now. No audio in the app means no analysis, and adding a player to a catalogue app to justify a shader input is the tail wagging the dog. Park it next to the OTA layer and revisit if a preview player is ever on the roadmap for its own reasons.",
+      "Full DJ mode": "The ambitious read: tempo, key, structure and pace as first-class fields, set-building search, and a beat-locked disk. A genuinely differentiated product for crate diggers — and a decision to serve one collection type far more deeply than the rest, which needs to be deliberate rather than accidental."
+    };
+    return {
+      showCode: this.props.showCode ?? true,
+      postureLine: lines[posture] ?? lines["Metadata first, animation later"],
+      verdicts: [
+        { tag: "TECHNICALLY YES", tone: "#B9F0C9", t: "The beat grid is a perfect input", b: "Beats and bars come back as timestamp arrays, so the sheen angle can be a pure function of the playhead. Apple explicitly names instrument activity as a source for audio-reactive animation." },
+        { tag: "THE BLOCKER", tone: "#FFD24A", t: "The app has no audio", b: "A session needs an AVAsset or PCM buffers. A catalogue of physical records owns neither. Everything here is contingent on a preview player existing for its own reasons." },
+        { tag: "THE REAL PRIZE", tone: "#EAE3D6", t: "BPM and key on every record", b: "Analyse once at add-time, store it, and the collection becomes searchable the way a DJ actually thinks. Costs nothing at render time and works with the screen off." }
+      ],
+      outputs: [
+        { name: "Rhythm", bg: "#F5FBF6", tone: "#B9F0C9", verdict: "USE IT", gives: "beats: [CMTime]\nbars: [CMTime]\nbeatsPerMinute: Double?", drives: "The sheen angle, locked to the playhead. Sweep once per bar, pulse on the beat. Also the disk's rotation rate, so it spins in time rather than at an arbitrary speed. Note bpm is nil until two beats are found." },
+        { name: "Instrument activity", bg: "#F5FBF6", tone: "#B9F0C9", verdict: "USE IT", gives: "ranges: [Instrument: [CMTimeRange]]\nactivity: [Instrument: TimedValue<Float>]", drives: "Intensity from 0 to 1 per instrument over time — the bass line could widen the sheen's lobe, the vocal could lift its brightness. The session calls this out directly as a source for audio-reactive animation." },
+        { name: "Key", bg: "#FFFBEA", tone: "#FFD24A", verdict: "METADATA", gives: "ranges of RangedValue<KeySignature>\ntonic + mode (major/minor)", drives: "Visually, almost nothing honest — mapping key to hue is the kind of synaesthesia that looks arbitrary to everyone but its author. As a catalogue field it is one of the two most valuable outputs here." },
+        { name: "Loudness", bg: "#FFFBEA", tone: "#FFD24A", verdict: "CAREFUL", gives: "integrated / momentary / shortTerm\nin LUFS, peak in dB\nstreaming via AsyncSequence", drives: "The obvious \"make it pulse with the volume\" choice, and the one that most often looks cheap. Momentary values land every 100 ms, so you must interpolate — raw 10 Hz stepping reads as jitter, not music." },
+        { name: "Structure", bg: "#fff", tone: "#EAE3D6", verdict: "NOT HERE", gives: "sections / segments / phrases\nas [CMTimeRange]", drives: "Perfect for a video editor choosing clip lengths, which is what Final Cut uses it for. For a single spinning disk there is nothing structural to express." },
+        { name: "Pace", bg: "#fff", tone: "#EAE3D6", verdict: "NOT HERE", gives: "array of ranged values\n(energy over time)", drives: "Could modulate drift speed, but rhythm already does that job more precisely and more legibly. Two inputs competing for the same visual parameter is how an effect stops reading as intentional." }
+      ],
+      sources: [
+        { name: "A preview player", tone: "#B9F0C9", shadow: "#0E6E5E", feas: "THE ONLY REALISTIC ROUTE", b: "If item detail ever plays a 30-second preview of the record, that asset is analysable and the disk can spin to it. This is the version where everything on this page becomes real.", catch: "It's a player in a catalogue app — a feature with its own scope, rights questions and design cost. It has to be justified on its own, not as a shader input." },
+        { name: "Files the user owns", tone: "#FFD24A", shadow: "#FF5B2E", feas: "NICHE BUT CLEAN", b: "A local rip, a bandcamp download, a needle-drop recording of their own pressing. Readable, analysable, and the needle-drop case is charming: analyse the actual copy they own.", catch: "A small fraction of users will have this, and asking someone to attach an audio file to a record is a lot of friction for a visual reward." },
+        { name: "Streaming services", tone: "#FF9B8A", shadow: "#17130F", feas: "ASSUME NOT POSSIBLE", b: "The dream is: tap play, music streams, disk spins in time. It would need PCM access to protected audio during playback.", catch: "Protected content generally does not hand out raw buffers, and I would expect this to be closed. Verify before building any plan that depends on it — it is the single assumption that would sink the feature." }
+      ],
+      code: [
+        "// ONCE, at add-time — never on the render path.",
+        "let asset   = AVURLAsset(url: url, options: [",
+        "                AVURLAssetPreferPreciseDurationAndTimingKey: true])",
+        "let session = MusicUnderstandingSession(asset: asset)",
+        "let result  = try await session.analyze(for: [.rhythm, .key])",
+        "",
+        "item.bpm   = result.rhythm?.beatsPerMinute          // Double?, nil if < 2 beats",
+        "item.key   = result.key?.ranges.first?.value        // tonic + mode",
+        "item.beats = result.rhythm?.beats ?? []             // keep the grid",
+        "",
+        "// AT PLAYBACK — drive the shader from the KNOWN grid, not from audio.",
+        "// Anticipate: peak ON the beat, so start the sweep slightly before it.",
+        "func sheenAngle(at t: CMTime, beats: [CMTime], lead: Double = 0.08) -> Double {",
+        "  guard let i = beats.lastIndex(where: { $0 <= t + CMTime(seconds: lead) })",
+        "  else { return 0 }",
+        "  let a = beats[i].seconds, b = (beats[safe: i+1] ?? beats[i]).seconds",
+        "  let phase = b > a ? (t.seconds + lead - a) / (b - a) : 0      // 0…1 in-beat",
+        "  return (Double(i % 4) + phase) * .pi / 2                      // one turn per bar",
+        "}",
+        "",
+        "// .layerEffect(ShaderLibrary.grooveSheen(… .float(angle) …))",
+        "// Reduce Motion: stop calling this and hold the last angle. Done."
+      ].join("\n"),
+      patternNotes: [
+        { k: "WHY BATCH WINS", t: "Zero latency, and you can see the future", b: "A reactive visualiser is always a frame behind the music. Knowing the next beat's timestamp lets the sheen arrive exactly on it — the difference between looking synced and being synced." },
+        { k: "PERFORMANCE", t: "Analysis is not free, so do it once", b: "Use the targeted analyze(for:) call rather than analysing all six areas. Run it off the main actor at add-time, store the result, never repeat it." },
+        { k: "PERSISTENCE", t: "Everything is Codable", b: "The whole session result serialises to JSON, so the beat grid can live beside the item in SQLite and survive reinstalls. Analyse once per record, ever." }
+      ],
+      metadataUses: [
+        { k: "SEARCH", bg: "#fff", t: "Set-building queries", b: "\"Everything 122–128 BPM in a compatible key.\" This is genuinely how DJs pull records, and no release database has trustworthy tempo data for pressings." },
+        { k: "SORT", bg: "#fff", t: "A shelf ordered by tempo", b: "A physical crate can only be in one order. A digital one can be re-sorted by BPM in a second, which is a thing no shelf can do — the strongest argument for cataloguing at all." },
+        { k: "SMART LISTS", bg: "#B9F0C9", t: "Collections that fill themselves", b: "Key-compatible groupings, energy arcs, a warm-up crate. All derived, all automatic, and each one is a reason to open the app when you aren't adding anything." },
+        { k: "EXPORT", bg: "#fff", t: "It travels with the record", b: "BPM and key in the CSV export and the insurance-grade list. Small, but it makes the export feel like it knows something the user didn't have to type." }
+      ],
+      checks: [
+        { k: "AVAILABILITY", sev: "VERIFY", tone: "#FF9B8A", t: "OS floor and device support", b: "A 2026 framework means a recent-OS requirement, and CLCTN's deployment target has not been set yet. Check before this influences the target." },
+        { k: "AUDIO ACCESS", sev: "VERIFY", tone: "#FF9B8A", t: "Protected content almost certainly can't be read", b: "The assumption that sinks the animation half. Establish it early — everything about a streaming-driven disk depends on an answer I would bet against." },
+        { k: "ANALYSIS TIME", sev: "MEASURE", tone: "#FFD24A", t: "How long for a full track, on an old phone", b: "It is on-device model inference over the whole asset. Fine as a background task at add-time; not fine if it blocks the add flow. Target the analysis types you need." },
+        { k: "ACCURACY", sev: "MEASURE", tone: "#FFD24A", t: "Test it on your worst records", b: "Beat detection on a clean 4/4 house record is easy. Free jazz, live pressings, lo-fi rips and a needle-drop with surface noise are the real test — and the collection is full of them." },
+        { k: "SCOPE", sev: "REAL", tone: "#FF9B8A", t: "A player is a whole feature", b: "The honest cost here is not the framework, it is the playback surface that makes it possible: transport controls, background audio, now-playing, interruption handling." },
+        { k: "GENERALITY", sev: "REAL", tone: "#FFD24A", t: "It serves one collection type", b: "Vinyl and CDs only. Board games, comics and sneakers get nothing. That's acceptable once, deliberately, for the category the app was born from." }
+      ],
+      steps: [
+        { n: "STEP 01", when: "10 MINUTES", tone: "#B9F0C9", t: "Download Music Understanding Lab", b: "Apple ships the sample app. Run your three most awkward records through it — a live pressing, something without a steady pulse, and a needle-drop — and look at the beat grid before believing any of this." },
+        { n: "STEP 02", when: "DECIDE", tone: "#FFD24A", t: "Is there ever a preview player?", b: "The whole page hangs on this one product question, and it is not a shader question. If the answer is no, park this next to the OTA layer and move on." },
+        { n: "STEP 03", when: "IF YES", tone: "#FFD24A", t: "Ship the metadata, not the motion", b: "BPM and key as fields, then set-building search. It is the part with product value, it works with the screen off, and it makes the animation nearly free afterwards." },
+        { n: "STEP 04", when: "ONE AFTERNOON", tone: "#EAE3D6", t: "Lock the sheen to the grid", b: "By then the beat grid is already stored. Feeding it into the angle parameter is a few lines — and it upgrades the existing hero effect rather than adding a new one." }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

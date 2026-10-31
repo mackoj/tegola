@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+<template id="__bundler_thumbnail">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><rect width="400" height="400" fill="#EAE3D6"/><rect x="52" y="52" width="296" height="296" rx="44" fill="#17130F"/><text x="200" y="230" font-family="Helvetica,Arial,sans-serif" font-weight="800" font-size="104" letter-spacing="-5" fill="#F3ECE0" text-anchor="middle">CL</text><circle cx="200" cy="286" r="15" fill="#FF5B2E"/></svg>
+</template>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#EAE3D6}
+a{color:#2B44D6;text-decoration:none}a:hover{color:#FF5B2E}
+html{scroll-behavior:smooth}
+</style>
+</helmet>
+
+<div style="font-family:Archivo,system-ui,sans-serif;color:#17130F;background:#EAE3D6;overflow-x:hidden">
+
+  <div style="position:sticky;top:0;z-index:30;background:#EAE3D6;border-bottom:2.5px solid #17130F">
+    <div style="max-width:1180px;margin:0 auto;padding:14px 28px;display:flex;align-items:center;gap:26px">
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:24px;letter-spacing:-.04em">CLCTN</div>
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.16em;border:2px solid #17130F;border-radius:999px;padding:4px 9px;background:#FFD24A;color:#17130F">iPHONE · iPAD · MAC</div>
+      <div style="flex:1"></div>
+      <div style="display:flex;gap:22px;align-items:center">
+        <a href="#screens" style="font:600 13.5px Archivo,sans-serif;color:#3A2F26">Screens</a>
+        <a href="#import" style="font:600 13.5px Archivo,sans-serif;color:#3A2F26">Import</a>
+        <a href="#hunt" style="font:600 13.5px Archivo,sans-serif;color:#3A2F26">The hunt</a>
+        <a href="#price" style="font:600 13.5px Archivo,sans-serif;color:#3A2F26">Price</a>
+        <a href="#get" style="font:700 13.5px Archivo,sans-serif;color:#F3ECE0;background:#17130F;border:2.5px solid #17130F;border-radius:999px;padding:11px 18px;box-shadow:3px 3px 0 #FF5B2E">Get early access</a>
+      </div>
+    </div>
+  </div>
+
+  <div style="max-width:1180px;margin:0 auto;padding:64px 28px 40px;display:grid;grid-template-columns:1fr 400px;gap:56px;align-items:center">
+    <div>
+      <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:18px">FOR PEOPLE WHO OWN THINGS ON PURPOSE</div>
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:76px;line-height:.9;letter-spacing:-.045em;text-wrap:balance">Your collection,<br>finally worth<br>looking at.</div>
+      <div style="font:400 18px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:560px;margin:24px 0 8px;text-wrap:pretty">CLCTN answers four questions about everything you own — <strong>what is it, where is it, who has it, what happened to it.</strong> Vinyl, comics, watches, LEGO, coins, sneakers, cars — sixteen collection types today, and collectors propose the rest. Ten seconds to add one on the phone, an afternoon of proper sorting on the Mac — the same shelf, kept in step by iCloud.</div>
+      <div style="display:flex;gap:10px;align-items:stretch;margin-top:28px;flex-wrap:wrap;max-width:560px">
+        <input type="email" value="{{ email }}" onChange="{{ onEmail }}" placeholder="you@collector.com" style="flex:1 1 260px;font:500 15px Archivo,sans-serif;color:#17130F;background:#fff;border:2.5px solid #17130F;border-radius:999px;padding:15px 22px;box-shadow:4px 4px 0 #17130F;outline:none">
+        <div onClick="{{ onSubmit }}" style="cursor:pointer;font:700 15px Archivo,sans-serif;color:#F3ECE0;background:#17130F;border:2.5px solid #17130F;border-radius:999px;padding:16px 26px;box-shadow:4px 4px 0 #FF5B2E">{{ ctaLabel }}</div>
+      </div>
+      <div style="font:400 13px/1.55 Archivo,sans-serif;color:#6E6458;margin-top:14px;max-width:520px;text-wrap:pretty">{{ heroNote }}</div>
+    </div>
+
+    <div style="position:relative">
+      <div style="position:absolute;top:-18px;right:-6px;z-index:2;font:500 10px 'DM Mono',monospace;letter-spacing:.1em;border:2.5px solid #17130F;border-radius:999px;padding:8px 13px;background:#E5457B;color:#F3ECE0;transform:rotate(4deg);box-shadow:3px 3px 0 #17130F">★ FOUNDING PRICE</div>
+      <div style="width:340px;margin:0 auto;border:2.5px solid #17130F;border-radius:34px;background:#F3ECE0;box-shadow:8px 8px 0 #17130F;padding:12px 12px 16px;overflow:hidden">
+        <div style="display:flex;justify-content:space-between;font:500 9px 'DM Mono',monospace;color:#8A7F70;padding:2px 8px 12px">
+          <div>9:41</div><div>SHELF</div>
+        </div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:32px;line-height:.95;letter-spacing:-.04em;padding:0 6px 4px">Vinyl</div>
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;color:#8A7F70;padding:0 6px 14px">312 OBJECTS · 4 OUT ON LOAN</div>
+        <sc-for list="{{ shelf }}" as="r" hint-placeholder-count="4">
+          <div style="display:flex;gap:12px;align-items:center;border:2.5px solid #17130F;border-radius:14px;background:#fff;padding:9px 11px;margin-bottom:9px;box-shadow:3px 3px 0 #17130F">
+            <div style="flex:none;width:46px;height:46px;border:2px solid #17130F;border-radius:6px;background: {{ r.art }}"></div>
+            <div style="flex:1;min-width:0">
+              <div style="font:700 13.5px Archivo,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.title }}</div>
+              <div style="font:500 9px 'DM Mono',monospace;color:#8A7F70;margin-top:3px">{{ r.meta }}</div>
+            </div>
+            <div style="flex:none;font:500 9px 'DM Mono',monospace;letter-spacing:.06em;border:2px solid #17130F;border-radius:999px;padding:4px 8px;background: {{ r.chipBg }};color: {{ r.chipFg }}">{{ r.chip }}</div>
+          </div>
+        </sc-for>
+        <div style="display:flex;gap:6px;margin-top:14px;border:2.5px solid #17130F;border-radius:999px;padding:3px;background:#EDE4D6">
+          <div style="flex:1;text-align:center;font:600 11px Archivo,sans-serif;padding:9px 4px;border-radius:999px;background:#17130F;color:#F3ECE0">Shelf</div>
+          <div style="flex:1;text-align:center;font:600 11px Archivo,sans-serif;padding:9px 4px;border-radius:999px">Add</div>
+          <div style="flex:1;text-align:center;font:600 11px Archivo,sans-serif;padding:9px 4px;border-radius:999px">Loans</div>
+          <div style="flex:1;text-align:center;font:600 11px Archivo,sans-serif;padding:9px 4px;border-radius:999px">You</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="border-top:2.5px solid #17130F;border-bottom:2.5px solid #17130F;background:#17130F">
+    <div style="max-width:1180px;margin:0 auto;padding:18px 28px;display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.16em;color:#8A7F70;width:100%;margin-bottom:4px">SIXTEEN TYPES TODAY · EACH WITH ITS OWN REAL FIELDS AND GRADING SCALE</div>
+      <sc-for list="{{ types }}" as="t" hint-placeholder-count="16">
+        <div style="font:600 12px Archivo,sans-serif;border:2px solid {{ t.c }};color: {{ t.c }};border-radius:999px;padding:6px 13px">{{ t.n }}</div>
+      </sc-for>
+      <div style="font:600 12px Archivo,sans-serif;border:2px dashed #8A7F70;color:#F3ECE0;border-radius:999px;padding:6px 13px">+ propose yours</div>
+    </div>
+  </div>
+
+  <div style="max-width:1180px;margin:0 auto;padding:72px 28px 0">
+    <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:14px">ONE COLLECTION, THREE DEVICES</div>
+    <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:46px;line-height:.95;letter-spacing:-.04em;max-width:760px;text-wrap:balance">Catalogue on the couch. Sort at the desk.</div>
+    <div style="font:400 15.5px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:640px;margin-top:16px;text-wrap:pretty">Adding is a phone job — you're standing at the shelf with the object in your hand. Reorganising four hundred records is a Mac job. CLCTN is built native for both, and iCloud keeps them identical without you thinking about it.</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:30px">
+      <sc-for list="{{ platforms }}" as="d" hint-placeholder-count="3">
+        <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;padding:22px;box-shadow:5px 5px 0 #17130F">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;color:#8A7F70;margin-bottom:12px">{{ d.k }}</div>
+          <div style="font:700 17px Archivo,sans-serif;margin-bottom:8px">{{ d.t }}</div>
+          <div style="font:400 13.5px/1.6 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ d.b }}</div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center;border:2.5px solid #17130F;border-radius:16px;background:#EDE4D6;padding:14px 18px;margin-top:18px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;border:2px solid #17130F;border-radius:999px;padding:5px 10px;background:#0E6E5E;color:#F3ECE0">iCLOUD</div>
+      <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Sync runs on your own iCloud account — your shelf never touches a server of ours. Switch it off and each device simply keeps its own copy.</div>
+    </div>
+  </div>
+
+  <div style="max-width:1180px;margin:0 auto;padding:72px 28px 10px">
+    <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:14px">WHAT IT ACTUALLY DOES</div>
+    <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:46px;line-height:.95;letter-spacing:-.04em;max-width:760px;text-wrap:balance">A spreadsheet knows what you own. It doesn't know what happened to it.</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:36px">
+      <sc-for list="{{ questions }}" as="q" hint-placeholder-count="4">
+        <div style="border:2.5px solid #17130F;border-radius:18px;background: {{ q.bg }};color: {{ q.fg }};padding:20px;box-shadow:5px 5px 0 #17130F;min-height:190px;display:flex;flex-direction:column">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;opacity:.6;margin-bottom:12px">{{ q.k }}</div>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:26px;line-height:1;letter-spacing:-.03em;margin-bottom:10px">{{ q.t }}</div>
+          <div style="font:400 13.5px/1.55 Archivo,sans-serif;opacity:.85;text-wrap:pretty">{{ q.b }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div id="screens" style="max-width:1180px;margin:0 auto;padding:80px 28px 0">
+    <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:14px">THE ACTUAL APP</div>
+    <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:46px;line-height:.95;letter-spacing:-.04em;max-width:760px;text-wrap:balance">Fifty-three screens. Here are eight of them.</div>
+    <div style="font:400 15.5px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:640px;margin-top:16px;text-wrap:pretty">Not renders made for a website — these are the real screens, running, at 60% size.</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:32px">
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <img src="screens/item.jpg" alt="CLCTN — item screen" loading="lazy" width="480" height="1041" style="width:100%;height:auto;display:block;border-radius:28px;box-shadow:5px 5px 0 #17130F">
+        <div style="font:700 14px Archivo,sans-serif">An object</div>
+        <div style="font:400 13px/1.5 Archivo,sans-serif;color:#6E6458;text-wrap:pretty">Overview, details and history in one card. Every event stays; nothing is overwritten.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <img src="screens/capture.jpg" alt="CLCTN — capture screen" loading="lazy" width="480" height="1041" style="width:100%;height:auto;display:block;border-radius:28px;box-shadow:5px 5px 0 #17130F">
+        <div style="font:700 14px Archivo,sans-serif">3D capture</div>
+        <div style="font:400 13px/1.5 Archivo,sans-serif;color:#6E6458;text-wrap:pretty">Orbit the object once and it lands on the shelf as a thing you can turn, not a flat photo.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <img src="screens/lending.jpg" alt="CLCTN — lending screen" loading="lazy" width="480" height="1041" style="width:100%;height:auto;display:block;border-radius:28px;box-shadow:5px 5px 0 #17130F">
+        <div style="font:700 14px Archivo,sans-serif">Out of the house</div>
+        <div style="font:400 13px/1.5 Archivo,sans-serif;color:#6E6458;text-wrap:pretty">Lent, borrowed and listed in one list — the three ways a thing isn't on the shelf.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <img src="screens/stats.jpg" alt="CLCTN — stats screen" loading="lazy" width="480" height="1041" style="width:100%;height:auto;display:block;border-radius:28px;box-shadow:5px 5px 0 #17130F">
+        <div style="font:700 14px Archivo,sans-serif">The shape of it</div>
+        <div style="font:400 13px/1.5 Archivo,sans-serif;color:#6E6458;text-wrap:pretty">What you own, what it's worth, where the gaps are. Grouped by type, never averaged across them.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <img src="screens/search.jpg" alt="CLCTN — search screen" loading="lazy" width="480" height="1041" style="width:100%;height:auto;display:block;border-radius:28px;box-shadow:5px 5px 0 #17130F">
+        <div style="font:700 14px Archivo,sans-serif">Find</div>
+        <div style="font:400 13px/1.5 Archivo,sans-serif;color:#6E6458;text-wrap:pretty">Stack filters as chips: first pressings, VG+ or better, under €40, not lent out.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <img src="screens/inspect.jpg" alt="CLCTN — inspect screen" loading="lazy" width="480" height="1041" style="width:100%;height:auto;display:block;border-radius:28px;box-shadow:5px 5px 0 #17130F">
+        <div style="font:700 14px Archivo,sans-serif">Inspect &amp; annotate</div>
+        <div style="font:400 13px/1.5 Archivo,sans-serif;color:#6E6458;text-wrap:pretty">Pin a note to the exact spot — ring wear here, bent corner there, a repaint on the left arm.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <img src="screens/wishlist.jpg" alt="CLCTN — wishlist screen" loading="lazy" width="480" height="1041" style="width:100%;height:auto;display:block;border-radius:28px;box-shadow:5px 5px 0 #17130F">
+        <div style="font:700 14px Archivo,sans-serif">The hunt</div>
+        <div style="font:400 13px/1.5 Archivo,sans-serif;color:#6E6458;text-wrap:pretty">Wanted objects with a priority and a price cap. Dashed edge, no shadow: not yours yet.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <img src="screens/insure.jpg" alt="CLCTN — insure screen" loading="lazy" width="480" height="1041" style="width:100%;height:auto;display:block;border-radius:28px;box-shadow:5px 5px 0 #17130F">
+        <div style="font:700 14px Archivo,sans-serif">Insurance export</div>
+        <div style="font:400 13px/1.5 Archivo,sans-serif;color:#6E6458;text-wrap:pretty">The document an insurer accepts — values, conditions, provenance, dated.</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="import" style="max-width:1180px;margin:0 auto;padding:80px 28px 0">
+    <div style="border:2.5px solid #17130F;border-radius:26px;background:#fff;box-shadow:8px 8px 0 #17130F;padding:40px 40px 34px">
+      <div style="display:grid;grid-template-columns:1fr 380px;gap:48px;align-items:start">
+        <div>
+          <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:14px">IMPORT · 60 SECONDS</div>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:44px;line-height:.95;letter-spacing:-.04em;text-wrap:balance">You already typed it in once.</div>
+          <div style="font:400 16px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:520px;margin-top:18px;text-wrap:pretty">Paste your Discogs username, drop a CSV, or connect the app you're already in. CLCTN pulls the whole shelf — pressings, grades, purchase prices, dates — and shows you every row before it saves a single one.</div>
+          <div style="display:flex;gap:9px;flex-wrap:wrap;margin-top:22px">
+            <sc-for list="{{ sources }}" as="s" hint-placeholder-count="5">
+              <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.1em;border:2.5px solid #17130F;border-radius:999px;padding:9px 14px;background:#EDE4D6">{{ s }}</div>
+            </sc-for>
+          </div>
+          <div style="font:400 13px/1.6 Archivo,sans-serif;color:#6E6458;margin-top:20px;max-width:520px;text-wrap:pretty">Nothing is confirmed on your behalf. Imported rows stay badged <span style="font-family:'DM Mono',monospace;font-size:11px;border:2px solid #17130F;border-radius:6px;padding:1px 5px;background:#FFD24A">AUTO</span> until you agree with them.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <sc-for list="{{ steps }}" as="st" hint-placeholder-count="3">
+            <div style="display:flex;gap:14px;align-items:flex-start;border:2.5px solid #17130F;border-radius:16px;background:#F3ECE0;padding:15px 16px">
+              <div style="flex:none;width:28px;height:28px;border:2.5px solid #17130F;border-radius:999px;background:#FF5B2E;color:#F3ECE0;display:flex;align-items:center;justify-content:center;font:700 12px Archivo,sans-serif">{{ st.n }}</div>
+              <div>
+                <div style="font:700 14px Archivo,sans-serif;margin-bottom:4px">{{ st.t }}</div>
+                <div style="font:400 13px/1.5 Archivo,sans-serif;color:#5A5045;text-wrap:pretty">{{ st.b }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="lend" style="max-width:1180px;margin:0 auto;padding:80px 28px 0;display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:stretch">
+    <div style="border:2.5px solid #17130F;border-radius:26px;background:#FFD24A;box-shadow:8px 8px 0 #17130F;padding:36px">
+      <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#7A6A3C;margin-bottom:14px">LENDING LEDGER</div>
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:40px;line-height:.95;letter-spacing:-.04em">Who has your<br>Catan, and since<br>when.</div>
+      <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:18px;text-wrap:pretty">Every loan is a two-sided handshake with a reason attached. Both people confirm the hand-off and the return, so nothing changes state because someone else tapped something.</div>
+      <div style="margin-top:24px;display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;align-items:center;gap:12px;border:2.5px solid #17130F;border-radius:14px;background:#F3ECE0;padding:12px 14px">
+          <div style="flex:none;width:34px;height:34px;border:2.5px solid #17130F;border-radius:999px;background:#0E6E5E"></div>
+          <div style="flex:1"><div style="font:700 13.5px Archivo,sans-serif">Brass: Birmingham → Thomas</div><div style="font:500 9px 'DM Mono',monospace;color:#8A7F70;margin-top:3px">OUT 12 DAYS · GAME NIGHT</div></div>
+          <div style="font:500 9px 'DM Mono',monospace;border:2px solid #17130F;border-radius:999px;padding:4px 8px;background:#fff">DUE FRI</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;border:2.5px solid #17130F;border-radius:14px;background:#F3ECE0;padding:12px 14px">
+          <div style="flex:none;width:34px;height:34px;border:2.5px solid #17130F;border-radius:999px;background:#E5457B"></div>
+          <div style="flex:1"><div style="font:700 13.5px Archivo,sans-serif">Dune (1965 hb) → Léa</div><div style="font:500 9px 'DM Mono',monospace;color:#8A7F70;margin-top:3px">OUT 94 DAYS · SHE ASKED NICELY</div></div>
+          <div style="font:500 9px 'DM Mono',monospace;border:2px solid #17130F;border-radius:999px;padding:4px 8px;background:#C2371F;color:#F3ECE0">OVERDUE</div>
+        </div>
+      </div>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:26px;background:#17130F;color:#F3ECE0;box-shadow:8px 8px 0 #0E6E5E;padding:36px;display:flex;flex-direction:column">
+      <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:14px">VALUE · OPTIONAL</div>
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:40px;line-height:.95;letter-spacing:-.04em">Money is a<br>switch, not the<br>whole app.</div>
+      <div style="font:400 15px/1.6 Archivo,sans-serif;color:rgba(243,236,224,.78);margin-top:18px;text-wrap:pretty">Turn it on and every object gets a price receipt: where the number came from, which sales it's based on, when it was last checked. Turn it off and no screen loses its meaning.</div>
+      <div style="flex:1"></div>
+      <div style="margin-top:26px;border:2.5px solid #F3ECE0;border-radius:18px;padding:18px;background:rgba(243,236,224,.06)">
+        <div style="display:flex;justify-content:space-between;align-items:flex-end">
+          <div>
+            <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;color:#8A7F70">COLLECTION VALUE</div>
+            <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:38px;letter-spacing:-.03em;margin-top:4px">€14,280</div>
+          </div>
+          <div style="font:500 10px 'DM Mono',monospace;border:2px solid #0E6E5E;border-radius:999px;padding:5px 10px;background:#0E6E5E;color:#F3ECE0">+ €412 / 90d</div>
+        </div>
+        <div style="font:400 12px/1.5 Archivo,sans-serif;color:rgba(243,236,224,.6);margin-top:12px;text-wrap:pretty">Based on 1,104 real sales. Tap any number to see the ones it used.</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="hunt" style="max-width:1180px;margin:0 auto;padding:80px 28px 0">
+    <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:14px">WANTING · AND FINDING</div>
+    <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:46px;line-height:.95;letter-spacing:-.04em;max-width:820px;text-wrap:balance">Half of collecting is the thing you haven't got yet.</div>
+    <div style="font:400 15.5px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:680px;margin-top:16px;text-wrap:pretty">A wanted object is an ordinary object with the owned flag off — same fields, same photos, same price history. Which means the app already knows what you are hunting, and can watch for it without you doing anything else.</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:30px">
+      <sc-for list="{{ hunt }}" as="h" hint-placeholder-count="3">
+        <div style="border:2.5px solid #17130F;border-radius:18px;background: {{ h.bg }};color: {{ h.fg }};padding:24px;box-shadow:5px 5px 0 #17130F;display:flex;flex-direction:column">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;opacity:.6;margin-bottom:12px">{{ h.k }}</div>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:25px;line-height:1.02;letter-spacing:-.03em;margin-bottom:10px">{{ h.t }}</div>
+          <div style="font:400 13.5px/1.6 Archivo,sans-serif;opacity:.86;text-wrap:pretty">{{ h.b }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="max-width:1180px;margin:0 auto;padding:80px 28px 0">
+    <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:14px">THE SMALL PRINT COLLECTORS CARE ABOUT</div>
+    <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:46px;line-height:.95;letter-spacing:-.04em;max-width:840px;text-wrap:balance">Eight decisions you only notice if you actually collect.</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:32px">
+      <sc-for list="{{ details }}" as="d" hint-placeholder-count="8">
+        <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;padding:20px;box-shadow:4px 4px 0 #17130F">
+          <div style="font:700 15.5px/1.25 Archivo,sans-serif;margin-bottom:9px;text-wrap:pretty">{{ d.t }}</div>
+          <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ d.b }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="max-width:1180px;margin:0 auto;padding:80px 28px 0;display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:stretch">
+    <div style="border:2.5px solid #17130F;border-radius:26px;background:#0E6E5E;color:#F3ECE0;box-shadow:8px 8px 0 #17130F;padding:36px;display:flex;flex-direction:column">
+      <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:rgba(243,236,224,.6);margin-bottom:14px">THE GROWN-UP PART</div>
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:40px;line-height:.95;letter-spacing:-.04em">The collection<br>outlives the<br>collector.</div>
+      <div style="font:400 15px/1.6 Archivo,sans-serif;color:rgba(243,236,224,.82);margin-top:18px;text-wrap:pretty">One export gives an insurer exactly what they ask for: every object, its condition, its provenance, and a dated value with the sales behind it. It is the same document your family will need one day — a shelf someone can understand without ever having learned the grading scale.</div>
+      <div style="flex:1"></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:24px">
+        <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #F3ECE0;border-radius:999px;padding:7px 12px">INSURANCE PDF</div>
+        <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #F3ECE0;border-radius:999px;padding:7px 12px">CSV + JSON</div>
+        <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #F3ECE0;border-radius:999px;padding:7px 12px">PHOTOS INCLUDED</div>
+        <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #F3ECE0;border-radius:999px;padding:7px 12px">DATED</div>
+      </div>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:26px;background:#fff;box-shadow:8px 8px 0 #17130F;padding:36px;display:flex;flex-direction:column">
+      <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:14px">MAKE IT YOURS</div>
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:40px;line-height:.95;letter-spacing:-.04em">Two questions,<br>then it fits.</div>
+      <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:18px;text-wrap:pretty">A casual owner and a hardcore collector do not want the same app. Onboarding asks who you are and sets the density, the tab bar and how much money you see. Every answer is editable afterwards, and nothing is decided silently.</div>
+      <div style="flex:1"></div>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:24px">
+        <sc-for list="{{ mine }}" as="m" hint-placeholder-count="4">
+          <div style="display:flex;gap:14px;align-items:baseline;border-top:2px solid rgba(23,19,15,.14);padding-top:10px">
+            <div style="flex:none;width:96px;font:500 9px 'DM Mono',monospace;letter-spacing:.1em;color:#8A7F70">{{ m.k }}</div>
+            <div style="flex:1;font:400 13.5px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ m.b }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <div style="max-width:1180px;margin:0 auto;padding:80px 28px 0">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px">
+      <sc-for list="{{ promises }}" as="p" hint-placeholder-count="3">
+        <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;padding:22px;box-shadow:5px 5px 0 #17130F">
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:22px;line-height:1.05;letter-spacing:-.03em;margin-bottom:10px">{{ p.t }}</div>
+          <div style="font:400 13.5px/1.6 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ p.b }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="max-width:1180px;margin:0 auto;padding:26px 28px 0">
+    <div style="border:2.5px solid #17130F;border-radius:26px;background:#2B44D6;color:#F3ECE0;box-shadow:8px 8px 0 #17130F;padding:34px 36px;display:grid;grid-template-columns:1fr 380px;gap:40px;align-items:center">
+      <div>
+        <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:rgba(243,236,224,.6);margin-bottom:12px">THE SEVENTEENTH TYPE</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:40px;line-height:.95;letter-spacing:-.04em">Collectors decide what<br>gets built next.</div>
+        <div style="font:400 15px/1.6 Archivo,sans-serif;color:rgba(243,236,224,.82);margin-top:16px;max-width:560px;text-wrap:pretty">Fountain pens, mineral specimens, tour posters, Formula 1 die-casts. Make the type you need, propose it, and if enough people want it we build the real version — proper fields, proper grading scale — and migrate your objects into it without losing a value.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <sc-for list="{{ proposals }}" as="p" hint-placeholder-count="3">
+          <div style="display:flex;align-items:center;gap:12px;border:2.5px solid #F3ECE0;border-radius:14px;background:rgba(243,236,224,.08);padding:12px 14px">
+            <div style="flex:1;font:700 14px Archivo,sans-serif">{{ p.n }}</div>
+            <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.08em;border:2px solid #F3ECE0;border-radius:999px;padding:4px 9px;background: {{ p.bg }};color: {{ p.fg }}">{{ p.v }}</div>
+          </div>
+        </sc-for>
+        <div style="font:400 12px/1.5 Archivo,sans-serif;color:rgba(243,236,224,.6);margin-top:2px">Live proposals, voted in the app.</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="max-width:1180px;margin:0 auto;padding:88px 28px 0">
+    <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:14px">WHERE THIS GOES</div>
+    <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:46px;line-height:.95;letter-spacing:-.04em;max-width:820px;text-wrap:balance">The whole life of an object, not just the day you bought it.</div>
+    <div style="font:400 15.5px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:660px;margin-top:16px;text-wrap:pretty">A collection outlives most software. So the plan is written down, in order, and each step only ships when the one before it is genuinely good. Here is the whole thing.</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:32px">
+      <sc-for list="{{ vision }}" as="v" hint-placeholder-count="6">
+        <div style="border:2.5px solid #17130F;border-radius:18px;background: {{ v.bg }};color: {{ v.fg }};padding:22px;box-shadow:5px 5px 0 #17130F;display:flex;flex-direction:column">
+          <div style="display:flex;align-items:center;gap:9px;margin-bottom:12px">
+            <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;border:2px solid {{ v.fg }};border-radius:999px;padding:4px 9px">{{ v.when }}</div>
+            <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;opacity:.55">{{ v.k }}</div>
+          </div>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:24px;line-height:1.02;letter-spacing:-.03em;margin-bottom:10px">{{ v.t }}</div>
+          <div style="font:400 13.5px/1.6 Archivo,sans-serif;opacity:.86;text-wrap:pretty">{{ v.b }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div id="price" style="max-width:1180px;margin:0 auto;padding:88px 28px 0">
+    <div style="text-align:center;margin-bottom:34px">
+      <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:14px">PRICE</div>
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:46px;line-height:.95;letter-spacing:-.04em">Buy it once. Keep it forever.</div>
+      <div style="font:400 15.5px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:600px;margin:16px auto 0;text-wrap:pretty">This is how it will be priced when it ships. The price rises as the app grows, but never for you — whatever you pay is the last time you pay, for every feature on this page and everything after it.</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1.15fr;gap:22px;align-items:stretch;max-width:900px;margin:0 auto">
+      <div style="border:2.5px solid #17130F;border-radius:22px;background:#fff;padding:28px;box-shadow:5px 5px 0 #17130F;display:flex;flex-direction:column">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;color:#8A7F70">FREE</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:42px;letter-spacing:-.03em;margin:8px 0 4px">€0</div>
+        <div style="font:400 13.5px/1.6 Archivo,sans-serif;color:#5A5045;margin-bottom:18px">One collection, up to 50 objects, on every Apple device you own. No account, no nagging.</div>
+        <sc-for list="{{ freeList }}" as="f" hint-placeholder-count="3">
+          <div style="display:flex;gap:9px;font:400 13px/1.5 Archivo,sans-serif;color:#3A2F26;margin-bottom:8px"><span style="font-family:'DM Mono',monospace;font-weight:500">+</span><span>{{ f }}</span></div>
+        </sc-for>
+        <div style="flex:1"></div>
+        <a href="#get" style="display:block;text-align:center;font:700 14px Archivo,sans-serif;padding:14px;border:2.5px solid #17130F;border-radius:999px;background:#fff;margin-top:18px;color:#17130F">Free at launch</a>
+      </div>
+      <div style="border:2.5px solid #17130F;border-radius:22px;background:#17130F;color:#F3ECE0;padding:28px;box-shadow:6px 6px 0 #FF5B2E;display:flex;flex-direction:column;position:relative">
+        <div style="position:absolute;top:-14px;right:22px;font:500 9px 'DM Mono',monospace;letter-spacing:.1em;border:2.5px solid #17130F;border-radius:999px;padding:6px 11px;background:#FFD24A;color:#17130F;transform:rotate(-3deg)">{{ ladderNote }}</div>
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;color:#FFD24A">FULL UNLOCK · ONE PAYMENT</div>
+        <div style="display:flex;align-items:baseline;gap:12px;margin:8px 0 4px">
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:52px;letter-spacing:-.035em">{{ price }}</div>
+          <div style="font:500 12px 'DM Mono',monospace;color:#8A7F70;text-decoration:line-through">{{ nextPrice }} SOON</div>
+        </div>
+        <div style="font:400 13.5px/1.6 Archivo,sans-serif;color:rgba(243,236,224,.78);margin-bottom:18px">Unlimited objects, every collection type, every import source. No subscription and no upsell inside the app.</div>
+        <sc-for list="{{ paidList }}" as="f" hint-placeholder-count="5">
+          <div style="display:flex;gap:9px;font:400 13px/1.5 Archivo,sans-serif;color:rgba(243,236,224,.9);margin-bottom:8px"><span style="font-family:'DM Mono',monospace;font-weight:500;color:#FF5B2E">+</span><span>{{ f }}</span></div>
+        </sc-for>
+        <div style="flex:1"></div>
+        <a href="#get" style="display:block;text-align:center;font:700 14px Archivo,sans-serif;padding:15px;border:2.5px solid #F3ECE0;border-radius:999px;background:#FF5B2E;color:#F3ECE0;margin-top:18px">Reserve the founding price</a>
+      </div>
+    </div>
+  </div>
+
+  <div style="max-width:1180px;margin:0 auto;padding:80px 28px 0">
+    <div style="border:2.5px solid #17130F;border-radius:26px;background:#EDE4D6;box-shadow:8px 8px 0 #17130F;padding:36px 40px">
+      <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:12px">EVERYTHING IN THE BOX</div>
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:34px;line-height:.98;letter-spacing:-.035em;max-width:680px;text-wrap:balance">The whole list, with nothing hidden behind a second purchase.</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:28px;margin-top:30px">
+        <sc-for list="{{ box }}" as="g" hint-placeholder-count="4">
+          <div>
+            <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;color:#8A7F70;border-bottom:2px solid #17130F;padding-bottom:8px;margin-bottom:13px">{{ g.k }}</div>
+            <sc-for list="{{ g.items }}" as="i" hint-placeholder-count="7">
+              <div style="display:flex;gap:8px;font:400 13px/1.5 Archivo,sans-serif;color:#3A2F26;margin-bottom:9px"><span style="font-family:'DM Mono',monospace;font-weight:500;color:#FF5B2E">+</span><span>{{ i }}</span></div>
+            </sc-for>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <div style="max-width:900px;margin:0 auto;padding:80px 28px 0">
+    <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:20px">STRAIGHT ANSWERS</div>
+    <sc-for list="{{ faq }}" as="f" hint-placeholder-count="5">
+      <div style="border-top:2px solid rgba(23,19,15,.15);padding:18px 0;display:grid;grid-template-columns:300px 1fr;gap:28px">
+        <div style="font:700 15px/1.35 Archivo,sans-serif;text-wrap:pretty">{{ f.q }}</div>
+        <div style="font:400 14px/1.65 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ f.a }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div id="get" style="max-width:1180px;margin:0 auto;padding:88px 28px 0">
+    <div style="border:2.5px solid #17130F;border-radius:26px;background:#FF5B2E;color:#17130F;box-shadow:8px 8px 0 #17130F;padding:52px 40px;text-align:center">
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:54px;line-height:.92;letter-spacing:-.045em;text-wrap:balance">Tell us it should exist.</div>
+      <div style="font:400 16px/1.6 Archivo,sans-serif;max-width:560px;margin:18px auto 0;text-wrap:pretty">CLCTN is being built in the open. Leave your email to get the beta first, keep the founding price of {{ price }}, and vote on which collection type gets built next.</div>
+      <div style="display:flex;gap:10px;justify-content:center;margin:28px auto 0;flex-wrap:wrap;max-width:560px">
+        <input type="email" value="{{ email }}" onChange="{{ onEmail }}" placeholder="you@collector.com" style="flex:1 1 260px;font:500 15px Archivo,sans-serif;color:#17130F;background:#F3ECE0;border:2.5px solid #17130F;border-radius:999px;padding:15px 22px;box-shadow:4px 4px 0 #17130F;outline:none">
+        <div onClick="{{ onSubmit }}" style="cursor:pointer;font:700 15px Archivo,sans-serif;color:#F3ECE0;background:#17130F;border:2.5px solid #17130F;border-radius:999px;padding:16px 28px;box-shadow:4px 4px 0 #F3ECE0">{{ ctaLabel }}</div>
+      </div>
+      <div style="font:400 13px Archivo,sans-serif;color:rgba(23,19,15,.72);margin-top:14px">{{ footNote }}</div>
+    </div>
+  </div>
+
+  <div style="max-width:1180px;margin:0 auto;padding:44px 28px 56px;display:flex;gap:24px;align-items:center;flex-wrap:wrap">
+    <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:20px;letter-spacing:-.04em">CLCTN</div>
+    <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;color:#8A7F70">© 2026 · MADE FOR COLLECTORS, IN FRANCE</div>
+    <div style="flex:1"></div>
+    <div style="display:flex;gap:20px">
+      <a href="#price" style="font:500 12px Archivo,sans-serif;color:#6E6458">Pricing</a>
+      <a href="#import" style="font:500 12px Archivo,sans-serif;color:#6E6458">Import</a>
+      <a href="#get" style="font:500 12px Archivo,sans-serif;color:#6E6458">Privacy</a>
+      <a href="#get" style="font:500 12px Archivo,sans-serif;color:#6E6458">Contact</a>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;price&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;€19.99&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Pricing&quot;},&quot;nextPrice&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;€24.99&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Pricing&quot;},&quot;ladderNote&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;FIRST 1,000 BUYERS&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Pricing&quot;},&quot;showValue&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Content&quot;}}">
+class Component extends DCLogic {
+  state = { email: '', sent: false };
+  renderVals() {
+    const onEmail = e => this.setState({ email: e.target.value });
+    const onSubmit = () => { if (this.state.email.includes('@')) this.setState({ sent: true }); };
+    const price = this.props.price ?? '€19.99';
+    const nextPrice = this.props.nextPrice ?? '€24.99';
+    const showValue = this.props.showValue ?? true;
+    return {
+      price, nextPrice, onEmail, onSubmit,
+      email: this.state.email,
+      footNote: this.state.sent ? 'Added. Nothing else will land in your inbox.' : 'No spam, no launch countdown theatre. Unsubscribe in one tap.',
+      ctaLabel: this.state.sent ? 'You\u2019re on the list ✓' : 'Get early access',
+      heroNote: this.state.sent
+        ? 'Thank you. You\u2019ll get the first build, the founding price, and a vote on which type gets built next — nothing else.'
+        : 'Early access to the beta, the founding price when it ships, and a vote on the next collection type. One email a month at most.',
+      ladderNote: this.props.ladderNote ?? 'FIRST 1,000 BUYERS',
+      shelf: [
+        { title: 'Malibu', meta: 'ANDERSON .PAAK · 2016 · NM', chip: '★', chipBg: '#E5457B', chipFg: '#F3ECE0', art: 'linear-gradient(150deg,#E5457B,#FF5B2E 55%,#FFD24A)' },
+        { title: 'Moon Safari', meta: 'AIR · 1998 · VG+', chip: 'LENT', chipBg: '#FFD24A', chipFg: '#17130F', art: 'radial-gradient(circle at 34% 30%,#9FD4E8,#2B44D6 70%)' },
+        { title: 'Bitches Brew', meta: 'MILES DAVIS · 1970 · VG', chip: '€180', chipBg: '#0E6E5E', chipFg: '#F3ECE0', art: 'conic-gradient(from 20deg,#0E6E5E,#F3ECE0 30%,#0E6E5E 56%,#17130F)' },
+        { title: 'Homework', meta: 'DAFT PUNK · 1997 · NM', chip: 'NM', chipBg: '#fff', chipFg: '#17130F', art: 'linear-gradient(120deg,#17130F 40%,#C2371F)' }
+      ],
+      types: [
+        { n: 'Vinyl', c: '#0E6E5E' }, { n: 'Cassettes', c: '#0E6E5E' }, { n: 'Compact discs', c: '#0E6E5E' },
+        { n: 'Board games', c: '#FF5B2E' }, { n: 'Retro games', c: '#7C8CF0' }, { n: 'LEGO', c: '#FF5B2E' },
+        { n: 'Action figures', c: '#FF5B2E' }, { n: 'Comics', c: '#E5457B' }, { n: 'Books', c: '#E5457B' },
+        { n: 'Trading cards', c: '#E5457B' }, { n: 'Coins', c: '#FFD24A' }, { n: 'Stamps', c: '#FFD24A' },
+        { n: 'Watches', c: '#FFD24A' }, { n: 'Sneakers', c: '#FFD24A' }, { n: 'Cars', c: '#7C8CF0' },
+        { n: 'Motorbikes', c: '#7C8CF0' }
+      ],
+      questions: [
+        { k: '01', t: 'What is it', b: 'Photo first, barcode second, typing last. The catalogue proposes the pressing, the edition, the year — you confirm it.', bg: '#fff', fg: '#17130F' },
+        { k: '02', t: 'Where is it', b: 'Shelf, crate, storage unit, your brother\u2019s flat. Locations are real places, not a free-text field you stop filling in.', bg: '#fff', fg: '#17130F' },
+        { k: '03', t: 'Who has it', b: 'A lending ledger with a reason and a due date on every loan. Both sides confirm the hand-off and the return.', bg: '#FFD24A', fg: '#17130F' },
+        { k: '04', t: 'What happened', b: 'Lent, returned scratched, serviced, regraded, sold. Events append to the object\u2019s history instead of overwriting it.', bg: '#0E6E5E', fg: '#F3ECE0' }
+      ],
+      platforms: [
+        { k: 'iPHONE', t: 'The shelf in your pocket', b: 'Add by photo at the record shop, check whether you already own it before you buy, hand something over and log the loan on the spot.' },
+        { k: 'iPAD', t: 'The one you browse on', b: 'The collection at full size — covers, spines and photographs the way they deserve. Good for showing someone your shelf without handing them your phone.' },
+        { k: 'MAC', t: 'The one you do the work on', b: 'Bulk edits, multi-select, keyboard shortcuts, drag between collections, big imports and exports. Everything that is miserable on a phone.' }
+      ],
+      vision: [
+        { when: 'FIRST', k: 'THE CATALOGUE', t: 'Know what you own', b: 'Photo-first adding, sixteen typed collections, locations, history and the lending ledger. Offline, on iPhone, iPad and Mac. This part is the foundation and it never becomes a paywall.', bg: '#fff', fg: '#17130F' },
+        { when: 'NEXT', k: 'IMPORT', t: 'Bring twenty years with you', b: 'One-click import from Discogs, PriceCharting, CollX, Collectr and any CSV, with a reveal screen that shows every row before it saves one.', bg: '#fff', fg: '#17130F' },
+        { when: 'NEXT', k: 'VALUE', t: 'Numbers you can audit', b: 'Optional value tracking built on completed sales, revalued continuously, with a receipt behind every figure and an honest silence when the data is too thin.', bg: '#0E6E5E', fg: '#F3ECE0' },
+        { when: 'THEN', k: 'WISHLISTS', t: 'Wants, shared safely', b: 'A wanted object is an ordinary object with the flag off. Share the list with no account attached — it reveals what you want and never what you hold.', bg: '#fff', fg: '#17130F' },
+        { when: 'THEN', k: 'THE MARKET', t: 'Offers, not shelves', b: 'Search what collectors have actually put up for sale. This is the one part that needs an account — an index of offers, never of collections. List something and it appears; unlist it and it is gone the same second.', bg: '#FFD24A', fg: '#17130F' },
+        { when: 'LATER', k: 'THE LONG GAME', t: 'Insurance, estates, inheritance', b: 'Valuation reports an insurer accepts, disposal plans, and a collection that can be handed to someone who never learned the grading scale — with its whole history intact.', bg: '#17130F', fg: '#F3ECE0' }
+      ],
+      proposals: [
+        { n: 'Fountain pens', v: '412 VOTES', bg: 'transparent', fg: '#F3ECE0' },
+        { n: 'Concert posters', v: '380 VOTES', bg: 'transparent', fg: '#F3ECE0' },
+        { n: 'Perfume', v: 'IN BUILD', bg: '#FFD24A', fg: '#17130F' }
+      ],
+      no: false,
+      hunt: [
+        { k: 'THE LIST', t: 'Wants, with a ceiling', b: 'Priority, target grade and the most you will pay. Wanted objects never count in your value or your insurance export — they sit in their own shelf with a dashed edge.', bg: '#fff', fg: '#17130F' },
+        { k: 'SHARED SAFELY', t: 'Hand someone your list, not your shelf', b: 'A shared wishlist opens with no account and matches against what the other person owns. It reveals exactly what you are looking for and nothing whatsoever about what you already hold.', bg: '#fff', fg: '#17130F' },
+        { k: 'THE ALERT', t: 'It tells you when the grail appears', b: 'Someone lists your pressing, in your grade, under your cap — the app says so once. Near misses stay silent, because an alert that fires on everything is an alert you turn off.', bg: '#FFD24A', fg: '#17130F' }
+      ],
+      details: [
+        { t: 'Four copies, one row', b: 'Duplicates are a quantity with individual grades underneath — and the app knows which copy is the one you would actually sell.' },
+        { t: 'Borrowed things are visible, never counted', b: 'What you are holding for someone else shows on your shelf and stays out of your value, your stats and your insurance document.' },
+        { t: 'People have a track record', b: 'Every person you lend to has a page: what they hold now, and how reliably things have come back before.' },
+        { t: 'One coin out of a lot', b: 'Promote anything out of a bulk purchase into a tracked object with its own grade, photos and history, without breaking the lot.' },
+        { t: 'Mixed shelves are allowed', b: 'A collection does not need one type. Every object can carry its own, and sorting falls back to the fields they share.' },
+        { t: 'It works in a basement', b: 'Adding, editing and lending are entirely offline. Lookups queue and resolve when there is signal again.' },
+        { t: 'Sold is not deleted', b: 'An object that leaves stays in your history with what it fetched and who took it. Your record of owning it survives the sale.' },
+        { t: 'Notifications you opted into', b: 'Every nudge is listed with its trigger and most are off to begin with. When the queue is empty the app says nothing at all.' }
+      ],
+      mine: [
+        { k: 'PROFILE', b: 'Hardcore, hobbyist or casual owner — it sets how dense the shelf is and how loud the money is.' },
+        { k: 'TAB BAR', b: 'Five slots you reorder yourself. Scan is fixed in the middle; the other four are yours.' },
+        { k: 'FIELDS', b: 'Add your own fields to any type, and say what kind each one is so it sorts properly.' },
+        { k: 'MONEY OFF', b: 'Hide value everywhere in one switch. No screen loses its meaning without it.' }
+      ],
+      box: [
+        { k: 'CATALOGUE', items: ['Photo, barcode and 3D capture', 'Sixteen typed collections', 'Custom and mixed types', 'Real locations, not free text', 'Duplicates with per-copy grades', 'Annotate a spot on an object', 'Full event history per object'] },
+        { k: 'FIND & UNDERSTAND', items: ['Stacked filter search', 'Stats by type, never averaged', 'Gaps in a run or a set', 'Review queue for anything guessed', 'Sort on any field, including yours', 'Works completely offline'] },
+        { k: 'PEOPLE', items: ['Two-sided lending handshake', 'Due dates and gentle reminders', 'Borrowed items, uncounted', 'Person pages with a track record', 'Shared shelves with two owners', 'Share one object by link', 'Listening list from the shelf'] },
+        { k: 'MONEY & AFTER', items: ['Optional value, with receipts', 'Wishlist with a price cap', 'Wishlist hit alerts', 'Search what people will sell', 'Insurance-ready export', 'CSV and JSON out, photos included', 'Estate and handover documents'] }
+      ],
+      sources: ['DISCOGS', 'PRICECHARTING', 'COLLX', 'COLLECTR', 'CSV / SPREADSHEET'],
+      steps: [
+        { n: '1', t: 'Point at your old app', b: 'Username, export file, or a direct connection. No password of ours to make up.' },
+        { n: '2', t: 'Watch it fill', b: 'Rows land live with their pressing, grade and what you paid, mapped into real typed fields.' },
+        { n: '3', t: 'Approve the shelf', b: 'One reveal screen: everything matched, everything ambiguous, nothing saved until you say so.' }
+      ],
+      promises: showValue ? [
+        { t: 'No account to catalogue. Ever.', b: 'Your shelf lives on your devices and syncs through your own iCloud — no server of ours holds it. The one day an account appears is the day you deal with another collector: a shared wishlist, an offer to buy or sell. It carries a name, a contact and the item in question. Never your collection.' },
+        { t: 'Your data leaves whenever you want', b: 'Full CSV and JSON export in two taps, photos included. A catalogue you can\u2019t take with you isn\u2019t yours.' },
+        { t: 'Nothing saves silently', b: 'Scans, imports and price lookups propose; you confirm. Guessed values stay badged AUTO until a human touches them.' }
+      ] : [
+        { t: 'No account, no cloud, no exceptions', b: 'Cataloguing works offline forever and lives on your phone. An account only ever buys sync and sharing.' },
+        { t: 'Your data leaves whenever you want', b: 'Full CSV and JSON export in two taps, photos included.' },
+        { t: 'Nothing saves silently', b: 'Scans and imports propose; you confirm. Guessed values stay badged AUTO until a human touches them.' }
+      ],
+      freeList: ['One collection, fifty objects', 'Photo and barcode adding', 'Lending ledger and history', 'Works entirely offline'],
+      paidList: ['Unlimited collections and objects', 'One-click import from Discogs, PriceCharting, CollX and Collectr', 'Optional value tracking with price receipts', 'Insurance-ready exports and reports', 'Every collection type we ever ship'],
+      faq: [
+        { q: 'When can I actually use it?', a: 'The catalogue and the lending ledger go to beta first, with import right behind it; value, wishlists and the marketplace follow in that order. Everything on this page is the plan, not a shipped product — the newsletter is how you find out when each piece is real, and how you tell us which one matters most to you.' },
+        { q: 'Is there a subscription?', a: 'No. One payment unlocks the app permanently, including every type and feature added later. If we ever build something that costs us money every month to run, it will be its own optional thing — never a rent on what you already bought.' },
+        { q: 'Do I need an account?', a: 'Not to catalogue — that works with no sign-up and no network, and syncs across your Apple devices through your own iCloud. Dealing with other collectors is the exception and we are upfront about it: to search what people are selling, or to make an offer, there has to be an identity behind it. That account holds a display name, a contact address and the objects you chose to list. Your shelf stays where it always was.' },
+        { q: 'Do I pay once for all three apps?', a: 'Once, for all of them. iPhone, iPad and Mac are a single purchase through your Apple account, and Family Sharing works too.' },
+        { q: 'Where do the values come from?', a: 'Real completed sales, not asking prices. Every number opens a receipt showing which sales it used, how many, and when it was last refreshed. If there aren\u2019t enough sales to be honest, the app says so instead of inventing a figure.' },
+        { q: 'What if my collection isn\u2019t one of the sixteen?', a: 'Build it. You can borrow the nearest type and edit it, or declare your own fields from scratch — and then propose it to everyone else. Types that collectors vote up get built properly, with a real grading scale, and your objects migrate into the official version with every value intact.' },
+        { q: 'Why does the price go up?', a: 'Because early buyers take the risk of an app that isn\u2019t finished. The founding price is the reward for that, and it\u2019s locked to you for good. Everyone pays once; some just pay less.' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

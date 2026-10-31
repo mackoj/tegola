@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#EAE3D6}a{color:#2B44D6}a:hover{color:#FF5B2E}</style>
+</helmet>
+<div style="max-width:1360px;margin:0 auto;padding:60px 28px 100px;font-family:Archivo,system-ui,sans-serif;color:#17130F;box-sizing:border-box">
+  <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+    <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70">CLCTN · FIELD FEEDBACK · VIDEO GAME · OCTOBER 2026</div>
+    <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#F3ECE0;background:#0E6E5E;border-radius:999px;padding:5px 12px">FROM A SKEPTIC</div>
+  </div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:66px;line-height:.92;letter-spacing:-.045em;margin:16px 0 0;max-width:1020px;text-wrap:balance">He hates every idea. He wants to pay for this one.</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-top:20px;text-wrap:pretty">One retro-game collector, a ten-minute pitch and a prototype. Seven asks. Three already exist and he didn’t find them. Two are small changes to <span style="font-family:'DM Mono',monospace">video-game.yml</span>. Two turn out to be one new feature. <strong>Every ask is about seeing or completing the collection. None is about being warned.</strong></div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:20px">01 · THE SEVEN ASKS, TRIAGED</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px">
+    <sc-for list="{{ asks }}" as="a" hint-placeholder-count="7">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 {{ a.c }};overflow:hidden;display:flex;flex-direction:column">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 18px;background:#17130F;color:#F3ECE0">
+          <div style="font:500 9.5px 'DM Mono',monospace;letter-spacing:.12em;opacity:.6">{{ a.n }}</div>
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;background:{{ a.c }};color:#fff;border-radius:999px;padding:3px 9px">{{ a.tag }}</div>
+        </div>
+        <div style="padding:16px 18px;display:flex;flex-direction:column;gap:10px">
+          <div style="font:italic 400 14px/1.5 Archivo,sans-serif;color:#6E6458">“{{ a.q }}”</div>
+          <div style="font:700 15px Archivo,sans-serif">{{ a.t }}</div>
+          <div style="font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ a.b }}</div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">02 · SERIES AND “DOOM ON EVERYTHING” ARE THE SAME FEATURE</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:22px;text-wrap:pretty">Both use the existing <span style="font-family:'DM Mono',monospace">set</span> signature. Only the grouping key changes. The real addition is a <strong>work</strong> layer above the release: one game, many platform versions. Game databases already store this. It also fixes duplicate detection, since Doom on PS1 and Doom on 32X are not duplicates.</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:16px">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #2B44D6;padding:20px 22px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70">SET · GROUPED BY SERIES · PS1</div>
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:28px;letter-spacing:-.03em;margin:6px 0 4px">Ridge Racer</div>
+      <div style="font:600 13px Archivo,sans-serif;color:#2B44D6;margin-bottom:14px">2 of 4 on PS1</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <sc-for list="{{ ridge }}" as="r" hint-placeholder-count="4">
+          <div style="display:flex;align-items:center;gap:12px;border:2px solid {{ r.bd }};border-style:{{ r.bs }};border-radius:12px;padding:10px 14px;background:{{ r.bg }}">
+            <div style="width:22px;height:22px;border-radius:6px;border:2px solid #17130F;display:flex;align-items:center;justify-content:center;font:700 13px Archivo,sans-serif;background:{{ r.cb }};color:#fff;flex:none">{{ r.mark }}</div>
+            <div style="font:600 14px Archivo,sans-serif;flex:1;color:{{ r.fg }}">{{ r.t }}</div>
+            <div style="font:500 10px 'DM Mono',monospace;color:#8A7F70">{{ r.y }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #C2371F;padding:20px 22px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70">SET · GROUPED BY WORK · ALL PLATFORMS</div>
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:28px;letter-spacing:-.03em;margin:6px 0 4px">Doom</div>
+      <div style="font:600 13px Archivo,sans-serif;color:#C2371F;margin-bottom:14px">Also exists on · 3 of 6 owned</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+        <sc-for list="{{ doom }}" as="d" hint-placeholder-count="6">
+          <div style="border:2px solid {{ d.bd }};border-style:{{ d.bs }};border-radius:12px;padding:12px;background:{{ d.bg }};display:flex;flex-direction:column;gap:4px">
+            <div style="font:700 13px 'DM Mono',monospace;color:{{ d.fg }}">{{ d.mark }}</div>
+            <div style="font:700 15px Archivo,sans-serif;color:{{ d.fg }}">{{ d.p }}</div>
+            <div style="font:500 10px 'DM Mono',monospace;color:#8A7F70">{{ d.note }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="font:400 12.5px/1.55 Archivo,sans-serif;color:#6E6458;margin-top:14px;text-wrap:pretty">A limited reprint (the SNES Limited Run release) counts as its own release of the same work, so it gets its own tile, not a variant.</div>
+    </div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">03 · TWO SMALL ADDITIONS TO THE TYPE</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:16px">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #0E6E5E;padding:20px 22px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:6px">FIELD · PLAYSTATUS · REPLACES THE FINISHED FLAG IN PLAYLOG</div>
+      <div style="font:700 16px Archivo,sans-serif;margin-bottom:14px">Where you are with it</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px">
+        <sc-for list="{{ status }}" as="s" hint-placeholder-count="4">
+          <div style="border:2.5px solid #17130F;border-radius:999px;padding:8px 14px;font:600 13px Archivo,sans-serif;background:{{ s.bg }};color:{{ s.fg }}">{{ s.t }}</div>
+        </sc-for>
+      </div>
+      <div style="font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:14px;text-wrap:pretty">This gives a backlog view for free. It's also a clock that fits the thesis: <em>“Started 14 months ago, never finished.”</em> It's opt-in, because people who only collect shouldn't get nagged to play.</div>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #FF5B2E;padding:20px 22px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:6px">SAVED VIEW · IMPERFECT · NO NEW DATA</div>
+      <div style="font:700 16px Archivo,sans-serif;margin-bottom:14px">Everything one part short</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <sc-for list="{{ imperfect }}" as="i" hint-placeholder-count="3">
+          <div style="display:flex;justify-content:space-between;gap:12px;border:2px solid #E0D6C4;border-radius:12px;padding:10px 14px">
+            <div style="font:600 14px Archivo,sans-serif">{{ i.t }}</div>
+            <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.08em;color:#C2371F;white-space:nowrap">{{ i.g }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:14px;text-wrap:pretty">This is a filter on the condition ladder's “missing” and “worn” steps. It's sharable as a wanted list, which fits the trading half of the app.</div>
+    </div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:20px">04 · DECISIONS FOR YOU</div>
+  <div style="display:flex;flex-direction:column;gap:12px;max-width:1000px">
+    <sc-for list="{{ open }}" as="o" hint-placeholder-count="4">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#17130F;color:#F3ECE0;padding:17px 19px;box-shadow:5px 5px 0 #FF5B2E">
+        <div style="display:flex;gap:12px;align-items:baseline">
+          <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.12em;opacity:.55">{{ o.k }}</div>
+          <div style="font:700 16px Archivo,sans-serif">{{ o.q }}</div>
+        </div>
+        <div style="font:400 13.5px/1.6 Archivo,sans-serif;opacity:.82;margin-top:8px;text-wrap:pretty">{{ o.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const EX = '#0E6E5E', SM = '#2B44D6', NEW = '#C2371F';
+    const own = (t, y) => ({ t, y, mark: '✓', cb: '#0E6E5E', bd: '#17130F', bs: 'solid', bg: '#fff', fg: '#17130F' });
+    const miss = (t, y) => ({ t, y, mark: '', cb: '#fff', bd: '#B9AC99', bs: 'dashed', bg: '#FAF6EF', fg: '#8A7F70' });
+    const d = (p, note, has) => has
+      ? { p, note, mark: '✓ OWNED', bd: '#17130F', bs: 'solid', bg: '#fff', fg: '#17130F' }
+      : { p, note, mark: '— MISSING', bd: '#B9AC99', bs: 'dashed', bg: '#FAF6EF', fg: '#8A7F70' };
+    return {
+      asks: [
+        { n: '01', tag: 'EXISTS', c: EX, q: 'Seeing my collection with artwork and metadata', t: 'Lookup already does this', b: 'Barcode or title fills in the cover, year, publisher and region. He never got to add an item in the demo. That argues for onboarding 46: the first item should show up with its art.' },
+        { n: '02', tag: 'EXISTS · PRICE SIGNAL · V2 COMPLETE THE LIBRARY', c: EX, q: 'Textured 3D boxes floating, I’d throw money at you', t: '3D object is Q5 in 43', b: 'This is the strongest willingness-to-pay we’ve heard. Put it in the €29.99 unlock, next to clocks. Q5 (which silhouette per medium) is now worth settling first. In v2 (selling between collectors), missing games appear as ghost 3D boxes on the shelf. A ghost box lights up when another collector lists that exact copy for sale, showing its photos, condition and price.' },
+        { n: '03', tag: 'NEW · V2 COMPLETE THE LIBRARY', c: NEW, q: 'You have Ridge Racer and Type 4 but you’re missing Rage Racer and Revolution', t: 'Series completion', b: 'This is the set signature grouped by series. See section 02. In v2 it becomes “Complete the library”: each missing game is matched against other collectors’ listings first, then a wishlist alert. A buyer who’s missing Rage Racer finds the collector who has a spare, the same way the import (49) flagged duplicates as tradeable. Selling between collectors comes first; the affiliate link is only the fallback.' },
+        { n: '04', tag: 'EXISTS · ADD A VIEW', c: SM, q: 'A missing manual, a worn cover, and get a list of the “imperfect” ones', t: 'Ladder has it, the list doesn’t', b: 'Each part on the condition ladder already has a “missing” step. What’s new is a saved view that lists them all. See section 03.' },
+        { n: '05', tag: 'SMALL CHANGE', c: SM, q: 'Finished, not started, abandoned', t: 'playStatus field', b: 'playLog only records whether a game was finished. It needs a status with four states, and that gives a backlog. See section 03.' },
+        { n: '06', tag: 'EXISTS ELSEWHERE', c: EX, q: 'Consoles with mods, cables and repairs, like a health record', t: 'Retro-computer already does this', b: 'The repair log and the case signature for cables and accessories are already built. Still open: do consoles live in Video Games or in a hardware type? See D1.' },
+        { n: '07', tag: 'NEW', c: NEW, q: 'I try to own Doom on everything, show me where it exists and tick what I have', t: '“Also exists on”', b: 'This is the same set signature, grouped by work instead of series. It needs a work layer above the release. See section 02.' }
+      ],
+      ridge: [own('Ridge Racer', '1995'), own('Ridge Racer Revolution', '1996'), miss('Rage Racer', '1997'), miss('R4: Ridge Racer Type 4', '1999')].map((r, i) => i === 1 ? miss(r.t, r.y) : i === 3 ? own(r.t, r.y) : r),
+      doom: [d('PS1', '1995', true), d('GBA', '2001', true), d('SNES', 'ORIGINAL', false), d('SNES', 'LIMITED RUN', false), d('32X', '1994', false), d('Jaguar', '1994', true)],
+      status: [
+        { t: 'Unplayed', bg: '#fff', fg: '#17130F' },
+        { t: 'Playing', bg: '#2B44D6', fg: '#fff' },
+        { t: 'Finished', bg: '#0E6E5E', fg: '#fff' },
+        { t: 'Abandoned', bg: '#EAE3D6', fg: '#17130F' }
+      ],
+      imperfect: [
+        { t: 'Vagrant Story · PS1', g: 'NO MANUAL' },
+        { t: 'Earthbound · SNES', g: 'BOX WORN' },
+        { t: 'Shenmue · DC', g: 'DISC 3 MISSING' }
+      ],
+      open: [
+        { k: 'D1', q: 'Are consoles part of Video Games or a separate hardware type?', b: 'Inside Video Games keeps one shelf, but the media rules don’t fit hardware. As a separate type, consoles reuse retro-computer’s clock and repair log almost unchanged. Leaning: a separate type, linked so a game can show which console it runs on.' },
+        { k: 'D2', q: 'Is the work layer a launch feature or a later one?', b: 'It drives two of the seven asks plus duplicate detection. It depends on a database that groups releases by work. Check how well that holds up for obscure PAL releases before committing.' },
+        { k: 'D3', q: 'Should onboarding’s payoff change for games?', b: 'He reacted to seeing and completing, not to warnings. For games, screen 3 of 46 could lead with the art and “2 of 4 Ridge Racer” instead of the save-battery clock.' },
+        { k: 'D4 · DECIDED', q: 'Is the 3D box the headline of the paid unlock?', b: 'Yes. The 3D box leads the €29.99 unlock screen, and clocks and custom signatures follow. Q5 in 43 (which silhouette for each medium) is now a launch blocker.' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

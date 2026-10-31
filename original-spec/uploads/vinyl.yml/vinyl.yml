@@ -1,0 +1,91 @@
+id: vinyl
+name:
+  singular: Record
+  plural: Records
+  collection: My Vinyls
+mark: "33⅓"
+icon: opticaldisc
+gradient: [teal, cobalt]
+
+# Every copy is its own object: its own condition, price and history.
+duplicates: rows
+
+spine:
+  title: Album
+  subtitle: Artist
+  year: Year
+  acquired: Acquired on
+  paid: Paid
+  value: Value
+
+# Media grading. The sleeve is graded separately below — collectors always quote
+# both, and Discogs returns both.
+conditions: [Mint, Near Mint, VG+, VG, Good, Fair, Poor]
+
+lookup:
+  identifier: barcode
+  symbologies: [ean13, upc-a]
+  providers: [discogs, musicbrainz]
+
+searchable: [title, subtitle, year, catalogNumber, tracklist, label]
+
+# Scanning in a shop answers \"do I already own something like this?\"
+related: [subtitle, label]
+
+fields:
+  - key: format
+    label: Format
+    type: choice
+    options: ["LP", "2×LP", "7\"", "10\"", "12\"", "Box set"]
+    sample: "2×LP"
+    auto: true
+  - key: sleeveCondition
+    label: Sleeve condition
+    type: choice
+    options: [Mint, Near Mint, VG+, VG, Good, Fair, Poor]
+    sample: "VG+"
+  - key: discColour
+    label: Disc colour
+    type: choice
+    options: [Black, Coke-bottle clear, Splatter, Marbled, Picture disc, Clear, Other]
+    sample: Coke-bottle clear
+  - key: rpm
+    label: Speed
+    type: choice
+    options: ["33⅓", "45", "78"]
+    sample: "33⅓"
+    auto: true
+  - key: label
+    label: Label
+    type: text
+    sample: Steel Wool
+    auto: true
+  - key: catalogNumber
+    label: Catalogue number
+    type: text
+    sample: OBS-1287
+    auto: true
+  - key: pressing
+    label: Pressing
+    type: text
+    sample: First pressing
+    auto: true
+  - key: country
+    label: Country
+    type: text
+    sample: US
+    auto: true
+  - key: signed
+    label: Signed
+    type: yesNo
+    sample: "No"
+  - key: tracklist
+    label: Tracklist
+    type: list
+    entry: [position, title, duration]
+    sample: 16 entries
+    auto: true
+  - key: lastCleaned
+    label: Last cleaned
+    type: event
+    sample: 3 Feb 2026

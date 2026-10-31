@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#EAE3D6}a{color:#2B44D6}a:hover{color:#FF5B2E}</style>
+</helmet>
+<div style="max-width:1360px;margin:0 auto;padding:60px 28px 100px;font-family:Archivo,system-ui,sans-serif;color:#17130F;box-sizing:border-box">
+  <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+    <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70">CLCTN · TYPE SYSTEM · VIDEO MEDIA · OCTOBER 2026</div>
+    <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#F3ECE0;background:#2B44D6;border-radius:999px;padding:5px 12px">PROPOSAL</div>
+    <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;border:2px solid #0E6E5E;color:#0E6E5E;border-radius:999px;padding:4px 11px">BUILT ON SUBTYPES (48)</div>
+  </div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:66px;line-height:.92;letter-spacing:-.045em;margin:16px 0 0;max-width:1060px;text-wrap:balance">One film, eight shapes of plastic.</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-top:20px;text-wrap:pretty">A VHS tape, a LaserDisc and a 4K disc of the same film are read the same way on a shelf: title, director, edition, cut. What differs is the object: how many sides, which region lock, whether the tape is going to grow mould. <strong>Video Media is one type with eight subtypes. The parent holds the film and the packaging. Each format adds only what its own collectors ask about.</strong></div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">00 · THE PARENT TYPE</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:920px;margin-bottom:20px;text-wrap:pretty">Everything here applies to every format, or to enough of them that it failed test 2 and moved up. Signed and Bundle of come from the item level (48 · 00) and are not repeated.</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:16px">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#0C0A08;color:#F3ECE0;padding:20px 22px;box-shadow:5px 5px 0 #6E2440;overflow-x:auto">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;opacity:.55;margin-bottom:12px">VIDEO-MEDIA.YML · PARENT</div>
+      <pre style="margin:0;font:400 12.5px/1.7 'DM Mono',monospace;white-space:pre">type: video-media
+name: Film | Films | The Shelf
+spine:
+  title:    Title
+  subtitle: Format        # the subtype
+  year:     Released      # this release, not the film
+
+fields:
+  - director | studio | label | edition | cut
+  - standard   | enum [NTSC, PAL, SECAM]
+  - regionCode | enum [0–8, A, B, C, free]
+                 # each subtype narrows it
+  - aspect     | enum [4:3, 1.85, 2.39, open matte]
+  - discs      | int       # sides live on the subtype
+  - packaging  | enum      # narrowed per subtype
+  - slipcover  | bool
+  - spineNo    | text      # Criterion, Arrow, Eureka
+  - exRental   | bool
+  - mediaCondition | caseCondition | sleeveCondition
+  - inserts    | set
+  - watchLog   | log [date, note, cut]
+
+signatures:
+  - ladder: [media, case, sleeve]
+  - set:    inserts</pre>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;padding:20px 22px;display:flex;flex-direction:column;gap:12px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70">FIELDS THAT EARNED THE PARENT</div>
+      <sc-for list="{{ parentWhy }}" as="p" hint-placeholder-count="5">
+        <div style="display:flex;flex-direction:column;gap:3px;border-bottom:1.5px solid #E0D6C4;padding-bottom:10px">
+          <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap">
+            <div style="font:700 14px Archivo,sans-serif">{{ p.t }}</div>
+            <div style="font:500 11px 'DM Mono',monospace;color:#6E6458">{{ p.k }}</div>
+          </div>
+          <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ p.b }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">01 · EIGHT SUBTYPES</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:20px;text-wrap:pretty">Grey fields come from the parent. Coloured ones are what the subtype adds. Every clock is from the existing library: tapes use <span style="font-family:'DM Mono',monospace">mediaRot</span>, discs use <span style="font-family:'DM Mono',monospace">discRot</span>. No new clock was needed.</div>
+  <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px">
+    <sc-for list="{{ subTabs }}" as="s" hint-placeholder-count="8">
+      <div onClick="{{ s.on }}" style="cursor:pointer;border:2px solid #17130F;border-radius:999px;padding:6px 13px;font:600 13px Archivo,sans-serif;background:{{ s.bg }};color:{{ s.fg }};display:flex;gap:8px;align-items:baseline">
+        <div>{{ s.t }}</div>
+        <div style="font:500 10px 'DM Mono',monospace;opacity:.6">{{ s.y }}</div>
+      </div>
+    </sc-for>
+  </div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;padding:14px 22px;background:#17130F;color:#F3ECE0">
+      <div style="font:700 17px Archivo,sans-serif">{{ cur.path }}</div>
+      <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.12em;opacity:.7">{{ cur.count }}</div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr))">
+      <div style="padding:20px 22px;border-right:2px solid #E0D6C4">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:10px">FIELDS</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">
+          <sc-for list="{{ cur.inherited }}" as="f" hint-placeholder-count="12">
+            <div style="border:2px solid #D6CCBA;border-radius:8px;padding:5px 9px;font:500 12px 'DM Mono',monospace;color:#8A7F70;background:#FAF6EF">{{ f }}</div>
+          </sc-for>
+        </div>
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:{{ cur.accent }};margin:18px 0 10px">ADDED BY {{ cur.name }}</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <sc-for list="{{ cur.added }}" as="a" hint-placeholder-count="2">
+            <div style="border:2.5px solid #17130F;border-radius:12px;padding:10px 14px;display:flex;flex-direction:column;gap:3px;box-shadow:3px 3px 0 {{ cur.accent }}">
+              <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap">
+                <div style="font:700 14px Archivo,sans-serif">{{ a.l }}</div>
+                <div style="font:500 11px 'DM Mono',monospace;color:#6E6458">{{ a.k }} · {{ a.kind }}</div>
+              </div>
+              <div style="font:400 12.5px/1.5 Archivo,sans-serif;color:#5A5045;text-wrap:pretty">{{ a.why }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="padding:20px 22px;background:#FAF6EF">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:10px">PRESETS · VALUES THE SUBTYPE FILLS IN OR NARROWS</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <sc-for list="{{ cur.presets }}" as="p" hint-placeholder-count="3">
+            <div style="display:grid;grid-template-columns:120px 1fr;gap:12px;border-bottom:1.5px solid #E0D6C4;padding-bottom:8px">
+              <div style="font:500 12px 'DM Mono',monospace;color:#17130F">{{ p.k }}</div>
+              <div style="font:400 13px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ p.v }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin:22px 0 10px">STORAGE</div>
+        <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ cur.store }}</div>
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:{{ cur.accent }};margin:18px 0 10px">CARE · CLOCKS FROM THE LIBRARY</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <sc-for list="{{ cur.care }}" as="c" hint-placeholder-count="2">
+            <div style="border:2.5px solid #17130F;border-radius:12px;padding:10px 14px;background:#fff;display:flex;flex-direction:column;gap:3px">
+              <div style="font:700 14px Archivo,sans-serif">{{ c.c }}</div>
+              <div style="font:400 12.5px/1.5 Archivo,sans-serif;color:#5A5045;text-wrap:pretty">{{ c.v }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">02 · THE THREE QUESTIONS, APPLIED</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:20px;text-wrap:pretty">1. Only meaningful on this format? 2. Needed by two or more formats? 3. Feeds a signature or a clock? How each contested field landed.</div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow-x:auto">
+    <div style="display:grid;grid-template-columns:minmax(150px,1.1fr) minmax(170px,1.3fr) minmax(130px,.8fr) minmax(240px,2fr);min-width:760px">
+      <div style="padding:12px 18px;background:#17130F;color:#F3ECE0;font:500 10px 'DM Mono',monospace;letter-spacing:.12em">FIELD</div>
+      <div style="padding:12px 18px;background:#17130F;color:#F3ECE0;font:500 10px 'DM Mono',monospace;letter-spacing:.12em">USED BY</div>
+      <div style="padding:12px 18px;background:#17130F;color:#F3ECE0;font:500 10px 'DM Mono',monospace;letter-spacing:.12em">LANDS ON</div>
+      <div style="padding:12px 18px;background:#17130F;color:#F3ECE0;font:500 10px 'DM Mono',monospace;letter-spacing:.12em">WHY</div>
+      <sc-for list="{{ tests }}" as="t" hint-placeholder-count="7">
+        <div style="padding:12px 18px;border-top:1.5px solid #E0D6C4;font:500 12.5px 'DM Mono',monospace">{{ t.f }}</div>
+        <div style="padding:12px 18px;border-top:1.5px solid #E0D6C4;font:400 13px/1.5 Archivo,sans-serif;color:#3A2F26">{{ t.u }}</div>
+        <div style="padding:12px 18px;border-top:1.5px solid #E0D6C4">
+          <div style="display:inline-block;font:500 10px 'DM Mono',monospace;letter-spacing:.1em;color:#F3ECE0;background:{{ t.c }};border-radius:999px;padding:4px 10px">{{ t.v }}</div>
+        </div>
+        <div style="padding:12px 18px;border-top:1.5px solid #E0D6C4;font:400 13px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ t.w }}</div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">03 · ONE FILM, MANY SUBTYPES</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:20px;text-wrap:pretty">Subtypes split fields, never the shelf. A film owned three times is one work with three objects, the same way Doom on six platforms is one work (48 · 03). “Also exists on” and upgrade tracking read across subtypes.</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px">
+    <sc-for list="{{ copies }}" as="c" hint-placeholder-count="3">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;box-shadow:4px 4px 0 {{ c.c }};padding:16px 18px;display:flex;flex-direction:column;gap:6px">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">{{ c.k }}</div>
+        <div style="font:700 15px Archivo,sans-serif">{{ c.t }}</div>
+        <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ c.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:20px">04 · OPEN QUESTIONS</div>
+  <div style="display:flex;flex-direction:column;gap:12px;max-width:1000px">
+    <sc-for list="{{ open }}" as="o" hint-placeholder-count="4">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#17130F;color:#F3ECE0;padding:17px 19px;box-shadow:5px 5px 0 #FF5B2E">
+        <div style="display:flex;gap:12px;align-items:baseline">
+          <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.12em;opacity:.55">{{ o.k }}</div>
+          <div style="font:700 16px Archivo,sans-serif">{{ o.q }}</div>
+        </div>
+        <div style="font:400 13.5px/1.6 Archivo,sans-serif;opacity:.82;margin-top:8px;text-wrap:pretty">{{ o.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;defaultFormat&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;VHS&quot;,&quot;Betamax&quot;,&quot;LaserDisc&quot;,&quot;CED&quot;,&quot;DVD&quot;,&quot;HD DVD&quot;,&quot;Blu-ray&quot;,&quot;4K UHD&quot;],&quot;default&quot;:&quot;LaserDisc&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state = { sub: null };
+  renderVals() {
+    const inherited = ["title", "director", "studio", "label", "year", "edition", "cut", "standard", "regionCode", "aspect", "discs", "packaging", "slipcover", "spineNo", "exRental", "condition ×3", "inserts", "watchLog", "place"];
+    const S = [
+      { name: "VHS", label: "VHS", y: "1976–2006", accent: "#C2371F",
+        store: "Upright like a book, rewound to the start. Away from speakers, CRTs and anything magnetic. Cool, dry, never a garage.",
+        care: [{ c: "Tape degradation · mediaRot", v: "Mould and binder breakdown. Wind through every 2 years; check for white spots on the reel before playing." }, { c: "Sleeve fade", v: "Paper slipcases bleach fast. Keep out of light." }],
+        added: [
+          { l: "Recording speed", k: "tapeSpeed", kind: "enum [SP, LP, EP]", why: "Commercial releases are SP. LP or EP on a retail tape points to a bootleg or a later budget run." },
+          { l: "Print marker", k: "printMark", kind: "text", why: "Black Diamond, a specific logo or a trailer list identifies the print. Collectors date Disney tapes by it." }],
+        presets: [{ k: "standard", v: "NTSC · PAL · SECAM, all three visible" }, { k: "regionCode", v: "hidden. Tapes have no region lock" }, { k: "packaging", v: "slipcase · clamshell · big box" }, { k: "parts", v: "sleeve · shell · tape · insert" }] },
+      { name: "BETAMAX", label: "Betamax", y: "1975–2002", accent: "#6E2440",
+        store: "Same as VHS. Cassettes are smaller and the shells crack more easily, so no stacking.",
+        care: [{ c: "Tape degradation · mediaRot", v: "Same clock as VHS. Players are rarer, so a failed tape is harder to rescue." }],
+        added: [
+          { l: "Recording speed", k: "tapeSpeed", kind: "enum [βI, βII, βIII]", why: "Same question as VHS with different values. See 02: this field is the one test 2 struggles with." },
+          { l: "Hi-Fi", k: "betaHifi", kind: "bool", why: "Beta Hi-Fi releases are the ones collectors look for. Printed on the sleeve." }],
+        presets: [{ k: "regionCode", v: "hidden" }, { k: "packaging", v: "slipcase · clamshell" }, { k: "parts", v: "sleeve · shell · tape" }] },
+      { name: "LASERDISC", label: "LaserDisc", y: "1978–2001", accent: "#2B44D6",
+        store: "Strictly upright, never flat, never leaning. 12-inch discs warp under their own weight. Outer sleeves for the jackets.",
+        care: [{ c: "Laser rot · discRot", v: "Plant-dependent and progressive. Check yearly, log the result. The discRot evidence pattern already in the library fits exactly." }, { c: "Jacket ring wear", v: "Gatefolds show the disc outline. Logged on the sleeve axis." }],
+        added: [
+          { l: "Sides", k: "sides", kind: "int", why: "A 3-disc set might be 5 or 6 sides. Missing the side count means you can't tell if it's complete." },
+          { l: "Encoding", k: "encoding", kind: "enum [CAV, CLV, CLV-ext]", why: "CAV allows perfect freeze-frame and was the premium edition. Same film, different object and price." },
+          { l: "Obi", k: "obi", kind: "bool", why: "Japanese pressings, like CDs. A missing obi halves the value." }],
+        presets: [{ k: "standard", v: "NTSC · PAL (MUSE hidden)" }, { k: "regionCode", v: "hidden" }, { k: "packaging", v: "single jacket · gatefold · box set" }, { k: "parts", v: "jacket · disc(s) · inner sleeves · (JP) obi · insert" }] },
+      { name: "CED", label: "CED", y: "1981–1986", accent: "#8A7F70",
+        store: "Inside its caddy, always. Upright, cool. Out of the caddy, the grooves collect dust within minutes.",
+        care: [{ c: "Disc wear · mediaRot", v: "The stylus touches the disc, so every play wears it. The watch log feeds the clock." }],
+        added: [
+          { l: "Caddy condition", k: "caddyCondition", kind: "scale", why: "The caddy is the case and the playing mechanism. A cracked caddy makes the disc unplayable. It replaces the case rung of the ladder." }],
+        presets: [{ k: "standard", v: "NTSC only" }, { k: "regionCode", v: "hidden" }, { k: "packaging", v: "caddy" }, { k: "parts", v: "sleeve · caddy · disc" }] },
+      { name: "DVD", label: "DVD", y: "1997–", accent: "#0E6E5E",
+        store: "Upright. Replace cracked cases and keep the original artwork. Slipcovers in sleeves.",
+        care: [{ c: "Disc rot · discRot", v: "Rare. Some 2000s dual-layer pressings delaminate. Check every 5 years." }],
+        added: [
+          { l: "Layers", k: "layers", kind: "enum [DVD-5, DVD-9]", why: "Barely matters for value, so it's optional. Kept because it's the only way to spot a cut-down budget reissue." }],
+        presets: [{ k: "regionCode", v: "0–8, narrowed from the parent" }, { k: "packaging", v: "keepcase · snapper · digipak · steelbook · box set" }, { k: "lookup", v: "UPC / EAN barcode" }] },
+      { name: "HD DVD", label: "HD DVD", y: "2006–2008", accent: "#FF5B2E",
+        store: "Same as DVD. The red cases fade to pink in sunlight.",
+        care: [{ c: "Disc rot · discRot", v: "Too young to know. Held pending evidence, like optical games in 43." }],
+        added: [
+          { l: "Combo disc", k: "combo", kind: "bool", why: "HD DVD on one side, DVD on the other. Both sides get graded, so the media rung counts it twice." }],
+        presets: [{ k: "regionCode", v: "hidden. The format was region-free" }, { k: "packaging", v: "keepcase · slipcover" }, { k: "lookup", v: "barcode" }] },
+      { name: "BLU-RAY", label: "Blu-ray", y: "2006–", accent: "#2B44D6",
+        store: "Upright. Steelbooks in protective sleeves; dents and scratches show on the metal.",
+        care: [{ c: "Disc rot · discRot", v: "Known bad batches (some 2008–2012 boutique pressings). Check on purchase, then every 5 years." }],
+        added: [
+          { l: "Limited number", k: "limitedNo", kind: "text", why: "“1234 / 3000” on boutique editions. Unique per object, so it blocks duplicates like Signed does." }],
+        presets: [{ k: "regionCode", v: "A · B · C · free, narrowed from the parent" }, { k: "packaging", v: "keepcase · steelbook · mediabook · digipak · box set" }, { k: "lookup", v: "barcode, then spine number for boutique labels" }] },
+      { name: "4K UHD", label: "4K UHD", y: "2016–", accent: "#0E6E5E",
+        store: "Same as Blu-ray.",
+        care: [{ c: "Disc rot · discRot", v: "No evidence yet. Clock disabled until there is." }],
+        added: [
+          { l: "HDR", k: "hdr", kind: "set [HDR10, HDR10+, Dolby Vision]", why: "Dolby Vision is what buyers filter for. Printed on the back." },
+          { l: "Includes Blu-ray", k: "bdIncluded", kind: "bool", why: "Many releases bundle the 1080p disc. It's a part, so it joins the inserts set." }],
+        presets: [{ k: "regionCode", v: "hidden. Region-free by spec" }, { k: "packaging", v: "keepcase · steelbook · mediabook" }, { k: "lookup", v: "barcode" }] }
+    ];
+    const def = S.findIndex(x => x.label === (this.props.defaultFormat ?? "LaserDisc"));
+    const idx = this.state.sub ?? (def < 0 ? 0 : def);
+    const s = S[idx];
+    const ink = (on) => on ? { bg: "#17130F", fg: "#F3ECE0" } : { bg: "#fff", fg: "#17130F" };
+    return {
+      subTabs: S.map((x, i) => ({ t: x.label, y: x.y, ...ink(i === idx), on: () => this.setState({ sub: i }) })),
+      cur: { ...s, path: "Video Media  →  " + s.label, count: inherited.length + " INHERITED · " + s.added.length + " ADDED", inherited },
+      parentWhy: [
+        { t: "Cut and edition are two fields", k: "cut · edition", b: "“Director's cut, Criterion edition” is two answers. Cut is about the film, edition about the release. Both exist on every format since VHS." },
+        { t: "Region is one enum, narrowed", k: "regionCode", b: "DVD uses 0–8, Blu-ray uses A/B/C. One parent field with all values; each subtype narrows it, and tapes hide it. This is the “narrow an enum” rule from 48." },
+        { t: "Spine number", k: "spineNo", b: "Criterion started on LaserDisc and continued through DVD, Blu-ray and 4K. Four subtypes need it, so test 2 moves it up." },
+        { t: "Ex-rental", k: "exRental", b: "Stickers, security cases, cut boxes. Exists on VHS, Beta, LaserDisc and DVD. Lowers value, but some collectors seek it out for the big-box VHS era." },
+        { t: "Three-rung ladder", k: "media · case · sleeve", b: "Every format has the object, its case and an outer layer (slipcover, jacket, caddy sleeve). Same signature as games; CED swaps the case rung for the caddy." }
+      ],
+      tests: [
+        { f: "sides", u: "LaserDisc, CED", v: "SUBTYPE", c: "#0E6E5E", w: "Two subtypes, but means different things: CED sides are always 2, LaserDisc sides vary. Only LaserDisc adds it." },
+        { f: "spineNo", u: "LaserDisc, DVD, Blu-ray, 4K", v: "PARENT", c: "#2B44D6", w: "Four subtypes. Test 2." },
+        { f: "regionCode", u: "DVD, Blu-ray (different values)", v: "PARENT", c: "#2B44D6", w: "Same question, different answers. Parent holds the union, subtypes narrow it." },
+        { f: "tapeSpeed", u: "VHS, Betamax", v: "SUBTYPE ×2", c: "#C2371F", w: "Test 2 says move up, but every disc subtype would then hide it. Kept on both tape subtypes with different enums. See Q1." },
+        { f: "obi", u: "LaserDisc (and JP DVDs, rarely)", v: "SUBTYPE", c: "#0E6E5E", w: "Common on JP LaserDiscs, rare on JP DVDs. Added on LaserDisc; DVD users log it as an insert." },
+        { f: "steelbook", u: "DVD, Blu-ray, 4K", v: "PRESET", c: "#8A7F70", w: "Not a field. It's a value of packaging, enabled by the three subtypes that have it." },
+        { f: "laserRot", u: "LaserDisc", v: "CLOCK", c: "#6E2440", w: "Test 3: it feeds a clock, so it uses discRot from the library rather than a new field. No new clocks." }
+      ],
+      copies: [
+        { k: "LASERDISC · 1993", t: "Blade Runner · Criterion #11", c: "#2B44D6", b: "CAV, 4 sides, spine no. 11. Laser rot checked yearly." },
+        { k: "DVD · 2007", t: "Blade Runner · Final Cut, 5-disc", c: "#0E6E5E", b: "Briefcase box set. Five cuts in one bundle: “Bundle of” lists all five as works." },
+        { k: "4K UHD · 2017", t: "Blade Runner · Final Cut", c: "#C2371F", b: "Dolby Vision, Blu-ray included. The shelf shows one film, three objects, and which cut each one holds." }
+      ],
+      open: [
+        { k: "Q1", q: "Tape-only fields: duplicate or move up?", b: "tapeSpeed lives on VHS and Betamax with different enums. The alternative is a parent field hidden by six disc subtypes. Duplicating is cleaner until a third tape format (Video8, U-matic) shows up. Leaning: duplicate." },
+        { k: "Q2", q: "Where does a LaserDisc game go?", b: "Dragon's Lair on LaserDisc is a game, not a film. The type follows what the work is, not the medium: Video Game, with a LaserDisc subtype there. Same rule for UMD Video, which goes here, not under PSP." },
+        { k: "Q3", q: "Launch type or community vote?", b: "Five types + Thing are decided. Video Media is a strong candidate for the sixth vote, and the subtypes let it ship with DVD and Blu-ray first and add the rest one by one." },
+        { k: "Q4", q: "Does Bundle of handle multi-cut box sets?", b: "The 5-disc Blade Runner holds five cuts of one film. “Bundle of” lists works; here it lists cuts of the same work. Probably fine, but the “also exists on” view needs to group by cut." }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

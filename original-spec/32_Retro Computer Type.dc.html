@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#EAE3D6}a{color:#2B44D6}a:hover{color:#FF5B2E}</style>
+</helmet>
+
+<div style="width:1360px;margin:0 auto;padding:60px 28px 100px;font-family:Archivo,system-ui,sans-serif;color:#17130F">
+
+  <div style="display:flex;align-items:center;gap:14px">
+    <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70">CLCTN · TYPE MANIFEST · RETRO COMPUTER · SEPTEMBER 2026</div>
+    <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#F3ECE0;background:linear-gradient(150deg,#0E6E5E,#2B44D6);border-radius:999px;padding:5px 12px">64K · THE WORKSHOP</div>
+  </div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:66px;line-height:.92;letter-spacing:-.045em;margin:16px 0 0;max-width:1020px;text-wrap:balance">The first type that needs you more than you need it.</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:870px;margin-top:20px;text-wrap:pretty">A record sitting in a sleeve for thirty years is a record. A machine sitting in a loft for thirty years is a box of leaking chemistry that used to be a machine. <strong>Retro computers are the first type where owning is a job, and where the collection's condition degrades on a clock whether anyone touches it or not.</strong> They are also the first type whose entire universe — every model ever sold — fits in the app bundle.</div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:870px;margin-top:14px;text-wrap:pretty">Written against <span style="font-family:'DM Mono',monospace">vinyl.yml</span> as the reference manifest, with <span style="font-family:'DM Mono',monospace">wine.yml</span> as the precedent for a type that moves with the calendar. Section 04 lists only the rows that differ.</div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">01 · FOUR THINGS A MACHINE BREAKS</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:870px;margin-bottom:20px;text-wrap:pretty">Two of these are new schema; two are things wine already asked for, which is the useful signal. A primitive that a second type wants was the right primitive.</div>
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px">
+    <sc-for list="{{ breaks }}" as="b" hint-placeholder-count="4">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #2B44D6;overflow:hidden">
+        <div style="display:flex;align-items:baseline;gap:12px;padding:13px 20px;background:#17130F;color:#F3ECE0">
+          <div style="font:500 9.5px 'DM Mono',monospace;letter-spacing:.12em;opacity:.55">{{ b.n }}</div>
+          <div style="font:700 16px Archivo,sans-serif">{{ b.t }}</div>
+        </div>
+        <div style="padding:18px 20px">
+          <div style="font:400 13.5px/1.65 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ b.b }}</div>
+          <div style="margin-top:14px;padding-top:13px;border-top:2px solid #E0D6C4">
+            <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;margin-bottom:7px">WHAT IT NEEDS</div>
+            <div style="font:400 12.5px/1.6 'DM Mono',monospace;color:#2B44D6;text-wrap:pretty">{{ b.needs }}</div>
+          </div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">02 · THE SERVICE CLOCK — THE REASON TO BUILD THIS TYPE</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:10px;text-wrap:pretty">Wine asked <em>what should I open tonight</em>. A machine asks the harder version: <strong>which of my forty computers is quietly destroying itself right now, and which one should I open this weekend?</strong> Nobody can hold that in their head, and the answer is almost never the machine you were thinking about.</div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:900px;margin-bottom:22px;text-wrap:pretty">Four consumables, four different lifespans, one derived state each. Slide the build year and the last service in Tweaks. Note what happens to a well-kept 1985 machine versus a never-opened 1992 one — the older machine is the safer one, which is the whole argument for the feature.</div>
+
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+    <div style="display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;padding:18px 24px;background:#17130F;color:#F3ECE0">
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:24px;letter-spacing:-.03em">Amiga 500</div>
+      <div style="font:400 15px Archivo,sans-serif;opacity:.65">Rev 6A board · PAL · {{ serviceLabel }}</div>
+      <div style="margin-left:auto;font-family:'DM Mono',monospace;font-weight:500;font-size:22px;color:#FFD24A">{{ builtLabel }}</div>
+    </div>
+
+    <div style="padding:26px 24px 24px">
+      <div style="display:grid;grid-template-columns:230px 1fr 132px;gap:16px;align-items:center;padding-bottom:9px">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70">CONSUMABLE</div>
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70">ELAPSED AGAINST EXPECTED LIFE · THE TICK IS THE DUE DATE</div>
+        <div style="justify-self:end;font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70">STATE</div>
+      </div>
+      <sc-for list="{{ gauges }}" as="g" hint-placeholder-count="4">
+        <div style="display:grid;grid-template-columns:230px 1fr 132px;gap:16px;align-items:center;padding:13px 0;border-top:2px solid #E0D6C4">
+          <div>
+            <div style="font:700 14.5px Archivo,sans-serif">{{ g.name }}</div>
+            <div style="font:400 11.5px/1.45 'DM Mono',monospace;color:#8A7F70;margin-top:3px">{{ g.sub }}</div>
+          </div>
+          <div style="position:relative;height:24px;border:2.5px solid #17130F;border-radius:999px;background:#EDE4D6;overflow:hidden">
+            <div style="position:absolute;top:0;bottom:0;left:0;background: {{ g.bg }};width: {{ g.w }}"></div>
+            <div style="position:absolute;top:0;bottom:0;left:71.4%;width:2.5px;background:#17130F"></div>
+          </div>
+          <div style="justify-self:end;font:500 9px 'DM Mono',monospace;letter-spacing:.12em;border:2.5px solid #17130F;border-radius:999px;padding:5px 11px;white-space:nowrap;background: {{ g.bg }};color: {{ g.fg }}">{{ g.state }}</div>
+        </div>
+      </sc-for>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:24px">
+        <div style="border:2.5px solid #17130F;border-radius:16px;padding:18px 20px;background: {{ statusBg }};color: {{ statusFg }}">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;opacity:.7">THE MACHINE RIGHT NOW</div>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:27px;line-height:1.05;letter-spacing:-.03em;margin-top:9px;text-wrap:balance">{{ statusName }}</div>
+          <div style="font:400 13px/1.55 Archivo,sans-serif;margin-top:9px;opacity:.9;text-wrap:pretty">{{ statusNote }}</div>
+        </div>
+        <div style="border:2.5px solid #17130F;border-radius:16px;padding:18px 20px;background:#FBF6EC">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">THE DERIVED FIELD</div>
+          <div style="font:400 12.5px/1.75 'DM Mono',monospace;color:#17130F;margin-top:10px;white-space:pre-wrap">{{ derivedCode }}</div>
+        </div>
+        <div style="border:2.5px solid #17130F;border-radius:16px;padding:18px 20px;background:#FBF6EC">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">WHAT IT UNLOCKS</div>
+          <div style="display:flex;flex-direction:column;gap:9px;margin-top:11px">
+            <sc-for list="{{ unlocks }}" as="u" hint-placeholder-count="4">
+              <div style="display:flex;gap:10px;align-items:baseline">
+                <div style="flex:none;width:6px;height:6px;border-radius:50%;background:#0E6E5E"></div>
+                <div style="flex:1;font:400 13px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ u }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">03 · RETRO-COMPUTER.YML</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:870px;margin-bottom:20px;text-wrap:pretty">Two keys are new to the schema, two are wine's keys reused, and the rest is existing primitives doing ordinary jobs. Marked up in section 06.</div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#0C0A08;color:#F3ECE0;padding:22px 24px;box-shadow:5px 5px 0 #0E6E5E;overflow-x:auto">
+    <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:14px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;color:#FFD24A">RESOURCES/TYPES/RETRO-COMPUTER.YML</div>
+      <div style="margin-left:auto;font:500 8.5px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #FFD24A;color:#FFD24A;border-radius:999px;padding:3px 9px">TYPE 16</div>
+    </div>
+    <div style="font:400 12.5px/1.72 'DM Mono',monospace;white-space:pre">{{ manifestYaml }}</div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">04 · VINYL → RETRO COMPUTER, WHERE THEY DIVERGE</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:20px;text-wrap:pretty">Only the rows that differ. The deep parallel is worth naming first: both types split one product name into many collectable objects — vinyl on pressing, machines on board revision and region — and in both hobbies the split is the entire expertise.</div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;overflow:hidden;box-shadow:5px 5px 0 #17130F">
+    <div style="display:grid;grid-template-columns:180px 290px 300px 1fr;background:#17130F;color:#F3ECE0;font:500 9.5px 'DM Mono',monospace;letter-spacing:.1em">
+      <div style="padding:13px 16px">KEY</div>
+      <div style="padding:13px 16px">VINYL</div>
+      <div style="padding:13px 16px">RETRO COMPUTER</div>
+      <div style="padding:13px 16px">WHY</div>
+    </div>
+    <sc-for list="{{ diffs }}" as="d" hint-placeholder-count="11">
+      <div style="display:grid;grid-template-columns:180px 290px 300px 1fr;border-top:2px solid #E0D6C4;background:#fff;align-items:start">
+        <div style="padding:14px 16px;font:400 12px/1.5 'DM Mono',monospace">{{ d.key }}</div>
+        <div style="padding:14px 16px;font:400 12.5px/1.6 Archivo,sans-serif;color:#6E6458;text-wrap:pretty">{{ d.vinyl }}</div>
+        <div style="padding:14px 16px;font:500 12.5px/1.6 Archivo,sans-serif;color:#17130F;text-wrap:pretty">{{ d.rc }}</div>
+        <div style="padding:14px 16px;font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ d.why }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">05 · A MACHINE IS A SYSTEM, NOT AN OBJECT</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:22px;text-wrap:pretty">Nobody owns a bare computer. They own a computer, a monitor, two drives, a RAM expansion inside the case, a mouse, and a shelf of software — and three of those are individually valuable, individually tradable, and individually collected. <strong>This is the first type whose objects contain other objects, and getting it wrong means either a collection of orphaned cables or a value figure that counts the same expansion twice.</strong></div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px">
+    <sc-for list="{{ systemSteps }}" as="s" hint-placeholder-count="4">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;overflow:hidden;box-shadow:4px 4px 0 #17130F">
+        <div style="padding:11px 16px;background:#0E6E5E;color:#F3ECE0;font:500 9px 'DM Mono',monospace;letter-spacing:.12em">{{ s.k }}</div>
+        <div style="padding:16px">
+          <div style="font:700 15px/1.3 Archivo,sans-serif;text-wrap:pretty">{{ s.t }}</div>
+          <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">{{ s.b }}</div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#0C0A08;color:#F3ECE0;padding:22px 24px;box-shadow:5px 5px 0 #FFD24A">
+    <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;color:#FFD24A;margin-bottom:12px">THE CONSEQUENCE WORTH ARGUING ABOUT</div>
+    <div style="font:400 15px/1.7 Archivo,sans-serif;max-width:960px;text-wrap:pretty">Composition is a generic capability wearing a retro-computer costume. A camera has lenses, a synth has a flight case and an expansion card, a car has a set of original wheels in the garage. Build it here and four future types get it for nothing — but build it badly here and every one of them inherits the mistake. The narrow version is the safe one: <em>a part belongs to exactly one parent, keeps its own value, and the parent shows a combined figure it never owns.</em> No trees, no parts of parts, not yet.</div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">06 · IDENTIFICATION — THE ONE TYPE THAT FITS IN THE BUNDLE</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;padding:22px 24px;box-shadow:5px 5px 0 #2B44D6">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">CAPTURE STRATEGY</div>
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:29px;line-height:1.05;letter-spacing:-.035em;margin-top:9px;text-wrap:balance">Recognition against a closed set.</div>
+      <div style="font:400 13.5px/1.65 Archivo,sans-serif;color:#3A2F26;margin-top:12px;text-wrap:pretty">Vinyl matches against millions of releases and needs a network. Wine matches against nothing and falls back to transcription. Retro computers sit in the happy middle nobody expected: <strong>the number of home computer models ever mass-produced is in the low thousands</strong> — a finite, closed, historically complete list that stopped growing in about 1995.</div>
+      <div style="font:400 13.5px/1.65 Archivo,sans-serif;color:#3A2F26;margin-top:11px;text-wrap:pretty">That list ships in the bundle. Every machine also has a case silhouette designed to be recognisable from across a room — a wedge, a breadbin, a slab in a specific beige — which is close to the ideal input for on-device visual matching. Point the camera at a machine on a market table with no signal and get a name, a year and a price band.</div>
+      <div style="display:flex;flex-wrap:wrap;gap:7px;margin-top:16px">
+        <sc-for list="{{ ocrChips }}" as="c" hint-placeholder-count="5">
+          <div style="font:400 11.5px 'DM Mono',monospace;border:2px solid #17130F;border-radius:999px;padding:5px 11px;background:#FBF6EC">{{ c }}</div>
+        </sc-for>
+      </div>
+      <div style="font:400 12.5px/1.6 Archivo,sans-serif;color:#6E6458;margin-top:14px;text-wrap:pretty">The underside label carries the model and the serial, and most manufacturers encoded the manufacturing week and year into that serial. One photo of the bottom of a machine therefore yields the model, the region and the build date — which is exactly the three fields the service clock needs, and the only type where a photo can date the object itself.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <sc-for list="{{ newPrimitives }}" as="p" hint-placeholder-count="5">
+        <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;padding:16px 18px">
+          <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+            <div style="font:500 13px 'DM Mono',monospace;color:#2B44D6">{{ p.k }}</div>
+            <div style="margin-left:auto;font:500 8.5px 'DM Mono',monospace;letter-spacing:.1em;border-radius:999px;padding:3px 9px;border:2px solid #17130F;background: {{ p.tagBg }}">{{ p.tag }}</div>
+          </div>
+          <div style="font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">{{ p.b }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">07 · STILL OPEN</div>
+  <div style="display:flex;flex-direction:column;gap:11px">
+    <sc-for list="{{ open }}" as="o" hint-placeholder-count="5">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#FBF6EC;padding:18px 20px;display:flex;gap:18px;align-items:baseline">
+        <div style="flex:none;font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;width:52px">{{ o.k }}</div>
+        <div style="flex:1">
+          <div style="font:700 16px/1.3 Archivo,sans-serif;text-wrap:pretty">{{ o.q }}</div>
+          <div style="font:400 13.5px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:7px;max-width:920px;text-wrap:pretty">{{ o.b }}</div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;built&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:1987,&quot;min&quot;:1977,&quot;max&quot;:1999,&quot;step&quot;:1,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Sample machine&quot;},&quot;lastServiced&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;Never opened&quot;,&quot;options&quot;:[&quot;Never opened&quot;,&quot;Serviced 2004&quot;,&quot;Serviced 2016&quot;,&quot;Serviced 2024&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Sample machine&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const built = this.props.built ?? 1987;
+    const servicedRaw = this.props.lastServiced ?? 'Never opened';
+    const now = 2026;
+    const servicedYear = { 'Never opened': null, 'Serviced 2004': 2004, 'Serviced 2016': 2016, 'Serviced 2024': 2024 }[servicedRaw] ?? null;
+
+    const age = now - built;
+    // A service that predates the machine is meaningless; fall back to age.
+    const since = servicedYear && servicedYear > built ? now - servicedYear : age;
+
+    const bands = [
+      { state: 'SOUND', bg: '#B9F0C9', fg: '#17130F' },
+      { state: 'AGEING', bg: '#FFD24A', fg: '#17130F' },
+      { state: 'DUE', bg: '#C2371F', fg: '#F3ECE0' },
+      { state: 'OVERDUE', bg: '#6E2440', fg: '#F3ECE0' }
+    ];
+    const band = (r) => r < 0.55 ? 0 : r < 0.85 ? 1 : r < 1.25 ? 2 : 3;
+
+    const defs = [
+      { name: 'RTC battery', sub: 'Ni-Cd, on the board · leaks', life: 14, resets: true },
+      { name: 'Electrolytic caps', sub: 'board + PSU · dry out', life: 30, resets: true },
+      { name: 'Drive belt & grease', sub: 'floppy mechanism · perishes', life: 24, resets: true },
+      { name: 'Case plastics', sub: 'UV yellowing · cosmetic only', life: 42, resets: false }
+    ];
+
+    let worst = 0;
+    const gauges = defs.map(d => {
+      const elapsed = d.resets ? since : age;
+      const r = elapsed / d.life;
+      const i = band(r);
+      if (i > worst) worst = i;
+      return {
+        name: d.name,
+        sub: d.sub + ' · ' + elapsed + ' of ' + d.life + ' yrs',
+        w: Math.max(2, Math.min(100, (elapsed / (d.life * 1.4)) * 100)).toFixed(1) + '%',
+        bg: bands[i].bg, fg: bands[i].fg, state: bands[i].state
+      };
+    });
+
+    const statuses = [
+      { statusName: 'Safe to switch on', statusBg: '#B9F0C9', statusFg: '#17130F', statusNote: 'Nothing is near end of life. The app says so once and then leaves the machine alone.' },
+      { statusName: 'Worth a look inside', statusBg: '#FFD24A', statusFg: '#17130F', statusNote: 'No emergency, but this is the machine to pick when a free Saturday appears. Sorted to the top of the workshop queue.' },
+      { statusName: 'Do not power it on', statusBg: '#C2371F', statusFg: '#F3ECE0', statusNote: 'Something on the board is past its rated life. Powering up is how a repairable machine becomes a parts donor.' },
+      { statusName: 'Open it this week', statusBg: '#6E2440', statusFg: '#F3ECE0', statusNote: 'The only genuinely urgent state in the whole app. A battery this old is already leaking, and every month costs traces.' }
+    ];
+
+    return {
+      builtLabel: String(built),
+      serviceLabel: servicedRaw.toLowerCase(),
+      gauges,
+      ...statuses[worst],
+
+      derivedCode: 'serviceRisk(now) →\n  .sound\n  .ageing\n  .due\n  .overdue\n\nPer consumable, not per\nmachine. Computed from\nbuilt + serviceLog on read,\nnever stored.',
+
+      unlocks: [
+        'A workshop queue — the collection sorted by what is dying, not by what is valuable.',
+        'The only honest warning in the app: a battery-leak alert on a machine that has never been opened.',
+        'Service history as provenance. A documented recap is worth real money at sale.',
+        'A power-on guard on the object screen, so the app never invites you to break something.'
+      ],
+
+      breaks: [
+        { n: 'BREAK 01', t: 'Condition is two numbers that disagree', needs: 'workingState alongside conditions',
+          b: 'A sealed, unyellowed machine with a leaked battery is worth less than a scuffed one that boots — and every listing in the hobby quotes both facts because neither predicts the other. Vinyl grades media and sleeve, which are both cosmetic. Here the second axis is functional, and it is the one that sets the price.' },
+        { n: 'BREAK 02', t: 'It degrades while you do nothing', needs: 'derived serviceRisk + type: log',
+          b: 'Wine improves and then declines on a clock nobody controls. A machine only declines, and the decline is entirely preventable — which makes it the app\u2019s first genuine obligation rather than a curiosity. Ownership here is custodianship, and the product should say so.' },
+        { n: 'BREAK 03', t: 'One name, a dozen different objects', needs: 'revision + region in the spine',
+          b: 'Same model name, different board revision, different ROM, different region, different value — and a collector who cannot see the revision on the row will not trust the app with their collection. Vinyl splits on pressing; this splits on revision, and the revision is stamped on the board rather than printed on the object.' },
+        { n: 'BREAK 04', t: 'The object contains other objects', needs: 'composite: true — see section 05',
+          b: 'A machine arrives with a monitor, drives, an internal expansion and a shelf of software, several of which are separately collectable and separately valuable. No existing type has a parent-child relationship, and faking it with tags loses the value maths entirely.' }
+      ],
+
+      diffs: [
+        { key: 'duplicates', vinyl: 'rows — three pressings are three objects', rc: 'rows — split on board revision and region', why: 'Two machines of the same model are never interchangeable: a Rev 5 and a Rev 6A differ in chips, in compatibility and in price. The split rule is identical to vinyl, only the discriminator changes.' },
+        { key: 'conditions', vinyl: 'Mint → Poor, the Goldmine scale', rc: 'Mint → Project, cosmetic only', why: 'Deliberately renamed at the bottom end. "Poor" is a dead record; "Project" is a machine someone wants, and the bottom of this market is the most active part of it.' },
+        { key: 'second grade', vinyl: 'sleeveCondition — packaging', rc: 'workingState — Boots → Untested → Dead', why: 'The structural parallel breaks. A sealed record is presumed to play; a mint machine is presumed dead until someone says otherwise. Untested is the honest default and the most common state in the hobby.' },
+        { key: 'lookup.symbologies', vinyl: '[ean13, upc-a]', rc: '[] — empty', why: 'Most of these machines predate retail barcoding, and where a barcode exists it is on a box that is long gone. There is nothing on the object to scan.' },
+        { key: 'lookup.providers', vinyl: '[discogs, musicbrainz]', rc: '[] — and it does not matter', why: 'No live API, and no need for one. The catalogue stopped growing thirty years ago, so a shipped file is not a cache of a remote service — it is the complete truth, permanently.' },
+        { key: 'lookup.localCorpus', vinyl: 'none — too large to ship', rc: 'models.json · ~3,400 entries', why: 'The first type where the entire universe fits in the bundle. Full offline identification, no rate limits, no provider that can disappear, and a flea market with no signal is the exact place the feature is used.' },
+        { key: 'lookup.ocrFields', vinyl: 'n/a', rc: '[model, serial] from the underside label', why: 'Reuses wine\u2019s key for a different job: not free text, but a printed string tested against identifierPattern to resolve a model and decode a build date.' },
+        { key: 'spine.year', vinyl: 'Year — descriptive', rc: 'Built — the week and year in the serial', why: 'Not the model\u2019s release year, which everyone knows, but this unit\u2019s manufacture date, which nobody records and which the service clock needs. A late-run machine can have entirely different chips.' },
+        { key: 'format', vinyl: 'LP, 2×LP, 7" — descriptive', rc: 'Loose / Boxed / Complete / Sealed', why: 'A value multiplier, like wine\u2019s bottle format, but a violent one: complete-in-box can be five to ten times loose. The polystyrene inserts are worth more than the machine, which collectors find funny and true.' },
+        { key: 'related', vinyl: '[subtitle, label]', rc: '[manufacturer, platform]', why: 'People collect down a platform family, not across a year. "What else do I own that plugs into this?" is the question, and it is asked in a shop with a peripheral in hand.' },
+        { key: 'new field types', vinyl: 'event — one date', rc: 'composite, log (reused), choice sets', why: 'Only one genuinely new primitive. log arrives from wine and is used harder here; composite is the new one, and it is the one that needs a narrow definition before it spreads.' }
+      ],
+
+      systemSteps: [
+        { k: 'STEP 01', t: 'Parts are real objects', b: 'A monitor added as a part is a full object with its own condition, value, photos and history. It is not a row of text on the machine.' },
+        { k: 'STEP 02', t: 'One parent, no trees', b: 'A part belongs to exactly one machine and cannot have parts of its own. Deliberately shallow — depth is where this feature turns into a file system.' },
+        { k: 'STEP 03', t: 'Value adds up once', b: 'The machine shows its own value and a system total beside it. The collection sums objects, never systems, so nothing is counted twice.' },
+        { k: 'STEP 04', t: 'Detaching is one tap', b: 'Sell the monitor and it leaves the system and stays in the collection. Parts were always independent; the parent was only ever a view.' }
+      ],
+
+      ocrChips: ['model', 'serial', '→ build week and year decoded', '→ region from the model code', '→ board revision prompted, never guessed'],
+
+      newPrimitives: [
+        { k: 'composite: true', tag: 'NEW', tagBg: '#FFD24A', b: 'Objects may hold other objects one level deep. Adds an Add part action, a system total and a detach. Cameras, synths and cars all want this; retro computers are just the type that forces it first.' },
+        { k: 'workingState', tag: 'NEW', tagBg: '#FFD24A', b: 'A functional axis parallel to condition, declared per type with its own ordered scale. Untested is a first-class value and the default, not a blank.' },
+        { k: 'type: log', tag: 'REUSE', tagBg: '#B9F0C9', b: 'Wine proposed it for opened bottles; this type is the second customer, for the service history. A primitive a second type asks for unprompted was the right primitive.' },
+        { k: 'lookup.localCorpus', tag: 'EXTEND', tagBg: '#B9F0C9', b: 'Already sketched in the identification pipeline as partial. Here it is complete — the first type that needs no network at all, which is worth stating on the website.' },
+        { k: 'lookup.identifierPattern', tag: 'REUSE', tagBg: '#B9F0C9', b: 'Per-manufacturer serial formats, each decoding to a build week. The most valuable single regex in the app, because it fills a field the owner could not fill themselves.' }
+      ],
+
+      open: [
+        { k: 'Q1', q: 'Does a restoration raise the value or lower it?', b: 'The hobby is genuinely split — a documented recap is maintenance and adds money, a modern chip replacement is a modification and takes it away, and the line between them moves by platform. The app should record what was done and stay out of the argument, which means the service log needs a type per entry rather than free text.' },
+        { k: 'Q2', q: 'Is software part of this type, or the seventeenth type?', b: 'Boxed games and disks are collected by the same people but behave like vinyl: catalogue numbers, sealed grading, a known release list. Folding them in here makes a muddy type; splitting them means two types that constantly reference each other. Leaning split — and then the machine relates to them by platform.' },
+        { k: 'Q3', q: 'Does the service clock notify, or only sort?', b: 'A push saying a thirty-year-old battery is overdue is either the most useful notification the app will ever send or a scare about damage already done. Sorting is free and silent; a single annual digest of the workshop queue may be the honest middle.' },
+        { k: 'Q4', q: 'Where do the expected lifespans come from?', b: 'The four numbers in section 02 are hobby consensus, not data — repair communities agree on the order of magnitude and argue about the rest. Shipping them as an editable table per platform is cheap; pretending they are precise is not.' },
+        { k: 'Q5', q: 'What does the 3D model show when a machine has parts?', b: 'Rule 04 gives each type one model. A bare beige wedge is the wrong picture of a system with a monitor on top, but modelling every peripheral is a type\u2019s worth of work on its own. Machine only, for now, and revisit when composition ships.' }
+      ],
+
+      manifestYaml: [
+        'id: retro-computer',
+        'name:',
+        '  singular: Machine',
+        '  plural: Machines',
+        '  collection: The Workshop',
+        'mark: "64K"',
+        'icon: crt',
+        'gradient: [phosphor, oxide]',
+        '',
+        '# Same model, different board revision = different object, like a pressing.',
+        'duplicates: rows',
+        '',
+        '# A machine can own a monitor, a drive, an expansion. One level, no trees.',
+        'composite: true',
+        '',
+        'spine:',
+        '  title: Model',
+        '  subtitle: Manufacturer',
+        '  year: Built                # this unit, decoded from the serial',
+        '  acquired: Acquired on',
+        '  paid: Paid',
+        '  value: Value',
+        '',
+        '# Cosmetic only, best first. \u201cProject\u201d rather than \u201cPoor\u201d \u2014 the bottom of',
+        '# this market is the busiest part of it.',
+        'conditions: [Mint, Near mint, Excellent, Good, Fair, Project]',
+        '',
+        '# The second axis, and the one that sets the price. Untested is the default.',
+        'workingState: [Boots and passes, Boots with faults, Untested, Dead]',
+        '',
+        'lookup:',
+        '  identifier: serial',
+        '  identifierPattern: per-manufacturer  # decodes build week + year',
+        '  symbologies: []          # these machines predate retail barcodes',
+        '  providers: []            # no live API, and none needed',
+        '  localCorpus: models.json # ~3,400 entries \u00b7 the complete universe',
+        '  ocrFields: [model, serial]',
+        '',
+        'searchable: [title, subtitle, year, platform, revision, region, chipset, place]',
+        '',
+        'placeLabel: Where it is   # shelf, loft, on the bench',
+        '',
+        '# In a shop, holding a peripheral: \u201cdo I own anything this plugs into?\u201d',
+        'related: [manufacturer, platform]',
+        '',
+        'fields:',
+        '  - key: manufacturer  | Manufacturer | text   | auto',
+        '  - key: platform      | Platform     | text   | auto',
+        '  - key: revision      | Board rev    | text',
+        '  - key: region        | Region       | choice | PAL, NTSC, SECAM, JP',
+        '  - key: serial        | Serial       | text   | auto',
+        '  - key: built         | Built        | date   | week precision, auto',
+        '  - key: cpu           | Processor    | text   | auto',
+        '  - key: ram           | Memory       | text   | as fitted, not as shipped',
+        '  - key: completeness  | Completeness | choice | Loose, Boxed, Complete,',
+        '                                                 Sealed',
+        '  - key: workingState  | Working      | choice | see above',
+        '  - key: mods          | Modified     | list   | [mod, date, reversible]',
+        '  - key: psu           | Power supply | choice | Original, Replaced, Missing',
+        '  - key: voltage       | Voltage      | choice | 110V, 220V, Universal',
+        '  - key: parts         | In this system | composite | one level deep',
+        '  - key: serviceLog    | Service history | log | [date, work, parts, by]'
+      ].join('\n')
+    };
+  }
+}
+
+</script>
+</body>
+</html>

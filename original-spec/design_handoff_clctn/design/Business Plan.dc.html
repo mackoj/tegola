@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#EAE3D6}
+a{color:#2B44D6}a:hover{color:#FF5B2E}
+.bp-page{width:1100px;margin:0 auto;padding:0 0 90px;font-family:Archivo,system-ui,sans-serif;color:#17130F}
+.bp-sec{padding:46px 0 40px;border-bottom:2px solid rgba(23,19,15,.12)}
+.bp-lab{font:500 10px 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#8A7F70;margin-bottom:12px}
+.bp-h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:34px;line-height:1;letter-spacing:-.03em;margin:0 0 18px}
+.bp-h3{font:700 15px Archivo,sans-serif;margin:28px 0 10px}
+.bp-p{max-width:720px;font:400 15px/1.65 Archivo,sans-serif;color:#3A2F26;margin:0 0 14px;text-wrap:pretty}
+.bp-note{max-width:720px;font:400 13px/1.6 Archivo,sans-serif;color:#6E6458;margin:0 0 14px;text-wrap:pretty}
+.bp-opts{display:flex;flex-direction:column;gap:16px;margin:20px 0 6px}
+.bp-opt{border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden}
+.bp-ohd{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:2.5px solid #17130F;background:#EDE4D6}
+.bp-obadge{flex:none;width:30px;height:30px;border:2.5px solid #17130F;border-radius:8px;display:flex;align-items:center;justify-content:center;font:700 13px Archivo,sans-serif}
+.bp-oname{font:700 18px Archivo,sans-serif;letter-spacing:-.01em}
+.bp-oprice{margin-left:auto;font:500 10px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:5px 10px;background:#fff}
+.bp-obody{display:flex;flex-wrap:wrap;gap:0}
+.bp-ocell{flex:1 1 240px;min-width:230px;padding:14px 16px;border-right:2px solid rgba(23,19,15,.12)}
+.bp-ock{font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px}
+.bp-ocv{font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty}
+.bp-ofoot{border-top:2.5px solid #17130F;padding:12px 16px;font:700 13.5px/1.5 Archivo,sans-serif;text-wrap:pretty}
+.bp-math{border:2.5px solid #17130F;border-radius:18px;background:#17130F;color:#F3ECE0;padding:18px 20px;box-shadow:5px 5px 0 #FF5B2E;max-width:860px;margin:20px 0 8px}
+.bp-row{display:flex;gap:14px;align-items:baseline;padding:9px 0;border-bottom:1.5px solid rgba(243,236,224,.16)}
+.bp-rk{flex:1;font:400 13.5px/1.4 Archivo,sans-serif;color:rgba(243,236,224,.8)}
+.bp-rv{flex:none;font:700 14px 'DM Mono',monospace}
+.bp-cards{display:flex;flex-wrap:wrap;gap:14px;margin:18px 0 6px}
+.bp-card{flex:1 1 320px;min-width:300px;border:2.5px solid #17130F;border-radius:16px;padding:15px 16px}
+.bp-ck{font:500 9px 'DM Mono',monospace;letter-spacing:.13em;margin-bottom:8px}
+.bp-cn{font:700 16px Archivo,sans-serif;margin-bottom:7px}
+.bp-cv{font:400 13.5px/1.55 Archivo,sans-serif;text-wrap:pretty}
+.bp-steps{display:flex;flex-direction:column;gap:0;max-width:860px;margin:20px 0 6px}
+.bp-step{display:flex;gap:14px;align-items:flex-start}
+.bp-sn{flex:none;display:flex;flex-direction:column;align-items:center;width:30px}
+.bp-sc{width:30px;height:30px;border:2.5px solid #17130F;border-radius:999px;display:flex;align-items:center;justify-content:center;font:700 12px Archivo,sans-serif}
+.bp-sl{width:2.5px;flex:1;min-height:26px;background:#17130F}
+.bp-sb{flex:1;padding-bottom:20px}
+.bp-st{font:700 15px Archivo,sans-serif;margin-bottom:5px}
+.bp-sv{font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty;max-width:700px}
+</style>
+</helmet>
+
+<div class="bp-page">
+
+<div class="bp-sec" style="padding-top:60px">
+  <div class="bp-lab">Money · working document · August 2026</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:62px;line-height:.92;letter-spacing:-.04em;max-width:840px">How this pays<br>for itself</div>
+  <p class="bp-p" style="font-size:17px;margin-top:22px">One principle first, because it decides almost everything else and it's the part most solo devs get backwards:</p>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#FFD24A;padding:20px 22px;box-shadow:5px 5px 0 #17130F;max-width:820px;margin:6px 0 18px">
+    <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:26px;line-height:1.12;letter-spacing:-.02em;text-wrap:pretty">Sell once for what costs you nothing per month. Charge monthly only for what costs you money every month.</div>
+  </div>
+  <p class="bp-p">A catalogue that lives on someone's phone and syncs through <em>their</em> iCloud costs you nothing to keep running. Renting that back to them every month is what earns a one-star review reading "held my own data hostage". But a barcode lookup, an image match, a market index — those cost you real money on every call, forever. Those are the things a subscription is honest about.</p>
+  <p class="bp-note">Every number on this page is illustrative and deliberately conservative — they're there so you can argue with the shape, not to be believed. Apple takes 15% while you're under $1M/year (Small Business Program), which is what I've used throughout.</p>
+</div>
+
+<div class="bp-sec">
+  <div class="bp-lab">01 · v1 — a catalogue, no selling</div>
+  <div class="bp-h2">Four ways to charge<br>for v1</div>
+  <p class="bp-p">v1 has no marketplace, no valuations, no pro mode. So there is no transaction to skim and no "professional" tier to sell. What you have is a well-made tool for someone who owns 200 objects and cares about them — and that person is, historically, extremely willing to pay once and never think about it again.</p>
+  <div class="bp-opts">
+    <div class="bp-opt">
+      <div class="bp-ohd"><div class="bp-obadge" style="background:#FFD24A">1</div><div class="bp-oname">Free to try, one-time unlock</div><div class="bp-oprice">€24.99 ONCE</div></div>
+      <div class="bp-obody">
+        <div class="bp-ocell"><div class="bp-ock">HOW IT WORKS</div><div class="bp-ocv">Free forever up to ~100 objects with everything working. Past that, one payment unlocks unlimited objects, export, sharing and wishlists. No account needed, ever.</div></div>
+        <div class="bp-ocell"><div class="bp-ock">WHY IT FITS</div><div class="bp-ocv">The cap is honest: audience C (one inherited crate) never pays and never feels cheated; audience A hits 100 objects on day one and pays without resentment. The trial is the product, not a countdown.</div></div>
+        <div class="bp-ocell" style="border-right:none"><div class="bp-ock">WHAT IT COSTS YOU</div><div class="bp-ocv">Nothing recurring. Lookups have to be capped or metered separately or heavy users cost you money forever on a single payment.</div></div>
+      </div>
+      <div class="bp-ofoot" style="background:#0E6E5E;color:#F3ECE0">Recommended spine for v1. Predictable, defensible, and it doesn't require you to become a subscription business before you have a business.</div>
+    </div>
+
+    <div class="bp-opt">
+      <div class="bp-ohd"><div class="bp-obadge" style="background:#2B44D6;color:#F3ECE0">2</div><div class="bp-oname">Lookup packs on top</div><div class="bp-oprice">€4.99 / 500 SCANS</div></div>
+      <div class="bp-obody">
+        <div class="bp-ocell"><div class="bp-ock">HOW IT WORKS</div><div class="bp-ocv">Manual entry is unlimited and free. Barcode and photo lookups — the calls that cost you per use — come as consumable packs, with a generous monthly free allowance (say 50) so nobody meets a paywall on their first object.</div></div>
+        <div class="bp-ocell"><div class="bp-ock">WHY IT FITS</div><div class="bp-ocv">It maps price directly to your variable cost, so a user cataloguing 3,000 comics can never bankrupt you. Consumables also convert far better than subscriptions on a tool people use in bursts — a weekend of cataloguing, then nothing for months.</div></div>
+        <div class="bp-ocell" style="border-right:none"><div class="bp-ock">WHAT IT COSTS YOU</div><div class="bp-ocv">Metering, and the risk of feeling nickel-and-dimed if the free allowance is stingy. Be generous — the packs are insurance, not the business.</div></div>
+      </div>
+      <div class="bp-ofoot" style="background:#FFD24A">Pair with option 1. Together they're the whole v1 model: buy the tool once, top up the part that has a bill attached.</div>
+    </div>
+
+    <div class="bp-opt">
+      <div class="bp-ohd"><div class="bp-obadge" style="background:#FF5B2E;color:#F3ECE0">3</div><div class="bp-oname">Affiliate on the wishlist</div><div class="bp-oprice">3–8% OF SALE</div></div>
+      <div class="bp-obody">
+        <div class="bp-ocell"><div class="bp-ock">HOW IT WORKS</div><div class="bp-ocv">The wishlist already exists in v1. When a wanted object is buyable somewhere — a marketplace, a shop, a big retailer — the app can link out and take an affiliate cut. You're not selling anything; you're helping someone buy what they already told you they want.</div></div>
+        <div class="bp-ocell"><div class="bp-ock">WHY IT FITS</div><div class="bp-ocv">This is exactly how Delicious Library made money, and intent has never been cleaner: a named object on a wishlist is the highest-quality purchase signal there is. Zero build cost beyond the link.</div></div>
+        <div class="bp-ocell" style="border-right:none"><div class="bp-ock">WHAT IT COSTS YOU</div><div class="bp-ocv">A promise. You said v1 has nothing to do with selling, and a "buy it now" button is a shop by another name. It also puts you one policy change away from zero revenue — affiliate programmes cut rates without warning.</div></div>
+      </div>
+      <div class="bp-ofoot" style="background:#fff">Real money, wrong moment. I'd hold it until v2, when buying and selling is the stated point — and even then keep it out of the catalogue itself.</div>
+    </div>
+
+    <div class="bp-opt">
+      <div class="bp-ohd"><div class="bp-obadge" style="background:#17130F;color:#F3ECE0">4</div><div class="bp-oname">Paid up front, no free tier</div><div class="bp-oprice">€9.99 ONCE</div></div>
+      <div class="bp-obody">
+        <div class="bp-ocell"><div class="bp-ock">HOW IT WORKS</div><div class="bp-ocv">The old way. One price on the App Store page, nothing free, no IAP, no accounts. Simplest thing that can possibly work.</div></div>
+        <div class="bp-ocell"><div class="bp-ock">WHY IT FITS</div><div class="bp-ocv">It matches the product's dignity, and it's the least work by a wide margin — no entitlement logic, no cap, no metering. Some categories still support it beautifully, and "premium tool, paid once" is a legible position.</div></div>
+        <div class="bp-ocell" style="border-right:none"><div class="bp-ock">WHAT IT COSTS YOU</div><div class="bp-ocv">Roughly 90% of your downloads. Nobody can experience the thing before paying, and this app's whole argument is experiential — you have to see your shelf rendered to want it.</div></div>
+      </div>
+      <div class="bp-ofoot" style="background:#fff">Only if you want to ship in a weekend and learn from a small, self-selected audience. Treat it as research, not a plan.</div>
+    </div>
+  </div>
+
+  <div class="bp-h3">What v1 could realistically make</div>
+  <div class="bp-math">
+    <div class="bp-lab" style="color:#FFD24A;margin-bottom:10px">SCENARIO · YEAR ONE, OPTION 1 + 2, NO MARKETING SPEND</div>
+    <div class="bp-row"><div class="bp-rk">Downloads (App Store search, a few enthusiast forums, one good review)</div><div class="bp-rv">25,000</div></div>
+    <div class="bp-row"><div class="bp-rk">Hit the 100-object cap at all</div><div class="bp-rv">18% · 4,500</div></div>
+    <div class="bp-row"><div class="bp-rk">Of those, unlock at €24.99</div><div class="bp-rv">22% · 990</div></div>
+    <div class="bp-row"><div class="bp-rk">Unlock revenue, after Apple's 15%</div><div class="bp-rv">€21,030</div></div>
+    <div class="bp-row"><div class="bp-rk">Lookup packs (≈15% of payers buy one)</div><div class="bp-rv">€630</div></div>
+    <div class="bp-row"><div class="bp-rk">Lookup and hosting costs</div><div class="bp-rv">−€1,400</div></div>
+    <div class="bp-row" style="border-bottom:none"><div class="bp-rk"><strong style="color:#F3ECE0">Year one, net</strong></div><div class="bp-rv" style="color:#FFD24A">≈ €20,000</div></div>
+  </div>
+  <p class="bp-note">Read that as the honest middle case: <strong>one year of evenings buys you a decent used car, not a salary.</strong> Ten times the downloads is €200k and a real business; that multiple comes from press, a category moment, or an audience you already have — not from the pricing page. The reason to ship v1 anyway is that it's the only way to find out whether people love it, and v2 is where the money actually lives.</p>
+</div>
+
+<div class="bp-sec">
+  <div class="bp-lab">02 · v2 — selling, value, the index</div>
+  <div class="bp-h2">Five ways to charge<br>for v2</div>
+  <p class="bp-p">v2 changes the economics completely, because for the first time the app sits next to a transaction — and next to two things people already pay for without blinking: <strong>insurance</strong> and <strong>knowing what something is worth</strong>.</p>
+  <div class="bp-opts">
+    <div class="bp-opt">
+      <div class="bp-ohd"><div class="bp-obadge" style="background:#0E6E5E;color:#F3ECE0">1</div><div class="bp-oname">Seller subscription, not a fee</div><div class="bp-oprice">€6.99 / MONTH</div></div>
+      <div class="bp-obody">
+        <div class="bp-ocell"><div class="bp-ock">HOW IT WORKS</div><div class="bp-ocv">Listing is free and unlimited. What's paid is the seller's toolkit: market comps, price history, bulk listing, sold-price data, the searchable index, insurance-grade exports. You take nothing from the sale itself.</div></div>
+        <div class="bp-ocell"><div class="bp-ock">WHY IT FITS</div><div class="bp-ocv">It's the only model that survives option B (the deal closes off-app) — you can't take a cut of a transaction you don't process. It also aligns you with the seller instead of taxing them, which is the whole reason someone would use you over the incumbents.</div></div>
+        <div class="bp-ocell" style="border-right:none"><div class="bp-ock">WHAT IT COSTS YOU</div><div class="bp-ocv">You now owe monthly value: fresh comps, real data, working search. That's a data licence and a server bill — a genuine ongoing obligation.</div></div>
+      </div>
+      <div class="bp-ofoot" style="background:#0E6E5E;color:#F3ECE0">The one I'd build. It's the model your v2 depth choice (B) actually permits, and it scales without you becoming a payments company.</div>
+    </div>
+
+    <div class="bp-opt">
+      <div class="bp-ohd"><div class="bp-obadge" style="background:#FFD24A">2</div><div class="bp-oname">Insurance referral</div><div class="bp-oprice">€25–80 / POLICY</div></div>
+      <div class="bp-obody">
+        <div class="bp-ocell"><div class="bp-ock">HOW IT WORKS</div><div class="bp-ocv">You already generate the exact document a specialist collectibles insurer needs: itemised objects, conditions, values, provenance, dated. Partner with one or two, hand over a warm lead when someone exports it, get paid per bound policy.</div></div>
+        <div class="bp-ocell"><div class="bp-ock">WHY IT FITS</div><div class="bp-ocv">Highest revenue per user on this page by a distance, and it's a service people genuinely want the moment they see a five-figure total. Nothing to build beyond a hand-off — the export screen already exists.</div></div>
+        <div class="bp-ocell" style="border-right:none"><div class="bp-ock">WHAT IT COSTS YOU</div><div class="bp-ocv">Partner negotiation, per-country regulation on insurance introductions, and a real trust risk — the moment it feels like the app is upselling you a policy, you've spent the goodwill that made people trust it with their objects.</div></div>
+      </div>
+      <div class="bp-ofoot" style="background:#FFD24A">The sleeper. One line in the export flow — "get this valued and covered" — never a banner, never a nudge notification.</div>
+    </div>
+
+    <div class="bp-opt">
+      <div class="bp-ohd"><div class="bp-obadge" style="background:#2B44D6;color:#F3ECE0">3</div><div class="bp-oname">Transaction take rate</div><div class="bp-oprice">4–6% OF GMV</div></div>
+      <div class="bp-obody">
+        <div class="bp-ocell"><div class="bp-ock">HOW IT WORKS</div><div class="bp-ocv">Only possible under option C — checkout in the app, money through you, buyer protection. Then you earn on every sale, and your revenue grows with the collection's activity rather than its headcount.</div></div>
+        <div class="bp-ocell"><div class="bp-ock">WHY IT FITS</div><div class="bp-ocv">It's the biggest number available, and the only model where a single hit object pays for a month of your time. €2M of GMV at 5% is €100k.</div></div>
+        <div class="bp-ocell" style="border-right:none"><div class="bp-ock">WHAT IT COSTS YOU</div><div class="bp-ocv">Everything. Fraud, chargebacks, disputes over condition, refunds, KYC, support in five languages. This isn't a feature, it's a different company — and one solo dev cannot staff it.</div></div>
+      </div>
+      <div class="bp-ofoot" style="background:#17130F;color:#F3ECE0">Say no for now. Revisit only if the index proves people are already trading through you and asking you to hold the money.</div>
+    </div>
+
+    <div class="bp-opt">
+      <div class="bp-ohd"><div class="bp-obadge" style="background:#E5457B;color:#F3ECE0">4</div><div class="bp-oname">Promoted listings</div><div class="bp-oprice">€1–3 / BOOST</div></div>
+      <div class="bp-obody">
+        <div class="bp-ocell"><div class="bp-ock">HOW IT WORKS</div><div class="bp-ocv">A seller pays to sit at the top of a search or to notify the wishlists that match. Consumable, no subscription, no cut of the sale.</div></div>
+        <div class="bp-ocell"><div class="bp-ock">WHY IT FITS</div><div class="bp-ocv">Works even under option B, because you're selling attention rather than processing money. Cheap to build once the index exists.</div></div>
+        <div class="bp-ocell" style="border-right:none"><div class="bp-ock">WHAT IT COSTS YOU</div><div class="bp-ocv">Search integrity. The moment relevance is for sale, "3 of your 12 are for sale" stops being a fact and becomes an ad — and that line is the reason anyone opens the market tab.</div></div>
+      </div>
+      <div class="bp-ofoot" style="background:#fff">Only after the index has real supply, and only if promoted results are visibly, unmistakably marked. Never inside a wishlist hit.</div>
+    </div>
+
+    <div class="bp-opt">
+      <div class="bp-ohd"><div class="bp-obadge" style="background:#12A594;color:#F3ECE0">5</div><div class="bp-oname">Shops, clubs and libraries</div><div class="bp-oprice">€19–49 / MONTH</div></div>
+      <div class="bp-obody">
+        <div class="bp-ocell"><div class="bp-ock">HOW IT WORKS</div><div class="bp-ocv">The reserve-from-a-library sketch, sold as a product: a record shop, a games café, a comics club or a school library runs its inventory and its lending queue on the same app, with multiple staff and a public shelf.</div></div>
+        <div class="bp-ocell"><div class="bp-ock">WHY IT FITS</div><div class="bp-ocv">Businesses pay monthly without flinching, churn less than consumers, and you've already built lending, handshakes, shared shelves, quantity and history. Twenty shops at €39 is €9.4k a year of boring, dependable revenue.</div></div>
+        <div class="bp-ocell" style="border-right:none"><div class="bp-ock">WHAT IT COSTS YOU</div><div class="bp-ocv">Invoices, a web view, roles and permissions, and support with an expectation of a reply. It's a second product wearing your app's clothes — and it will pull the roadmap toward its needs.</div></div>
+      </div>
+      <div class="bp-ofoot" style="background:#fff">Best possible plan B. If consumer conversion disappoints, this is where the same code makes money — but don't start here, because building for shops first ruins the app for the person on the sofa.</div>
+    </div>
+  </div>
+
+  <div class="bp-h3">What v2 could realistically make</div>
+  <div class="bp-math">
+    <div class="bp-lab" style="color:#FFD24A;margin-bottom:10px">SCENARIO · YEAR TWO, SUBSCRIPTION + INSURANCE + A FEW SHOPS</div>
+    <div class="bp-row"><div class="bp-rk">Cumulative installed base</div><div class="bp-rv">70,000</div></div>
+    <div class="bp-row"><div class="bp-rk">People who ever list something for sale</div><div class="bp-rv">9% · 6,300</div></div>
+    <div class="bp-row"><div class="bp-rk">Seller subscribers at €6.99/mo (12% of those, avg 7 months)</div><div class="bp-rv">756</div></div>
+    <div class="bp-row"><div class="bp-rk">Subscription revenue, after Apple's 15%</div><div class="bp-rv">€31,440</div></div>
+    <div class="bp-row"><div class="bp-rk">Insurance referrals (400 policies × €45)</div><div class="bp-rv">€18,000</div></div>
+    <div class="bp-row"><div class="bp-rk">v1 unlocks still landing from new users</div><div class="bp-rv">€26,000</div></div>
+    <div class="bp-row"><div class="bp-rk">15 shops on the business tier</div><div class="bp-rv">€7,000</div></div>
+    <div class="bp-row"><div class="bp-rk">Data licences, index hosting, lookups</div><div class="bp-rv">−€14,000</div></div>
+    <div class="bp-row" style="border-bottom:none"><div class="bp-rk"><strong style="color:#F3ECE0">Year two, net</strong></div><div class="bp-rv" style="color:#FFD24A">≈ €68,000</div></div>
+  </div>
+  <p class="bp-note">That's a modest one-person salary, and it's the case where things go <em>reasonably</em> well — not the dream. Two things move it by an order of magnitude, and neither is a pricing decision: the insurance partnership converting better than 400 policies, or the business tier finding a real niche. Both are conversations with people, which is the part you said you're bad at, and also the part with the highest return per hour on this page.</p>
+</div>
+
+<div class="bp-sec">
+  <div class="bp-lab">03 · The traps</div>
+  <div class="bp-h2">Five ways to lose<br>money here</div>
+  <div class="bp-cards">
+    <div class="bp-card" style="background:#17130F;color:#F3ECE0;box-shadow:4px 4px 0 #FF5B2E"><div class="bp-ck" style="color:#FFD24A">TRAP 1</div><div class="bp-cn">Subscribing the catalogue</div><div class="bp-cv" style="color:rgba(243,236,224,.85)">Charging monthly for a local, offline, iCloud-synced database. It's the single most reliable way to get savaged in reviews by exactly the people who'd otherwise evangelise you.</div></div>
+    <div class="bp-card" style="background:#fff;box-shadow:4px 4px 0 #17130F"><div class="bp-ck">TRAP 2</div><div class="bp-cn">Free with no wall at all</div><div class="bp-cv">100k happy users, €0, and a lookup bill. Decide the wall before launch — retrofitting one onto a free app is the most hated move in software.</div></div>
+    <div class="bp-card" style="background:#fff;box-shadow:4px 4px 0 #17130F"><div class="bp-ck">TRAP 3</div><div class="bp-cn">Building v2 to fund v1</div><div class="bp-cv">The marketplace is where the money is, so the temptation is to rush it. But an empty index is worse than no index, and v1's job is to create the supply that makes v2 possible.</div></div>
+    <div class="bp-card" style="background:#fff;box-shadow:4px 4px 0 #17130F"><div class="bp-ck">TRAP 4</div><div class="bp-cn">Raising money for this</div><div class="bp-cv">These numbers are a good life and a terrible venture case. Taking investment forces you toward option C and the take rate — you'd be obliged to build the payments company you don't want.</div></div>
+    <div class="bp-card" style="background:#fff;box-shadow:4px 4px 0 #17130F"><div class="bp-ck">TRAP 5</div><div class="bp-cn">Ads, ever</div><div class="bp-cv">The product is someone's private inventory of valuable things. Ads against that data is the one move that would make the privacy promise a lie, and the promise is a real part of why anyone would choose you.</div></div>
+  </div>
+</div>
+
+<div class="bp-sec">
+  <div class="bp-lab">04 · Geography</div>
+  <div class="bp-h2">One app, three<br>kinds of country</div>
+  <p class="bp-p">You're right, and it's the most important thing on this page. The companies you named didn't win by having one model — they won by matching how their market already behaves. And they split cleanly into two families:</p>
+  <div class="bp-cards">
+    <div class="bp-card" style="background:#17130F;color:#F3ECE0;box-shadow:5px 5px 0 #FF5B2E">
+      <div class="bp-ck" style="color:#FFD24A">FAMILY 1 — MONETISE THE TRANSACTION</div>
+      <div class="bp-cn">eBay · Vinted · BlaBlaCar</div>
+      <div class="bp-cv" style="color:rgba(243,236,224,.85)">Revenue is a percentage of a deal, so the deal <em>must</em> happen inside the platform. Which means years of energy spent stopping people from doing what they'd naturally do: swapping numbers and finishing it themselves. BlaBlaCar had to force payment in-app for exactly this reason, and it cost real goodwill to do it.</div>
+    </div>
+    <div class="bp-card" style="background:#0E6E5E;color:#F3ECE0;box-shadow:5px 5px 0 #17130F">
+      <div class="bp-ck" style="color:#FFD24A">FAMILY 2 — MONETISE THE VISIBILITY</div>
+      <div class="bp-cn">Leboncoin · Craigslist · Delicious Library</div>
+      <div class="bp-cv" style="color:rgba(243,236,224,.9)">Revenue is paid placement, ads, seller tools, affiliate — never a cut. People are free to meet and finish the deal in a car park, and it changes nothing about what you earn. Leboncoin became one of Europe's most profitable classifieds without ever taking a percentage.</div>
+    </div>
+  </div>
+  <p class="bp-p" style="margin-top:18px">You said you're not against people finding each other and selling directly. That single sentence decides your whole business model: <strong>you are family 2.</strong> Everything else follows from it — and it's why the seller subscription and boosts hold up while the take rate doesn't. Never build revenue that depends on the deal closing where you can see it.</p>
+
+  <div class="bp-h3">Then the three market types, which are about tolerance, not language</div>
+  <div class="bp-opts">
+    <div class="bp-opt">
+      <div class="bp-ohd"><div class="bp-obadge" style="background:#2B44D6;color:#F3ECE0">A</div><div class="bp-oname">Pays for tools, hates ads</div><div class="bp-oprice">DE · FR · NL · UK · US · JP · NORDICS</div></div>
+      <div class="bp-obody">
+        <div class="bp-ocell"><div class="bp-ock">HOW THEY BEHAVE</div><div class="bp-ocv">Will pay €25 once for a good tool without blinking. Treat an ad in a paid-for app as an insult, and a subscription on local data as a scam. Small audiences, high revenue per person.</div></div>
+        <div class="bp-ocell"><div class="bp-ock">WHAT YOU SHIP THERE</div><div class="bp-ocv">The unlock, lookup packs, the seller subscription, insurance referral. <strong>Zero ad surfaces — not a setting, simply absent by storefront.</strong></div></div>
+        <div class="bp-ocell" style="border-right:none"><div class="bp-ock">THE TRAP</div><div class="bp-ocv">Assuming this is what "normal" looks like because it's where you live. It's maybe 15% of your eventual downloads.</div></div>
+      </div>
+      <div class="bp-ofoot" style="background:#fff">This is where v1's money comes from. Launch here first, because it needs no ad infrastructure at all.</div>
+    </div>
+    <div class="bp-opt">
+      <div class="bp-ohd"><div class="bp-obadge" style="background:#FF5B2E;color:#F3ECE0">B</div><div class="bp-oname">Huge, price-sensitive, fine with ads</div><div class="bp-oprice">BR · IN · ID · MX · PH · TR · VN · NG</div></div>
+      <div class="bp-obody">
+        <div class="bp-ocell"><div class="bp-ock">HOW THEY BEHAVE</div><div class="bp-ocv">A €25 unlock is not "a bit expensive", it's out of the question. Ads are the accepted, unremarkable price of software — rewarded video especially, because it's a fair trade the user chooses. Volume is enormous and word of mouth is faster.</div></div>
+        <div class="bp-ocell"><div class="bp-ock">WHAT YOU SHIP THERE</div><div class="bp-ocv">Local price points (a €25 unlock becomes ~₹399), a micro annual tier, and <strong>rewarded video to earn lookups</strong> — watch one, get 25 scans. Never a banner, never an ad rendered against someone's inventory.</div></div>
+        <div class="bp-ocell" style="border-right:none"><div class="bp-ock">THE TRAP</div><div class="bp-ocv">Ad revenue per user here is small — cents, not euros. It only works because the audience is ten times bigger, so it's a volume play or nothing.</div></div>
+      </div>
+      <div class="bp-ofoot" style="background:#FFD24A">Phase two, not launch. Add it when you have the users to make the ad deal worth signing — but design the lookup meter now so rewarded video can plug into it later.</div>
+    </div>
+    <div class="bp-opt">
+      <div class="bp-ohd"><div class="bp-obadge" style="background:#12A594;color:#F3ECE0">C</div><div class="bp-oname">The deal always finishes off-platform</div><div class="bp-oprice">LATAM · INDIA · SEA · SOUTHERN &amp; EASTERN EU</div></div>
+      <div class="bp-obody">
+        <div class="bp-ocell"><div class="bp-ock">HOW THEY BEHAVE</div><div class="bp-ocv">They find each other in the app and finish on WhatsApp, in cash, in person. Escrow and in-app checkout aren't just unused there — they read as friction invented by a foreign company that doesn't trust you.</div></div>
+        <div class="bp-ocell"><div class="bp-ock">WHAT YOU SHIP THERE</div><div class="bp-ocv">Reach and reputation instead of escrow: boosts, WhatsApp-first sharing, and a visible track record — "14 handshakes completed, 3 lends returned on time". Reputation is the thing people will pay for when there's no platform holding the money.</div></div>
+        <div class="bp-ocell" style="border-right:none"><div class="bp-ock">THE TRAP</div><div class="bp-ocv">Reading off-platform completion as leakage and trying to plug it. That fight is unwinnable, expensive, and it's the thing users will hate you for.</div></div>
+      </div>
+      <div class="bp-ofoot" style="background:#0E6E5E;color:#F3ECE0">The handshake you already designed is the right primitive for these markets — it records that a deal happened without needing to process it. That's an accident you should take credit for.</div>
+    </div>
+  </div>
+  <p class="bp-note" style="margin-top:16px">Mechanically this is one codebase and a <strong>market profile per App Store storefront</strong>: which monetisation surfaces exist, which price tier, whether rewarded video is compiled in, what the share sheet defaults to. Three profiles, chosen by storefront, not by a user setting — asking someone "do you mind ads?" is asking them to choose to be shown ads, and the answer is always no.</p>
+  <p class="bp-note">And one small thing to do at launch that costs nothing: <strong>log downloads by country from day one.</strong> Where the users actually come from will tell you which of these three you're really building for, and it is almost never the one you expected.</p>
+</div>
+
+<div class="bp-sec">
+  <div class="bp-lab">05 · The go / no-go on v2</div>
+  <div class="bp-h2">Seven numbers, and<br>only two decide it</div>
+  <p class="bp-p">v1 is a long build and you need it to earn — so the real question isn't "is v2 a good idea", it's "has v1 proved the demand that makes v2 worth another year of evenings". Here's what to instrument. Everything below is measurable in v1, without a marketplace existing.</p>
+  <div class="bp-math">
+    <div class="bp-lab" style="color:#FFD24A;margin-bottom:10px">MEASURE THESE · GATE VALUES ARE MY GUESSES, NOT LAWS</div>
+    <div class="bp-row"><div class="bp-rk"><strong style="color:#F3ECE0">1 · Catalogue depth</strong> — median objects per user at day 30. Predicts every other behaviour.</div><div class="bp-rv">≥ 60</div></div>
+    <div class="bp-row"><div class="bp-rk"><strong style="color:#F3ECE0">2 · Coming back</strong> — share who add at least one object in month two.</div><div class="bp-rv">≥ 20%</div></div>
+    <div class="bp-row"><div class="bp-rk"><strong style="color:#F3ECE0">3 · Will they pay at all</strong> — unlock conversion among users who hit the cap.</div><div class="bp-rv">≥ 15%</div></div>
+    <div class="bp-row"><div class="bp-rk"><strong style="color:#FFD24A">4 · LATENT SUPPLY</strong> — share of users who flag at least one object as a duplicate or "might let this go".</div><div class="bp-rv" style="color:#FFD24A">≥ 8%</div></div>
+    <div class="bp-row"><div class="bp-rk"><strong style="color:#FFD24A">5 · LATENT DEMAND</strong> — share of active users with a wishlist of 5+ objects.</div><div class="bp-rv" style="color:#FFD24A">≥ 30%</div></div>
+    <div class="bp-row"><div class="bp-rk"><strong style="color:#F3ECE0">6 · Social pull</strong> — share who send a share or wishlist link, and opens per link sent.</div><div class="bp-rv">≥ 12% · 1.5×</div></div>
+    <div class="bp-row" style="border-bottom:none"><div class="bp-rk"><strong style="color:#F3ECE0">7 · Insurance signal</strong> — share of payers who export their collection at all.</div><div class="bp-rv">≥ 10%</div></div>
+  </div>
+  <p class="bp-p" style="margin-top:16px">Four and five are the gate, and they're the reason to keep wishlists in v1 even though they earn nothing there. <strong>A wishlist is a purchase intent you can count before you've built anything to buy with, and a duplicate flag is a seller pre-registering.</strong> Put those two side by side and the decision reads itself:</p>
+  <div class="bp-cards">
+    <div class="bp-card" style="background:#0E6E5E;color:#F3ECE0;box-shadow:4px 4px 0 #17130F"><div class="bp-ck" style="color:#FFD24A">SUPPLY ✓ DEMAND ✓</div><div class="bp-cn">Build v2</div><div class="bp-cv" style="color:rgba(243,236,224,.9)">Both sides already exist inside your own users. Ship option B and the seller subscription — the index has supply on day one, which is the only reason a marketplace ever works.</div></div>
+    <div class="bp-card" style="background:#FFD24A;box-shadow:4px 4px 0 #17130F"><div class="bp-ck">DEMAND ✓ SUPPLY ✗</div><div class="bp-cn">Build only the buying half</div><div class="bp-cv">People want things but won't part with theirs. Then wishlist hits + affiliate out to existing marketplaces is the whole of v2 — a fraction of the work, and it earns from day one.</div></div>
+    <div class="bp-card" style="background:#fff;box-shadow:4px 4px 0 #17130F"><div class="bp-ck">SUPPLY ✓ DEMAND ✗</div><div class="bp-cn">Sell the tools, not the market</div><div class="bp-cv">People will sell but not here. Then v2 is comps, price history and insurance-grade exports — the seller's toolkit, priced monthly, with no index at all.</div></div>
+    <div class="bp-card" style="background:#17130F;color:#F3ECE0;box-shadow:4px 4px 0 #FF5B2E"><div class="bp-ck" style="color:#FFD24A">NEITHER</div><div class="bp-cn">Don't build v2</div><div class="bp-cv" style="color:rgba(243,236,224,.85)">Take the same code to shops, clubs and libraries instead. Fifteen paying businesses beats a marketplace nobody lists on, and it's a fraction of the risk.</div></div>
+  </div>
+
+  <div class="bp-h3">And the uncomfortable part: v1 probably won't fund v2</div>
+  <p class="bp-p">On the middle case, v1 nets around €20k in year one — real money, not a year of salary. So don't plan for v1 to pay for a twelve-month v2. Two consequences, and they're both about scope:</p>
+  <p class="bp-note"><strong>Make v1 smaller than it currently is.</strong> Catalogue, lending, wishlist, share. Fifty-three screens is a designed product; a shippable v1 is maybe thirty of them. Every screen you cut is a week you get back, and none of the gates above need the complete app to be measured.<br><br><strong>Slice v2 so the first slice earns.</strong> Price history and comps are read-only data — no index, no listings, no moderation — and they're the part sellers pay for. Ship that alone, priced monthly, and let it fund the index. If the numbers above come back weak, you've lost one slice, not a year.</p>
+</div>
+
+<div class="bp-sec">
+  <div class="bp-lab">06 · v3 — institutions</div>
+  <div class="bp-h2">Organisations that lend<br>things to people</div>
+  <p class="bp-p">Tool libraries, toy libraries, associative media libraries, school and club collections, repair cafés, seed libraries — and recycleries, which are a different job (they liquidate rather than lend, so they need v2's pricing before you're useful to them). What they share: things go out, things must come back, and right now that's a paper ledger, a WhatsApp group and a Facebook post.</p>
+  <div class="bp-big" style="border:2.5px solid #17130F;border-radius:18px;background:#FFD24A;padding:20px 22px;box-shadow:5px 5px 0 #17130F;max-width:820px;margin:6px 0 18px">
+    <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:26px;line-height:1.12;letter-spacing:-.02em;text-wrap:pretty">These organisations are not your customer. They're your distribution — because each one has hundreds of local members who already trust it and a reason to message them every week.</div>
+  </div>
+  <p class="bp-p">That's the whole strategic point, and it survives the fact that an association has no money. A recyclerie with 400 customers and a Facebook page sends 400 people a rendered object card a month — warm, local, object-obsessed strangers, arriving through the received-share screen that needs no account and no download. Twenty organisations is a launch. Twenty paying seats is €7k and changes nothing.</p>
+
+  <div class="bp-h3">v3 is roles, a queue and three emails — not a new product</div>
+  <div class="bp-opts">
+    <div class="bp-opt">
+      <div class="bp-ohd"><div class="bp-obadge" style="background:#0E6E5E;color:#F3ECE0">✓</div><div class="bp-oname">What ships</div><div class="bp-oprice">≈ 3–4 WEEKS</div></div>
+      <div class="bp-obody">
+        <div class="bp-ocell"><div class="bp-ock">STAFF SIDE</div><div class="bp-ocv">The shared shelf you already designed, plus roles (owner / staff / read-only) and a login. Phone-only. Lending, quantity, handshakes and history are already built.</div></div>
+        <div class="bp-ocell"><div class="bp-ock">MEMBER SIDE</div><div class="bp-ocv">Nothing to install and no account. A loan is a link: the object card, the due date, the org's name — and "catalogue your own things" underneath. That link is the entire growth loop.</div></div>
+        <div class="bp-ocell" style="border-right:none"><div class="bp-ock">THE THREE MESSAGES</div><div class="bp-ocv">Loan receipt, reminder three days before due, overdue nudge. Email only — SMS costs money per message and drags an association into phone-number consent it isn't equipped for.</div></div>
+      </div>
+      <div class="bp-ofoot" style="background:#0E6E5E;color:#F3ECE0">Every one of the three emails carries a rendered object. The reminder isn't a feature, it's your cheapest acquisition channel — and the org sends it, so it isn't advertising.</div>
+    </div>
+    <div class="bp-opt">
+      <div class="bp-ohd"><div class="bp-obadge" style="background:#17130F;color:#F3ECE0">✗</div><div class="bp-oname">What waits for a paying organisation to demand it</div><div class="bp-oprice">v3.5</div></div>
+      <div class="bp-obody">
+        <div class="bp-ocell"><div class="bp-ock">DEFERRED</div><div class="bp-ocv">Web admin. Member accounts. Closed search inside one collection. Reservations and waiting queues. SMS. Multi-site. Anything resembling procurement.</div></div>
+        <div class="bp-ocell"><div class="bp-ock">WHY</div><div class="bp-ocv">Each one is weeks of work for an organisation that hasn't paid you yet, and building for institutions first is how the app stops being good for the person on the sofa.</div></div>
+        <div class="bp-ocell" style="border-right:none"><div class="bp-ock">AND NEVER</div><div class="bp-ocv">Public libraries. They already run an ILS bought through a tender, with an IT department and a twelve-month cycle. That's a company, not a section of your roadmap.</div></div>
+      </div>
+      <div class="bp-ofoot" style="background:#fff">The recyclerie resale flow — intake, repair status, pricing, sale — belongs here too, and only makes sense once v2 has prices.</div>
+    </div>
+  </div>
+
+  <div class="bp-h3">Money, honestly</div>
+  <div class="bp-math">
+    <div class="bp-lab" style="color:#FFD24A;margin-bottom:10px">HOW v3 PAYS — MOSTLY NOT IN CASH</div>
+    <div class="bp-row"><div class="bp-rk"><strong style="color:#F3ECE0">Association tier — free forever</strong>, under ~500 objects, badge in the app. Costs you almost nothing; buys you the distribution above.</div><div class="bp-rv">€0</div></div>
+    <div class="bp-row"><div class="bp-rk"><strong style="color:#F3ECE0">Organisations that do have a budget</strong> — schools, clubs, municipally subsidised toy and tool libraries, games cafés. Same product, invoiced.</div><div class="bp-rv">€19–39/mo</div></div>
+    <div class="bp-row"><div class="bp-rk"><strong style="color:#F3ECE0">The real return</strong> — members reached per organisation per month, converting at consumer prices.</div><div class="bp-rv">≈ 300–400</div></div>
+    <div class="bp-row" style="border-bottom:none"><div class="bp-rk">Grants and subsidies exist for exactly this (associative digital tooling, circular economy) — but they're an application your contact writes, not revenue you can plan around.</div><div class="bp-rv" style="color:#FFD24A">LATER</div></div>
+  </div>
+  <p class="bp-note" style="margin-top:14px">So: give it away to associations, charge the ones with a budget, and count the members it exposes you to rather than the seats it sells. If v3 ever earns more than the consumer app, that's a signal to become a different company — see trap 4.</p>
+
+  <div class="bp-h3">What to ask your recyclerie contact — before building anything</div>
+  <p class="bp-note">Six questions, one coffee. <strong>1.</strong> Walk me through one object from arriving at the door to leaving with someone — every step, every piece of paper. <strong>2.</strong> What do you actually lose track of: the object, the person, the price, or the state of repair? <strong>3.</strong> Who would use this — one coordinator, or every volunteer on shift? <strong>4.</strong> Do you have anyone's email, and are you allowed to write to them? <strong>5.</strong> If this existed and worked perfectly, who in your organisation could sign off €20 a month — and does that person exist at all? <strong>6.</strong> How do people currently find out what's on your shelves this week? That last answer is the one that tells you whether the distribution argument is real.</p>
+</div>
+
+<div class="bp-sec" style="border-bottom:none">
+  <div class="bp-lab">07 · What I'd actually do</div>
+  <div class="bp-h2">In this order</div>
+  <div class="bp-steps">
+    <div class="bp-step"><div class="bp-sn"><div class="bp-sc" style="background:#FFD24A">1</div><div class="bp-sl"></div></div><div class="bp-sb"><div class="bp-st">Ship v1 free with a 100-object cap and a €24.99 unlock</div><div class="bp-sv">Two products in the App Store sense, one build. Add metered lookups with a generous free allowance. Don't build accounts — iCloud is your sync, and "no account" is a feature you can put on the screenshot.</div></div></div>
+    <div class="bp-step"><div class="bp-sn"><div class="bp-sc" style="background:#FFD24A">2</div><div class="bp-sl"></div></div><div class="bp-sb"><div class="bp-st">Instrument the seven numbers on day one, and watch objects-per-user hardest</div><div class="bp-sv">Someone with 200 catalogued objects will pay, insure, lend and eventually sell. Someone with 8 won't do any of it, no matter what you charge or how good the shelf looks. Add the duplicate flag and keep wishlists — they're your v2 evidence, and they cost nothing in v1.</div></div></div>
+    <div class="bp-step"><div class="bp-sn"><div class="bp-sc" style="background:#FFD24A">3</div><div class="bp-sl"></div></div><div class="bp-sb"><div class="bp-st">Have the insurance conversation before you build v2</div><div class="bp-sv">Two emails to specialist collectibles insurers, asking what an itemised export would have to contain for them to accept it and what they pay for an introduction. Their answer shapes the v2 export screen — and it's revenue that needs no marketplace at all.</div></div></div>
+    <div class="bp-step"><div class="bp-sn"><div class="bp-sc" style="background:#FFD24A">4</div><div class="bp-sl"></div></div><div class="bp-sb"><div class="bp-st">Ship v2 as option B with a seller subscription</div><div class="bp-sv">Real listings, real market data, no checkout. Selling stays free; the toolkit around it is what's paid. You keep your weekends and you never touch someone else's money.</div></div></div>
+    <div class="bp-step"><div class="bp-sn"><div class="bp-sc" style="background:#FF5B2E;color:#F3ECE0">5</div></div><div class="bp-sb"><div class="bp-st">Only then decide whether you want a marketplace or a business tier</div><div class="bp-sv">By that point the data answers it. If people are trading through the index and asking you to hold the money, that's option C and it's a company. If shops keep emailing you instead, that's the business tier and it's a much calmer life. Both are fine; picking early is not.</div></div></div>
+  </div>
+  <p class="bp-note" style="margin-top:10px">One last thing, since you said this is the part you're bad at: none of the above is a business skill. The pricing is copyable and the numbers are arithmetic. The two moves that actually matter — talking to an insurer, and asking twenty collectors what they'd pay — are both just conversations, and you can have them before you write another line of code.</p>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#EAE3D6}a{color:#2B44D6}a:hover{color:#FF5B2E}</style>
+</helmet>
+
+<div style="width:1360px;margin:0 auto;padding:60px 28px 100px;font-family:Archivo,system-ui,sans-serif;color:#17130F">
+
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70">CLCTN · PLACES · THE FIRST APP-LEVEL DIMENSION · SEPTEMBER 2026</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:66px;line-height:.92;letter-spacing:-.045em;margin:16px 0 0;max-width:1030px;text-wrap:balance">Where is it? The question no collection app answers.</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:880px;margin-top:20px;text-wrap:pretty">Wine forced the question, but wine is not the answer. A bin field on the wine type solves it for one type and leaves thirteen others asking the same thing. <strong>A place is not a property of a bottle — it is a thing in the world that holds objects, and it holds objects of every type at once.</strong></div>
+  <div style="font:400 15px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:880px;margin-top:14px;text-wrap:pretty">That makes it the first concept in the app that cuts across collections rather than living inside one. Types are vertical; places are horizontal. The living-room shelf holds eighty-four records, thirty-one books and a shoebox of comics, and no screen in the app can currently say so.</div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:880px;margin-top:14px;text-wrap:pretty">The hard requirement is that it must cost nothing to ignore. One wine fridge is a complete and legitimate cellar, and that person must never meet a rack, a bin, or a setup screen.</div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">01 · THE LADDER — ONE FEATURE, FOUR COLLECTORS</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:880px;margin-bottom:22px;text-wrap:pretty">Same field, same data model, four amounts of ceremony. Nobody chooses a tier and nothing announces itself — you climb by typing more, and you can stop at any rung forever.</div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+    <sc-for list="{{ ladder }}" as="l" hint-placeholder-count="4">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;overflow:hidden;box-shadow:5px 5px 0 {{ l.shadow }};display:flex;flex-direction:column">
+        <div style="padding:13px 18px;background:#17130F;color:#F3ECE0">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;opacity:.55">{{ l.k }}</div>
+          <div style="font:700 16px Archivo,sans-serif;margin-top:5px">{{ l.who }}</div>
+        </div>
+        <div style="padding:18px;flex:1;display:flex;flex-direction:column">
+          <div style="font:400 13.5px/1.6 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ l.b }}</div>
+          <div style="margin-top:auto;padding-top:16px">
+            <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;margin-bottom:8px">WHAT THE FIELD READS</div>
+            <div style="border:2px solid #17130F;border-radius:12px;background:#FBF6EC;padding:11px 13px;font:400 12.5px/1.5 'DM Mono',monospace;text-wrap:pretty">{{ l.path }}</div>
+            <div style="font:400 12px/1.5 Archivo,sans-serif;color:#6E6458;margin-top:9px;text-wrap:pretty">{{ l.note }}</div>
+          </div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">02 · PLACES ARE MADE BY TYPING, NEVER BY MANAGING</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:22px;text-wrap:pretty">The single decision that keeps this from becoming a chore. <strong>There is no "set up your cellar" screen and there never will be.</strong> Places come into existence the first time you name one on an object, exactly like a tag — and from the second object onward the field is autocomplete, so the real cost is one tap.</div>
+  <div style="display:grid;grid-template-columns:1.15fr 1fr;gap:12px">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+      <div style="padding:12px 20px;background:#17130F;color:#F3ECE0;font:500 9px 'DM Mono',monospace;letter-spacing:.14em">THE FIELD, THIRD BOTTLE OF THE EVENING</div>
+      <div style="padding:20px">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;margin-bottom:9px">WHERE IT IS</div>
+        <div style="border:2.5px solid #17130F;border-radius:13px;padding:13px 15px;background:#fff;display:flex;align-items:center;gap:3px">
+          <div style="font:400 15px 'DM Mono',monospace">Rack 3</div>
+          <div style="width:2px;height:19px;background:#C2371F"></div>
+          <div style="margin-left:auto;font:500 9px 'DM Mono',monospace;letter-spacing:.1em;color:#8A7F70">TYPED 6 CHARS</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:7px;margin-top:11px">
+          <sc-for list="{{ suggestions }}" as="s" hint-placeholder-count="4">
+            <div style="border:2px solid #17130F;border-radius:12px;padding:11px 14px;display:flex;align-items:center;gap:12px;background: {{ s.bg }}">
+              <div style="font:400 13.5px 'DM Mono',monospace;flex:1">{{ s.path }}</div>
+              <div style="font:400 12px Archivo,sans-serif;color:#6E6458;white-space:nowrap">{{ s.holds }}</div>
+              <sc-if value="{{ s.hasTag }}" hint-placeholder-val="{{ true }}">
+                <div style="font:500 8.5px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:3px 8px;background:#fff;white-space:nowrap">{{ s.tag }}</div>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+        <div style="font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:15px;text-wrap:pretty">Typing a separator creates depth on the fly — <span style="font-family:'DM Mono',monospace">Cellar / Rack 3 / Bin 12</span> makes three nested places in one go, and each rung is independently searchable afterwards. Nobody has to know that is what happened.</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <sc-for list="{{ rules }}" as="r" hint-placeholder-count="5">
+        <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;padding:16px 18px">
+          <div style="display:flex;align-items:baseline;gap:10px">
+            <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#C2371F">{{ r.k }}</div>
+          </div>
+          <div style="font:700 15px/1.3 Archivo,sans-serif;margin-top:6px;text-wrap:pretty">{{ r.t }}</div>
+          <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;margin-top:7px;text-wrap:pretty">{{ r.b }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">03 · THE ENTITY</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:880px;margin-bottom:20px;text-wrap:pretty">Small on purpose. A place is a name, a parent, and some optional facts about the environment. Everything else is derived by counting the objects that point at it.</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#0C0A08;color:#F3ECE0;padding:22px 24px;box-shadow:5px 5px 0 #2B44D6;overflow-x:auto">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;color:#FFD24A;margin-bottom:14px">PLACE · TABLE</div>
+      <div style="font:400 12.5px/1.75 'DM Mono',monospace;white-space:pre">{{ schema }}</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <sc-for list="{{ entityNotes }}" as="e" hint-placeholder-count="4">
+        <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;padding:17px 19px">
+          <div style="font:500 12.5px 'DM Mono',monospace;color:#2B44D6">{{ e.k }}</div>
+          <div style="font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">{{ e.b }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">04 · OCCUPANCY — A PLACE YOU CANNOT COUNT IS JUST A LABEL</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:10px;text-wrap:pretty">A path tells you where one object is. It cannot tell you what is in Rack 3, whether the fridge is full, or how much of the loft you have actually got through. <strong>Counting is not a feature layered on top of places — it is most of the reason to have them.</strong></div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:900px;margin-bottom:22px;text-wrap:pretty">Nothing below is stored. Every number here is a query over objects pointing at a place and its descendants.</div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1.15fr;gap:12px;margin-bottom:14px">
+    <sc-for list="{{ countPair }}" as="c" hint-placeholder-count="2">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;padding:20px 22px;box-shadow:5px 5px 0 #17130F">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">{{ c.k }}</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:46px;line-height:1;letter-spacing:-.04em;margin:10px 0 0">{{ c.v }}</div>
+        <div style="font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:10px;text-wrap:pretty">{{ c.b }}</div>
+      </div>
+    </sc-for>
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#0C0A08;color:#F3ECE0;padding:20px 22px;box-shadow:5px 5px 0 #2B44D6;overflow-x:auto">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;color:#FFD24A;margin-bottom:12px">ROLLUP · A VIEW, NEVER A COLUMN</div>
+      <div style="font:400 12px/1.7 'DM Mono',monospace;white-space:pre">{{ rollupCode }}</div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px;align-items:start">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden;display:flex;flex-direction:column">
+      <div style="padding:12px 18px;background:#17130F;color:#F3ECE0;font:500 9px 'DM Mono',monospace;letter-spacing:.12em">MODE 01 · OPEN</div>
+      <div style="padding:18px;flex:1;display:flex;flex-direction:column">
+        <div style="font:700 16px Archivo,sans-serif">No capacity known</div>
+        <div style="font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">A shelf holds what fits on it. No bar, no percentage, no sense that a number is missing — just what is there, split by type.</div>
+        <div style="padding-top:16px">
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:28px;letter-spacing:-.03em">115 objects</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px">
+            <sc-for list="{{ shelfRows }}" as="r" hint-placeholder-count="2">
+              <div style="font:500 11px 'DM Mono',monospace;border-radius:999px;padding:5px 11px;color:#F3ECE0;background: {{ r.tint }}">{{ r.n }} {{ r.c }}</div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #0E6E5E;overflow:hidden;display:flex;flex-direction:column">
+      <div style="padding:12px 18px;background:#17130F;color:#F3ECE0;font:500 9px 'DM Mono',monospace;letter-spacing:.12em">MODE 02 · COUNTED</div>
+      <div style="padding:18px;flex:1;display:flex;flex-direction:column">
+        <div style="font:700 16px Archivo,sans-serif">Capacity, no fixed positions</div>
+        <div style="font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">A wine fridge is rated for 48, a longbox for 300. Exceeding it is reported plainly rather than warned about — the rating is wrong more often than the cellar is.</div>
+        <div style="padding-top:16px">
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:28px;letter-spacing:-.03em">41 of 48</div>
+          <div style="height:16px;border:2.5px solid #17130F;border-radius:999px;margin-top:10px;overflow:hidden;background:#EDE4D6">
+            <div style="height:100%;width:85%;background:#0E6E5E"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #C2371F;overflow:hidden;display:flex;flex-direction:column">
+      <div style="padding:12px 18px;background:#17130F;color:#F3ECE0;font:500 9px 'DM Mono',monospace;letter-spacing:.12em">MODE 03 · SLOTTED</div>
+      <div style="padding:18px;flex:1;display:flex;flex-direction:column">
+        <div style="font:700 16px Archivo,sans-serif">Capacity and a layout</div>
+        <div style="font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">An album page has twenty slots in a fixed grid, so it is drawn as itself. Which slot is free becomes a glance, and the address stops being a string.</div>
+        <div style="padding-top:16px">
+          <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.1em;color:#8A7F70;margin-bottom:9px">SAFE › ALBUM 2 › PAGE 7 · 14 OF 20</div>
+          <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:5px;max-width:250px">
+            <sc-for list="{{ slots }}" as="s" hint-placeholder-count="20">
+              <div style="aspect-ratio:1;border-radius:50%;display:flex;align-items:center;justify-content:center;font:500 8px 'DM Mono',monospace;border:2px solid {{ s.border }};background: {{ s.bg }};color: {{ s.fg }}">{{ s.label }}</div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden;margin-bottom:14px">
+    <div style="display:flex;align-items:baseline;gap:14px;padding:16px 22px;background:#17130F;color:#F3ECE0">
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:22px;letter-spacing:-.03em">Places</div>
+      <div style="font:400 13px Archivo,sans-serif;opacity:.6">4 places · 1,041 objects placed</div>
+    </div>
+    <sc-for list="{{ placesIndex }}" as="p" hint-placeholder-count="4">
+      <div style="display:grid;grid-template-columns:270px 1fr 280px 110px;border-bottom:2px solid #E0D6C4;align-items:center;padding:16px 22px">
+        <div>
+          <div style="font:700 17px/1.2 Archivo,sans-serif">{{ p.name }}</div>
+          <div style="font:400 12px 'DM Mono',monospace;color:#8A7F70;margin-top:5px">{{ p.meta }}</div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">
+          <sc-for list="{{ p.chips }}" as="c" hint-placeholder-count="2">
+            <div style="font:500 11px 'DM Mono',monospace;border-radius:999px;padding:5px 11px;color:#F3ECE0;background: {{ c.c }}">{{ c.t }}</div>
+          </sc-for>
+        </div>
+        <div>
+          <sc-if value="{{ p.bar }}" hint-placeholder-val="{{ true }}">
+            <div>
+              <div style="height:12px;border:2px solid #17130F;border-radius:999px;overflow:hidden;background:#EDE4D6">
+                <div style="height:100%;background:#17130F;width: {{ p.fill }}"></div>
+              </div>
+              <div style="font:400 11px 'DM Mono',monospace;color:#8A7F70;margin-top:6px">{{ p.fillLabel }}</div>
+            </div>
+          </sc-if>
+        </div>
+        <div style="text-align:right;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:30px;letter-spacing:-.03em">{{ p.total }}</div>
+      </div>
+    </sc-for>
+    <div style="display:grid;grid-template-columns:270px 1fr 280px 110px;align-items:center;padding:16px 22px;background:#FBF6EC">
+      <div>
+        <div style="font:500 17px/1.2 Archivo,sans-serif;color:#8A7F70">Unplaced</div>
+        <div style="font:400 12px 'DM Mono',monospace;color:#A79C8C;margin-top:5px">no action needed</div>
+      </div>
+      <div></div>
+      <div></div>
+      <div style="text-align:right;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:30px;letter-spacing:-.03em;color:#8A7F70">1,204</div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+    <sc-for list="{{ occupancyNotes }}" as="o" hint-placeholder-count="4">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;padding:17px 19px">
+        <div style="font:700 14px/1.3 Archivo,sans-serif;text-wrap:pretty">{{ o.k }}</div>
+        <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">{{ o.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">05 · TYPOS — KEEPING THE STRING, LOSING THE RISK</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:10px;text-wrap:pretty">The honest weakness of typing: one slip makes a twin place, and the object is effectively gone — it is somewhere, but not anywhere you will look. <strong>The fix is not to take the typing away.</strong> It is to make the common slip impossible at the data layer, catch the uncommon one at the point of creation, and make the survivors trivial to merge.</div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:900px;margin-bottom:22px;text-wrap:pretty">Four layers everyone gets without knowing, and two switches for people who want the structure nailed down.</div>
+
+  <div style="display:grid;grid-template-columns:1.15fr 1fr;gap:12px;margin-bottom:14px">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+      <div style="padding:12px 20px;background:#17130F;color:#F3ECE0;font:500 9px 'DM Mono',monospace;letter-spacing:.14em">THE SLIP, CAUGHT BEFORE IT HAPPENS</div>
+      <div style="padding:20px">
+        <div style="border:2.5px solid #17130F;border-radius:13px;padding:13px 15px;display:flex;align-items:center;gap:3px">
+          <div style="font:400 15px 'DM Mono',monospace">{{ typedGuess }}</div>
+          <div style="width:2px;height:19px;background:#C2371F"></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:7px;margin-top:11px">
+          <sc-for list="{{ safeSuggestions }}" as="s" hint-placeholder-count="2">
+            <div style="border:2px solid #17130F;border-radius:12px;padding:11px 14px;display:flex;align-items:center;gap:12px;background: {{ s.bg }}">
+              <div style="flex:1">
+                <div style="font:400 13.5px 'DM Mono',monospace">{{ s.path }}</div>
+                <div style="font:400 11.5px Archivo,sans-serif;color:#6E6458;margin-top:4px">{{ s.sub }}</div>
+              </div>
+              <div style="font:500 8.5px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:3px 8px;background:#fff;white-space:nowrap">{{ s.tag }}</div>
+            </div>
+          </sc-for>
+          <sc-for list="{{ nearMiss }}" as="s" hint-placeholder-count="1">
+            <div style="border:2px solid #17130F;border-radius:12px;padding:11px 14px;display:flex;align-items:center;gap:12px;background: {{ s.bg }}">
+              <div style="flex:1">
+                <div style="font:400 13.5px 'DM Mono',monospace">{{ s.path }}</div>
+                <div style="font:400 11.5px Archivo,sans-serif;color:#6E6458;margin-top:4px">{{ s.sub }}</div>
+              </div>
+              <div style="font:500 8.5px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:3px 8px;background:#fff;white-space:nowrap">{{ s.tag }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#0C0A08;color:#F3ECE0;padding:22px 24px;box-shadow:5px 5px 0 #0E6E5E;overflow-x:auto">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;color:#FFD24A;margin-bottom:14px">THE MECHANISM</div>
+      <div style="font:400 12.5px/1.75 'DM Mono',monospace;white-space:pre">{{ normCode }}</div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px">
+    <sc-for list="{{ silentLayers }}" as="l" hint-placeholder-count="4">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;padding:17px 19px">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#C2371F">{{ l.k }}</div>
+        <div style="font:700 15px/1.3 Archivo,sans-serif;margin-top:7px;text-wrap:pretty">{{ l.t }}</div>
+        <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">{{ l.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+    <sc-for list="{{ optIns }}" as="o" hint-placeholder-count="2">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;overflow:hidden;box-shadow:5px 5px 0 {{ o.shadow }}">
+        <div style="padding:12px 20px;background:#17130F;color:#F3ECE0;font:500 9px 'DM Mono',monospace;letter-spacing:.12em">{{ o.k }}</div>
+        <div style="padding:19px 20px">
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:25px;letter-spacing:-.03em">{{ o.t }}</div>
+          <div style="font:400 13.5px/1.65 Archivo,sans-serif;color:#3A2F26;margin-top:10px;text-wrap:pretty">{{ o.b }}</div>
+          <div style="border:2px solid #17130F;border-radius:12px;background:#FBF6EC;padding:12px 14px;margin-top:14px;font:400 13px 'DM Mono',monospace;text-wrap:pretty">{{ o.demo }}</div>
+          <div style="font:400 12px/1.5 Archivo,sans-serif;color:#6E6458;margin-top:8px;text-wrap:pretty">{{ o.demoNote }}</div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#0C0A08;color:#F3ECE0;padding:22px 24px;box-shadow:5px 5px 0 #FFD24A">
+    <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;color:#FFD24A;margin-bottom:12px">THE STANCE</div>
+    <div style="font:400 15px/1.7 Archivo,sans-serif;max-width:980px;text-wrap:pretty">{{ stance }}</div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">06 · WHAT EVERY TYPE CALLS IT</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:10px;text-wrap:pretty">One manifest key — <span style="font-family:'DM Mono',monospace">placeLabel</span> — and the engine is written once. The type does not declare <em>whether</em> it has places; every type does. It declares only what its owners call the thing, because a record lives in a crate and a bottle lives in a bin and calling both of them "location" is how apps end up feeling like databases.</div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:900px;margin-bottom:22px;text-wrap:pretty">The right-hand column is the honest test of whether this generalises. It does — and in five of these types it answers a question that is currently unanswerable in any app the user could be coming from.</div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;overflow:hidden;box-shadow:5px 5px 0 #17130F">
+    <div style="display:grid;grid-template-columns:150px 180px 330px 1fr;background:#17130F;color:#F3ECE0;font:500 9.5px 'DM Mono',monospace;letter-spacing:.1em">
+      <div style="padding:13px 16px">TYPE</div>
+      <div style="padding:13px 16px">PLACELABEL</div>
+      <div style="padding:13px 16px">TYPICAL PATH</div>
+      <div style="padding:13px 16px">WHAT IT LETS THEM ASK</div>
+    </div>
+    <sc-for list="{{ perType }}" as="t" hint-placeholder-count="10">
+      <div style="display:grid;grid-template-columns:150px 180px 330px 1fr;border-top:2px solid #E0D6C4;background:#fff;align-items:start">
+        <div style="padding:14px 16px;font:700 14px/1.25 Archivo,sans-serif">{{ t.type }}</div>
+        <div style="padding:14px 16px;font:400 12.5px 'DM Mono',monospace;color:#2B44D6">{{ t.label }}</div>
+        <div style="padding:14px 16px;font:400 12.5px/1.55 'DM Mono',monospace;color:#3A2F26;text-wrap:pretty">{{ t.path }}</div>
+        <div style="padding:14px 16px;font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ t.asks }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">07 · THE SIMPLIFICATION THIS BUYS</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:22px;text-wrap:pretty">Once a place is a real thing, it can carry the facts about the environment — and those facts stop being repeated on every object inside it. <strong>Wine's <span style="font-family:'DM Mono',monospace">storage</span> field disappears.</strong> The fridge knows it is temperature-controlled; the four hundred bottles inside it should not each be asked.</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;padding:22px 24px;box-shadow:5px 5px 0 #C2371F">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#C2371F">BEFORE — PER OBJECT</div>
+      <div style="font:400 12.5px/1.8 'DM Mono',monospace;color:#6E6458;margin-top:12px;white-space:pre-wrap">{{ beforeCode }}</div>
+      <div style="font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:14px;text-wrap:pretty">Asked once per bottle, answered identically four hundred times, and silently wrong the day the fridge breaks.</div>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;padding:22px 24px;box-shadow:5px 5px 0 #0E6E5E">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#0E6E5E">AFTER — ON THE PLACE</div>
+      <div style="font:400 12.5px/1.8 'DM Mono',monospace;color:#17130F;margin-top:12px;white-space:pre-wrap">{{ afterCode }}</div>
+      <div style="font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:14px;text-wrap:pretty">Answered once. Changing it updates every object at once — and a comic in a damp garage now gets the same benefit for free.</div>
+    </div>
+  </div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#0C0A08;color:#F3ECE0;padding:22px 24px;box-shadow:5px 5px 0 #FFD24A">
+    <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;color:#FFD24A;margin-bottom:12px">AND ONE MORE, TIED TO CAPTURE</div>
+    <div style="font:400 15px/1.7 Archivo,sans-serif;max-width:980px;text-wrap:pretty">A sweep session already knows the type, because you are standing at one crate. It should know the place for the same reason. <strong>Set the place once at the start of a sweep and every object captured is stamped with it</strong> — forty records land already shelved, and the field that would have been forty taps becomes one. Session context was worth having for matching; it turns out to be worth just as much for placement.</div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">08 · WHERE IT SURFACES</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+    <sc-for list="{{ surfaces }}" as="s" hint-placeholder-count="6">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;padding:18px 20px">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">{{ s.k }}</div>
+        <div style="font:700 15px/1.3 Archivo,sans-serif;margin-top:8px;text-wrap:pretty">{{ s.t }}</div>
+        <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">{{ s.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">09 · MATURITY — PARKED, WITH ONE CONSTRAINT WORTH REMEMBERING</div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;padding:24px 26px;box-shadow:5px 5px 0 #17130F">
+    <div style="font:400 15px/1.7 Archivo,sans-serif;color:#3A2F26;max-width:980px;text-wrap:pretty">Agreed on the principle: maturity is <strong>derived and never stored</strong>, the same way value is derived from paid. The technical shape can wait. The one thing worth writing down now, because it constrains the manifest rather than the implementation: if maturity is to be <em>sorted and filtered</em> — and the whole point of the drinking window is a "drink tonight" shelf — then it has to be expressible in SQL, not just in Swift.</div>
+    <div style="font:400 15px/1.7 Archivo,sans-serif;color:#3A2F26;max-width:980px;margin-top:13px;text-wrap:pretty">Which means the window must be stored as plain integer columns rather than an opaque blob, and the band is a <span style="font-family:'DM Mono',monospace">CASE</span> over those columns and the current year — cheap enough to be a generated column or a view, and indexable either way. Store two or four integers, compute the five bands in the query, and the "special attribute" you were worried about turns out to be ordinary data with an unusual reader.</div>
+    <div style="font:400 14px/1.65 Archivo,sans-serif;color:#6E6458;max-width:980px;margin-top:13px;text-wrap:pretty">The only genuinely awkward part is that the answer changes at midnight on New Year's Eve without anything writing to the database — so any cached count of "ready to drink" has to be invalidated by date, not by mutation. Small, but the kind of thing that is annoying to discover later.</div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">10 · STILL OPEN</div>
+  <div style="display:flex;flex-direction:column;gap:11px">
+    <sc-for list="{{ open }}" as="o" hint-placeholder-count="5">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#FBF6EC;padding:18px 20px;display:flex;gap:18px;align-items:baseline">
+        <div style="flex:none;font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;width:52px">{{ o.k }}</div>
+        <div style="flex:1">
+          <div style="font:700 16px/1.3 Archivo,sans-serif;text-wrap:pretty">{{ o.q }}</div>
+          <div style="font:400 13.5px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:7px;max-width:920px;text-wrap:pretty">{{ o.b }}</div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;pathSeparator&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;›&quot;,&quot;options&quot;:[&quot;›&quot;,&quot;/&quot;,&quot;·&quot;,&quot;—&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Place paths&quot;},&quot;showCapacity&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Place paths&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const sep = this.props.pathSeparator ?? '›';
+    const cap = this.props.showCapacity ?? true;
+    const j = (...parts) => parts.join(' ' + sep + ' ');
+
+    return {
+      ladder: [
+        { k: 'RUNG 00', who: 'Never mentions it', shadow: '#17130F',
+          b: 'Adds forty records and never touches the field. Unplaced is a normal state, shown as nothing rather than as an empty slot, and never counted as incomplete.',
+          path: '—', note: 'No places exist. The Places screen is not in the tab bar, because an empty screen is worse than no screen.' },
+        { k: 'RUNG 01', who: 'One wine fridge', shadow: '#0E6E5E',
+          b: 'Types "Wine fridge" on the first bottle. Every bottle after it is one tap. There is one place in the whole app and it never needs a hierarchy.',
+          path: 'Wine fridge', note: cap ? 'Optional capacity of 48 turns the header into "41 of 48" — the only number that person wants.' : 'No capacity set, so no counter is shown anywhere.' },
+        { k: 'RUNG 02', who: 'Rooms and shelves', shadow: '#2B44D6',
+          b: 'Six or seven flat names — Living room, Office shelf, Garage, Loft. No nesting, because nothing needs it. This is where most people stop and it is a complete answer.',
+          path: j('Office shelf'), note: 'Places screen becomes useful here: it is the first view that crosses types.' },
+        { k: 'RUNG 03', who: 'A real cellar', shadow: '#C2371F',
+          b: 'Racks and bins, three levels deep, four hundred bottles. Typed once during the initial import and then only ever autocompleted.',
+          path: j('Cellar', 'Rack 3', 'Bin 12'), note: 'Each rung is its own place, so "what is in Rack 3" works without anyone having designed that query.' }
+      ],
+
+      suggestions: [
+        { path: j('Cellar', 'Rack 3'), holds: '38 bottles', tag: 'RECENT', hasTag: true, bg: '#FFD24A' },
+        { path: j('Cellar', 'Rack 3', 'Bin 12'), holds: '6 bottles', tag: 'LAST USED', hasTag: true, bg: '#fff' },
+        { path: j('Cellar', 'Rack 3', 'Bin 13'), holds: '4 bottles', tag: '', hasTag: false, bg: '#fff' },
+        { path: 'Rack 3 — create new', holds: '', tag: 'NEW', hasTag: true, bg: '#FBF6EC' }
+      ],
+
+      rules: [
+        { k: 'RULE A', t: 'No setup screen, ever', b: 'Places are created by naming them on an object. There is a management screen for renaming and merging, and it is a destination rather than a gate.' },
+        { k: 'RULE B', t: 'Ranked by recency, not alphabet', b: 'You are filling one rack tonight. The place you used ninety seconds ago is the answer nine times out of ten, so it sits at the top.' },
+        { k: 'RULE C', t: 'Depth is typed, not configured', b: 'A separator in the text creates nesting. Someone who never types one never learns that nesting exists.' },
+        { k: 'RULE D', t: 'Unplaced is never a warning', b: 'No badge, no completeness meter, no nag. The field is an offer, and most objects in most collections will decline it.' },
+        { k: 'RULE E', t: 'Renaming is safe', b: 'Objects point at an id, not a string. Renaming "Garage" to "Loft" moves four hundred things correctly and costs one write.' }
+      ],
+
+      schema: [
+        'id            UUID',
+        'name          TEXT      "Rack 3"',
+        'parentID      UUID?     nested by reference,',
+        '                        any depth, usually 0–2',
+        '',
+        'capacity      INT?      optional. Unset means no',
+        '                        counter is shown anywhere.',
+        'environment   TEXT?     temperature-controlled,',
+        '                        damp, direct sun, in bond…',
+        'note          TEXT?     "key is on the hook"',
+        '',
+        '-- everything below is derived, never stored',
+        '-- count, value, types held, fill level'
+      ].join('\n'),
+
+      entityNotes: [
+        { k: 'No type column', b: 'A place is not owned by a collection. The living-room shelf holds records and books at once, and the moment you scope places per type you have built the same feature fourteen times and lost the only interesting view.' },
+        { k: 'parentID, not a path string', b: 'Paths are rendered from the chain on read. Storing the string would make renaming a migration and merging impossible.' },
+        { k: 'Capacity is optional and quiet', b: 'A fridge holds 48; a shelf holds however many fit. When unset there is no counter, no percentage and no sense that something is missing.' },
+        { k: 'environment replaces per-object storage', b: 'The fact lives where it is true. It also opens a real feature later: flag objects sitting somewhere their type says they should not be.' }
+      ],
+
+      rollupCode: 'WITH RECURSIVE subtree(id) AS (\n  SELECT :placeID\n  UNION ALL\n  SELECT p.id FROM place p\n  JOIN subtree s ON p.parentID = s.id\n)\nSELECT typeID, COUNT(*)\nFROM item\nWHERE placeID IN subtree\nGROUP BY typeID;',
+
+      countPair: [
+        { k: 'DIRECT', v: '14', b: 'Objects pointing at this exact place. On a leaf this is the whole story; on a container it is usually zero, because nothing sits in "Cellar" — things sit in its bins.' },
+        { k: 'TOTAL', v: '312', b: 'Direct plus every descendant. This is the number shown by default, because "how much is in the safe" is the question people mean. The two are only both shown when they differ.' }
+      ],
+
+      placesIndex: [
+        { name: 'Cellar', meta: '3 racks · 38 bins', total: '398', bar: true, fill: '83%', fillLabel: '398 of 480 bins filled',
+          chips: [{ t: 'Wine 398', c: '#6E2440' }] },
+        { name: 'Safe', meta: '2 albums · 9 pages', total: '312', bar: false, fill: '', fillLabel: '',
+          chips: [{ t: 'Coins 298', c: '#6F4A12' }, { t: 'Watches 14', c: '#17130F' }] },
+        { name: 'Living room', meta: '2 shelves · 1 crate', total: '115', bar: false, fill: '', fillLabel: '',
+          chips: [{ t: 'Records 84', c: '#0E6E5E' }, { t: 'Books 31', c: '#2B44D6' }] },
+        { name: 'Loft', meta: 'Longbox 4', total: '216', bar: true, fill: '72%', fillLabel: '216 of 300',
+          chips: [{ t: 'Comics 216', c: '#C2371F' }] }
+      ],
+
+      slots: (() => {
+        const years = ['1921','1922','1923','1924','1925','1926','1927','1928','1929','1930','1931','1934','1935','1936'];
+        return Array.from({ length: 20 }, (_, i) => years[i]
+          ? { label: years[i], bg: '#17130F', fg: '#F3ECE0', border: '#17130F', filled: true }
+          : { label: '', bg: 'transparent', fg: '#8A7F70', border: '#C9BFB0', filled: false });
+      })(),
+
+      shelfRows: [
+        { n: 'Records', c: '84', tint: '#0E6E5E', note: 'Crate B and the two shelves above it' },
+        { n: 'Books', c: '31', tint: '#2B44D6', note: 'Mostly the lower shelf' }
+      ],
+
+      occupancyNotes: [
+        { k: 'Rollup is a view, not a column', b: 'A recursive CTE over parentID, grouped by type. Cheap at these sizes, always correct, and nothing to keep in sync. Counts are never stored.' },
+        { k: 'Breakdown by type, always', b: 'Because places are cross-type, a bare number on a mixed shelf is less useful than the split. Chips carry the type tint, so the shelf is legible before you read it.' },
+        { k: 'Slot position is optional', b: 'An object in a slotted place may name its slot, or may just be in the place. Half-filled slot data still renders — unpositioned objects stack at the end rather than blocking the diagram.' },
+        { k: 'Unplaced is listed, never scolded', b: 'It sits last, in muted type, with a count and no call to action. It is the largest row in most collections and that is fine.' }
+      ],
+
+      normCode: 'name        "Rack 3"\nnormKey     "rack3"      -- lowercased,\n                         -- punctuation and\n                         -- spaces stripped\n\nUNIQUE (parentID, normKey)\n\n-- "rack3", "RACK-3", "Rack  3"\n-- all resolve to the same place.\n-- The typo cannot be created.',
+
+      typedGuess: 'rack3',
+
+      safeSuggestions: [
+        { path: j('Cellar', 'Rack 3'), sub: '38 bottles · matched on normalised name', tag: 'EXISTING', bg: '#B9F0C9', strong: true },
+        { path: 'Create "rack3"', sub: 'Not offered — it normalises to an existing sibling', tag: 'BLOCKED', bg: '#EDE4D6', strong: false }
+      ],
+
+      nearMiss: [
+        { path: 'Create "Rak 3"', sub: 'One character from Rack 3 in the same parent', tag: 'CONFIRM', bg: '#FFD24A', strong: true }
+      ],
+
+      silentLayers: [
+        { k: 'LAYER 01', t: 'Normalised keys', b: 'Every place stores a normalised name — lowercased, spaces and punctuation stripped — unique within its parent. "rack3", "RACK-3" and "Rack  3" are the same place, and the second one cannot be created. This kills the overwhelming majority of typos at the data layer rather than in the UI.' },
+        { k: 'LAYER 02', t: 'Near-miss confirmation', b: 'A genuine misspelling — "Rak 3" — survives normalisation. So a new name within one or two edits of an existing sibling does not create silently: the row reads "Similar to Rack 3" and creating takes a deliberate second tap.' },
+        { k: 'LAYER 03', t: 'Places holding one thing', b: 'The signature of a typo that got through is a place with exactly one object in it. The Places screen groups these quietly at the bottom — not as errors, just as the first thing you would want to look at when tidying.' },
+        { k: 'LAYER 04', t: 'Merge is always one tap', b: 'Prevention never fully works, so recovery has to be trivial. Merging moves objects, keeps the surviving name, and is undoable. Suspected duplicates sit adjacent so the action is where the problem is.' }
+      ],
+
+      optIns: [
+        { k: 'FOR PEOPLE WHO WANT MORE · 01', t: 'Close a place', shadow: '#2B44D6',
+          b: 'Once the cellar is built, mark it closed. Typing inside a closed place can no longer create anything — the field becomes a picker over its existing children, and a typo is not expressible. One switch, found on the place itself, invisible to everyone who never opens it.',
+          demo: 'Cellar is closed · pick one of 38 bins', demoNote: 'Free text is refused, not corrected. The keyboard does not even open.' },
+        { k: 'FOR PEOPLE WHO WANT MORE · 02', t: 'Create a series', shadow: '#0E6E5E',
+          b: 'The app can see that Bin 1 through Bin 4 are a series and offer Bin 5 next. It can also make the rest in one gesture — "create Bin 5–12" — which is the whole setup screen, compressed into a suggestion row, and only ever shown to someone who already typed the pattern twice.',
+          demo: 'Bin 5  ·  Create Bin 5 – 12', demoNote: 'Numbering and zero-padding are copied from the siblings that already exist.' }
+      ],
+
+      stance: 'Typing stays the only way in. Everything above is either invisible or opt-in, and nothing asks a person with one wine fridge to think about any of it. The structured user is not given a different feature — they are given permission to freeze the one they already have.',
+
+      perType: [
+        { type: 'Wine', label: 'Where it is', path: j('Cellar', 'Rack 3', 'Bin 12'), asks: 'Which bottle do I actually walk to? The reason the concept surfaced, and still the strongest case.' },
+        { type: 'Books', label: 'Shelf', path: j('Office', 'Shelf 2'), asks: 'Where did I put it? The most common failure of a personal library is owning a book you cannot find.' },
+        { type: 'Vinyl', label: 'Crate', path: j('Living room', 'Crate B'), asks: 'Which crate is the jazz in? Also answers the reverse — what is even in the loft.' },
+        { type: 'Comics', label: 'Box', path: j('Loft', 'Longbox 4'), asks: 'Which longbox, without opening four. Boxes are opaque and stacked, so this is close to essential.' },
+        { type: 'Coins', label: 'Tray', path: j('Safe', 'Album 2', 'Page 7'), asks: 'Where in the album. Three levels deep is normal here and nobody will find it excessive.' },
+        { type: 'Stamps', label: 'Album page', path: j('Album 1', 'Page 44'), asks: 'The same question as coins, with the same shape of answer.' },
+        { type: 'Trading cards', label: 'Binder', path: j('Binder A', 'Page 9'), asks: 'Which binder and sleeve. Graded slabs live in boxes instead, and both fit the same model.' },
+        { type: 'Sneakers', label: 'Where', path: j('Wardrobe', 'Top shelf'), asks: 'Which of the stacked boxes. Boxes are identical and unlabelled; this is more useful than it sounds.' },
+        { type: 'Watches', label: 'Where', path: j('Safe'), asks: 'Flat, almost always one or two places. Matters for insurance rather than for finding.' },
+        { type: 'LEGO', label: 'Where', path: j('Garage', 'Bin 6'), asks: 'Sealed sets get stored and forgotten. Also the type most likely to have a genuinely damp place.' }
+      ],
+
+      beforeCode: 'wine.yml\n  - key: storage\n    label: Storage\n    type: choice\n    options: [Temperature-\n      controlled cellar,\n      Passive cellar,\n      Wine fridge, …]',
+      afterCode: 'place\n  name:        "Wine fridge"\n  capacity:    48\n  environment: temperature-\n               controlled\n\nwine.yml\n  (field removed)',
+
+      surfaces: [
+        { k: 'SURFACE 01', t: 'On the object', b: 'One line under the spine, using the type\'s own noun. Tapping it opens the place rather than an edit field — it is a link, not a form.' },
+        { k: 'SURFACE 02', t: 'The sweep stamp', b: 'Set at the start of a capture session and applied to everything caught. The single biggest reason this feature will actually get used.' },
+        { k: 'SURFACE 03', t: 'A Places screen', b: 'Appears in the app only once two places exist. Lists places with what they hold across every type — the one view types cannot give you.' },
+        { k: 'SURFACE 04', t: 'Collection filter chips', b: 'Alongside condition and year. "Show me the records in the loft" is a normal thing to want before a trip to the loft.' },
+        { k: 'SURFACE 05', t: 'Search', b: 'Place names are indexed, so typing "rack 3" in search returns its contents. No separate UI needed for the most common query.' },
+        { k: 'SURFACE 06', t: 'Bulk move', b: 'Select many, move to a place. Reorganising a cellar or a shelf happens in an afternoon, and doing it one object at a time is how people abandon a catalogue.' }
+      ],
+
+      open: [
+        { k: 'Q1', q: 'Does a place hold a photo?', b: 'A picture of the actual shelf is startlingly useful for finding things and costs nothing to support. It also risks turning a light feature into a thing people feel they must maintain.' },
+        { k: 'Q2', q: 'What happens when capacity is exceeded?', b: 'Nothing loud. Probably a quiet "49 of 48" rather than a warning — the number is wrong more often than the cellar is.' },
+        { k: 'Q3', q: 'Is lending a place?', b: 'A record at a friend\'s house is somewhere. Tempting to model borrowers as places and get the history free, but conflating a person with a shelf will read badly somewhere. Probably keep them separate and let the object show whichever applies.' },
+        { k: 'Q4', q: 'Does placeLabel belong in the manifest at all?', b: 'The alternative is one generic word everywhere. The manifest already names conditions and spine labels per type, so this is consistent — but it is one more string per type to translate into every language.' },
+        { k: 'Q5', q: 'Does this ship with wine, or before it?', b: 'Wine needs it most, but books and vinyl benefit immediately and are already live. Shipping Places first would make the wine launch smaller and give the feature a shakedown on types that already have users.' }
+      ]
+    };
+  }
+}
+
+</script>
+</body>
+</html>

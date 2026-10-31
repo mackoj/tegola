@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#EAE3D6}
+a{color:#2B44D6}a:hover{color:#FF5B2E}
+.bf-page{width:1100px;margin:0 auto;padding:0 0 90px;font-family:Archivo,system-ui,sans-serif;color:#17130F}
+.bf-sec{padding:46px 0 40px;border-bottom:2px solid rgba(23,19,15,.12)}
+.bf-lab{font:500 10px 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#8A7F70;margin-bottom:12px}
+.bf-h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:34px;line-height:1;letter-spacing:-.03em;margin:0 0 18px}
+.bf-h3{font:700 15px Archivo,sans-serif;margin:26px 0 8px}
+.bf-p{max-width:720px;font:400 15px/1.65 Archivo,sans-serif;color:#3A2F26;margin:0 0 14px;text-wrap:pretty}
+.bf-note{max-width:720px;font:400 13px/1.6 Archivo,sans-serif;color:#6E6458;margin:0 0 14px;text-wrap:pretty}
+.bf-cards{display:flex;flex-wrap:wrap;gap:14px;margin:18px 0 6px}
+.bf-card{flex:1 1 300px;min-width:290px;border:2.5px solid #17130F;border-radius:16px;background:#fff;box-shadow:4px 4px 0 #17130F;padding:15px 16px}
+.bf-ck{font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:8px}
+.bf-cn{font:700 16px Archivo,sans-serif;margin-bottom:7px}
+.bf-cv{font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty}
+.bf-rules{display:flex;flex-direction:column;gap:10px;margin:18px 0 6px;max-width:860px}
+.bf-rule{display:flex;gap:14px;align-items:flex-start;border:2.5px solid #17130F;border-radius:14px;background:#fff;padding:13px 15px}
+.bf-rn{flex:none;width:26px;height:26px;border:2.5px solid #17130F;border-radius:999px;background:#FFD24A;display:flex;align-items:center;justify-content:center;font:700 11px Archivo,sans-serif}
+.bf-rt{font:700 14px Archivo,sans-serif;margin-bottom:4px}
+.bf-rv{font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty}
+.bf-two{display:flex;flex-wrap:wrap;gap:18px;margin:20px 0 6px}
+.bf-col{flex:1 1 380px;min-width:340px;border:2.5px solid #17130F;border-radius:18px;padding:17px 18px;box-shadow:5px 5px 0 #17130F}
+.bf-li{display:flex;gap:10px;align-items:flex-start;font:400 13.5px/1.5 Archivo,sans-serif;margin-bottom:9px;text-wrap:pretty}
+.bf-gl{flex:none;font:700 12px 'DM Mono',monospace;margin-top:1px}
+.bf-shots{display:flex;flex-wrap:wrap;gap:26px;margin:24px 0 4px;align-items:flex-start}
+.bf-shot{flex:none;width:244px;display:flex;flex-direction:column;gap:9px}
+.bf-frame{width:244px;height:528px;border:2.5px solid #17130F;border-radius:24px;background:#F3ECE0;box-shadow:5px 5px 0 #17130F;overflow:hidden;position:relative}
+.bf-scale{position:absolute;top:0;left:0;width:393px;height:852px;transform:scale(.62);transform-origin:top left}
+.bf-sn{font:700 13px Archivo,sans-serif}
+.bf-sd{font:400 12px/1.5 Archivo,sans-serif;color:#6E6458;text-wrap:pretty;margin-top:-4px}
+.bf-q{border:2.5px solid #17130F;border-radius:16px;background:#17130F;color:#F3ECE0;padding:16px 17px;box-shadow:5px 5px 0 #FF5B2E;margin-bottom:12px;max-width:860px}
+.bf-qk{font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#FFD24A;margin-bottom:8px}
+.bf-qt{font:700 16px/1.35 Archivo,sans-serif;margin-bottom:7px;text-wrap:pretty}
+.bf-qv{font:400 13.5px/1.6 Archivo,sans-serif;color:rgba(243,236,224,.82);text-wrap:pretty}
+</style>
+</helmet>
+
+<div class="bf-page">
+
+<div class="bf-sec" style="padding-top:60px">
+  <div class="bf-lab">Design brief · for review · August 2026</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:64px;line-height:.92;letter-spacing:-.04em;max-width:820px">A catalogue for<br>people who own<br>things on purpose</div>
+  <p class="bf-p" style="font-size:17px;margin-top:22px">An iPhone app for collectors. It answers four questions about everything you own: <strong>what is it, where is it, who has it, and what happened to it.</strong> Vinyl, board games, comics, watches, coins, figurines — fourteen types so far, and a route for the fifteenth.</p>
+  <p class="bf-p">The reference point is Delicious Library — the pleasure of seeing your shelf rendered, not tabulated. The difference is that this one is built for the object's whole life: it gets lent, it comes back scratched, it gets graded, it gets sold, it gets inherited. A row in a spreadsheet can't hold that. Most collector apps are either a database with no joy or a marketplace pretending to be a catalogue.</p>
+  <p class="bf-note">What follows is the whole thinking, not a pitch: the object model, the design rules, exactly what's in v1 and what waits for v2, and five questions where I want your read. Every phone on this page is the live prototype, not a screenshot — the v1 sections are running with selling switched off, which is genuinely how v1 ships.</p>
+</div>
+
+<div class="bf-sec">
+  <div class="bf-lab">01 · Who it's for</div>
+  <div class="bf-h2">Three people, one app,<br>no modes</div>
+  <p class="bf-p">The trap in this category is building for the hardcore and shipping something the other two find hostile. The bet here is that the same screens serve all three if the defaults are chosen well — the difference is what's turned on, not which app you're in.</p>
+  <div class="bf-cards">
+    <div class="bf-card">
+      <div class="bf-ck">A · THE HARDCORE</div>
+      <div class="bf-cn">400+ objects, grades, presses</div>
+      <div class="bf-cv">Knows the grading scale by heart. Wants field-level control, bulk entry, exports and no rounding of anything. Will abandon the app the moment it guesses wrong and won't let him correct it.</div>
+    </div>
+    <div class="bf-card">
+      <div class="bf-ck">B · THE HOBBYIST</div>
+      <div class="bf-cn">60–150 objects, growing</div>
+      <div class="bf-cv">Buys a few things a month, lends to friends, half-remembers what he paid. Wants adding to take ten seconds and the shelf to look like something worth showing.</div>
+    </div>
+    <div class="bf-card">
+      <div class="bf-ck">C · THE OWNER</div>
+      <div class="bf-cn">One inherited collection</div>
+      <div class="bf-cv">Doesn't identify as a collector. Has his father's records in a crate and wants to know what's there and roughly what it means. Will never learn a grading scale, and shouldn't have to.</div>
+    </div>
+  </div>
+  <p class="bf-note" style="margin-top:16px">One onboarding question sets the initial bar — how much detail per object, which five tabs — and settings can move it later. There is no "pro mode" as a switch you flip; a mode is an admission that you built two apps and couldn't choose.</p>
+</div>
+
+<div class="bf-sec">
+  <div class="bf-lab">02 · The model everything hangs off</div>
+  <div class="bf-h2">Type decides fields.<br>Fields decide the UI.</div>
+  <p class="bf-p">Each collection has a <strong>type</strong>, and each type is a small declared schema — currently written as YAML, fourteen of them: vinyl, comics, trading cards, coins, stamps, watches, board games, video games, figurines, books, cameras, sneakers, synths, cars. A type declares four things:</p>
+  <div class="bf-rules">
+    <div class="bf-rule"><div class="bf-rn">1</div><div><div class="bf-rt">The spine</div><div class="bf-rv">The two or three facts that identify the object in a list, and their labels. On vinyl it's artist / album / year. On coins it's denomination / mint / year. This is why a stamp and a Porsche can share the same 70px row without either looking wrong.</div></div></div>
+    <div class="bf-rule"><div class="bf-rn">2</div><div><div class="bf-rt">The fields, with kinds</div><div class="bf-rv">Not just names — kinds. <em>Number</em> gets a stepper, <em>choice</em> gets chips, <em>scale</em> gets that hobby's real grading scale (CGC for comics, Goldin for records, Sheldon for coins). The kind decides the control, whether it can be sorted, and whether it can be searched. No free-text where a scale exists.</div></div></div>
+    <div class="bf-rule"><div class="bf-rn">3</div><div><div class="bf-rt">The events</div><div class="bf-rv">Things that happen <em>to</em> the object and append to its history rather than overwriting a field: lent, returned, serviced, regraded, repaired, sold. History is the feature the spreadsheets can't copy.</div></div></div>
+    <div class="bf-rule"><div class="bf-rn">4</div><div><div class="bf-rt">Its own bulk rule</div><div class="bf-rv">Three of the fourteen (coins, stamps, cards) are owned in quantity — so they show ×N and can't be lent as a single object. The other eleven are individuals. The type knows which it is; the UI never asks.</div></div></div>
+  </div>
+  <p class="bf-note" style="margin-top:16px">Two edge cases are designed, not deferred: a <strong>mixed collection</strong> (no collection type — every object carries its own; sorting falls back to the six shared fields, stats group by type because averaging a Porsche and a stamp is a lie), and <strong>no type fits</strong> (borrow the nearest, build your own field by field, or keep it as a bare Thing). A popular custom type is a proposal for the fifteenth — and when it ships, the proposer's objects migrate into it with every value intact.</p>
+</div>
+
+<div class="bf-sec">
+  <div class="bf-lab">03 · The design language</div>
+  <div class="bf-h2">Seven rules doing<br>most of the work</div>
+  <div class="bf-rules">
+    <div class="bf-rule"><div class="bf-rn">1</div><div><div class="bf-rt">Hard ink, offset shadow, no glass</div><div class="bf-rv">2.5px near-black borders, 4px offset shadows, warm paper ground (#F3ECE0 on #EAE3D6). Liquid glass and blur were tried and scrapped: objects photograph and render in every colour, and a translucent chrome fights all of them. Paper and ink don't.</div></div></div>
+    <div class="bf-rule"><div class="bf-rn">2</div><div><div class="bf-rt">Dashed edge, no shadow = not yours</div><div class="bf-rv">Wanted, borrowed, someone else's. One rule, no new colour, holds from a 44px thumb to a full row. It's why wishlists needed no new visual system.</div></div></div>
+    <div class="bf-rule"><div class="bf-rn">3</div><div><div class="bf-rt">Two type families, three roles</div><div class="bf-rv">Bricolage Grotesque 800 for anything that names a thing; Archivo for reading; DM Mono uppercase with wide tracking for labels, grades and system speech. The mono is doing a real job: it marks text the machine wrote.</div></div></div>
+    <div class="bf-rule"><div class="bf-rn">4</div><div><div class="bf-rt">Objects are rendered, not photographed — for now</div><div class="bf-rv">Every surface in the prototype is synthetic. That's partly placeholder, partly deliberate: a 3D vinyl sleeve with six real faces, an open right edge showing the disc colour, clamped to ±34° so it never reads as a broken toy. Where user photos should take over is <a href="#q3">question 3</a>.</div></div></div>
+    <div class="bf-rule"><div class="bf-rn">5</div><div><div class="bf-rt">Nothing is confirmed on your behalf</div><div class="bf-rv">Anything the app guessed — a catalogue match, an imported row, an enriched field — sits in a review queue marked unconfirmed until a human agrees. A catalogue you don't trust is worse than no catalogue.</div></div></div>
+    <div class="bf-rule"><div class="bf-rn">6</div><div><div class="bf-rt">Every social act is a two-sided handshake</div><div class="bf-rv">Lending, returning, offering, reserving: both parties confirm, and the object's state never changes silently because someone else tapped something.</div></div></div>
+    <div class="bf-rule"><div class="bf-rn">7</div><div><div class="bf-rt">Silence is a feature</div><div class="bf-rv">Most notifications are off by default and each one names its trigger. Nothing at all when the review queue is empty.</div></div></div>
+  </div>
+</div>
+
+<sc-if value="{{ showV1 }}" hint-placeholder-val="{{ true }}">
+<div class="bf-sec">
+  <div class="bf-lab">04 · v1</div>
+  <div class="bf-h2">Know what you own,<br>and who has it</div>
+  <p class="bf-p">v1 is a catalogue and a lending ledger. Deliberately not a market, and deliberately not a valuation tool — the moment money appears on a screen, that becomes the point of the app, and every design argument after it is about money. I want the object to be the point first.</p>
+  <div class="bf-two">
+    <div class="bf-col" style="background:#fff">
+      <div class="bf-ck">IN v1</div>
+      <div class="bf-li"><div class="bf-gl">+</div><div>Add by photo first, barcode second, hand last. Ten seconds per object is the target.</div></div>
+      <div class="bf-li"><div class="bf-gl">+</div><div>Fourteen types with real fields, real grading scales, mixed collections and a route when no type fits.</div></div>
+      <div class="bf-li"><div class="bf-gl">+</div><div>Item detail: 3D object, Overview / Details / History.</div></div>
+      <div class="bf-li"><div class="bf-gl">+</div><div>Lending and borrowing with handshakes, due dates, per-person history.</div></div>
+      <div class="bf-li"><div class="bf-gl">+</div><div>Wishlists, shareable — objects you don't own, with priority.</div></div>
+      <div class="bf-li"><div class="bf-gl">+</div><div>Search with stacked tokens; bulk import; offline adding.</div></div>
+      <div class="bf-li"><div class="bf-gl">+</div><div>Sharing a single object as a link that works with no account.</div></div>
+      <div class="bf-li"><div class="bf-gl">+</div><div>iCloud sync, export, and the promise that photos stay on the phone unless you ask for a lookup.</div></div>
+    </div>
+    <div class="bf-col" style="background:#17130F;color:#F3ECE0;box-shadow:5px 5px 0 #FF5B2E">
+      <div class="bf-ck" style="color:#FFD24A">OUT OF v1 — ON PURPOSE</div>
+      <div class="bf-li"><div class="bf-gl" style="color:#FF5B2E">—</div><div><strong>Selling anything.</strong> No listings, no asking prices, no offers, no marketplace.</div></div>
+      <div class="bf-li"><div class="bf-gl" style="color:#FF5B2E">—</div><div><strong>Valuation of any kind.</strong> No estimated worth, no totals, no "your collection is up €610" — the header counts objects, not euros, and a list row shows condition where v2 shows a price. What you paid for one object stays, as a fact you typed on that object; it just never adds up to anything.</div></div>
+      <div class="bf-li"><div class="bf-gl" style="color:#FF5B2E">—</div><div><strong>Pro mode.</strong> No second app hiding behind a toggle. Density is a setting, not a personality.</div></div>
+      <div class="bf-li"><div class="bf-gl" style="color:#FF5B2E">—</div><div>Insurance exports, price history, market comps — all downstream of value, so all v2.</div></div>
+      <div class="bf-li"><div class="bf-gl" style="color:#FF5B2E">—</div><div>Public for-sale search index. v1 publishes nothing to a server that other users can query.</div></div>
+      <div class="bf-note" style="color:rgba(243,236,224,.7);margin:14px 0 0">Cutting money out of v1 costs the one number people screenshot. It buys a v1 that can't be mistaken for eBay, and an honest answer to "so what do you do with my data" — nothing, it's a catalogue.</div>
+    </div>
+  </div>
+
+  <div class="bf-h3">v1, running with selling switched off</div>
+  <p class="bf-note">These are the real screens with <code style="font-family:'DM Mono',monospace;font-size:12px">selling=false</code> — every euro is gone with it: the shelf header counts 482 objects, collection cards and list rows show lends and condition instead of prices, the item loses its Value row and Market tab, and the wishlist drops caps and for-sale lines. Nothing is greyed out — the money simply isn't there.</p>
+  <div class="bf-shots">
+    <div class="bf-shot"><div class="bf-frame"><div class="bf-scale"><dc-import name="35_Collections App" screen="home" selling="{{ no }}" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="bf-sn">The shelf</div><div class="bf-sd">Collections as objects. Counted, not valued.</div></div>
+    <div class="bf-shot"><div class="bf-frame"><div class="bf-scale"><dc-import name="35_Collections App" screen="collection" selling="{{ no }}" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="bf-sn">Inside a collection</div><div class="bf-sd">Type-specific spine labels; the health line instead of a total.</div></div>
+    <div class="bf-shot"><div class="bf-frame"><div class="bf-scale"><dc-import name="35_Collections App" screen="item" selling="{{ no }}" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="bf-sn">An object</div><div class="bf-sd">Three tabs, no Market tab. The sleeve is six real faces, ±34°.</div></div>
+    <div class="bf-shot"><div class="bf-frame"><div class="bf-scale"><dc-import name="35_Collections App" screen="scan" selling="{{ no }}" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="bf-sn">Adding</div><div class="bf-sd">Photo first. Lookup toggle says plainly whether the shot leaves the phone.</div></div>
+    <div class="bf-shot"><div class="bf-frame"><div class="bf-scale"><dc-import name="35_Collections App" screen="addform" selling="{{ no }}" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="bf-sn">By hand</div><div class="bf-sd">Kind drives control: steppers, chips, the hobby's real scale.</div></div>
+    <div class="bf-shot"><div class="bf-frame"><div class="bf-scale"><dc-import name="35_Collections App" screen="lending" selling="{{ no }}" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="bf-sn">Out of the house</div><div class="bf-sd">One list for lent and borrowed — the ways a thing isn't on the shelf.</div></div>
+    <div class="bf-shot"><div class="bf-frame"><div class="bf-scale"><dc-import name="35_Collections App" screen="wishlist" selling="{{ no }}" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="bf-sn">The hunt</div><div class="bf-sd">Wanted objects, dashed. No caps and no market line in v1 — just what you're after.</div></div>
+    <div class="bf-shot"><div class="bf-frame"><div class="bf-scale"><dc-import name="35_Collections App" screen="types" selling="{{ no }}" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="bf-sn">All fourteen types</div><div class="bf-sd">One row shape from a stamp to a Porsche.</div></div>
+    <div class="bf-shot"><div class="bf-frame"><div class="bf-scale"><dc-import name="35_Collections App" screen="review" selling="{{ no }}" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="bf-sn">Review queue</div><div class="bf-sd">Everything the app guessed, waiting for a human to agree.</div></div>
+    <div class="bf-shot"><div class="bf-frame"><div class="bf-scale"><dc-import name="35_Collections App" screen="received" selling="{{ no }}" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="bf-sn">A share, received</div><div class="bf-sd">What a link looks like to someone with no account and no context.</div></div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ showV2 }}" hint-placeholder-val="{{ true }}">
+<div class="bf-sec">
+  <div class="bf-lab">05 · v2</div>
+  <div class="bf-h2">Then money,<br>all at once</div>
+  <p class="bf-p">Everything cut from v1 is one feature wearing five hats. Value, selling, insurance, market search and the wishlist hit all depend on the same two things: a price on an object, and an index other people can query. So they ship together, behind one switch, and the app has to still make sense with that switch off — which is the constraint I care about most.</p>
+  <div class="bf-cards">
+    <div class="bf-card"><div class="bf-ck">DEPTH — UNDECIDED</div><div class="bf-cn">A · Signal only</div><div class="bf-cv">Mark it available, name a price, talk elsewhere. No payments, no shipping, no fees, no disputes. Cheapest to build, weakest to a user who wants it gone today.</div></div>
+    <div class="bf-card"><div class="bf-ck">DEPTH — UNDECIDED</div><div class="bf-cn">B · Real listing</div><div class="bf-cv">Photos, condition, shipping origin, a proper listing page — but the deal closes off-app. My instinct, and <a href="#q4">question 4</a>.</div></div>
+    <div class="bf-card"><div class="bf-ck">DEPTH — UNDECIDED</div><div class="bf-cn">C · Full market</div><div class="bf-cv">Checkout, buyer protection, fees. Most power, most obligation — support load, fraud, chargebacks, and a company that now lives off transaction volume.</div></div>
+  </div>
+  <div class="bf-h3">The rest of v2, all downstream of a price</div>
+  <p class="bf-note">Estimated value on the shelf header · price paid and price history per object · insurance-grade export with values and provenance · a searchable index of what people will sell · wishlist hits when a grail is listed · sold as a first-class end state, kept in history rather than deleted.</p>
+  <div class="bf-shots">
+    <div class="bf-shot"><div class="bf-frame"><div class="bf-scale"><dc-import name="35_Collections App" screen="home" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="bf-sn">The same shelf, v2</div><div class="bf-sd">One card changes: €14,280 where v1 counted objects.</div></div>
+    <div class="bf-shot"><div class="bf-frame"><div class="bf-scale"><dc-import name="35_Collections App" screen="sellB" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="bf-sn">Selling — option B</div><div class="bf-sd">A real listing; the deal still closes off-app.</div></div>
+    <div class="bf-shot"><div class="bf-frame"><div class="bf-scale"><dc-import name="35_Collections App" screen="market" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="bf-sn">Market search</div><div class="bf-sd">An index of offers, not of shelves — objects enter when marked available.</div></div>
+    <div class="bf-shot"><div class="bf-frame"><div class="bf-scale"><dc-import name="35_Collections App" screen="hit" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="bf-sn">Wishlist hit</div><div class="bf-sd">Fires on print, grade and cap together. Near misses stay silent.</div></div>
+    <div class="bf-shot"><div class="bf-frame"><div class="bf-scale"><dc-import name="35_Collections App" screen="insure" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="bf-sn">Insurance export</div><div class="bf-sd">The document an insurer will actually accept.</div></div>
+    <div class="bf-shot"><div class="bf-frame"><div class="bf-scale"><dc-import name="35_Collections App" screen="reserve" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="bf-sn">v3, sketched</div><div class="bf-sd">Reserving from someone's library — a queued lend, not a new model.</div></div>
+  </div>
+</div>
+</sc-if>
+
+<div class="bf-sec">
+  <div class="bf-lab">06 · Where I want your eye</div>
+  <div class="bf-h2">Five open questions</div>
+  <p class="bf-p">Not "what do you think" — these are the five I keep going back and forth on, with my current answer so you have something to disagree with.</p>
+  <div class="bf-q" id="q1">
+    <div class="bf-qk">Q1 · THE FIRST TEN SECONDS</div>
+    <div class="bf-qt">Photo-first adding is a bet. Is it the right one?</div>
+    <div class="bf-qv">Barcode is more accurate and reads instantly, but half the things people collect have no barcode — a 1972 pressing, a coin, a figurine out of its box. So the camera opens in photo mode and barcode is a tab beside it. My worry: the accurate path is now one tap further away for the person adding 200 modern games. <strong>My answer:</strong> keep photo first, because the first object someone adds decides whether they add a second.</div>
+  </div>
+  <div class="bf-q" id="q2">
+    <div class="bf-qk">Q2 · SPECIFICITY VS. SCALE</div>
+    <div class="bf-qt">Fourteen types with real grading scales, or six generous ones?</div>
+    <div class="bf-qv">Type-specific fields are what makes it feel built for <em>your</em> hobby — CGC for comics, Sheldon for coins. They also mean fourteen schemas to maintain, fourteen sets of copy, and a permanent "my thing isn't here" problem I've answered with a proposal system. <strong>My answer:</strong> keep fourteen, because generosity in a field list reads as indifference to the collector.</div>
+  </div>
+  <div class="bf-q" id="q3">
+    <div class="bf-qk">Q3 · RENDER VS. PHOTOGRAPH</div>
+    <div class="bf-qt">Where should the user's own photos take over from our rendering?</div>
+    <div class="bf-qv">Right now almost everything is synthetic, which keeps the grid rhythmic but means a thumb next to a named object is a polite lie about a thing the owner can recognise. Options: photos wherever an object is <em>named</em> and renders wherever it's <em>counted</em>; or photos only in the detail gallery; or let the user choose the default per object when adding. <strong>Currently parked</strong> pending real photos in the prototype — this is the one I'd most like your instinct on, because you've watched people react to their own pictures in a UI more than I have.</div>
+  </div>
+  <div class="bf-q" id="q4">
+    <div class="bf-qk">Q4 · v2 DEPTH</div>
+    <div class="bf-qt">A, B or C — and does B collapse under its own compromise?</div>
+    <div class="bf-qv">B gives a real listing but sends people elsewhere to close, which is either a respectful boundary or a half-built feature depending on who you ask. <strong>My answer:</strong> B, because a catalogue that also takes payments becomes a payments company with a catalogue attached. I'm not confident.</div>
+  </div>
+  <div class="bf-q" id="q5">
+    <div class="bf-qk">Q5 · THE TAB BAR</div>
+    <div class="bf-qt">Five slots: Shelf, Find, Scan, Activity, You. Is Activity earning it?</div>
+    <div class="bf-qv">Activity holds lending, returns, incoming shares and — in v2 — offers and hits. It's the tab that changes most between the three audiences: for the casual owner it's nearly always empty, and an empty tab teaches people to stop tapping. The alternative is folding it into the shelf as a state filter. <strong>My answer:</strong> keep it, because lending is the reason people who don't care about cataloguing open the app at all.</div>
+  </div>
+</div>
+
+<div class="bf-sec" style="border-bottom:none">
+  <div class="bf-lab">07 · What exists</div>
+  <div class="bf-h2">Fifty-three screens,<br>thirty-one decisions</div>
+  <p class="bf-p">It's a clickable prototype, not code: fifty-three iPhone screens covering every flow described here, including the awkward ones — offline, bulk import, duplicates, promoting one coin out of a bulk lot, a shared shelf between two people, and what a share link does for someone with no account.</p>
+  <p class="bf-note">Three companion files if you want to dig: the <strong>screen index</strong> (every screen, half size, with a one-line description), the <strong>design board</strong> (sixteen turns of options and arguments, newest first — the reasoning, including the things that got scrapped), and <strong>decisions.md</strong> (thirty-one numbered calls with their consequences, plus what's deliberately shelved). Anything on this page is arguable; the decisions log is where I'd want the arguing to land.</p>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;version&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Both&quot;,&quot;v1 only&quot;,&quot;v2 only&quot;],&quot;default&quot;:&quot;Both&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const v = this.props.version || 'Both';
+    return {
+      no: false, yes: true,
+      showV1: v !== 'v2 only',
+      showV2: v !== 'v1 only'
+    };
+  }
+}
+</script>
+</body>
+</html>

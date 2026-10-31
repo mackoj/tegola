@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#EAE3D6}
+a{color:#2B44D6}a:hover{color:#FF5B2E}
+.ix-sec{padding:44px 52px 38px;border-bottom:2px solid rgba(23,19,15,.12)}
+.ix-shd{display:flex;align-items:baseline;gap:10px;margin:0 0 6px}
+.ix-sid{font:600 10px 'DM Mono',monospace;padding:4px 8px;background:#17130F;color:#F3ECE0;border-radius:5px;text-decoration:none}
+.ix-sname{font:700 15px Archivo,sans-serif;color:#17130F}
+.ix-sub{margin:0 0 24px;max-width:760px;font:400 12.5px/1.6 Archivo,sans-serif;color:rgba(23,19,15,.58);text-wrap:pretty}
+.ix-grid{display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start}
+.ix-card{flex:none;width:197px;display:flex;flex-direction:column;gap:9px;scroll-margin-top:16px}
+.ix-frame{width:197px;height:426px;border:2.5px solid #17130F;border-radius:20px;background:#F3ECE0;box-shadow:4px 4px 0 #17130F;overflow:hidden;position:relative}
+.ix-scale{position:absolute;top:0;left:0;width:393px;height:852px;transform:scale(.5);transform-origin:top left}
+.ix-key{font:500 9.5px 'DM Mono',monospace;letter-spacing:.1em;color:#8A7F70;text-transform:uppercase}
+.ix-name{font:700 13px Archivo,sans-serif;color:#17130F;margin-top:-4px}
+.ix-desc{font:400 11.5px/1.5 Archivo,sans-serif;color:rgba(23,19,15,.6);text-wrap:pretty}
+</style>
+</helmet>
+
+<section class="ix-sec">
+  <div class="ix-shd"><span class="ix-sid">INDEX</span><span class="ix-sname">Collections — every screen</span></div>
+  <p class="ix-sub">Fifty-three screens in one file, grouped by the job they do. Each tile is the live app at that screen, at half size — the key under it is the value you pass as <code style="font-family:'DM Mono',monospace;font-size:11px">screen</code>. Studies at the bottom are decision artefacts, not product screens.</p>
+</section>
+
+<section class="ix-sec" id="g1">
+  <div class="ix-shd"><a class="ix-sid" href="#g1">01</a><span class="ix-sname">Shelf &amp; everyday</span></div>
+  <p class="ix-sub">What the app is when nothing is happening: the shelf, an object, and the two lenses over them.</p>
+  <div class="ix-grid">
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="home" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">home</div><div class="ix-name">My Collections</div><div class="ix-desc">The default landing. Collections as rows with count, value and what's out of the house.</div></div>
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="empty" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">empty</div><div class="ix-name">Nothing yet</div><div class="ix-desc">First run. One instruction and the camera — no sample data, no fake shelf.</div></div>
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="collection" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">collection</div><div class="ix-name">Inside a collection</div><div class="ix-desc">Item list with type-specific spine labels, sort chips and the health line.</div></div>
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="item" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">item</div><div class="ix-name">Item detail</div><div class="ix-desc">The 3D sleeve plus Overview / Details / History. Tap a special edition for the sparkle burst.</div></div>
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="quantity" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">quantity</div><div class="ix-name">Duplicates</div><div class="ix-desc">Owning four of the same thing without four rows — and which copy is the one you'd sell.</div></div>
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="search" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">search</div><div class="ix-name">Find</div><div class="ix-desc">Tokenised query — each filter is a removable chip, results narrow as you stack them.</div></div>
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="stats" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">stats</div><div class="ix-name">Stats</div><div class="ix-desc">Value, gaps and shape of the collection. Grouped by type, never averaged across types.</div></div>
+  </div>
+</section>
+
+<section class="ix-sec" id="g2">
+  <div class="ix-shd"><a class="ix-sid" href="#g2">02</a><span class="ix-sname">Getting things in</span></div>
+  <p class="ix-sub">Photo first, barcode second, typing last. The longest path in the app and the one most likely to be abandoned.</p>
+  <div class="ix-grid">
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="scan" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">scan</div><div class="ix-name">Camera — look it up</div><div class="ix-desc">Barcode / Look it up / Photo in one row. Points at the object, not just the label.</div></div>
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="crate" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">crate</div><div class="ix-name">Camera — photo mode</div><div class="ix-desc">Shoot the whole crate. Lookup toggle says plainly whether the photo leaves the phone.</div></div>
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="capture" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">capture</div><div class="ix-name">3D capture</div><div class="ix-desc">Orbit the object to build the sleeve. Flat photo is always one tap away.</div></div>
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="match" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">match</div><div class="ix-name">Match found</div><div class="ix-desc">One candidate with its confidence and what it filled in. Rescan or accept.</div></div>
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="review" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">review</div><div class="ix-name">Review queue</div><div class="ix-desc">Everything guessed but unconfirmed, waiting. Nothing is marked confirmed on your behalf.</div></div>
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="enrich" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">enrich</div><div class="ix-name">Enrichment sheet</div><div class="ix-desc">What the catalogue wants to add, field by field, with a way to refuse each one.</div></div>
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="addform" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">addform</div><div class="ix-name">Add by hand</div><div class="ix-desc">Type-specific controls — steppers for numbers, chips for choice, no free-text where a scale exists.</div></div>
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="offline" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">offline</div><div class="ix-name">No signal</div><div class="ix-desc">Adding keeps working in a record shop basement; lookups queue and resolve later.</div></div>
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="import" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">import</div><div class="ix-name">Bulk import</div><div class="ix-desc">First hour: 128 records in from a spreadsheet, with an honest report of what came through.</div></div>
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="newtype" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">newtype</div><div class="ix-name">New collection</div><div class="ix-desc">Pick the type up front — it decides the fields, the grading scale and the spine.</div></div>
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="newfields" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">newfields</div><div class="ix-name">Custom fields</div><div class="ix-desc">Add a field and say what kind it is. Kind drives the control and whether it can be sorted.</div></div>
+  </div>
+</section>
+
+<section class="ix-sec" id="g3">
+  <div class="ix-shd"><a class="ix-sid" href="#g3">03</a><span class="ix-sname">Money</span></div>
+  <p class="ix-sub">Three depths of marketplace, still undecided, plus the two screens that exist either way.</p>
+  <div class="ix-grid">
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="sellA" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">sellA</div><div class="ix-name">Sell — A, signal only</div><div class="ix-desc">Mark it available, name a price, talk elsewhere. No payments, no shipping, no fees.</div></div>
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="sellB" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">sellB</div><div class="ix-name">Sell — B, listing</div><div class="ix-desc">A real listing with photos, condition and shipping origin; the deal still closes off-app.</div></div>
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="sellC" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">sellC</div><div class="ix-name">Sell — C, full market</div><div class="ix-desc">Checkout, protection and fees inside the app. Most power, most obligation.</div></div>
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="sold" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">sold</div><div class="ix-name">Sold</div><div class="ix-desc">An object leaving for good — it stays in history with what it fetched, not deleted.</div></div>
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="insure" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">insure</div><div class="ix-name">Insurance export</div><div class="ix-desc">The document an insurer will accept: values, conditions, provenance, dated.</div></div>
+  </div>
+</section>
+
+<section class="ix-sec" id="g4">
+  <div class="ix-shd"><a class="ix-sid" href="#g4">04</a><span class="ix-sname">People</span></div>
+  <p class="ix-sub">Lending, borrowing and sharing — every one a two-sided handshake, never a silent state change.</p>
+  <div class="ix-grid">
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="lending" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">lending</div><div class="ix-name">Out of the house</div><div class="ix-desc">One list for lent, borrowed and listed — the three ways a thing isn't on the shelf.</div></div>
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="lendsheet" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">lendsheet</div><div class="ix-name">Lend it</div><div class="ix-desc">Who, until when, and whether they get a reminder. Sheet over the item.</div></div>
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="person" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">person</div><div class="ix-name">A person</div><div class="ix-desc">Everything they have of yours and their track record of giving it back.</div></div>
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="borrowed" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">borrowed</div><div class="ix-name">Borrowed from others</div><div class="ix-desc">Things you hold that aren't yours — visible on your shelf, never counted in your value.</div></div>
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="return" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">return</div><div class="ix-name">Back home</div><div class="ix-desc">The return handshake, with a note on condition if it came back different.</div></div>
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="share" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">share</div><div class="ix-name">Share an object</div><div class="ix-desc">Send one thing with an asking price attached, or leave the price off entirely.</div></div>
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="received" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">received</div><div class="ix-name">Received card</div><div class="ix-desc">What a shared object looks like to the person who gets it, before they have an account.</div></div>
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="link" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">link</div><div class="ix-name">Link sheet</div><div class="ix-desc">The share itself — who can open it, for how long, and what it exposes.</div></div>
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="promote" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">promote</div><div class="ix-name">Promote to its own item</div><div class="ix-desc">One coin out of a bulk lot becomes a tracked object with its own history.</div></div>
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="coshelf" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">coshelf</div><div class="ix-name">Shared shelf</div><div class="ix-desc">Two people, one collection. Who added what, who may edit values.</div></div>
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="playlist" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">playlist</div><div class="ix-name">Listening list</div><div class="ix-desc">A queue built from the shelf — the one place the collection turns into an activity.</div></div>
+  </div>
+</section>
+
+<section class="ix-sec" id="g5">
+  <div class="ix-shd"><a class="ix-sid" href="#g5">05</a><span class="ix-sname">Types &amp; fields</span></div>
+  <p class="ix-sub">Fourteen shipped types, the awkward cases, and the route from "no type fits" to a real one.</p>
+  <div class="ix-grid">
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="types" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">types</div><div class="ix-name">All fourteen types</div><div class="ix-desc">One row shape from a stamp to a Porsche, each with its own spine labels and grading scale.</div></div>
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="mixed" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">mixed</div><div class="ix-name">Mixed collection</div><div class="ix-desc">No collection type; every object carries its own. Sorting falls back to shared fields.</div></div>
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="notype" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">notype</div><div class="ix-name">No type fits</div><div class="ix-desc">Borrow the nearest, build your own field by field, or keep it as a bare Thing.</div></div>
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="propose" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">propose</div><div class="ix-name">Propose a type</div><div class="ix-desc">Send the shape, never the shelf. Adoption counts more than votes; shipping migrates your objects.</div></div>
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="edititem" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">edititem</div><div class="ix-name">Edit an object</div><div class="ix-desc">Spine, fields and events as three separate groups — the Details tab, in edit mode.</div></div>
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="inspect" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">inspect</div><div class="ix-name">Inspect &amp; annotate</div><div class="ix-desc">Pin notes to a spot on the object — a ring wear, a bent corner, a repaint.</div></div>
+  </div>
+</section>
+
+<section class="ix-sec" id="g6">
+  <div class="ix-shd"><a class="ix-sid" href="#g6">06</a><span class="ix-sname">Customization &amp; system</span></div>
+  <p class="ix-sub">One onboarding question sets the bar; settings can move it later. Notifications stay opt-in and specific.</p>
+  <div class="ix-grid">
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="settings" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">settings</div><div class="ix-name">Settings</div><div class="ix-desc">Density, lookup, money display — the editor for everything onboarding guessed.</div></div>
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="tabpick" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">tabpick</div><div class="ix-name">Pick your profile</div><div class="ix-desc">Second onboarding question: hardcore, hobbyist or casual owner. Sets the initial tab bar.</div></div>
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="tabedit" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">tabedit</div><div class="ix-name">Edit the tab bar</div><div class="ix-desc">Five slots, reorderable. Scan is fixed in the middle; the rest is yours.</div></div>
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="nudge" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">nudge</div><div class="ix-name">Notifications</div><div class="ix-desc">Every nudge listed with its trigger, most off by default. Silence when the queue is empty.</div></div>
+  </div>
+</section>
+
+<section class="ix-sec" id="g8">
+  <div class="ix-shd"><a class="ix-sid" href="#g8">08</a><span class="ix-sname">Wanting &amp; the market</span></div>
+  <p class="ix-sub">Objects you don't own yet. Dashed edge, no shadow — the rule for "not yours" wherever it appears.</p>
+  <div class="ix-grid">
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="wishlist" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">wishlist</div><div class="ix-name">The hunt</div><div class="ix-desc">A collection of wanted objects with priority and a price cap. Never counted in value or insurance.</div></div>
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="wishshare" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">wishshare</div><div class="ix-name">Shared wishlist</div><div class="ix-desc">The list as a stranger sees it, matched against their shelf. Reveals nothing about your own.</div></div>
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="market" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">market</div><div class="ix-name">What people will sell</div><div class="ix-desc">Search across published offers — an index of offers, not a copy of everyone's library.</div></div>
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="hit" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">hit</div><div class="ix-name">Wishlist hit</div><div class="ix-desc">Someone listed your grail. Fires on print, grade and cap together; near misses stay silent.</div></div>
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="reserve" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">reserve</div><div class="ix-name">Reserve from a library</div><div class="ix-desc">Sketch, not built. A reservation is a queued lend — same handshake, plus a waiting line.</div></div>
+  </div>
+</section>
+
+<section class="ix-sec" id="g7">
+  <div class="ix-shd"><a class="ix-sid" href="#g7">07</a><span class="ix-sname">Studies</span></div>
+  <p class="ix-sub">Not product screens — arguments made visual, kept because the decisions they settled are still live.</p>
+  <div class="ix-grid">
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="tabs" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">tabs</div><div class="ix-name">Five tabs, one too many</div><div class="ix-desc">Why the bar landed on Shelf / Find / Scan / Activity / You.</div></div>
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="icons" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">icons</div><div class="ix-name">The small sizes</div><div class="ix-desc">D7 — what survives at 38px, 22px and 16px when the object is barely a shape.</div></div>
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="chrome" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">chrome</div><div class="ix-name">Chrome study</div><div class="ix-desc">B1 — how much frame the app is allowed before the objects stop being the subject.</div></div>
+    <div class="ix-card"><div class="ix-frame"><div class="ix-scale"><dc-import name="Collections App" screen="magic" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="ix-key">magic</div><div class="ix-name">Magic link pressure test</div><div class="ix-desc">F4 — what a shared link does for someone with no account and no context.</div></div>
+  </div>
+</section>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() { return { no: false, yes: true }; }
+}
+</script>
+</body>
+</html>

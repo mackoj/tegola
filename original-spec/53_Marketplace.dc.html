@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#EAE3D6}a{color:#2B44D6}a:hover{color:#FF5B2E}</style>
+</helmet>
+<div style="max-width:1360px;margin:0 auto;padding:60px 28px 100px;font-family:Archivo,system-ui,sans-serif;color:#17130F;box-sizing:border-box">
+  <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+    <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70">CLCTN · V2 · MARKETPLACE · OCTOBER 2026</div>
+    <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#F3ECE0;background:#2B44D6;border-radius:999px;padding:5px 12px">PROPOSAL</div>
+    <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;border:2px solid #6E2440;color:#6E2440;border-radius:999px;padding:4px 11px">V2 · NOT IN V1</div>
+  </div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:66px;line-height:.92;letter-spacing:-.045em;margin:16px 0 0;max-width:1060px;text-wrap:balance">Every item is already a listing. Sell the trust, not the shelf space.</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-top:20px;text-wrap:pretty">Other marketplaces start from an empty form. In CLCTN, the item already has its fields, its photos, its condition ladder and a history of how long it's been owned. <strong>That history is the one thing Vinted, eBay or Leboncoin can't offer. The marketplace should be built around it, and Stripe Connect handles the money.</strong></div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">00 · WILL IT WORK?</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:32px;letter-spacing:-.03em;margin-bottom:18px">Yes, if it stays small and collector-to-collector first.</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:16px">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #0E6E5E;padding:20px 22px;display:flex;flex-direction:column;gap:12px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#0E6E5E">WHY THE APP IS A GOOD PLACE FOR IT</div>
+      <sc-for list="{{ pros }}" as="p" hint-placeholder-count="4">
+        <div style="display:flex;flex-direction:column;gap:3px;border-bottom:1.5px solid #E0D6C4;padding-bottom:10px">
+          <div style="font:700 14px Archivo,sans-serif">{{ p.t }}</div>
+          <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ p.b }}</div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #C2371F;padding:20px 22px;display:flex;flex-direction:column;gap:12px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#C2371F">WHY IT MIGHT NOT</div>
+      <sc-for list="{{ cons }}" as="p" hint-placeholder-count="4">
+        <div style="display:flex;flex-direction:column;gap:3px;border-bottom:1.5px solid #E0D6C4;padding-bottom:10px">
+          <div style="font:700 14px Archivo,sans-serif">{{ p.t }}</div>
+          <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ p.b }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">01 · IS STRIPE THE RIGHT CHOICE?</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:920px;margin-bottom:20px;text-wrap:pretty">Yes. Connect handles seller identity checks (KYC), payouts and the payment licences, which a small company can't get alone. Catawiki, an auction site for collectibles, runs on the same stack. Mangopay (French, marketplace-only) is the backup option if Stripe's holding rules turn out too strict.</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:16px">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;padding:20px 22px;display:flex;flex-direction:column;gap:10px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70">SETUP</div>
+      <sc-for list="{{ setup }}" as="s" hint-placeholder-count="5">
+        <div style="display:grid;grid-template-columns:150px 1fr;gap:12px;border-bottom:1.5px solid #E0D6C4;padding-bottom:8px">
+          <div style="font:500 12px 'DM Mono',monospace;color:#17130F">{{ s.k }}</div>
+          <div style="font:400 13px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ s.v }}</div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#0C0A08;color:#F3ECE0;padding:20px 22px;box-shadow:5px 5px 0 #6E2440;display:flex;flex-direction:column;gap:10px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;opacity:.55">STRIPE COSTS · FRANCE · PLATFORM SETS THE PRICING</div>
+      <sc-for list="{{ fees }}" as="f" hint-placeholder-count="4">
+        <div style="display:flex;justify-content:space-between;gap:12px;border-bottom:1.5px solid #3A2F26;padding-bottom:8px">
+          <div style="font:400 13px Archivo,sans-serif;opacity:.85">{{ f.k }}</div>
+          <div style="font:500 13px 'DM Mono',monospace">{{ f.v }}</div>
+        </div>
+      </sc-for>
+      <div style="font:400 11.5px/1.5 Archivo,sans-serif;opacity:.6">Public prices, stripe.com/en-fr/connect/pricing, October 2026. Non-EU cards and currency conversion cost more. Prices can be negotiated at volume.</div>
+    </div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">02 · THREE BUSINESS PROPOSITIONS</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:920px;margin-bottom:16px;text-wrap:pretty">Same Stripe setup, three ways to earn from it. Pick an average sale price to compare what each sale leaves after Stripe and VAT.</div>
+  <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:18px">
+    <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;margin-right:4px">AVG SALE</div>
+    <sc-for list="{{ priceTabs }}" as="p" hint-placeholder-count="4">
+      <div onClick="{{ p.on }}" style="cursor:pointer;border:2px solid #17130F;border-radius:999px;padding:6px 14px;font:600 13px Archivo,sans-serif;background:{{ p.bg }};color:{{ p.fg }}">{{ p.t }}</div>
+    </sc-for>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px">
+    <sc-for list="{{ props }}" as="p" hint-placeholder-count="3">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 {{ p.c }};overflow:hidden;display:flex;flex-direction:column">
+        <div style="padding:18px 20px;background:#17130F;color:#F3ECE0;display:flex;flex-direction:column;gap:6px">
+          <div style="display:flex;justify-content:space-between;gap:8px;align-items:baseline">
+            <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.12em;opacity:.6">{{ p.k }}</div>
+            <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;border:1.5px solid #F3ECE0;border-radius:999px;padding:3px 9px">{{ p.tag }}</div>
+          </div>
+          <div style="font:700 20px Archivo,sans-serif">{{ p.t }}</div>
+          <div style="font:400 13px/1.5 Archivo,sans-serif;opacity:.8;text-wrap:pretty">{{ p.pitch }}</div>
+        </div>
+        <div style="padding:16px 20px;display:flex;flex-direction:column;gap:8px;border-bottom:2px solid #E0D6C4">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70">HOW IT EARNS</div>
+          <sc-for list="{{ p.rules }}" as="r" hint-placeholder-count="3">
+            <div style="font:400 13px/1.5 Archivo,sans-serif;color:#3A2F26;padding-left:12px;border-left:3px solid {{ p.c }};text-wrap:pretty">{{ r }}</div>
+          </sc-for>
+        </div>
+        <div style="padding:16px 20px;background:#FAF6EF;display:flex;flex-direction:column;gap:6px;border-bottom:2px solid #E0D6C4">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:4px">ONE {{ priceLabel }} SALE</div>
+          <sc-for list="{{ p.lines }}" as="l" hint-placeholder-count="5">
+            <div style="display:flex;justify-content:space-between;gap:10px">
+              <div style="font:400 13px Archivo,sans-serif;color:#3A2F26">{{ l.k }}</div>
+              <div style="font:500 13px 'DM Mono',monospace;color:{{ l.c }}">{{ l.v }}</div>
+            </div>
+          </sc-for>
+          <div style="display:flex;justify-content:space-between;gap:10px;border-top:2px solid #17130F;padding-top:8px;margin-top:4px">
+            <div style="font:700 14px Archivo,sans-serif">CLCTN keeps</div>
+            <div style="font:700 16px 'DM Mono',monospace;color:{{ p.netC }}">{{ p.net }}</div>
+          </div>
+        </div>
+        <div style="padding:16px 20px;display:flex;flex-direction:column;gap:6px;flex:1">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#0E6E5E">GOOD</div>
+          <div style="font:400 13px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ p.good }}</div>
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#C2371F;margin-top:8px">BAD</div>
+          <div style="font:400 13px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ p.bad }}</div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+  <div style="font:400 12px/1.5 Archivo,sans-serif;color:#6E6458;margin-top:14px;max-width:920px;text-wrap:pretty">Assumptions: EU card, one payout per sale, each seller makes 2 sales a month (so the €2 active-account fee counts €1 per sale). Fees are charged incl. 20% VAT; “CLCTN keeps” is after VAT. Shipping is passed through and not counted.</div>
+
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#17130F;color:#F3ECE0;padding:20px 22px;box-shadow:5px 5px 0 #FF5B2E;margin-top:22px;display:flex;flex-direction:column;gap:8px">
+    <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.12em;opacity:.55">RECOMMENDATION</div>
+    <div style="font:700 18px Archivo,sans-serif">Launch B. Add C's checking service for expensive items once disputes data exists. Keep A as the plan if volume grows past the members.</div>
+    <div style="font:400 13.5px/1.6 Archivo,sans-serif;opacity:.82;text-wrap:pretty">B gives subscribers a reason to subscribe, keeps buyers and sellers among people who already care about condition, and limits the support work while the anti-scam tools are new. On small sales, Stripe's fixed costs and the €2 seller fee use up most of the commission (A loses money at €20), so each option needs a minimum fee. B's €3 minimum keeps every sale above zero.</div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">03 · PREVENTING SCAMS</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:920px;margin-bottom:20px;text-wrap:pretty">The main rule: <strong>money is held until the buyer has the item.</strong> Everything else limits what a scammer can fake. Stripe covers payment fraud; the rest is ours to build.</div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow-x:auto">
+    <div style="display:grid;grid-template-columns:minmax(170px,1fr) minmax(280px,2fr) minmax(110px,.6fr);min-width:720px">
+      <div style="padding:12px 18px;background:#17130F;color:#F3ECE0;font:500 10px 'DM Mono',monospace;letter-spacing:.12em">SCAM</div>
+      <div style="padding:12px 18px;background:#17130F;color:#F3ECE0;font:500 10px 'DM Mono',monospace;letter-spacing:.12em">WHAT STOPS IT</div>
+      <div style="padding:12px 18px;background:#17130F;color:#F3ECE0;font:500 10px 'DM Mono',monospace;letter-spacing:.12em">WHO</div>
+      <sc-for list="{{ scams }}" as="s" hint-placeholder-count="8">
+        <div style="padding:12px 18px;border-top:1.5px solid #E0D6C4;display:flex;flex-direction:column;gap:3px">
+          <div style="font:700 13.5px Archivo,sans-serif">{{ s.s }}</div>
+          <div style="font:400 12px/1.45 Archivo,sans-serif;color:#6E6458">{{ s.e }}</div>
+        </div>
+        <div style="padding:12px 18px;border-top:1.5px solid #E0D6C4;font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ s.f }}</div>
+        <div style="padding:12px 18px;border-top:1.5px solid #E0D6C4">
+          <div style="display:inline-block;font:500 10px 'DM Mono',monospace;letter-spacing:.1em;color:#F3ECE0;background:{{ s.c }};border-radius:999px;padding:4px 10px">{{ s.w }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">04 · LEGAL REQUIREMENTS IN FRANCE / EU</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:920px;margin-bottom:20px;text-wrap:pretty">Check these with a lawyer before launch. They apply as soon as the app takes money between users.</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px">
+    <sc-for list="{{ legal }}" as="l" hint-placeholder-count="6">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;box-shadow:4px 4px 0 #2B44D6;padding:16px 18px;display:flex;flex-direction:column;gap:6px">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">{{ l.k }}</div>
+        <div style="font:700 15px Archivo,sans-serif">{{ l.t }}</div>
+        <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ l.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:20px">05 · WHAT V1 ALREADY PREPARES (52)</div>
+  <div style="display:flex;flex-direction:column;gap:12px;max-width:1000px">
+    <sc-for list="{{ ready }}" as="o" hint-placeholder-count="4">
+      <div style="display:grid;grid-template-columns:200px 1fr;gap:16px;border-bottom:1.5px solid #CFC5B3;padding-bottom:12px">
+        <div style="font:500 12px 'DM Mono',monospace;color:#17130F">{{ o.k }}</div>
+        <div style="font:400 13.5px/1.6 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ o.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { price: 60 };
+  renderVals() {
+    const p = this.state.price;
+    const eur = (n) => (n < 0 ? "−€" : "€") + Math.abs(n).toFixed(2);
+    const stripe = (charged, payout) => 0.015 * charged + 0.25 + 0.0025 * payout + 0.10 + 1;
+    const calc = (sellerFee, buyerFee) => {
+      const charged = p + buyerFee;
+      const payout = p - sellerFee;
+      const gross = sellerFee + buyerFee;
+      const vat = gross - gross / 1.2;
+      const s = stripe(charged, payout);
+      const net = gross - vat - s;
+      return { net, lines: [
+        { k: "Buyer pays", v: eur(charged), c: "#17130F" },
+        { k: "Seller receives", v: eur(payout), c: "#17130F" },
+        { k: "Fees collected", v: eur(gross), c: "#0E6E5E" },
+        { k: "VAT 20%", v: eur(-vat), c: "#C2371F" },
+        { k: "Stripe", v: eur(-s), c: "#C2371F" }] };
+    };
+    const A = calc(0, 0.05 * p + 0.70);
+    const B = calc(Math.max(0.06 * p, 3), 0);
+    const C = calc(Math.max(0.08 * p, 3), p >= 200 ? 9 : 0);
+    const P = [
+      { k: "A · OPEN MARKET", tag: "VOLUME", t: "Buyer protection fee", c: "#2B44D6", r: A,
+        pitch: "Anyone can buy, any user can sell. Selling is free; the buyer pays a protection fee, the model Vinted made familiar in France.",
+        rules: ["Seller pays 0%.", "Buyer pays 5% + €0.70 for protection (refund if not as described).", "Listing in one tap from any item in the collection."],
+        good: "Easiest for sellers to try. Pulls in buyers who aren't users yet, so it can grow the app too.",
+        bad: "Needs many sales to earn anything. Brings in strangers, which means more scams and more support. Competes directly with Vinted and Leboncoin." },
+      { k: "B · MEMBERS' EXCHANGE", tag: "RECOMMENDED", t: "Subscribers sell, low commission", c: "#0E6E5E", r: B,
+        pitch: "Only yearly subscribers (€50) can sell. Anyone can buy, with no extra fee, which makes listings cheaper to buy than on A.",
+        rules: ["Seller pays 6% (min. €3). Buyer pays nothing extra.", "Selling is a subscriber feature, which supports the main revenue (50).", "Seller profile shows how long each item was in their collection."],
+        good: "Sellers are known, paying members, so there are far fewer scams. Adds value to the subscription instead of competing with it.",
+        bad: "Earns only cents to a few euros per sale under €150; the real money is the subscription it sells. Fewer listings at the start. Buyers may find the choice too small in niche types." },
+      { k: "C · CHECKED SALES", tag: "HIGH VALUE", t: "Higher commission, item checked", c: "#6E2440", r: C,
+        pitch: "For items worth checking: rare carts, sealed vinyl, old wine. Items over €200 go through a partner expert before reaching the buyer.",
+        rules: ["Seller pays 8% (min. €3).", "Over €200: buyer pays a €9 checking fee and the item is shipped through the checker.", "Checked items get a mark on their history that stays if resold."],
+        good: "Best margin per sale. Solves the biggest fear in collectibles (fakes). The check mark adds value to the item itself.",
+        bad: "Needs expert partners for each type, plus shipping and insurance logistics. Slow. Only works once there is enough expensive stock." }
+    ].map(x => ({ ...x, lines: x.r.lines, net: eur(x.r.net), netC: x.r.net < 0.5 ? "#C2371F" : "#0E6E5E" }));
+    const prices = [20, 60, 150, 400];
+    return {
+      priceLabel: "€" + p,
+      priceTabs: prices.map(v => ({ t: "€" + v, bg: v === p ? "#17130F" : "#fff", fg: v === p ? "#F3ECE0" : "#17130F", on: () => this.setState({ price: v }) })),
+      props: P,
+      pros: [
+        { t: "The stock already exists", b: "Every item is filled in, photographed and graded. Listing is “sell this”, not a new form. No other marketplace starts there." },
+        { t: "Item history is proof", b: "The event log shows when an item was added, which photos were taken when, and how its condition changed. A scammer can't make a 3-year history for an item bought yesterday." },
+        { t: "Signals point to selling", b: "“You have 3 copies”, “this has gone up 40%”, “drink before 2028”. The app already tells users when to act; selling is the natural next step." },
+        { t: "The type knows what to check", b: "A cart needs a board photo, vinyl needs the matrix number, wine needs the capsule. Each type can say what a listing must show." }
+      ],
+      cons: [
+        { t: "Too few buyers at first", b: "A marketplace needs buyers and sellers at the same time. In niches like LaserDisc there may be ten users. Without enough people, listings sit." },
+        { t: "Strong competitors", b: "Vinted, Leboncoin and eBay for general items; Discogs for vinyl; Catawiki for expensive pieces. Users already know them." },
+        { t: "Support work", b: "Every dispute is a person writing to you. A small team can be overwhelmed fast, and a slow answer loses trust in the whole app." },
+        { t: "Legal load", b: "Taking money between users brings EU platform rules, tax reporting and consumer law. See 04." }
+      ],
+      setup: [
+        { k: "Connect · Express", v: "Sellers onboard through a Stripe-hosted form (ID, bank). Stripe runs the KYC checks." },
+        { k: "Separate charges + transfers", v: "The buyer pays CLCTN; the seller is paid only after delivery is confirmed. This is the hold that stops most scams." },
+        { k: "Radar", v: "Stripe's fraud scoring on every card payment. Block high-risk payments, ask for 3-D Secure on the rest." },
+        { k: "Identity", v: "Optional ID + selfie check for sellers above a sales level, or after a report." },
+        { k: "Webhooks → event log", v: "Every payment, refund and dispute becomes an event on the item, so its history includes its sales." }
+      ],
+      fees: [
+        { k: "EU card payment", v: "1.5% + €0.25" },
+        { k: "Active seller account", v: "€2 / month" },
+        { k: "Payout to seller", v: "0.25% + €0.10" },
+        { k: "Platform subscription", v: "none" }
+      ],
+      scams: [
+        { s: "Item not sent / empty box", e: "Seller takes the money and ships nothing, or a brick.", f: "Seller is paid only after tracked delivery + 48 h for the buyer to check. Over €150: shipping weight on the label must match the type's expected weight.", w: "US + STRIPE", c: "#0E6E5E" },
+        { s: "Fake or repro item", e: "Repro carts, reprinted vinyl, refilled bottles.", f: "Listing must come from an item in the collection, with photos taken in the app's camera (no gallery uploads). Each type lists the required photos. Over €200: option C check.", w: "US", c: "#2B44D6" },
+        { s: "Paying outside the app", e: "“Send me PayPal friends, it's cheaper.”", f: "Chat hides IBANs, emails, phone numbers and links before the sale. Clear message: protection only exists in the app. Repeat attempts block selling.", w: "US", c: "#2B44D6" },
+        { s: "Fake payment proof", e: "Fake “payment received” emails or screenshots.", f: "Payment status is only shown in the app. No external links in chat. The app never sends emails asking to click to receive money.", w: "US", c: "#2B44D6" },
+        { s: "Stolen cards", e: "Buyer pays with a stolen card, seller loses the item later.", f: "Radar + 3-D Secure. Because the money is held, a chargeback happens before the seller is paid.", w: "STRIPE", c: "#6E2440" },
+        { s: "Item swapped on return", e: "Buyer returns a worse copy and claims a refund.", f: "Seller's photos record unique marks (serial, limited number, Signed proof, scuffs). The return must match them before refunding.", w: "US", c: "#2B44D6" },
+        { s: "New account, big sales", e: "A fresh account lists expensive items and disappears.", f: "Sales limit for new sellers (e.g. 3 sales, €300 in total) that grows with completed sales. Payouts paused if the bank account changes.", w: "US + STRIPE", c: "#0E6E5E" },
+        { s: "Fake reviews", e: "Accounts reviewing each other.", f: "Reviews only after a paid, delivered sale. Same card or device on both sides is flagged.", w: "US", c: "#2B44D6" }
+      ],
+      legal: [
+        { k: "DSA · EU", t: "Online marketplace rules", b: "Collect and check the identity of professional sellers, have a way to report illegal or fake items, and explain how ranking works." },
+        { k: "DAC7 · TAX", t: "Report sellers to the tax office", b: "Each year, report sellers who pass 30 sales or €2,000 to the DGFiP, and tell them it's being done." },
+        { k: "CGI ART. 242 BIS", t: "Tax information for sellers", b: "Tell sellers about their tax and social obligations at each sale and send a yearly summary of what they earned." },
+        { k: "CONSUMER LAW", t: "Pro vs private sellers", b: "Professional sellers must give the 14-day return right. Every listing has to show whether the seller is private or pro." },
+        { k: "COMPANY", t: "Company structure", b: "Running a marketplace is best done as a SAS/SASU (50), which separates personal liability. Micro-entreprise limits and VAT franchise would also be passed quickly." },
+        { k: "TERMS", t: "Terms of sale and mediation", b: "Separate marketplace terms, dispute rules, and a consumer mediator, which French law requires." }
+      ],
+      ready: [
+        { k: "Event log (P0)", b: "Gives each item a history that is hard to fake. This is what makes the marketplace different." },
+        { k: "One item = one object", b: "A listing points to one specific copy, with its own photos and condition, not a generic product." },
+        { k: "Money in cents + currency", b: "Purchase price is already stored correctly, so profit and valuation work from day one." },
+        { k: "Accounts + entitlement flags (P5)", b: "Option B is just a “can sell” flag on yearly subscribers." }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

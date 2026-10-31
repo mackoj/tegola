@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#EAE3D6}a{color:#2B44D6}a:hover{color:#FF5B2E}input[type=range]{accent-color:#17130F;width:100%;margin:0}</style>
+</helmet>
+<div style="max-width:1360px;margin:0 auto;padding:60px 28px 100px;font-family:Archivo,system-ui,sans-serif;color:#17130F;box-sizing:border-box">
+  <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+    <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70">CLCTN · BUSINESS CALCULATOR · FRANCE · 2026 RULES</div>
+    <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#F3ECE0;background:#0E6E5E;border-radius:999px;padding:5px 12px">LIVE</div>
+  </div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:66px;line-height:.92;letter-spacing:-.045em;margin:16px 0 0;max-width:1060px;text-wrap:balance">When can you live off it?</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-top:20px;text-wrap:pretty">Turn on what the app sells, set prices and how many users buy, and set the monthly income you need. The calculator follows each euro from the App Store price to your pocket: VAT, Apple's cut, URSSAF, income tax and running costs. It then works out how many active users it takes.</div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,520px),1fr));gap:20px;margin-top:40px;align-items:start">
+
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;padding:20px 22px;display:flex;flex-direction:column;gap:18px">
+        <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.16em;color:#8A7F70">01 · YOU AND THE APP</div>
+        <sc-for list="{{ basics }}" as="c" hint-placeholder-count="4">
+          <div style="display:flex;flex-direction:column;gap:7px">
+            <div style="display:flex;justify-content:space-between;gap:12px;align-items:baseline">
+              <div style="font:600 14px Archivo,sans-serif">{{ c.label }}</div>
+              <div style="font:500 14px 'DM Mono',monospace">{{ c.shown }}</div>
+            </div>
+            <input type="range" min="{{ c.min }}" max="{{ c.max }}" step="{{ c.step }}" value="{{ c.v }}" onChange="{{ c.on }}">
+            <div style="font:400 12px/1.45 Archivo,sans-serif;color:#8A7F70;text-wrap:pretty">{{ c.hint }}</div>
+          </div>
+        </sc-for>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="font:600 14px Archivo,sans-serif">Legal setup</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <sc-for list="{{ statusTabs }}" as="s" hint-placeholder-count="3">
+              <div onClick="{{ s.on }}" style="cursor:pointer;border:2.5px solid #17130F;border-radius:12px;padding:8px 13px;font:700 13px Archivo,sans-serif;background:{{ s.bg }};color:{{ s.fg }}">{{ s.t }}</div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #2B44D6;padding:20px 22px;display:flex;flex-direction:column;gap:14px">
+        <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.16em;color:#8A7F70">02 · WHAT THE APP SELLS</div>
+        <sc-for list="{{ streams }}" as="s" hint-placeholder-count="7">
+          <div style="border:2px solid {{ s.bd }};border-radius:14px;padding:12px 14px;background:{{ s.bg }};display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;align-items:center;gap:12px">
+              <div onClick="{{ s.toggle }}" style="cursor:pointer;width:42px;height:24px;border-radius:999px;border:2px solid #17130F;background:{{ s.swBg }};position:relative;flex:none;box-sizing:border-box">
+                <div style="position:absolute;top:2px;left:{{ s.knob }};width:16px;height:16px;border-radius:50%;background:#fff;border:2px solid #17130F;box-sizing:border-box"></div>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;gap:2px">
+                <div style="font:700 14.5px Archivo,sans-serif">{{ s.name }}</div>
+                <div style="font:500 9.5px 'DM Mono',monospace;letter-spacing:.08em;color:#8A7F70">{{ s.meta }}</div>
+              </div>
+              <div style="font:600 13px 'DM Mono',monospace;color:{{ s.amtC }};white-space:nowrap">{{ s.amount }}</div>
+            </div>
+            <sc-if value="{{ s.on }}" hint-placeholder-val="{{ false }}">
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px">
+                <sc-for list="{{ s.controls }}" as="c" hint-placeholder-count="2">
+                  <div style="display:flex;flex-direction:column;gap:5px">
+                    <div style="display:flex;justify-content:space-between;gap:8px;font:500 12px Archivo,sans-serif;color:#5A5045"><span>{{ c.label }}</span><span style="font-family:'DM Mono',monospace;color:#17130F">{{ c.shown }}</span></div>
+                    <input type="range" min="{{ c.min }}" max="{{ c.max }}" step="{{ c.step }}" value="{{ c.v }}" onChange="{{ c.on }}">
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #6E2440;padding:20px 22px;display:flex;flex-direction:column;gap:18px">
+        <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.16em;color:#8A7F70">03 · WHAT IT COSTS TO RUN</div>
+        <sc-for list="{{ costs }}" as="c" hint-placeholder-count="2">
+          <div style="display:flex;flex-direction:column;gap:7px">
+            <div style="display:flex;justify-content:space-between;gap:12px;align-items:baseline">
+              <div style="font:600 14px Archivo,sans-serif">{{ c.label }}</div>
+              <div style="font:500 14px 'DM Mono',monospace">{{ c.shown }}</div>
+            </div>
+            <input type="range" min="{{ c.min }}" max="{{ c.max }}" step="{{ c.step }}" value="{{ c.v }}" onChange="{{ c.on }}">
+            <div style="font:400 12px/1.45 Archivo,sans-serif;color:#8A7F70;text-wrap:pretty">{{ c.hint }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:20px;position:sticky;top:20px">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#17130F;color:#F3ECE0;box-shadow:5px 5px 0 #FF5B2E;padding:24px 24px 22px">
+        <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.16em;opacity:.6">TO TAKE HOME {{ targetShown }} A MONTH, AFTER EVERYTHING</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:64px;line-height:.95;letter-spacing:-.04em;margin:10px 0 6px;color:#FFD24A">{{ need.users }}</div>
+        <div style="font:600 16px Archivo,sans-serif">{{ need.label }}</div>
+        <div style="font:400 13.5px/1.55 Archivo,sans-serif;opacity:.8;margin-top:10px;text-wrap:pretty">{{ need.detail }}</div>
+      </div>
+
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+        <div style="padding:14px 20px;background:#FAF6EF;border-bottom:2px solid #E0D6C4;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline">
+          <div style="font:700 15px Archivo,sans-serif">At {{ usersShown }} active users, per year</div>
+          <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.1em;color:#8A7F70">{{ statusName }}</div>
+        </div>
+        <div style="padding:6px 20px 14px">
+          <sc-for list="{{ fall }}" as="r" hint-placeholder-count="9">
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;padding:9px 0;border-bottom:{{ r.bb }};align-items:baseline">
+              <div style="display:flex;flex-direction:column;gap:2px">
+                <div style="font:{{ r.w }} 14px Archivo,sans-serif">{{ r.k }}</div>
+                <div style="font:400 11.5px Archivo,sans-serif;color:#8A7F70">{{ r.note }}</div>
+              </div>
+              <div style="font:{{ r.w }} 14px 'DM Mono',monospace;color:{{ r.c }};white-space:nowrap">{{ r.v }}</div>
+            </div>
+          </sc-for>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-top:14px">
+            <div style="font:700 16px Archivo,sans-serif">In your pocket, per month</div>
+            <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:34px;letter-spacing:-.03em;color:{{ monthC }}">{{ monthShown }}</div>
+          </div>
+        </div>
+      </div>
+
+      <sc-if value="{{ warn.show }}" hint-placeholder-val="{{ false }}">
+        <div style="border:2.5px solid #C2371F;border-radius:16px;background:#fff;padding:14px 16px;display:flex;flex-direction:column;gap:4px">
+          <div style="font:500 9.5px 'DM Mono',monospace;letter-spacing:.12em;color:#C2371F">{{ warn.k }}</div>
+          <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ warn.b }}</div>
+        </div>
+      </sc-if>
+
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #2B44D6;padding:18px 20px">
+        <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.16em;color:#8A7F70;margin-bottom:12px">SAME SETTINGS, EVERY LEGAL SETUP · TAP TO SWITCH</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px">
+          <sc-for list="{{ compare }}" as="c" hint-placeholder-count="4">
+            <div onClick="{{ c.on }}" style="cursor:pointer;border:2px solid #17130F;border-radius:12px;padding:10px 12px;background:{{ c.bg }};color:{{ c.fg }};display:flex;flex-direction:column;gap:4px">
+              <div style="font:700 12.5px Archivo,sans-serif">{{ c.t }}</div>
+              <div style="font:700 18px 'DM Mono',monospace">{{ c.m }}<span style="font:500 10px 'DM Mono',monospace;color:{{ c.sub }}"> /mo</span></div>
+              <div style="font:500 10px 'DM Mono',monospace;color:{{ c.sub }}">NEED {{ c.n }} USERS</div>
+              <div style="font:500 9.5px 'DM Mono',monospace;color:#C2371F">{{ c.flag }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="font:400 12px/1.5 Archivo,sans-serif;color:#8A7F70;margin-top:10px;text-wrap:pretty">Company forms use the salary slider above. Set it to €0 to pay yourself in dividends only.</div>
+      </div>
+
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #0E6E5E;padding:18px 20px">
+        <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.16em;color:#8A7F70;margin-bottom:14px">TAKE-HOME PER MONTH AT EACH USER COUNT · DASHED LINE = YOUR TARGET</div>
+        <div style="position:relative;height:170px;display:flex;align-items:flex-end;gap:6px">
+          <div style="position:absolute;left:0;right:0;bottom:{{ targetLine }};border-top:2px dashed #FF5B2E"></div>
+          <sc-for list="{{ bars }}" as="b" hint-placeholder-count="10">
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:4px">
+              <div style="font:500 8.5px 'DM Mono',monospace;color:#6E6458;white-space:nowrap">{{ b.v }}</div>
+              <div style="width:100%;height:{{ b.h }};background:{{ b.c }};border:2px solid #17130F;border-radius:6px 6px 0 0;box-sizing:border-box"></div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex;gap:6px;margin-top:6px">
+          <sc-for list="{{ bars }}" as="b" hint-placeholder-count="10">
+            <div style="flex:1;text-align:center;font:500 9px 'DM Mono',monospace;color:#8A7F70">{{ b.n }}</div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:20px">THE RULES USED · CHECK WITH AN ACCOUNTANT BEFORE DECIDING</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px">
+    <sc-for list="{{ rules }}" as="r" hint-placeholder-count="8">
+      <div style="border:2.5px solid #17130F;border-radius:14px;background:#fff;padding:14px 16px;display:flex;flex-direction:column;gap:4px">
+        <div style="display:flex;justify-content:space-between;gap:10px;align-items:baseline">
+          <div style="font:700 14px Archivo,sans-serif">{{ r.t }}</div>
+          <div style="font:600 13px 'DM Mono',monospace;color:#2B44D6;white-space:nowrap">{{ r.v }}</div>
+        </div>
+        <div style="font:400 12.5px/1.5 Archivo,sans-serif;color:#5A5045;text-wrap:pretty">{{ r.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;status&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;micro&quot;,&quot;sasu&quot;],&quot;default&quot;:&quot;micro&quot;,&quot;tsType&quot;:&quot;'micro'|'sasu'&quot;}}">
+class Component extends DCLogic {
+  state = {
+    users: 10000, target: 2500, status: this.props.status ?? "micro",
+    fixed: 150, perUser: 0.03, salary: 0, capital: 1000,
+    s: {
+      sub:    { on: true,  price: 50,   pct: 5,   x: 1 },
+      unlock: { on: false, price: 4, pct: 1,  x: 1 },
+      packs:  { on: true,  price: 4.99, pct: 2,   x: 1 },
+      seller: { on: false, price: 6.99, pct: 1,   x: 7 },
+      shops:  { on: false, price: 29,   pct: 10,  x: 12 },
+      insure: { on: false, price: 45,   pct: 0.5, x: 1 },
+      affil:  { on: false, price: 40,   pct: 2,   x: 3 }
+    }
+  };
+  def = {
+    sub:    { name: "Yearly subscription", meta: "V1 · APP STORE · PER YEAR", store: true, pl: "Price / year", pmin: 10, pmax: 120, pstep: 1, cl: "% of active users", cmax: 20, cstep: 0.5, xl: null },
+    unlock: { name: "One-time unlock", meta: "V1 ALT · APP STORE · ONCE · PRICED AS N YEARS OF YEARLY", store: true, mult: true, pl: "Years of yearly", pmin: 1, pmax: 8, pstep: 0.5, cl: "% of users buying this year", cmax: 20, cstep: 0.5, xl: null },
+    packs:  { name: "Lookup packs", meta: "V1 · APP STORE · CONSUMABLE", store: true, pl: "Price / pack", pmin: 1, pmax: 15, pstep: 0.5, cl: "% of users who buy", cmax: 15, cstep: 0.5, xl: "Packs / year" },
+    seller: { name: "Seller subscription", meta: "V2 · APP STORE · MONTHLY", store: true, pl: "Price / month", pmin: 2, pmax: 20, pstep: 0.5, cl: "% of active users", cmax: 10, cstep: 0.5, xl: "Months paid / year" },
+    shops:  { name: "Shops, clubs, libraries", meta: "V2 · DIRECT · STRIPE · MONTHLY", store: false, pl: "Price / month", pmin: 9, pmax: 99, pstep: 1, cl: "Number of shops", cmax: 200, cstep: 1, xl: "Months paid / year", abs: true },
+    insure: { name: "Insurance referral", meta: "V2 · DIRECT · PER POLICY", store: false, pl: "Fee / policy", pmin: 10, pmax: 100, pstep: 5, cl: "% of users taking a policy", cmax: 5, cstep: 0.1, xl: null, nofee: true },
+    affil:  { name: "Wishlist affiliate", meta: "V2 · DIRECT · 5% COMMISSION", store: false, pl: "Avg basket", pmin: 10, pmax: 200, pstep: 5, cl: "% of users buying via link", cmax: 20, cstep: 0.5, xl: "Purchases / year", commission: 0.05, nofee: true }
+  };
+  forms = {
+    micro:   { t: "Micro-entreprise", name: "MICRO-ENTREPRISE · BNC", micro: true, vl: false },
+    microvl: { t: "Micro + libératoire", name: "MICRO · VERSEMENT LIBÉRATOIRE", micro: true, vl: true },
+    sas:     { t: "SAS / SASU", name: "SAS · PRÉSIDENT ASSIMILÉ SALARIÉ", micro: false, salCost: 1.75, minSoc: 0 },
+    sarl:    { t: "SARL / EURL (IS)", name: "SARL · GÉRANT MAJORITAIRE TNS", micro: false, salCost: 1.45, minSoc: 1200 }
+  };
+  setS(k, f, v) { this.setState(st => ({ s: { ...st.s, [k]: { ...st.s[k], [f]: v } } })); }
+  bareme(t) { const b = [[11497, 0], [29315, .11], [83823, .30], [180294, .41], [Infinity, .45]]; let tax = 0, prev = 0; for (const [lim, r] of b) { if (t > prev) tax += (Math.min(t, lim) - prev) * r; prev = lim; } return tax; }
+  compute(users, st, statusOverride) {
+    const F = this.forms[statusOverride || st.status];
+    const VAT = 0.2, APPLE = 0.15;
+    let store = 0, direct = 0, stripe = 0, gross = 0, payers = 0;
+    const per = {};
+    for (const k of Object.keys(this.def)) {
+      const d = this.def[k], s = st.s[k];
+      if (!s.on) { per[k] = 0; continue; }
+      const buyers = d.abs ? s.pct : users * s.pct / 100;
+      const x = d.xl ? s.x : 1;
+      const price = d.mult ? st.s.sub.price * s.price : s.price;
+      if (!d.abs) payers += buyers;
+      if (d.store) { const g = buyers * price * x; gross += g; const net = g / (1 + VAT) * (1 - APPLE); store += net; per[k] = net; }
+      else { const g = buyers * s.price * x * (d.commission || 1); gross += g; direct += g; const fee = d.nofee ? 0 : buyers * x * (s.price * 0.015 + 0.25); stripe += fee; per[k] = g - fee; }
+    }
+    const ca = store + direct;
+    const vatApple = gross - direct - store / (1 - APPLE);
+    const appleCut = store / (1 - APPLE) * APPLE;
+    const run = st.fixed * 12 + st.perUser * users * 12 + stripe;
+    const base = { F, gross, vatApple, appleCut, ca, payers, per };
+    if (F.micro) {
+      const social = ca * 0.258;
+      const tax = F.vl ? ca * 0.022 : this.bareme(Math.max(0, ca * 0.66));
+      return { ...base, run, social, tax, net: ca - social - tax - run };
+    }
+    const acct = 1800, runAll = run + acct;
+    const netSal = st.salary * 12;
+    const salCost = Math.max(netSal * F.salCost, F.minSoc + netSal);
+    const salSocial = salCost - netSal;
+    const profit = ca - runAll - salCost;
+    const corp = profit <= 0 ? 0 : Math.min(profit, 42500) * 0.15 + Math.max(0, profit - 42500) * 0.25;
+    const div = Math.max(0, profit - corp);
+    let divTax;
+    if (F.salCost === 1.45) { const free = Math.min(div, st.capital * 0.1); divTax = free * 0.314 + (div - free) * (0.33 + 0.128); }
+    else divTax = div * 0.314;
+    const salTax = this.bareme(netSal * 0.9);
+    const net = netSal + div - divTax - salTax + Math.min(0, profit);
+    return { ...base, run: runAll, netSal, salCost, salSocial, profit, corp, div, divTax, salTax, net };
+  }
+  needFor(st, status) {
+    const goal = st.target * 12;
+    if (this.compute(2000000, st, status).net < goal) return null;
+    let lo = 0, hi = 2000000;
+    while (hi - lo > 10) { const m = (lo + hi) / 2; if (this.compute(m, st, status).net >= goal) hi = m; else lo = m; }
+    return Math.ceil(hi / 10) * 10;
+  }
+  renderVals() {
+    const st = this.state;
+    const eur = (n, d = 0) => (n < 0 ? "−" : "") + "€" + Math.abs(n).toLocaleString("fr-FR", { maximumFractionDigits: d, minimumFractionDigits: d });
+    const num = (n) => Math.round(n).toLocaleString("fr-FR");
+    const r = this.compute(st.users, st);
+    const F = r.F, micro = F.micro, isSarl = st.status === "sarl";
+    const goal = st.target * 12;
+    const need = this.needFor(st);
+    const rn = need ? this.compute(need, st) : null;
+    const sl = (label, key, min, max, step, shown, hint) => ({ label, min, max, step, v: st[key], shown, hint, on: (e) => this.setState({ [key]: Number(e.target.value) }) });
+    const ceil = 83600;
+    const counts = [1000, 2500, 5000, 10000, 20000, 35000, 50000, 75000, 100000, 150000];
+    const nets = counts.map(n => this.compute(n, st).net / 12);
+    const maxM = Math.max(st.target, ...nets);
+    const basics = [
+      sl("Active users", "users", 500, 150000, 500, num(st.users), "People using the app this year. The whole funnel is in the % sliders below."),
+      sl("Monthly income you need", "target", 1000, 8000, 100, eur(st.target), "Net, after every contribution and tax. For reference, the French minimum wage is about €1,440 net a month.")
+    ];
+    if (!micro) basics.push(sl("Salary you pay yourself, net / month", "salary", 0, 6000, 100, eur(st.salary), isSarl ? "A majority manager (TNS) pays ~45% contributions on it, and at least ~€1,200 a year even at €0. Dividends cover the rest." : "As president you're treated like an employee: the company pays ~75% on top of your net salary. At €0 you have no pension and no health cover."));
+    if (isSarl) basics.push(sl("Share capital + current account", "capital", 1, 100000, 1000, eur(st.capital), "Dividends up to 10% of this are taxed at 31.4%. Anything above gets TNS social contributions too, which is why SARL owners pay themselves mostly in salary."));
+    const fall = [
+      { k: "Paid by users", note: "App Store prices include VAT", v: eur(r.gross), c: "#17130F", w: 600, bb: "1.5px solid #E0D6C4" },
+      { k: "VAT", note: "20%, collected and paid by Apple", v: eur(-r.vatApple), c: "#C2371F", w: 400, bb: "1.5px solid #E0D6C4" },
+      { k: "Apple's commission", note: "15%, Small Business Program (under $1M a year)", v: eur(-r.appleCut), c: "#C2371F", w: 400, bb: "1.5px solid #E0D6C4" },
+      { k: "Revenue on your books", note: micro ? "What URSSAF calculates on" : "Company revenue", v: eur(r.ca), c: "#17130F", w: 700, bb: "2px solid #17130F" }
+    ];
+    if (micro) fall.push(
+      { k: "URSSAF contributions", note: "25.6% + 0.2% training levy, on revenue, not on profit", v: eur(-r.social), c: "#C2371F", w: 400, bb: "1.5px solid #E0D6C4" },
+      { k: "Running costs", note: "Not deductible in a micro, but you still pay them", v: eur(-r.run), c: "#C2371F", w: 400, bb: "1.5px solid #E0D6C4" },
+      { k: "Income tax", note: F.vl ? "Versement libératoire, 2.2% of revenue" : "Progressive tax, single, 34% allowance", v: eur(-r.tax), c: "#C2371F", w: 400, bb: "1.5px solid #E0D6C4" });
+    else fall.push(
+      { k: "Running costs", note: "Deductible, incl. ~€1,800 accountant", v: eur(-r.run), c: "#C2371F", w: 400, bb: "1.5px solid #E0D6C4" },
+      { k: "Your salary, total cost", note: eur(r.netSal) + " net to you + " + eur(r.salSocial) + " contributions", v: eur(-r.salCost), c: "#C2371F", w: 400, bb: "1.5px solid #E0D6C4" },
+      { k: "Corporate tax (IS)", note: "15% up to €42,500 of profit, then 25%", v: eur(-r.corp), c: "#C2371F", w: 400, bb: "1.5px solid #E0D6C4" },
+      { k: "Dividends paid out", note: "Once a year, after the accounts are approved", v: eur(r.div), c: "#17130F", w: 600, bb: "1.5px solid #E0D6C4" },
+      { k: "Tax on dividends", note: isSarl ? "31.4% up to 10% of capital, ~46% above (TNS + IR)" : "Flat tax 31.4% (12.8% IR + 18.6% social)", v: eur(-r.divTax), c: "#C2371F", w: 400, bb: "1.5px solid #E0D6C4" },
+      { k: "Income tax on salary", note: "Progressive tax, single, 10% allowance", v: eur(-r.salTax), c: "#C2371F", w: 400, bb: "1.5px solid #E0D6C4" });
+    fall.push({ k: micro ? "Net per year" : "Net per year · salary + dividends", note: "", v: eur(r.net), c: r.net >= goal ? "#0E6E5E" : "#17130F", w: 700, bb: "none" });
+    let warn = { show: false, k: "", b: "" };
+    if (micro && r.ca > ceil) warn = { show: true, k: "ABOVE THE MICRO CEILING", b: "Revenue is " + eur(r.ca) + ", above the €83,600 ceiling for services. Two years in a row over it and you leave the micro regime. Compare the company forms below." };
+    else if (!micro && st.salary === 0) warn = { show: true, k: isSarl ? "SARL WITH DIVIDENDS ONLY" : "SAS WITH DIVIDENDS ONLY", b: isSarl ? "In a SARL, dividends-only gets expensive fast: above 10% of capital they carry TNS contributions anyway. The usual trick is a large shareholder current account." : "This is the cheapest way out in a SAS: no social contributions on dividends. The trade-off is no pension, no health cover beyond PUMa, and no income until the accounts close. Many founders add a small salary to validate pension quarters." };
+    return {
+      basics,
+      statusTabs: Object.keys(this.forms).map(k => ({ t: this.forms[k].t, bg: k === st.status ? "#17130F" : "#fff", fg: k === st.status ? "#F3ECE0" : "#17130F", on: () => this.setState({ status: k }) })),
+      streams: Object.keys(this.def).map(k => {
+        const d = this.def[k], s = st.s[k];
+        const controls = [
+          { label: d.pl, min: d.pmin, max: d.pmax, step: d.pstep, v: s.price, shown: d.mult ? s.price + "× = " + eur(st.s.sub.price * s.price) : eur(s.price, s.price % 1 ? 2 : 0), on: (e) => this.setS(k, "price", Number(e.target.value)) },
+          { label: d.cl, min: 0, max: d.cmax, step: d.cstep, v: s.pct, shown: d.abs ? num(s.pct) : s.pct + "% · " + num(st.users * s.pct / 100), on: (e) => this.setS(k, "pct", Number(e.target.value)) }
+        ];
+        if (d.xl) controls.push({ label: d.xl, min: 1, max: 12, step: 1, v: s.x, shown: String(s.x), on: (e) => this.setS(k, "x", Number(e.target.value)) });
+        return { name: d.name, meta: d.meta, on: s.on, controls, toggle: () => this.setS(k, "on", !s.on),
+          swBg: s.on ? "#0E6E5E" : "#E0D6C4", knob: s.on ? "20px" : "2px", bd: s.on ? "#17130F" : "#D6CCBA", bg: s.on ? "#fff" : "#FAF6EF",
+          amount: s.on ? eur(r.per[k]) + "/yr" : "off", amtC: s.on ? "#0E6E5E" : "#B9AC99" };
+      }),
+      costs: [
+        sl("Fixed costs per month", "fixed", 0, 1000, 10, eur(st.fixed), "Apple developer account (€99/yr), CFE, professional liability insurance, domain, tools. Companies add ~€1,800/yr for an accountant."),
+        sl("Cost per active user per month", "perUser", 0, 0.3, 0.005, eur(st.perUser, 3), "Backend, image CDN, matching APIs and push notifications. Most of it is cached once per release, so it stays small.")
+      ],
+      targetShown: eur(st.target),
+      usersShown: num(st.users),
+      statusName: F.name,
+      need: need
+        ? { users: num(need), label: "active users", detail: "That's about " + num(rn.payers) + " paying users and " + eur(rn.ca) + " of yearly revenue. " + (micro && rn.ca > ceil ? "That's above the €83,600 micro ceiling, so by then you'd need a company." : "") }
+        : { users: "—", label: "not reachable with these settings", detail: "Turn on a revenue stream, raise a price or a percentage, or lower the costs or the salary." },
+      fall,
+      monthShown: eur(r.net / 12),
+      monthC: r.net >= goal ? "#0E6E5E" : "#C2371F",
+      warn,
+      compare: Object.keys(this.forms).map(k => { const c = this.compute(st.users, st, k), n = this.needFor(st, k); const on = k === st.status; return { t: this.forms[k].t, m: eur(c.net / 12), n: n ? num(n) : "—", bg: on ? "#17130F" : "#fff", fg: on ? "#F3ECE0" : "#17130F", sub: on ? "#B9AC99" : "#8A7F70", on: () => this.setState({ status: k }), flag: this.forms[k].micro && c.ca > ceil ? "over ceiling" : "" }; }),
+      bars: counts.map((n, i) => { const v = nets[i]; return { n: (n / 1000) + "k", v: Math.abs(v) >= 1000 ? (v < 0 ? "−" : "") + "€" + (Math.abs(v) / 1000).toFixed(1) + "k" : eur(v), h: Math.max(2, Math.max(0, v) / maxM * 140) + "px", c: v >= st.target ? "#0E6E5E" : "#E0D6C4" }; }),
+      targetLine: (st.target / maxM * 140 + 14) + "px",
+      rules: [
+        { t: "VAT", v: "20%", b: "App Store prices are VAT-included. Apple collects and pays it. Direct sales are assumed to be under the VAT franchise threshold." },
+        { t: "Apple commission", v: "15%", b: "Small Business Program, under $1M of proceeds a year. Same rate for subscriptions after year one." },
+        { t: "Micro, BNC", v: "25.8% · €83,600", b: "Contributions + training levy, on revenue received. Ceiling for services, 2026–2028. This assumes app income is declared as BNC: check with URSSAF." },
+        { t: "Versement libératoire", v: "2.2%", b: "Optional, if your household income allows it. It replaces progressive income tax on this revenue." },
+        { t: "SAS / SASU president", v: "~75% on net", b: "Treated like an employee: good cover, expensive salary. No unemployment insurance. Dividends carry no social contributions." },
+        { t: "SARL / EURL majority manager", v: "~45% on net", b: "TNS status: cheaper salary, minimum contributions of ~€1,200/yr. Dividends above 10% of capital + current account carry TNS contributions." },
+        { t: "Corporate tax (IS)", v: "15% / 25%", b: "Reduced 15% rate up to €42,500 of profit (fully paid-up capital, held by individuals), 25% above." },
+        { t: "Dividends", v: "31.4%", b: "Flat tax: 12.8% income tax + 18.6% social levies (rate after the 2026 CSG increase). Check the final rate with your accountant." },
+        { t: "Not included", v: "—", b: "ACRE, CFE beyond fixed costs, refunds, currency swings, VAT on direct sales above the threshold, mutuelle/prévoyance, other household income." }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

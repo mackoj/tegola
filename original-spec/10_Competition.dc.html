@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#EAE3D6}
+a{color:#2B44D6}a:hover{color:#FF5B2E}
+</style>
+</helmet>
+
+<div style="width:1100px;margin:0 auto;padding:0 0 90px;font-family:Archivo,system-ui,sans-serif;color:#17130F">
+
+<div style="padding:60px 0 40px;border-bottom:2px solid rgba(23,19,15,.12)">
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#8A7F70;margin-bottom:12px">Competition · FR · DE · GB · US · August 2026</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:62px;line-height:.92;letter-spacing:-.04em;max-width:900px">They sell an<br>answer. You sell<br>a shelf.</div>
+  <p style="max-width:760px;font:400 17px/1.6 Archivo,sans-serif;color:#3A2F26;margin:22px 0 14px;text-wrap:pretty">Forty rankings across four storefronts, picked on proximity of positioning. Most of these apps do the same thing: point the camera at an object, get a number, close the app. A few are price references with a decade of data behind them. Not one is a place where you keep what you own. That gap is the whole strategy — and the thing most likely to be thrown away by accident.</p>
+  <p style="max-width:760px;font:400 17px/1.6 Archivo,sans-serif;color:#3A2F26;margin:0 0 14px;text-wrap:pretty">The four markets are not one fight, and reading them as one is the most expensive mistake available here. France and Germany are open fields. The UK is contested. The US is locked. One publisher leads all four.</p>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#FFD24A;padding:22px 24px;box-shadow:5px 5px 0 #17130F;max-width:860px;margin:8px 0 20px">
+    <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:27px;line-height:1.12;letter-spacing:-.02em;text-wrap:pretty">A scanner app has no reason to be opened twice. CLCTN has no reason to be opened <em>once</em> — until the shelf exists. Everything below is about surviving that asymmetry.</div>
+  </div>
+  <p style="max-width:760px;font:400 13px/1.6 Archivo,sans-serif;color:#6E6458;margin:0;text-wrap:pretty">Caveat carried over from the source research: this segment is flooded with 2026 apps built on the same template, most with 0–10 ratings. Ranks 2–6 reflect positioning overlap, not measurable market share. Only AntiqSnap, PriceCharting and Discogs have verifiable traction.</p>
+</div>
+
+<div style="padding:46px 0 40px;border-bottom:2px solid rgba(23,19,15,.12)">
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#8A7F70;margin-bottom:12px">01 · the map</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:34px;line-height:1;letter-spacing:-.03em;margin:0 0 8px">Three markets wear<br>the same camera icon</div>
+  <p style="max-width:720px;font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;margin:0 0 22px;text-wrap:pretty">Sorting the field by the job it's hired for, rather than by the feature it screenshots, splits it cleanly. Only one of these three is CLCTN's actual market, and it's the emptiest.</p>
+
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+      <div style="padding:13px 16px;border-bottom:2.5px solid #17130F;background:#EDE4D6">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:5px">GROUP A · THE BULK OF ALL FOUR LISTS</div>
+        <div style="font:700 18px Archivo,sans-serif;letter-spacing:-.01em">The appraisers</div>
+      </div>
+      <div style="padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+        <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty"><strong>Job:</strong> "I'm standing in a flea market holding a thing. Is it worth buying?" Answered in nine seconds, by an LLM, with a confidence it hasn't earned.</div>
+        <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty"><strong>Who:</strong> AntiqSnap everywhere, plus ThriftAI, Curio, Zophi, Relic, Collectibles.com, Sprice-it, Price Snap, WhatsWorth, Value Scout, Valora, Vintiq, Loot AI.</div>
+        <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty"><strong>Weak spot:</strong> nothing accumulates. Subscription revenue on an app with no second session is a churn machine, which is why they're all buying installs on the same keywords.</div>
+      </div>
+      <div style="border-top:2.5px solid #17130F;padding:11px 16px;font:700 13px/1.45 Archivo,sans-serif;background:#EAE3D6;text-wrap:pretty">Not your competitor. Your top of funnel.</div>
+    </div>
+
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+      <div style="padding:13px 16px;border-bottom:2.5px solid #17130F;background:#EDE4D6">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:5px">GROUP B · THE INCUMBENTS</div>
+        <div style="font:700 18px Archivo,sans-serif;letter-spacing:-.01em">The references</div>
+      </div>
+      <div style="padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+        <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty"><strong>Job:</strong> "What is the accepted market price of this exact pressing / this exact cart?" Answered from real closed sales, accumulated over fifteen years.</div>
+        <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty"><strong>Who:</strong> Discogs (9,777 FR · 12,269 DE · 23,167 GB · 67,056 US), PriceCharting, CollX, Collectr — and in Britain, CeX, which isn't an app company at all.</div>
+        <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty"><strong>Weak spot:</strong> one vertical each, and a collection UI that is a database form with a logo on it. Neither will ever hold your watches next to your comics.</div>
+      </div>
+      <div style="border-top:2.5px solid #17130F;padding:11px 16px;font:700 13px/1.45 Archivo,sans-serif;background:#2B44D6;color:#F3ECE0;text-wrap:pretty">Your real competitor — and your best supplier.</div>
+    </div>
+
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#0E6E5E;color:#F3ECE0;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+      <div style="padding:13px 16px;border-bottom:2.5px solid #17130F;background:rgba(0,0,0,.18)">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#B9D6CE;margin-bottom:5px">GROUP C · NOBODY, ANYWHERE</div>
+        <div style="font:700 18px Archivo,sans-serif;letter-spacing:-.01em">The registers</div>
+      </div>
+      <div style="padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+        <div style="font:400 13.5px/1.55 Archivo,sans-serif;text-wrap:pretty"><strong>Job:</strong> "This is mine. I want to see it, lend it, insure it, want the next one, and one day sell it to someone who deserves it."</div>
+        <div style="font:400 13.5px/1.55 Archivo,sans-serif;text-wrap:pretty"><strong>Who:</strong> CLCTN. Collectr and PokéCardex do this for one card game. Nobody does it across types, and nobody does it beautifully.</div>
+        <div style="font:400 13.5px/1.55 Archivo,sans-serif;text-wrap:pretty"><strong>Weak spot:</strong> it demands effort before it gives pleasure. That is the single hardest problem in the product, and it is not a competitive problem — it's an onboarding one.</div>
+      </div>
+      <div style="border-top:2.5px solid #17130F;padding:11px 16px;font:700 13px/1.45 Archivo,sans-serif;background:#FFD24A;color:#17130F;text-wrap:pretty">Empty category. Yours to define or lose.</div>
+    </div>
+  </div>
+</div>
+
+<div style="padding:46px 0 40px;border-bottom:2px solid rgba(23,19,15,.12)">
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#8A7F70;margin-bottom:12px">02 · the field, France</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:34px;line-height:1;letter-spacing:-.03em;margin:0 0 8px">Ten apps, ranked by<br>how much they overlap</div>
+  <p style="max-width:720px;font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;margin:0 0 22px;text-wrap:pretty">Ranking is proximity of positioning, not size. The threat column is the one that matters: it says what each app could take from you, which for most of them is nothing. Read this table as the <strong>soft</strong> market.</p>
+  <p style="max-width:720px;font:400 13.5px/1.6 Archivo,sans-serif;color:#6E6458;margin:-10px 0 22px;text-wrap:pretty">Add one name the panels use as their reference rather than a ranked entry: <strong>Retro Cash</strong> (6760224928) — scan, identification, market estimate and collection management, in French, at 4.5★ over 138 ratings. It is the only app on any of these four lists that ships your exact promise in your own market, and its 0 ratings on DE, GB and US are a useful measure of how little traction travels.</p>
+
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+    <div style="display:grid;grid-template-columns:44px 1.15fr 2.1fr 1fr 92px;gap:0;background:#17130F;color:#F3ECE0;font:500 9px 'DM Mono',monospace;letter-spacing:.13em">
+      <div style="padding:11px 10px">#</div>
+      <div style="padding:11px 12px">APP</div>
+      <div style="padding:11px 12px">WHAT IT IS, AND WHAT IT CAN TAKE FROM YOU</div>
+      <div style="padding:11px 12px">OVERLAP</div>
+      <div style="padding:11px 12px">TRACTION</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:44px 1.15fr 2.1fr 1fr 92px;border-bottom:2px solid rgba(23,19,15,.12);background:#EDE4D6">
+      <div style="padding:13px 10px;font:700 14px Archivo,sans-serif">1</div>
+      <div style="padding:13px 12px"><div style="font:700 14px Archivo,sans-serif">AntiqSnap</div><div style="font:400 11.5px Archivo,sans-serif;color:#6E6458">Next Vision · <sc-if value="{{ showAppStoreLinks }}" hint-placeholder-val="{{ true }}"><a href="https://apps.apple.com/fr/app/id6752929120">6752929120</a></sc-if></div></div>
+      <div style="padding:13px 12px;font:400 13px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Identical frontal promise — photo, identification, value, collection — freemium and native FR, with by far the largest install base in the segment. It is the app a French collector will find first when searching for anything you'd rank for.</div>
+      <div style="padding:13px 12px;font:400 12.5px/1.5 Archivo,sans-serif;color:#3A2F26">Frontal · takes your <strong>discovery</strong>, not your users</div>
+      <div style="padding:13px 12px;font:500 12px 'DM Mono',monospace">1 008</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:44px 1.15fr 2.1fr 1fr 92px;border-bottom:2px solid rgba(23,19,15,.12)">
+      <div style="padding:13px 10px;font:700 14px Archivo,sans-serif">2</div>
+      <div style="padding:13px 12px"><div style="font:700 14px Archivo,sans-serif">Sprice-it</div><div style="font:400 11.5px Archivo,sans-serif;color:#6E6458">Blue Gibbon · <sc-if value="{{ showAppStoreLinks }}" hint-placeholder-val="{{ true }}"><a href="https://apps.apple.com/fr/app/id6751101700">6751101700</a></sc-if></div></div>
+      <div style="padding:13px 12px;font:400 13px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">"The AI that reveals the true value of your objects." Generalist, native FR, multi-photo analysis — the most product-mature of the pure appraisers. Nothing accumulates in it.</div>
+      <div style="padding:13px 12px;font:400 12.5px/1.5 Archivo,sans-serif;color:#3A2F26">Frontal · keyword rival only</div>
+      <div style="padding:13px 12px;font:500 12px 'DM Mono',monospace;color:#8A7F70">thin</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:44px 1.15fr 2.1fr 1fr 92px;border-bottom:2px solid rgba(23,19,15,.12)">
+      <div style="padding:13px 10px;font:700 14px Archivo,sans-serif">3</div>
+      <div style="padding:13px 12px"><div style="font:700 14px Archivo,sans-serif">Price Snap</div><div style="font:400 11.5px Archivo,sans-serif;color:#6E6458">A. Cilgin · <sc-if value="{{ showAppStoreLinks }}" hint-placeholder-val="{{ true }}"><a href="https://apps.apple.com/fr/app/id6749811323">6749811323</a></sc-if></div></div>
+      <div style="padding:13px 12px;font:400 13px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Flea-market-hunter positioning, word for word the brocante wedge. Native FR. Proof that the "chineur" angle is already crowded and not worth buying into.</div>
+      <div style="padding:13px 12px;font:400 12.5px/1.5 Archivo,sans-serif;color:#3A2F26">Frontal · keyword rival only</div>
+      <div style="padding:13px 12px;font:500 12px 'DM Mono',monospace;color:#8A7F70">thin</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:44px 1.15fr 2.1fr 1fr 92px;border-bottom:2px solid rgba(23,19,15,.12)">
+      <div style="padding:13px 10px;font:700 14px Archivo,sans-serif">4</div>
+      <div style="padding:13px 12px"><div style="font:700 14px Archivo,sans-serif">WhatsWorth</div><div style="font:400 11.5px Archivo,sans-serif;color:#6E6458">LightPath · <sc-if value="{{ showAppStoreLinks }}" hint-placeholder-val="{{ true }}"><a href="https://apps.apple.com/fr/app/id6759223163">6759223163</a></sc-if></div></div>
+      <div style="padding:13px 12px;font:400 13px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">"Point at anything." Localised FR and — importantly — it cites market data as its evidence, the same argument your listing comparison makes. The closest thing to a credibility rival among the generalists.</div>
+      <div style="padding:13px 12px;font:400 12.5px/1.5 Archivo,sans-serif;color:#3A2F26">Frontal · shares your <strong>evidence</strong> claim</div>
+      <div style="padding:13px 12px;font:500 12px 'DM Mono',monospace;color:#8A7F70">thin</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:44px 1.15fr 2.1fr 1fr 92px;border-bottom:2px solid rgba(23,19,15,.12)">
+      <div style="padding:13px 10px;font:700 14px Archivo,sans-serif">5</div>
+      <div style="padding:13px 12px"><div style="font:700 14px Archivo,sans-serif">Scanner Brocante</div><div style="font:400 11.5px Archivo,sans-serif;color:#6E6458">U. Gogen · <sc-if value="{{ showAppStoreLinks }}" hint-placeholder-val="{{ true }}"><a href="https://apps.apple.com/fr/app/id6766651193">6766651193</a></sc-if></div></div>
+      <div style="padding:13px 12px;font:400 13px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Vide-greniers and puces, resale-value framing. Zero ratings. Included for positioning completeness only.</div>
+      <div style="padding:13px 12px;font:400 12.5px/1.5 Archivo,sans-serif;color:#3A2F26">Frontal · negligible</div>
+      <div style="padding:13px 12px;font:500 12px 'DM Mono',monospace;color:#8A7F70">0</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:44px 1.15fr 2.1fr 1fr 92px;border-bottom:2px solid rgba(23,19,15,.12)">
+      <div style="padding:13px 10px;font:700 14px Archivo,sans-serif">6</div>
+      <div style="padding:13px 12px"><div style="font:700 14px Archivo,sans-serif">Appraiser.AI</div><div style="font:400 11.5px Archivo,sans-serif;color:#6E6458">Kawaii Inc. · <sc-if value="{{ showAppStoreLinks }}" hint-placeholder-val="{{ true }}"><a href="https://apps.apple.com/fr/app/id6740073907">6740073907</a></sc-if></div></div>
+      <div style="padding:13px 12px;font:400 13px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Multi-category by design — art, antiques, cards, sneakers — which is structurally the closest to your fourteen types. Not localised in French, and that friction is the only reason it isn't ranked higher.</div>
+      <div style="padding:13px 12px;font:400 12.5px/1.5 Archivo,sans-serif;color:#3A2F26">Frontal · closest <strong>structural</strong> analogue</div>
+      <div style="padding:13px 12px;font:500 12px 'DM Mono',monospace;color:#8A7F70">thin</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:44px 1.15fr 2.1fr 1fr 92px;border-bottom:2px solid rgba(23,19,15,.12);background:#FFD24A">
+      <div style="padding:13px 10px;font:700 14px Archivo,sans-serif">7</div>
+      <div style="padding:13px 12px"><div style="font:700 14px Archivo,sans-serif">PriceCharting</div><div style="font:400 11.5px Archivo,sans-serif;color:#6E6458">TCG, Games+ · <sc-if value="{{ showAppStoreLinks }}" hint-placeholder-val="{{ true }}"><a href="https://apps.apple.com/fr/app/id6452190948">6452190948</a></sc-if></div></div>
+      <div style="padding:13px 12px;font:400 13px/1.5 Archivo,sans-serif;color:#17130F;text-wrap:pretty"><strong>The most serious threat on your core.</strong> Retro games and cards, priced from real transactions rather than an AI guess, 4.7★. A collector who already trusts it will not accept a different number from you — and will judge your whole app on whether your figure matches theirs.</div>
+      <div style="padding:13px 12px;font:400 12.5px/1.5 Archivo,sans-serif;color:#17130F">Partial · owns the <strong>truth</strong> on two of your five v1 types</div>
+      <div style="padding:13px 12px;font:500 12px 'DM Mono',monospace">214</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:44px 1.15fr 2.1fr 1fr 92px;border-bottom:2px solid rgba(23,19,15,.12)">
+      <div style="padding:13px 10px;font:700 14px Archivo,sans-serif">8</div>
+      <div style="padding:13px 12px"><div style="font:700 14px Archivo,sans-serif">Vintiq</div><div style="font:400 11.5px Archivo,sans-serif;color:#6E6458">H. B. Kara · <sc-if value="{{ showAppStoreLinks }}" hint-placeholder-val="{{ true }}"><a href="https://apps.apple.com/fr/app/id6746053182">6746053182</a></sc-if></div></div>
+      <div style="padding:13px 12px;font:400 13px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Antiques vertical, native FR, same scan mechanic. Relevant only if you ever add furniture or décor as a type.</div>
+      <div style="padding:13px 12px;font:400 12.5px/1.5 Archivo,sans-serif;color:#3A2F26">Partial · out of your v1 types</div>
+      <div style="padding:13px 12px;font:500 12px 'DM Mono',monospace;color:#8A7F70">thin</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:44px 1.15fr 2.1fr 1fr 92px;border-bottom:2px solid rgba(23,19,15,.12)">
+      <div style="padding:13px 10px;font:700 14px Archivo,sans-serif">9</div>
+      <div style="padding:13px 12px"><div style="font:700 14px Archivo,sans-serif">Loot AI</div><div style="font:400 11.5px Archivo,sans-serif;color:#6E6458">Brunology · <sc-if value="{{ showAppStoreLinks }}" hint-placeholder-val="{{ true }}"><a href="https://apps.apple.com/fr/app/id6780911593">6780911593</a></sc-if></div></div>
+      <div style="padding:13px 12px;font:400 13px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Thrift and clothing vertical, priced off real listings rather than a model. Worth studying for its sourcing method, not for its market.</div>
+      <div style="padding:13px 12px;font:400 12.5px/1.5 Archivo,sans-serif;color:#3A2F26">Partial · method to copy</div>
+      <div style="padding:13px 12px;font:500 12px 'DM Mono',monospace;color:#8A7F70">thin</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:44px 1.15fr 2.1fr 1fr 92px;background:#FFD24A">
+      <div style="padding:13px 10px;font:700 14px Archivo,sans-serif">10</div>
+      <div style="padding:13px 12px"><div style="font:700 14px Archivo,sans-serif">Discogs</div><div style="font:400 11.5px Archivo,sans-serif;color:#6E6458">Zink Media · <sc-if value="{{ showAppStoreLinks }}" hint-placeholder-val="{{ true }}"><a href="https://apps.apple.com/fr/app/id1036449551">1036449551</a></sc-if></div></div>
+      <div style="padding:13px 12px;font:400 13px/1.5 Archivo,sans-serif;color:#17130F;text-wrap:pretty">4.8★ across 9,777 ratings and the absolute reference on records. The moment a user scans a vinyl, Discogs is the natural substitute — and it already has their collection, their want list and their marketplace. Ranked last on overlap, first on <em>gravity</em>.</div>
+      <div style="padding:13px 12px;font:400 12.5px/1.5 Archivo,sans-serif;color:#17130F">Partial · owns your <strong>flagship type</strong> end to end</div>
+      <div style="padding:13px 12px;font:500 12px 'DM Mono',monospace">9 777</div>
+    </div>
+  </div>
+
+  <sc-if value="{{ showExclusions }}" hint-placeholder-val="{{ true }}">
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px">
+    <div style="border:2px dashed rgba(23,19,15,.35);border-radius:16px;padding:14px 16px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px">EXCLUDED · NO AUDIENCE</div>
+      <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Bidstitch, Antiqly, Vintage ID. Same mechanics, near-zero audience and/or no FR localisation. Available if the panel is widened to N=15.</div>
+    </div>
+    <div style="border:2px dashed rgba(23,19,15,.35);border-radius:16px;padding:14px 16px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px">EXCLUDED · TCG-ONLY</div>
+      <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Collectr, PokéCardex, FoilSnap. Collection management done well, but for one card game and with no multi-object estimation. Read them as the proof that the register model works — not as rivals.</div>
+    </div>
+    <div style="border:2px dashed rgba(23,19,15,.35);border-radius:16px;padding:14px 16px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px">EXCLUDED · DOWNSTREAM</div>
+      <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Vinted, Leboncoin, eBay. Resale marketplaces with no scan-to-estimate tool. They're where your for-sale objects end up, not who you're fighting.</div>
+    </div>
+  </div>
+  </sc-if>
+</div>
+
+<div style="padding:46px 0 40px;border-bottom:2px solid rgba(23,19,15,.12)">
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#8A7F70;margin-bottom:12px">03 · the field, United States</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:34px;line-height:1;letter-spacing:-.03em;margin:0 0 8px">The same search, a<br>completely different war</div>
+  <p style="max-width:760px;font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;margin:0 0 20px;text-wrap:pretty">Same method, US storefront. Only one app appears in both top tens — AntiqSnap. Everything else changes: six frontal competitors clear 6,000 ratings, three of your core verticals are held by incumbents at 25,000–67,000, and the clones are <em>well made and well rated</em>. Read this table as the <strong>hard</strong> market.</p>
+
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#FF5B2E;color:#F3ECE0;padding:18px 22px;box-shadow:5px 5px 0 #17130F;margin:0 0 20px;max-width:900px">
+    <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:24px;line-height:1.14;letter-spacing:-.02em;text-wrap:pretty">One of the four advantages scored in section 06 is France-only. "We're the beautiful one" fails in the US against Curio at 4.82★ and PriceCharting at 4.83★ — craft is table stakes there, not a differentiator.</div>
+    <div style="font:400 13.5px/1.55 Archivo,sans-serif;margin-top:10px;max-width:660px;text-wrap:pretty">What survives the crossing: the mixed shelf, the one-time price, and no account. Those three are the whole US argument. Plan the launch accordingly — France first to learn, US only once the register story is provable.</div>
+  </div>
+
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+    <div style="display:grid;grid-template-columns:44px 1.15fr 2.1fr 1fr 92px;background:#17130F;color:#F3ECE0;font:500 9px 'DM Mono',monospace;letter-spacing:.13em">
+      <div style="padding:11px 10px">#</div>
+      <div style="padding:11px 12px">APP</div>
+      <div style="padding:11px 12px">WHAT IT IS, AND WHAT IT CAN TAKE FROM YOU</div>
+      <div style="padding:11px 12px">OVERLAP</div>
+      <div style="padding:11px 12px">RATINGS</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:44px 1.15fr 2.1fr 1fr 92px;border-bottom:2px solid rgba(23,19,15,.12);background:#FFD24A">
+      <div style="padding:13px 10px;font:700 14px Archivo,sans-serif">1</div>
+      <div style="padding:13px 12px"><div style="font:700 14px Archivo,sans-serif">AntiqSnap</div><div style="font:400 11.5px Archivo,sans-serif;color:#6E6458">Next Vision · <sc-if value="{{ showAppStoreLinks }}" hint-placeholder-val="{{ true }}"><a href="https://apps.apple.com/us/app/id6752929120">6752929120</a></sc-if></div></div>
+      <div style="padding:13px 12px;font:400 13px/1.5 Archivo,sans-serif;color:#17130F;text-wrap:pretty">The only app in both top tens, and here it's a machine: 4.7★ over 31,282. <strong>The real story is the portfolio</strong> — the same publisher also runs VinylSnap and ToyWorth. They are covering your fourteen types with fourteen separate apps. That is the direct competitive answer to the mixed shelf, and it's already in market.</div>
+      <div style="padding:13px 12px;font:400 12.5px/1.5 Archivo,sans-serif;color:#17130F">Frontal · attacks your <strong>premise</strong>, one vertical per app</div>
+      <div style="padding:13px 12px;font:500 12px 'DM Mono',monospace">31 282</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:44px 1.15fr 2.1fr 1fr 92px;border-bottom:2px solid rgba(23,19,15,.12);background:#FFD24A">
+      <div style="padding:13px 10px;font:700 14px Archivo,sans-serif">2</div>
+      <div style="padding:13px 12px"><div style="font:700 14px Archivo,sans-serif">Collectibles.com</div><div style="font:400 11.5px Archivo,sans-serif;color:#6E6458">Collectbase · <sc-if value="{{ showAppStoreLinks }}" hint-placeholder-val="{{ true }}"><a href="https://apps.apple.com/us/app/id1533404340">1533404340</a></sc-if></div></div>
+      <div style="padding:13px 12px;font:400 13px/1.5 Archivo,sans-serif;color:#17130F;text-wrap:pretty"><strong>Your closest structural analogue anywhere.</strong> Coins, comics, cards and rarities, with scan + valuation + collection management — the exact triptych, across mixed types, at 4.6★ over 9,898. If you want to know what CLCTN looks like when a US team builds it, install this one first.</div>
+      <div style="padding:13px 12px;font:400 12.5px/1.5 Archivo,sans-serif;color:#17130F">Frontal · same <strong>three-part model</strong>, mixed types</div>
+      <div style="padding:13px 12px;font:500 12px 'DM Mono',monospace">9 898</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:44px 1.15fr 2.1fr 1fr 92px;border-bottom:2px solid rgba(23,19,15,.12)">
+      <div style="padding:13px 10px;font:700 14px Archivo,sans-serif">3</div>
+      <div style="padding:13px 12px"><div style="font:700 14px Archivo,sans-serif">ThriftAI</div><div style="font:400 11.5px Archivo,sans-serif;color:#6E6458">smallstack ApS · <sc-if value="{{ showAppStoreLinks }}" hint-placeholder-val="{{ true }}"><a href="https://apps.apple.com/us/app/id6746565278">6746565278</a></sc-if></div></div>
+      <div style="padding:13px 12px;font:400 13px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">"Profit identifier" — the resell-flip use case, three-day trial then subscription, and the second-largest base in the segment. Proof that the flipper motive monetises hard in the US, and a reminder that it is not your user.</div>
+      <div style="padding:13px 12px;font:400 12.5px/1.5 Archivo,sans-serif;color:#3A2F26">Frontal · different motive (flip, not keep)</div>
+      <div style="padding:13px 12px;font:500 12px 'DM Mono',monospace">20 238</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:44px 1.15fr 2.1fr 1fr 92px;border-bottom:2px solid rgba(23,19,15,.12)">
+      <div style="padding:13px 10px;font:700 14px Archivo,sans-serif">4</div>
+      <div style="padding:13px 12px"><div style="font:700 14px Archivo,sans-serif">Curio</div><div style="font:400 11.5px Archivo,sans-serif;color:#6E6458">Dionysus Labs · <sc-if value="{{ showAppStoreLinks }}" hint-placeholder-val="{{ true }}"><a href="https://apps.apple.com/us/app/id6520380757">6520380757</a></sc-if></div></div>
+      <div style="padding:13px 12px;font:400 13px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Scan, object page, value — at 4.82★ over 15,113. This is the quality benchmark of the whole segment and the answer to anyone who assumes the AI scanners are all slop. Study its object page before you finish yours.</div>
+      <div style="padding:13px 12px;font:400 12.5px/1.5 Archivo,sans-serif;color:#3A2F26">Frontal · sets the <strong>craft bar</strong></div>
+      <div style="padding:13px 12px;font:500 12px 'DM Mono',monospace">15 113</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:44px 1.15fr 2.1fr 1fr 92px;border-bottom:2px solid rgba(23,19,15,.12)">
+      <div style="padding:13px 10px;font:700 14px Archivo,sans-serif">5</div>
+      <div style="padding:13px 12px"><div style="font:700 14px Archivo,sans-serif">Zophi</div><div style="font:400 11.5px Archivo,sans-serif;color:#6E6458">326 LAB · <sc-if value="{{ showAppStoreLinks }}" hint-placeholder-val="{{ true }}"><a href="https://apps.apple.com/us/app/id6745821219">6745821219</a></sc-if></div></div>
+      <div style="padding:13px 12px;font:400 13px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Explicit garage-sale positioning across coins, stamps and figurines. 4.79★ over 10,591. The US equivalent of the brocante wedge, and equally not worth entering.</div>
+      <div style="padding:13px 12px;font:400 12.5px/1.5 Archivo,sans-serif;color:#3A2F26">Frontal · wrong user, high volume</div>
+      <div style="padding:13px 12px;font:500 12px 'DM Mono',monospace">10 591</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:44px 1.15fr 2.1fr 1fr 92px;border-bottom:2px solid rgba(23,19,15,.12)">
+      <div style="padding:13px 10px;font:700 14px Archivo,sans-serif">6</div>
+      <div style="padding:13px 12px"><div style="font:700 14px Archivo,sans-serif">Relic</div><div style="font:400 11.5px Archivo,sans-serif;color:#6E6458">Sans Software · <sc-if value="{{ showAppStoreLinks }}" hint-placeholder-val="{{ true }}"><a href="https://apps.apple.com/us/app/id6747602157">6747602157</a></sc-if></div></div>
+      <div style="padding:13px 12px;font:400 13px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Computer vision to a full object record, price guide and cataloguing. Same offer, smaller base — but "cataloguing" in the pitch means the scanners are already drifting toward your territory.</div>
+      <div style="padding:13px 12px;font:400 12.5px/1.5 Archivo,sans-serif;color:#3A2F26">Frontal · drifting into <strong>cataloguing</strong></div>
+      <div style="padding:13px 12px;font:500 12px 'DM Mono',monospace">6 833</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:44px 1.15fr 2.1fr 1fr 92px;border-bottom:2px solid rgba(23,19,15,.12)">
+      <div style="padding:13px 10px;font:700 14px Archivo,sans-serif">7</div>
+      <div style="padding:13px 12px"><div style="font:700 14px Archivo,sans-serif">WorthPoint</div><div style="font:400 11.5px Archivo,sans-serif;color:#6E6458">WorthPoint Corp. · <sc-if value="{{ showAppStoreLinks }}" hint-placeholder-val="{{ true }}"><a href="https://apps.apple.com/us/app/id1472512649">1472512649</a></sc-if></div></div>
+      <div style="padding:13px 12px;font:400 13px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Identical promise — what is it, what's it worth — backed by the sector's reference database of realised prices. But the app is 2.1★ over 115 ratings: the asset is the web product and the mobile experience is abandoned. The clearest opening on this table.</div>
+      <div style="padding:13px 12px;font:400 12.5px/1.5 Archivo,sans-serif;color:#3A2F26">Frontal on paper · <strong>an opening</strong> in practice</div>
+      <div style="padding:13px 12px;font:500 12px 'DM Mono',monospace">115</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:44px 1.15fr 2.1fr 1fr 92px;border-bottom:2px solid rgba(23,19,15,.12);background:#EDE4D6">
+      <div style="padding:13px 10px;font:700 14px Archivo,sans-serif">8</div>
+      <div style="padding:13px 12px"><div style="font:700 14px Archivo,sans-serif">PriceCharting</div><div style="font:400 11.5px Archivo,sans-serif;color:#6E6458">TCG, Games+ · <sc-if value="{{ showAppStoreLinks }}" hint-placeholder-val="{{ true }}"><a href="https://apps.apple.com/us/app/id6452190948">6452190948</a></sc-if></div></div>
+      <div style="padding:13px 12px;font:400 13px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">The FR number was 214 ratings. The US number is 25,963 at 4.83★. Realised prices, two of your v1 types, and a user base that already knows what the right answer looks like.</div>
+      <div style="padding:13px 12px;font:400 12.5px/1.5 Archivo,sans-serif;color:#3A2F26">Partial · locks <strong>games + cards</strong></div>
+      <div style="padding:13px 12px;font:500 12px 'DM Mono',monospace">25 963</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:44px 1.15fr 2.1fr 1fr 92px;border-bottom:2px solid rgba(23,19,15,.12);background:#EDE4D6">
+      <div style="padding:13px 10px;font:700 14px Archivo,sans-serif">9</div>
+      <div style="padding:13px 12px"><div style="font:700 14px Archivo,sans-serif">Discogs</div><div style="font:400 11.5px Archivo,sans-serif;color:#6E6458">Zink Media · <sc-if value="{{ showAppStoreLinks }}" hint-placeholder-val="{{ true }}"><a href="https://apps.apple.com/us/app/id1036449551">1036449551</a></sc-if></div></div>
+      <div style="padding:13px 12px;font:400 13px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">67,056 ratings. The de facto standard, and the immediate substitute the second a US user scans a record. Vinyl is not a beachhead in this market — it's a wall.</div>
+      <div style="padding:13px 12px;font:400 12.5px/1.5 Archivo,sans-serif;color:#3A2F26">Partial · locks <strong>vinyl</strong></div>
+      <div style="padding:13px 12px;font:500 12px 'DM Mono',monospace">67 056</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:44px 1.15fr 2.1fr 1fr 92px;background:#EDE4D6">
+      <div style="padding:13px 10px;font:700 14px Archivo,sans-serif">10</div>
+      <div style="padding:13px 12px"><div style="font:700 14px Archivo,sans-serif">CollX</div><div style="font:400 11.5px Archivo,sans-serif;color:#6E6458">Sports Card Scanner · <sc-if value="{{ showAppStoreLinks }}" hint-placeholder-val="{{ true }}"><a href="https://apps.apple.com/us/app/id1581164444">1581164444</a></sc-if></div></div>
+      <div style="padding:13px 12px;font:400 13px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">47,140 ratings on sports and trading cards, with scanning, collection and trading already solved. The hardest single vertical to take in the US, and the one to deprioritise rather than fight.</div>
+      <div style="padding:13px 12px;font:400 12.5px/1.5 Archivo,sans-serif;color:#3A2F26">Partial · locks <strong>trading cards</strong></div>
+      <div style="padding:13px 12px;font:500 12px 'DM Mono',monospace">47 140</div>
+    </div>
+  </div>
+
+  <sc-if value="{{ showExclusions }}" hint-placeholder-val="{{ true }}">
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px">
+    <div style="border:2px dashed rgba(23,19,15,.35);border-radius:16px;padding:14px 16px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px">EXCLUDED · TOO SMALL, SAME MODEL</div>
+      <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">WhatsitAI (625), Value Scout (581), Appraiser.AI (462), What is it Worth? (180). Frontal on the model, too little traction for the top ten. Revisit at N=15.</div>
+    </div>
+    <div style="border:2px dashed rgba(23,19,15,.35);border-radius:16px;padding:14px 16px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px">EXCLUDED · ADJACENT, BUT INSTRUCTIVE</div>
+      <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Collectr (63,409), PSA, TCGplayer — TCG management and grading, no multi-object AI. iCollect Everything and hobbyDB — collection inventory with no scan, competing on the library brick alone. Collectr at 63k is the loudest proof that the register model has an audience.</div>
+    </div>
+    <div style="border:2px dashed rgba(23,19,15,.35);border-radius:16px;padding:14px 16px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px">WATCHLIST</div>
+      <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Toyzie AI, VinylSnap, ToyWorth — mono-vertical scanners, the last two owned by the number one. Plus eBay, Mercari, OfferUp downstream. If Next Vision merges its portfolio into one shelf, that is the day your differentiation is contested.</div>
+    </div>
+  </div>
+  </sc-if>
+
+</div>
+
+<div style="padding:46px 0 40px;border-bottom:2px solid rgba(23,19,15,.12)">
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#8A7F70;margin-bottom:12px">04 · the field, Germany &amp; the UK</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:34px;line-height:1;letter-spacing:-.03em;margin:0 0 8px">Two markets between<br>the two extremes</div>
+  <p style="max-width:760px;font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;margin:0 0 22px;text-wrap:pretty">Largely the same cast of apps, in wildly different sizes. Germany is the softest of the four — no frontal rival clears 400 ratings. The UK has a leader, a well-rated pack, and a competitor that isn't an app at all.</p>
+
+  <div style="display:flex;align-items:baseline;gap:12px;margin:0 0 12px">
+    <div style="font:700 20px Archivo,sans-serif;letter-spacing:-.01em">Germany</div>
+    <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:4px 10px;background:#FFD24A">SOFTEST OF THE FOUR</div>
+  </div>
+
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden;margin-bottom:26px">
+    <div style="display:grid;grid-template-columns:38px 1.15fr 2.6fr 84px;background:#17130F;color:#F3ECE0;font:500 9px 'DM Mono',monospace;letter-spacing:.13em">
+      <div style="padding:10px 10px">#</div>
+      <div style="padding:10px 12px">APP</div>
+      <div style="padding:10px 12px">READ</div>
+      <div style="padding:10px 12px">RATINGS</div>
+    </div>
+    <div style="display:grid;grid-template-columns:38px 1.15fr 2.6fr 84px;border-bottom:2px solid rgba(23,19,15,.12);background:#EDE4D6">
+      <div style="padding:11px 10px;font:700 13px Archivo,sans-serif">1</div>
+      <div style="padding:11px 12px;font:700 13.5px Archivo,sans-serif">AntiqSnap <span style="font:400 11px Archivo,sans-serif;color:#6E6458">Antik-Erkenner</span></div>
+      <div style="padding:11px 12px;font:400 12.5px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Leader again, and localised — but at 4.4★ it is the <em>worst-rated</em> of its four national listings. The segment leader in Germany is beatable on quality in a way it isn't anywhere else.</div>
+      <div style="padding:11px 12px;font:500 11.5px 'DM Mono',monospace">398 · 4.4★</div>
+    </div>
+    <div style="display:grid;grid-template-columns:38px 1.15fr 2.6fr 84px;border-bottom:2px solid rgba(23,19,15,.12)">
+      <div style="padding:11px 10px;font:700 13px Archivo,sans-serif">2</div>
+      <div style="padding:11px 12px;font:700 13.5px Archivo,sans-serif">Ophi <span style="font:400 11px Archivo,sans-serif;color:#6E6458">326 LAB</span></div>
+      <div style="padding:11px 12px;font:400 12.5px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Vases, coins, stamps, figurines; flea-market use. Same app as Zophi elsewhere, a fraction of the size.</div>
+      <div style="padding:11px 12px;font:500 11.5px 'DM Mono',monospace">90 · 4.76★</div>
+    </div>
+    <div style="display:grid;grid-template-columns:38px 1.15fr 2.6fr 84px;border-bottom:2px solid rgba(23,19,15,.12)">
+      <div style="padding:11px 10px;font:700 13px Archivo,sans-serif">3</div>
+      <div style="padding:11px 12px;font:700 13.5px Archivo,sans-serif">ThriftAI <span style="font:400 11px Archivo,sans-serif;color:#6E6458">Profitfinder</span></div>
+      <div style="padding:11px 12px;font:400 12.5px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">50 ratings in Germany against 20,238 in the US. The clearest evidence that the flipper motive does not travel — and a warning that US traction predicts nothing here.</div>
+      <div style="padding:11px 12px;font:500 11.5px 'DM Mono',monospace">50</div>
+    </div>
+    <div style="display:grid;grid-template-columns:38px 1.15fr 2.6fr 84px;border-bottom:2px solid rgba(23,19,15,.12)">
+      <div style="padding:11px 10px;font:700 13px Archivo,sans-serif">4</div>
+      <div style="padding:11px 12px;font:700 13.5px Archivo,sans-serif">Collectibles.com <span style="font:400 11px Archivo,sans-serif;color:#6E6458">Scan &amp; Wert</span></div>
+      <div style="padding:11px 12px;font:400 12.5px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Your closest structural analogue, essentially unlaunched here. If the mixed-shelf model is going to be taken in Germany, nobody has taken it yet.</div>
+      <div style="padding:11px 12px;font:500 11.5px 'DM Mono',monospace">50</div>
+    </div>
+    <div style="display:grid;grid-template-columns:38px 1.15fr 2.6fr 84px;border-bottom:2px solid rgba(23,19,15,.12)">
+      <div style="padding:11px 10px;font:700 13px Archivo,sans-serif">5</div>
+      <div style="padding:11px 12px;font:700 13.5px Archivo,sans-serif">Curio <span style="font:400 11px Archivo,sans-serif;color:#6E6458">Dionysus Labs</span></div>
+      <div style="padding:11px 12px;font:400 12.5px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">The segment's quality benchmark in the US, at 30 ratings in Germany. Craft alone clearly doesn't win a market.</div>
+      <div style="padding:11px 12px;font:500 11.5px 'DM Mono',monospace">30</div>
+    </div>
+    <div style="display:grid;grid-template-columns:38px 1.15fr 2.6fr 84px;border-bottom:2px solid rgba(23,19,15,.12)">
+      <div style="padding:11px 10px;font:700 13px Archivo,sans-serif">6</div>
+      <div style="padding:11px 12px;font:700 13.5px Archivo,sans-serif">Valora <span style="font:400 11px Archivo,sans-serif;color:#6E6458">Lonca Bilisim</span></div>
+      <div style="padding:11px 12px;font:400 12.5px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Best-placed of the native German micro-apps, which tells you the local field is wide open rather than that this one is dangerous.</div>
+      <div style="padding:11px 12px;font:500 11.5px 'DM Mono',monospace">8</div>
+    </div>
+    <div style="display:grid;grid-template-columns:38px 1.15fr 2.6fr 84px;border-bottom:2px solid rgba(23,19,15,.12)">
+      <div style="padding:11px 10px;font:700 13px Archivo,sans-serif">7</div>
+      <div style="padding:11px 12px;font:700 13.5px Archivo,sans-serif">PriceCharting</div>
+      <div style="padding:11px 12px;font:400 12.5px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Games and cards on realised prices. Present but not dominant — 464 here against 25,963 in the US.</div>
+      <div style="padding:11px 12px;font:500 11.5px 'DM Mono',monospace">464 · 4.69★</div>
+    </div>
+    <div style="display:grid;grid-template-columns:38px 1.15fr 2.6fr 84px;border-bottom:2px solid rgba(23,19,15,.12);background:#FFD24A">
+      <div style="padding:11px 10px;font:700 13px Archivo,sans-serif">8</div>
+      <div style="padding:11px 12px;font:700 13.5px Archivo,sans-serif">Discogs</div>
+      <div style="padding:11px 12px;font:400 12.5px/1.5 Archivo,sans-serif;color:#17130F;text-wrap:pretty"><strong>By far the most installed app in the whole German perimeter.</strong> Germany is a major record market and Discogs owns it. Whatever you do here, vinyl is not the way in.</div>
+      <div style="padding:11px 12px;font:500 11.5px 'DM Mono',monospace">12 269</div>
+    </div>
+    <div style="display:grid;grid-template-columns:38px 1.15fr 2.6fr 84px;border-bottom:2px solid rgba(23,19,15,.12)">
+      <div style="padding:11px 10px;font:700 13px Archivo,sans-serif">9</div>
+      <div style="padding:11px 12px;font:700 13.5px Archivo,sans-serif">VinylSnap <span style="font:400 11px Archivo,sans-serif;color:#6E6458">Next Vision</span></div>
+      <div style="padding:11px 12px;font:400 12.5px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">The number one's second app, on records, already at nearly the size of its parent here. Watch this: it's the portfolio strategy working.</div>
+      <div style="padding:11px 12px;font:500 11.5px 'DM Mono',monospace">359</div>
+    </div>
+    <div style="display:grid;grid-template-columns:38px 1.15fr 2.6fr 84px">
+      <div style="padding:11px 10px;font:700 13px Archivo,sans-serif">10</div>
+      <div style="padding:11px 12px;font:700 13.5px Archivo,sans-serif">Collectr <span style="font:400 11px Archivo,sans-serif;color:#6E6458">TCG</span></div>
+      <div style="padding:11px 12px;font:400 12.5px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Card collection tracking with value history. A register, not a scanner — the model you're building, proven at 1,320 ratings on one vertical.</div>
+      <div style="padding:11px 12px;font:500 11.5px 'DM Mono',monospace">1 320 · 4.69★</div>
+    </div>
+  </div>
+
+  <div style="display:flex;align-items:baseline;gap:12px;margin:0 0 12px">
+    <div style="font:700 20px Archivo,sans-serif;letter-spacing:-.01em">United Kingdom</div>
+    <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:4px 10px;background:#EDE4D6">ONE COMPETITOR ISN'T AN APP</div>
+  </div>
+
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+    <div style="display:grid;grid-template-columns:38px 1.15fr 2.6fr 84px;background:#17130F;color:#F3ECE0;font:500 9px 'DM Mono',monospace;letter-spacing:.13em">
+      <div style="padding:10px 10px">#</div>
+      <div style="padding:10px 12px">APP</div>
+      <div style="padding:10px 12px">READ</div>
+      <div style="padding:10px 12px">RATINGS</div>
+    </div>
+    <div style="display:grid;grid-template-columns:38px 1.15fr 2.6fr 84px;border-bottom:2px solid rgba(23,19,15,.12);background:#EDE4D6">
+      <div style="padding:11px 10px;font:700 13px Archivo,sans-serif">1</div>
+      <div style="padding:11px 12px;font:700 13.5px Archivo,sans-serif">AntiqSnap</div>
+      <div style="padding:11px 12px;font:400 12.5px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Segment leader for the fourth time, with VinylSnap at 630 covering records alongside it. Four markets, four number ones, one publisher.</div>
+      <div style="padding:11px 12px;font:500 11.5px 'DM Mono',monospace">1 117 · 4.58★</div>
+    </div>
+    <div style="display:grid;grid-template-columns:38px 1.15fr 2.6fr 84px;border-bottom:2px solid rgba(23,19,15,.12)">
+      <div style="padding:11px 10px;font:700 13px Archivo,sans-serif">2</div>
+      <div style="padding:11px 12px;font:700 13.5px Archivo,sans-serif">ThriftAI</div>
+      <div style="padding:11px 12px;font:400 12.5px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Car boot sales and charity shops make Britain unusually good ground for the resale motive. 4.71★ and growing.</div>
+      <div style="padding:11px 12px;font:500 11.5px 'DM Mono',monospace">489 · 4.71★</div>
+    </div>
+    <div style="display:grid;grid-template-columns:38px 1.15fr 2.6fr 84px;border-bottom:2px solid rgba(23,19,15,.12)">
+      <div style="padding:11px 10px;font:700 13px Archivo,sans-serif">3</div>
+      <div style="padding:11px 12px;font:700 13.5px Archivo,sans-serif">Curio</div>
+      <div style="padding:11px 12px;font:400 12.5px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Best-rated of the segment at 4.79★. The UK pack is small but polished — you will not out-craft it the way you can in France.</div>
+      <div style="padding:11px 12px;font:500 11.5px 'DM Mono',monospace">397 · 4.79★</div>
+    </div>
+    <div style="display:grid;grid-template-columns:38px 1.15fr 2.6fr 84px;border-bottom:2px solid rgba(23,19,15,.12)">
+      <div style="padding:11px 10px;font:700 13px Archivo,sans-serif">4</div>
+      <div style="padding:11px 12px;font:700 13.5px Archivo,sans-serif">Zophi <span style="font:400 11px Archivo,sans-serif;color:#6E6458">326 LAB</span></div>
+      <div style="padding:11px 12px;font:400 12.5px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Car boot positioning across coins, stamps and figurines. Same template, localised well.</div>
+      <div style="padding:11px 12px;font:500 11.5px 'DM Mono',monospace">360 · 4.74★</div>
+    </div>
+    <div style="display:grid;grid-template-columns:38px 1.15fr 2.6fr 84px;border-bottom:2px solid rgba(23,19,15,.12)">
+      <div style="padding:11px 10px;font:700 13px Archivo,sans-serif">5</div>
+      <div style="padding:11px 12px;font:700 13.5px Archivo,sans-serif">Collectibles.com</div>
+      <div style="padding:11px 12px;font:400 12.5px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Same story as Germany: the closest model to yours, barely present. It hasn't cracked Europe.</div>
+      <div style="padding:11px 12px;font:500 11.5px 'DM Mono',monospace">71</div>
+    </div>
+    <div style="display:grid;grid-template-columns:38px 1.15fr 2.6fr 84px;border-bottom:2px solid rgba(23,19,15,.12)">
+      <div style="padding:11px 10px;font:700 13px Archivo,sans-serif">6</div>
+      <div style="padding:11px 12px;font:700 13.5px Archivo,sans-serif">Value Scout <span style="font:400 11px Archivo,sans-serif;color:#6E6458">Rhythm App</span></div>
+      <div style="padding:11px 12px;font:400 12.5px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Furniture, electronics, sneakers, collectibles — resale-oriented generalist, still marginal.</div>
+      <div style="padding:11px 12px;font:500 11.5px 'DM Mono',monospace">20</div>
+    </div>
+    <div style="display:grid;grid-template-columns:38px 1.15fr 2.6fr 84px;border-bottom:2px solid rgba(23,19,15,.12)">
+      <div style="padding:11px 10px;font:700 13px Archivo,sans-serif">7</div>
+      <div style="padding:11px 12px;font:700 13.5px Archivo,sans-serif">PriceCharting</div>
+      <div style="padding:11px 12px;font:400 12.5px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">4.81★ over 1,172. Games and cards are properly defended here, unlike in France.</div>
+      <div style="padding:11px 12px;font:500 11.5px 'DM Mono',monospace">1 172 · 4.81★</div>
+    </div>
+    <div style="display:grid;grid-template-columns:38px 1.15fr 2.6fr 84px;border-bottom:2px solid rgba(23,19,15,.12);background:#FF5B2E;color:#F3ECE0">
+      <div style="padding:11px 10px;font:700 13px Archivo,sans-serif">8</div>
+      <div style="padding:11px 12px;font:700 13.5px Archivo,sans-serif">CeX <span style="font:400 11px Archivo,sans-serif;color:rgba(255,255,255,.75)">Tech &amp; Games</span></div>
+      <div style="padding:11px 12px;font:400 12.5px/1.5 Archivo,sans-serif;text-wrap:pretty"><strong>The most important row on this page for your sales ambition.</strong> Scan a barcode, get a firm buyback price, walk into a shop, leave with cash. No listing, no waiting, no buyer. In Britain this is the reflex for "what's my old game worth", and it beats any marketplace on speed for low-value items.</div>
+      <div style="padding:11px 12px;font:500 11.5px 'DM Mono',monospace">3 973</div>
+    </div>
+    <div style="display:grid;grid-template-columns:38px 1.15fr 2.6fr 84px;border-bottom:2px solid rgba(23,19,15,.12);background:#FFD24A">
+      <div style="padding:11px 10px;font:700 13px Archivo,sans-serif">9</div>
+      <div style="padding:11px 12px;font:700 13.5px Archivo,sans-serif">Discogs</div>
+      <div style="padding:11px 12px;font:400 12.5px/1.5 Archivo,sans-serif;color:#17130F;text-wrap:pretty">23,167 ratings at 4.77★. Third European market, third time vinyl is already taken.</div>
+      <div style="padding:11px 12px;font:500 11.5px 'DM Mono',monospace">23 167</div>
+    </div>
+    <div style="display:grid;grid-template-columns:38px 1.15fr 2.6fr 84px">
+      <div style="padding:11px 10px;font:700 13px Archivo,sans-serif">10</div>
+      <div style="padding:11px 12px;font:700 13.5px Archivo,sans-serif">Collectr</div>
+      <div style="padding:11px 12px;font:400 12.5px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">4.86★ over 5,228 — the best rating-to-volume combination in the entire UK perimeter, and it is a collection register, not a scanner. Read that as validation, not threat.</div>
+      <div style="padding:11px 12px;font:500 11.5px 'DM Mono',monospace">5 228 · 4.86★</div>
+    </div>
+  </div>
+
+  <sc-if value="{{ showExclusions }}" hint-placeholder-val="{{ true }}">
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:16px">
+    <div style="border:2px dashed rgba(23,19,15,.35);border-radius:16px;padding:14px 16px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px">DE · EXCLUDED</div>
+      <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Relic, Appraiser.AI, What is it Worth?, WorthPoint — listed, zero ratings. Rescalu, Vintage Snap, Flohmarkt Scanner, Vintiq — negligible. Toyzie AI at 3.1★. Library-only: Sammle Alles / iCollect (437), CLZ Games (177), hobbyDB (50).</div>
+    </div>
+    <div style="border:2px dashed rgba(23,19,15,.35);border-radius:16px;padding:14px 16px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px">GB · EXCLUDED, ONE TO WATCH</div>
+      <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty"><strong>Thingdom</strong> (Pentatonic) — photo to AI valuation plus personal-property tracking, zero ratings but a local team building your exact thesis. Also musicMagpie and WeBuyGames (CeX logic, badly rated), Ziffit and WeBuyBooks (books, out of scope), and eBay / Vinted / Gumtree downstream.</div>
+    </div>
+  </div>
+  </sc-if>
+</div>
+
+<div style="padding:46px 0 40px;border-bottom:2px solid rgba(23,19,15,.12)">
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#8A7F70;margin-bottom:12px">05 · four markets at a glance</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:34px;line-height:1;letter-spacing:-.03em;margin:0 0 8px">Same app, four<br>different difficulties</div>
+  <p style="max-width:760px;font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;margin:0 0 22px;text-wrap:pretty">One store page and one keyword strategy cannot serve all four. This is the sequencing decision, and the numbers make it for you.</p>
+
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+    <div style="display:grid;grid-template-columns:1.35fr 1fr 1fr 1fr 1fr;background:#17130F;color:#F3ECE0;font:500 9px 'DM Mono',monospace;letter-spacing:.13em">
+      <div style="padding:11px 14px"></div>
+      <div style="padding:11px 12px">FRANCE</div>
+      <div style="padding:11px 12px">GERMANY</div>
+      <div style="padding:11px 12px">UNITED KINGDOM</div>
+      <div style="padding:11px 12px">UNITED STATES</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1.35fr 1fr 1fr 1fr 1fr;border-bottom:2px solid rgba(23,19,15,.12);background:#EDE4D6">
+      <div style="padding:12px 14px;font:600 13.5px Archivo,sans-serif">Frontal leader</div>
+      <div style="padding:12px;font:400 12.5px/1.45 Archivo,sans-serif;color:#3A2F26">AntiqSnap · 1,008</div>
+      <div style="padding:12px;font:400 12.5px/1.45 Archivo,sans-serif;color:#3A2F26">AntiqSnap · 398</div>
+      <div style="padding:12px;font:400 12.5px/1.45 Archivo,sans-serif;color:#3A2F26">AntiqSnap · 1,117</div>
+      <div style="padding:12px;font:400 12.5px/1.45 Archivo,sans-serif;color:#3A2F26">AntiqSnap · 31,282</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1.35fr 1fr 1fr 1fr 1fr;border-bottom:2px solid rgba(23,19,15,.12)">
+      <div style="padding:12px 14px;font:600 13.5px Archivo,sans-serif">Frontal rivals over 1,000 ratings</div>
+      <div style="padding:12px;font:700 13px Archivo,sans-serif">1</div>
+      <div style="padding:12px;font:700 13px Archivo,sans-serif;background:rgba(14,110,94,.14)">0</div>
+      <div style="padding:12px;font:700 13px Archivo,sans-serif">1</div>
+      <div style="padding:12px;font:700 13px Archivo,sans-serif;background:rgba(255,91,46,.18)">6</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1.35fr 1fr 1fr 1fr 1fr;border-bottom:2px solid rgba(23,19,15,.12);background:#EDE4D6">
+      <div style="padding:12px 14px;font:600 13.5px Archivo,sans-serif">Most locked vertical</div>
+      <div style="padding:12px;font:400 12.5px/1.45 Archivo,sans-serif;color:#3A2F26">Vinyl · Discogs 9,777</div>
+      <div style="padding:12px;font:400 12.5px/1.45 Archivo,sans-serif;color:#3A2F26">Vinyl · Discogs 12,269</div>
+      <div style="padding:12px;font:400 12.5px/1.45 Archivo,sans-serif;color:#3A2F26">Vinyl · Discogs 23,167</div>
+      <div style="padding:12px;font:400 12.5px/1.45 Archivo,sans-serif;color:#3A2F26">Cards · CollX 47,140, Collectr 63,409</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1.35fr 1fr 1fr 1fr 1fr;border-bottom:2px solid rgba(23,19,15,.12)">
+      <div style="padding:12px 14px;font:600 13.5px Archivo,sans-serif">Local specificity</div>
+      <div style="padding:12px;font:400 12.5px/1.45 Archivo,sans-serif;color:#3A2F26">Brocante culture, weak incumbents</div>
+      <div style="padding:12px;font:400 12.5px/1.45 Archivo,sans-serif;color:#3A2F26">Very dense record market</div>
+      <div style="padding:12px;font:400 12.5px/1.45 Archivo,sans-serif;color:#3A2F26">CeX: firm in-store buyback</div>
+      <div style="padding:12px;font:400 12.5px/1.45 Archivo,sans-serif;color:#3A2F26">Mature and saturated</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1.35fr 1fr 1fr 1fr 1fr;background:#EDE4D6">
+      <div style="padding:12px 14px;font:600 13.5px Archivo,sans-serif">Verdict</div>
+      <div style="padding:12px;font:700 12.5px/1.45 Archivo,sans-serif;background:rgba(14,110,94,.14)">Launch. Home ground, soft field, press reachable.</div>
+      <div style="padding:12px;font:700 12.5px/1.45 Archivo,sans-serif;background:rgba(14,110,94,.14)">Second. Best effort-to-opportunity ratio anywhere.</div>
+      <div style="padding:12px;font:400 12.5px/1.45 Archivo,sans-serif;color:#3A2F26">Third. English copy is reusable; the pack is polished.</div>
+      <div style="padding:12px;font:700 12.5px/1.45 Archivo,sans-serif;background:rgba(255,91,46,.18)">Last. Only with the register story proven.</div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:20px">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#2B44D6;color:#F3ECE0;box-shadow:5px 5px 0 #17130F;padding:16px 18px">
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:26px;line-height:1;letter-spacing:-.02em;margin-bottom:8px">One structural rival</div>
+      <div style="font:400 13.5px/1.55 Archivo,sans-serif;text-wrap:pretty">AntiqSnap leads all four markets, and Next Vision's portfolio — VinylSnap, ToyWorth — covers your verticals one app at a time. Every other competitor is local. This one is the thesis-level opponent, and the day they merge the portfolio into a single shelf is the day your differentiation is contested.</div>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#0E6E5E;color:#F3ECE0;box-shadow:5px 5px 0 #17130F;padding:16px 18px">
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:26px;line-height:1;letter-spacing:-.02em;margin-bottom:8px">Germany is the opening</div>
+      <div style="font:400 13.5px/1.55 Archivo,sans-serif;text-wrap:pretty">No frontal competitor above 400 ratings, the leader rated 4.4★ — its weakest listing of four — and your closest analogue at 50. Localisation is cheap next to what that field is worth. Take it second, before anyone notices it's empty.</div>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;padding:16px 18px">
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:26px;line-height:1;letter-spacing:-.02em;margin-bottom:8px">Vinyl is lost in Europe</div>
+      <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Discogs is the most installed app in the perimeter in France, Germany and the UK alike. The defensible difference is the unified multi-category shelf plus collection management — never the accuracy of a quote on one isolated vertical.</div>
+    </div>
+  </div>
+</div>
+
+<div style="padding:46px 0 40px;border-bottom:2px solid rgba(23,19,15,.12)">
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#8A7F70;margin-bottom:12px">06 · honest scoring</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:34px;line-height:1;letter-spacing:-.03em;margin:0 0 8px">Where you win, and<br>where you'd lose today</div>
+  <p style="max-width:720px;font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;margin:0 0 22px;text-wrap:pretty">Scored against the three apps that actually have users, using their US numbers — the hardest of the four markets. A page that only lists your advantages is a page nobody can act on.</p>
+
+  <sc-if value="{{ showScorecard }}" hint-placeholder-val="{{ true }}">
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+    <div style="display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr 1fr;background:#17130F;color:#F3ECE0;font:500 9px 'DM Mono',monospace;letter-spacing:.13em">
+      <div style="padding:11px 14px">CRITERION</div>
+      <div style="padding:11px 12px;background:#0E6E5E">CLCTN</div>
+      <div style="padding:11px 12px">ANTIQSNAP</div>
+      <div style="padding:11px 12px">PRICECHARTING</div>
+      <div style="padding:11px 12px">DISCOGS</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr 1fr;border-bottom:2px solid rgba(23,19,15,.12);background:#EDE4D6">
+      <div style="padding:12px 14px;font:600 13.5px Archivo,sans-serif">Holds several object types on one shelf</div>
+      <div style="padding:12px;font:700 13px Archivo,sans-serif;background:rgba(14,110,94,.14)">Yes — 5 at v1, 14 planned</div>
+      <div style="padding:12px;font:400 12.5px/1.45 Archivo,sans-serif;color:#6E6458">Anything, but nothing is kept</div>
+      <div style="padding:12px;font:400 12.5px/1.45 Archivo,sans-serif;color:#6E6458">Games + cards only</div>
+      <div style="padding:12px;font:400 12.5px/1.45 Archivo,sans-serif;color:#6E6458">Records only</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr 1fr;border-bottom:2px solid rgba(23,19,15,.12)">
+      <div style="padding:12px 14px;font:600 13.5px Archivo,sans-serif">Price authority</div>
+      <div style="padding:12px;font:700 13px Archivo,sans-serif;background:#FFD24A">Weakest link</div>
+      <div style="padding:12px;font:400 12.5px/1.45 Archivo,sans-serif;color:#6E6458">LLM guess, unverifiable</div>
+      <div style="padding:12px;font:400 12.5px/1.45 Archivo,sans-serif;color:#3A2F26">Sector standard</div>
+      <div style="padding:12px;font:400 12.5px/1.45 Archivo,sans-serif;color:#3A2F26">Sector standard</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr 1fr;border-bottom:2px solid rgba(23,19,15,.12);background:#EDE4D6">
+      <div style="padding:12px 14px;font:600 13.5px Archivo,sans-serif">Reason to open it a second time</div>
+      <div style="padding:12px;font:700 13px Archivo,sans-serif;background:rgba(14,110,94,.14)">Lending, wishlist hits, shared shelves</div>
+      <div style="padding:12px;font:400 12.5px/1.45 Archivo,sans-serif;color:#6E6458">None</div>
+      <div style="padding:12px;font:400 12.5px/1.45 Archivo,sans-serif;color:#6E6458">Price checks</div>
+      <div style="padding:12px;font:400 12.5px/1.45 Archivo,sans-serif;color:#3A2F26">Marketplace + want list</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr 1fr;border-bottom:2px solid rgba(23,19,15,.12)">
+      <div style="padding:12px 14px;font:600 13.5px Archivo,sans-serif">Ownership of the user's data</div>
+      <div style="padding:12px;font:700 13px Archivo,sans-serif;background:rgba(14,110,94,.14)">Their iCloud, no account</div>
+      <div style="padding:12px;font:400 12.5px/1.45 Archivo,sans-serif;color:#6E6458">Their servers</div>
+      <div style="padding:12px;font:400 12.5px/1.45 Archivo,sans-serif;color:#6E6458">Their servers</div>
+      <div style="padding:12px;font:400 12.5px/1.45 Archivo,sans-serif;color:#6E6458">Their servers</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr 1fr;border-bottom:2px solid rgba(23,19,15,.12);background:#EDE4D6">
+      <div style="padding:12px 14px;font:600 13.5px Archivo,sans-serif">Price shape</div>
+      <div style="padding:12px;font:700 13px Archivo,sans-serif;background:rgba(14,110,94,.14)">€29.99 once, owned forever</div>
+      <div style="padding:12px;font:400 12.5px/1.45 Archivo,sans-serif;color:#6E6458">Weekly / monthly sub</div>
+      <div style="padding:12px;font:400 12.5px/1.45 Archivo,sans-serif;color:#6E6458">Sub for full data</div>
+      <div style="padding:12px;font:400 12.5px/1.45 Archivo,sans-serif;color:#3A2F26">Free, monetised on sales</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr 1fr;border-bottom:2px solid rgba(23,19,15,.12)">
+      <div style="padding:12px 14px;font:600 13.5px Archivo,sans-serif">Craft of the object page</div>
+      <div style="padding:12px;font:700 13px Archivo,sans-serif;background:rgba(14,110,94,.14)">3D sleeve, real photography</div>
+      <div style="padding:12px;font:400 12.5px/1.45 Archivo,sans-serif;color:#6E6458">Template</div>
+      <div style="padding:12px;font:400 12.5px/1.45 Archivo,sans-serif;color:#6E6458">Table of numbers</div>
+      <div style="padding:12px;font:400 12.5px/1.45 Archivo,sans-serif;color:#6E6458">Database form</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr 1fr;background:#EDE4D6">
+      <div style="padding:12px 14px;font:600 13.5px Archivo,sans-serif">Proof anyone wants it</div>
+      <div style="padding:12px;font:700 13px Archivo,sans-serif;background:#FF5B2E;color:#F3ECE0">Zero. Unshipped.</div>
+      <div style="padding:12px;font:400 12.5px/1.45 Archivo,sans-serif;color:#3A2F26">31,282 US · 1,008 FR</div>
+      <div style="padding:12px;font:400 12.5px/1.45 Archivo,sans-serif;color:#3A2F26">25,963 US, 4.83★</div>
+      <div style="padding:12px;font:400 12.5px/1.45 Archivo,sans-serif;color:#3A2F26">67,056 US, 4.8★</div>
+    </div>
+  </div>
+  </sc-if>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#0E6E5E;color:#F3ECE0;box-shadow:5px 5px 0 #17130F;padding:18px 20px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#B9D6CE;margin-bottom:10px">FOUR ADVANTAGES THAT ARE REAL</div>
+      <div style="display:flex;flex-direction:column;gap:11px;font:400 13.5px/1.55 Archivo,sans-serif">
+        <div><strong>Ownership is the primitive.</strong> Every competitor treats the object as a question to be answered and discarded. You treat it as a thing that is kept, moves, gets lent, gets insured, gets passed on. That is a fundamentally stickier relationship and none of them can retrofit it.</div>
+        <div><strong>One shelf, many types.</strong> Discogs cannot add watches. PriceCharting cannot add comics. A vertical's specialisation is exactly what stops it widening — and collectors are almost never monogamous.</div>
+        <div><strong>No account, no server, no rent.</strong> The data lives in the user's iCloud. It is a genuine trust argument in a category where every rival is a subscription pointed at a database they control.</div>
+        <div><strong>It's beautiful, in a segment of clones — in France.</strong> Eight of the ten FR apps are the same template, and craft is visible in three screenshots. This advantage does not cross the Atlantic: Curio sits at 4.82★ and PriceCharting at 4.83★. Treat craft as a French differentiator and a US entry requirement.</div>
+      </div>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;padding:18px 20px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:10px">FIVE WAYS YOU LOSE</div>
+      <div style="display:flex;flex-direction:column;gap:11px;font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26">
+        <div><strong>You invent a number.</strong> The day your estimate disagrees with PriceCharting on a cart a user knows the price of, your credibility on all fourteen types goes with it. Estimation is the highest-risk surface in the product.</div>
+        <div><strong>You ask for work before you give pleasure.</strong> A scanner pays out in nine seconds. Your shelf pays out at object thirty. If the first session doesn't produce something worth showing someone, nothing else on this page matters.</div>
+        <div><strong>Nobody searches for what you are.</strong> "Scan value flea market" is a high-intent query with volume. "Collection manager" is not. Your discovery problem is real and the appraisers already own the good keywords.</div>
+        <div><strong>Vinyl walks to Discogs.</strong> Your flagship type has an incumbent with the collection, the want list and the marketplace already built — 9,777 ratings in France, 67,056 in the US. Leading with records is leading with your hardest fight.</div>
+        <div><strong>The number one is already answering your premise.</strong> Next Vision runs AntiqSnap plus VinylSnap plus ToyWorth: your fourteen types, split across fourteen apps. Their bet is that collectors will install one app per hobby. Yours is that they won't. That is the actual argument, and it hasn't been settled.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="padding:46px 0 40px;border-bottom:2px solid rgba(23,19,15,.12)">
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#8A7F70;margin-bottom:12px">07 · the sixth meter</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:34px;line-height:1;letter-spacing:-.03em;margin:0 0 8px">The day you take a cut of<br>sales, you change opponents</div>
+  <p style="max-width:800px;font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;margin:0 0 22px;text-wrap:pretty">The five meters in the revenue model never touch a transaction — that's why none of the forty apps above competes with them. A take-rate on sales is a different business with a different competitive set, and the apps that beat you there aren't on any of these four tables. Worth reading before it gets built, not after.</p>
+
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#17130F;color:#F3ECE0;box-shadow:5px 5px 0 #17130F;padding:22px 24px;margin-bottom:20px">
+    <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:27px;line-height:1.12;letter-spacing:-.02em;max-width:840px;text-wrap:pretty">A marketplace is not a feature, it's a liquidity problem. You do not win one by building a better sell screen — you win it by being the place buyers already are. On vinyl, games and cards in your four markets, they already are somewhere else.</div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:20px">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+      <div style="padding:13px 16px;border-bottom:2.5px solid #17130F;background:#EDE4D6;font:700 17px Archivo,sans-serif;letter-spacing:-.01em">Who takes the cut today</div>
+      <div style="padding:14px 16px;display:flex;flex-direction:column;gap:11px;font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26">
+        <div><strong>Discogs Marketplace.</strong> Records, in all three European markets, with the catalogue, the want lists, the seller reputations and the buyers. The single hardest liquidity pool on your list.</div>
+        <div><strong>eBay.</strong> Everything, everywhere, with the deepest buyer base and the highest fees. The default when an object has no natural home.</div>
+        <div><strong>CollX and Collectr.</strong> Cards, with trading and selling already inside the register — the exact shape you'd be building, done first, on the vertical you're least able to take.</div>
+        <div><strong>CeX.</strong> Not a marketplace at all: a firm price, instantly, in a shop. On a £6 game it wins outright, because the seller's real cost is time.</div>
+        <div><strong>Vinted, Leboncoin, Mercari.</strong> Generalist resale with enormous casual supply. They don't estimate anything — they just already have the buyer.</div>
+      </div>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+      <div style="padding:13px 16px;border-bottom:2.5px solid #17130F;background:#EDE4D6;font:700 17px Archivo,sans-serif;letter-spacing:-.01em">What you'd actually have that they don't</div>
+      <div style="padding:14px 16px;display:flex;flex-direction:column;gap:11px;font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26">
+        <div><strong>Supply that was catalogued before it was listed.</strong> Condition, provenance, purchase date and photos already recorded, by someone who owned the thing on purpose. Every marketplace above is full of listings written in ninety seconds by someone who wants rid of it.</div>
+        <div><strong>The mixed basket.</strong> Nobody sells a record, a watch and three comics to the same buyer. Your index is the only one where a collector's whole disposal is one act instead of four accounts.</div>
+        <div><strong>Wishlist matching against real intent.</strong> D30 already fires on the full match — print, grade, price cap. That is a buyer signal no marketplace has, because nobody tells eBay precisely what they want and waits.</div>
+        <div><strong>No shelf is ever published.</strong> D29 indexes offers, not collections. That's a privacy claim no marketplace can make, and it matters more to a collector than to a flipper.</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#0E6E5E;color:#F3ECE0;box-shadow:5px 5px 0 #17130F;padding:18px 20px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#B9D6CE;margin-bottom:9px">THE VERSION THAT WORKS</div>
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:26px;line-height:1.1;letter-spacing:-.02em;margin-bottom:10px;max-width:820px;text-wrap:pretty">Charge for the introduction, not the escrow.</div>
+      <div style="font:400 14px/1.6 Archivo,sans-serif;max-width:840px;text-wrap:pretty">A fee on a completed introduction between two people who already have the app needs no payment rail, no buyer protection, no dispute team, no fraud surface and — crucially — no liquidity threshold. It earns from the very first match, where a marketplace earns nothing until it has thousands of listings. It also composes with the insurance referral you already have: same mechanic, same trust, same absence of infrastructure. Escalate to held payments only if the offer index proves real depth in one country and one type.</div>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#FFD24A;box-shadow:5px 5px 0 #17130F;padding:18px 20px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#7A6420;margin-bottom:9px">THREE CONDITIONS BEFORE IT'S WORTH BUILDING</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;font:400 13.5px/1.55 Archivo,sans-serif;color:#17130F">
+        <div><strong>Density in one country, one type.</strong> A hundred sellers spread across four markets and fourteen types is not a market, it's a graveyard of unanswered offers. Pick the type where your users cluster and gate the rest.</div>
+        <div><strong>A floor on object value.</strong> CeX proves that below roughly €30 the seller wants cash now, not a buyer. Anything cheap will never transact through you — design the flag to admit that instead of pretending.</div>
+        <div><strong>Sourced pricing already shipped.</strong> Nobody accepts a fee on a sale priced by a number you invented. Move 01 isn't just credibility for the catalogue — it's the precondition for ever earning on a transaction.</div>
+      </div>
+    </div>
+  </div>
+
+  <p style="max-width:800px;font:400 13px/1.6 Archivo,sans-serif;color:#6E6458;margin:18px 0 0;text-wrap:pretty">Commercial terms for the marketplaces named above change often and vary by category and country — confirm current rates before any of this reaches the business plan.</p>
+</div>
+
+<div style="padding:46px 0 40px;border-bottom:2px solid rgba(23,19,15,.12)">
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#8A7F70;margin-bottom:12px">08 · what to focus on</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:34px;line-height:1;letter-spacing:-.03em;margin:0 0 8px">Five moves, in this order</div>
+  <p style="max-width:720px;font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;margin:0 0 22px;text-wrap:pretty">Each one turns a weakness above into a position none of the forty apps can copy without becoming a different app.</p>
+
+  <div style="display:flex;flex-direction:column;gap:16px">
+
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+      <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:2.5px solid #17130F;background:#EDE4D6">
+        <div style="flex:none;width:30px;height:30px;border:2.5px solid #17130F;border-radius:8px;display:flex;align-items:center;justify-content:center;font:700 13px Archivo,sans-serif;background:#FFD24A">01</div>
+        <div style="font:700 18px Archivo,sans-serif;letter-spacing:-.01em">Cite the price. Never invent it.</div>
+        <div style="margin-left:auto;font:500 10px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:5px 10px;background:#fff">BEFORE LAUNCH</div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap">
+        <div style="flex:1 1 300px;min-width:280px;padding:14px 16px;border-right:2px solid rgba(23,19,15,.12)">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px">THE MOVE</div>
+          <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Every figure in the app carries its source and its date: "Discogs median, 14 sales, last 90 days." Where there's no source, show a range or show nothing. Turn PriceCharting and Discogs from rivals into cited suppliers — the market-data subscription meter is already built for exactly this.</div>
+        </div>
+        <div style="flex:1 1 260px;min-width:250px;padding:14px 16px">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px">WHY IT WINS</div>
+          <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">The eight appraisers cannot do this — attribution would expose that their number came from a model. Sourced pricing is the one credibility gap in the segment, and it's free for you to take.</div>
+        </div>
+      </div>
+      <div style="border-top:2.5px solid #17130F;padding:12px 16px;font:700 13.5px/1.5 Archivo,sans-serif;background:#0E6E5E;color:#F3ECE0;text-wrap:pretty">Store copy that follows from it: "We don't guess what it's worth. We show you who paid what."</div>
+    </div>
+
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+      <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:2.5px solid #17130F;background:#EDE4D6">
+        <div style="flex:none;width:30px;height:30px;border:2.5px solid #17130F;border-radius:8px;display:flex;align-items:center;justify-content:center;font:700 13px Archivo,sans-serif;background:#2B44D6;color:#F3ECE0">02</div>
+        <div style="font:700 18px Archivo,sans-serif;letter-spacing:-.01em">Make the first session end in something showable</div>
+        <div style="margin-left:auto;font:500 10px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:5px 10px;background:#fff">BEFORE LAUNCH</div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap">
+        <div style="flex:1 1 300px;min-width:280px;padding:14px 16px;border-right:2px solid rgba(23,19,15,.12)">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px">THE MOVE</div>
+          <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Ten objects, five minutes, and the reward is a shelf worth screenshotting — the 3D sleeve, the shared link, the value strip. Scan-a-row-of-spines, if it can be made to work, beats every other onboarding idea you have. The competitor's payoff is nine seconds; yours has to arrive before object ten, not object thirty.</div>
+        </div>
+        <div style="flex:1 1 260px;min-width:250px;padding:14px 16px">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px">WHY IT WINS</div>
+          <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">This is where you'll actually die if you die. It's also your only organic acquisition channel: a shared shelf is a screenshot in a collector Discord, and nothing any of the ten produces is worth sharing.</div>
+        </div>
+      </div>
+      <div style="border-top:2.5px solid #17130F;padding:12px 16px;font:700 13.5px/1.5 Archivo,sans-serif;background:#0E6E5E;color:#F3ECE0;text-wrap:pretty">Metric to instrument now: share of first sessions reaching 10 objects, and share producing a shared link within 7 days.</div>
+    </div>
+
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+      <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:2.5px solid #17130F;background:#EDE4D6">
+        <div style="flex:none;width:30px;height:30px;border:2.5px solid #17130F;border-radius:8px;display:flex;align-items:center;justify-content:center;font:700 13px Archivo,sans-serif;background:#FF5B2E;color:#F3ECE0">03</div>
+        <div style="font:700 18px Archivo,sans-serif;letter-spacing:-.01em">Take the ground nobody else can stand on: the mixed shelf</div>
+        <div style="margin-left:auto;font:500 10px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:5px 10px;background:#fff">LAUNCH POSITIONING · FR FIRST</div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap">
+        <div style="flex:1 1 300px;min-width:280px;padding:14px 16px;border-right:2px solid rgba(23,19,15,.12)">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px">THE MOVE</div>
+          <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Lead the store page with the collector who has records <em>and</em> games <em>and</em> a watch — never with one type. Don't launch vinyl-first into Discogs' teeth; lead with the type mix and let vinyl be one shelf among several. Insurance export is the killer proof of the mixed shelf: one document, everything you own.</div>
+        </div>
+        <div style="flex:1 1 260px;min-width:250px;padding:14px 16px">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px">WHY IT WINS</div>
+          <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">A vertical cannot follow you here without betraying the audience that made it. Discogs adding watches would be absurd; you adding watches is the premise.</div>
+        </div>
+      </div>
+      <div style="border-top:2.5px solid #17130F;padding:12px 16px;font:700 13.5px/1.5 Archivo,sans-serif;background:#0E6E5E;color:#F3ECE0;text-wrap:pretty">Category line to own: not "the app that prices your stuff" — "the register of everything you own on purpose."</div>
+    </div>
+
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+      <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:2.5px solid #17130F;background:#EDE4D6">
+        <div style="flex:none;width:30px;height:30px;border:2.5px solid #17130F;border-radius:8px;display:flex;align-items:center;justify-content:center;font:700 13px Archivo,sans-serif;background:#17130F;color:#F3ECE0">04</div>
+        <div style="font:700 18px Archivo,sans-serif;letter-spacing:-.01em">Let the appraisers feed you</div>
+        <div style="margin-left:auto;font:500 10px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:5px 10px;background:#fff">POST-LAUNCH</div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap">
+        <div style="flex:1 1 300px;min-width:280px;padding:14px 16px;border-right:2px solid rgba(23,19,15,.12)">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px">THE MOVE</div>
+          <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Their user is a person who scans objects and gets nothing to keep. Free tier = 100 objects and identification; the graduation moment is "you've now scanned forty things, here is what they look like together." Rank against their keywords with a free identify, convert on the shelf.</div>
+        </div>
+        <div style="flex:1 1 260px;min-width:250px;padding:14px 16px">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px">WHY IT WINS</div>
+          <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Their weekly subscriptions churn hard because nothing accumulates. A one-time €29.99 aimed at their lapsed users is a very easy argument, and the founding-price ladder gives you the number to make it with.</div>
+        </div>
+      </div>
+      <div style="border-top:2.5px solid #17130F;padding:12px 16px;font:700 13.5px/1.5 Archivo,sans-serif;background:#0E6E5E;color:#F3ECE0;text-wrap:pretty">Only after moves 01–03 land. Chasing their keywords before the shelf is good just buys you their churn.</div>
+    </div>
+
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+      <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:2.5px solid #17130F;background:#EDE4D6">
+        <div style="flex:none;width:30px;height:30px;border:2.5px solid #17130F;border-radius:8px;display:flex;align-items:center;justify-content:center;font:700 13px Archivo,sans-serif;background:#0E6E5E;color:#F3ECE0">05</div>
+        <div style="font:700 18px Archivo,sans-serif;letter-spacing:-.01em">Go to Germany second, and the United States last</div>
+        <div style="margin-left:auto;font:500 10px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:5px 10px;background:#fff">MARKET SEQUENCE</div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap">
+        <div style="flex:1 1 300px;min-width:280px;padding:14px 16px;border-right:2px solid rgba(23,19,15,.12)">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px">THE MOVE</div>
+          <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">France to launch and learn. Germany next: zero frontal rivals above 400 ratings, the segment leader at its worst rating of four markets, and your closest analogue at fifty. Then the UK, where the English copy is already written. The US only once the register story is provable — and never on scan-and-value, which arrives eleventh.</div>
+        </div>
+        <div style="flex:1 1 260px;min-width:250px;padding:14px 16px">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px">WHY IT WINS</div>
+          <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">ThriftAI has 20,238 ratings in the US and 50 in Germany. Traction does not travel in this segment, which means the crowded market cannot fund an assault on the empty one — and the empty one is next door.</div>
+        </div>
+      </div>
+      <div style="border-top:2.5px solid #17130F;padding:12px 16px;font:700 13.5px/1.5 Archivo,sans-serif;background:#0E6E5E;color:#F3ECE0;text-wrap:pretty">German localisation is the cheapest strategic purchase on this page. Budget it for launch + 3 months, not for "later".</div>
+    </div>
+
+  </div>
+</div>
+
+<div style="padding:46px 0 10px">
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#8A7F70;margin-bottom:12px">09 · the discipline</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:34px;line-height:1;letter-spacing:-.03em;margin:0 0 8px">Six things not to do,<br>however tempting</div>
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:20px">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#FF5B2E;color:#F3ECE0;box-shadow:5px 5px 0 #17130F;padding:16px 18px">
+      <div style="font:700 16px Archivo,sans-serif;margin-bottom:8px">Don't put an AI valuation on the hero screen</div>
+      <div style="font:400 13.5px/1.55 Archivo,sans-serif;text-wrap:pretty">It files you under "another 2026 scanner", puts you in a ring with eight clones and two real datasets, and stakes your credibility on the one number you can't verify. Value belongs deep in the object page, sourced, secondary to the shelf.</div>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;padding:16px 18px">
+      <div style="font:700 16px Archivo,sans-serif;margin-bottom:8px">Don't chase the brocante keyword</div>
+      <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Price Snap, Scanner Brocante and Vintiq are already there, all bidding, none retaining. It's the wrong user anyway: a flipper doesn't keep things, and everything you've built assumes keeping.</div>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;padding:16px 18px">
+      <div style="font:700 16px Archivo,sans-serif;margin-bottom:8px">Don't subscription-ise the catalogue</div>
+      <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">The one-time unlock isn't just a pricing preference — it's the loudest difference between you and every app on the list. Renting someone their own shelf back would delete the trust argument that makes the mixed shelf worth building.</div>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;padding:16px 18px">
+      <div style="font:700 16px Archivo,sans-serif;margin-bottom:8px">Don't out-catalogue Discogs</div>
+      <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Fifteen years and sixty-seven thousand US ratings say you won't win depth on records — and CollX says the same about trading cards. Win on the objects they'll never hold together, and let them be the sources that make those pages trustworthy.</div>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;padding:16px 18px">
+      <div style="font:700 16px Archivo,sans-serif;margin-bottom:8px">Don't open four markets at once</div>
+      <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Four store pages, four keyword sets, four support languages and four competitive sets, on one product with no ratings anywhere. Traction demonstrably doesn't travel in this segment — ThriftAI is 20,238 in the US and 50 in Germany. Win one, then port.</div>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;padding:16px 18px">
+      <div style="font:700 16px Archivo,sans-serif;margin-bottom:8px">Don't build escrow to earn on sales</div>
+      <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Held payments, buyer protection and disputes are a company, not a feature — and they only pay once you have liquidity you won't have for years. Take the fee on the introduction. It earns on the first match and costs you nothing to run.</div>
+    </div>
+  </div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#FFD24A;padding:20px 24px;box-shadow:5px 5px 0 #17130F;margin-top:22px">
+    <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:25px;line-height:1.14;letter-spacing:-.02em;text-wrap:pretty">Across four markets, every one of these apps answers "what is this worth?". Nobody is answering "what do I have, and what happens to it?" Stay on the second question, cite the answers to the first, and the crowded half of the market becomes your funnel instead of your fight.</div>
+  </div>
+  <p style="font:400 12px/1.6 Archivo,sans-serif;color:#6E6458;margin:18px 0 0;text-wrap:pretty">Source panels: FR, DE, GB and US storefronts, N=10 each, selected on competitive proximity and tie-broken on visibility within the storefront, IDs verified via iTunes Lookup. Ratings as of August 2026. AntiqSnap (6752929120) is the only app ranked in all four; Discogs and PriceCharting appear in all four but as partial overlaps.</p>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showAppStoreLinks&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Detail&quot;},&quot;showExclusions&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Detail&quot;},&quot;showScorecard&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Detail&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      showAppStoreLinks: this.props.showAppStoreLinks ?? true,
+      showExclusions: this.props.showExclusions ?? true,
+      showScorecard: this.props.showScorecard ?? true
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#EAE3D6}
+a{color:#2B44D6}a:hover{color:#FF5B2E}
+.gr-page{width:1100px;margin:0 auto;padding:0 0 90px;font-family:Archivo,system-ui,sans-serif;color:#17130F}
+.gr-sec{padding:46px 0 40px;border-bottom:2px solid rgba(23,19,15,.12)}
+.gr-lab{font:500 10px 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#8A7F70;margin-bottom:12px}
+.gr-h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:34px;line-height:1;letter-spacing:-.03em;margin:0 0 18px}
+.gr-h3{font:700 15px Archivo,sans-serif;margin:28px 0 10px}
+.gr-p{max-width:720px;font:400 15px/1.65 Archivo,sans-serif;color:#3A2F26;margin:0 0 14px;text-wrap:pretty}
+.gr-note{max-width:720px;font:400 13px/1.6 Archivo,sans-serif;color:#6E6458;margin:0 0 14px;text-wrap:pretty}
+.gr-big{border:2.5px solid #17130F;border-radius:18px;padding:20px 22px;box-shadow:5px 5px 0 #17130F;max-width:820px;margin:6px 0 18px}
+.gr-bigt{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:26px;line-height:1.12;letter-spacing:-.02em;text-wrap:pretty}
+.gr-list{display:flex;flex-direction:column;gap:14px;margin:20px 0 6px}
+.gr-item{border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden}
+.gr-ihd{display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:2.5px solid #17130F;background:#EDE4D6}
+.gr-ib{flex:none;width:30px;height:30px;border:2.5px solid #17130F;border-radius:8px;display:flex;align-items:center;justify-content:center;font:700 12px Archivo,sans-serif}
+.gr-in{font:700 17px Archivo,sans-serif;letter-spacing:-.01em}
+.gr-itag{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.gr-tag{font:500 9px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:4px 8px;background:#fff;white-space:nowrap}
+.gr-ibody{display:flex;flex-wrap:wrap}
+.gr-cell{flex:1 1 250px;min-width:240px;padding:14px 16px;border-right:2px solid rgba(23,19,15,.12)}
+.gr-ck{font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px}
+.gr-cv{font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty}
+.gr-foot{border-top:2.5px solid #17130F;padding:12px 16px;font:700 13.5px/1.5 Archivo,sans-serif;text-wrap:pretty}
+.gr-cards{display:flex;flex-wrap:wrap;gap:14px;margin:18px 0 6px}
+.gr-card{flex:1 1 320px;min-width:300px;border:2.5px solid #17130F;border-radius:16px;padding:15px 16px;background:#fff;box-shadow:4px 4px 0 #17130F}
+.gr-cn{font:700 16px Archivo,sans-serif;margin-bottom:7px}
+.gr-steps{display:flex;flex-direction:column;max-width:880px;margin:20px 0 6px}
+.gr-step{display:flex;gap:14px;align-items:flex-start}
+.gr-sn{flex:none;display:flex;flex-direction:column;align-items:center;width:32px}
+.gr-sc{width:32px;height:32px;border:2.5px solid #17130F;border-radius:999px;display:flex;align-items:center;justify-content:center;font:500 9px 'DM Mono',monospace;background:#FFD24A}
+.gr-sl{width:2.5px;flex:1;min-height:24px;background:#17130F}
+.gr-sb{flex:1;padding:2px 0 20px}
+.gr-st{font:700 15px Archivo,sans-serif;margin-bottom:5px}
+.gr-sv{font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty;max-width:720px}
+.gr-tbl{border:2.5px solid #17130F;border-radius:16px;overflow:hidden;max-width:880px;margin:18px 0 6px;background:#fff;box-shadow:5px 5px 0 #17130F}
+.gr-tr{display:flex;border-bottom:2px solid rgba(23,19,15,.12)}
+.gr-th{background:#17130F;color:#F3ECE0}
+.gr-td{flex:1;padding:11px 14px;font:400 13px/1.45 Archivo,sans-serif;text-wrap:pretty}
+.gr-td1{flex:0 0 210px;padding:11px 14px;font:700 13px/1.4 Archivo,sans-serif}
+.gr-tk{font:500 9px 'DM Mono',monospace;letter-spacing:.13em}
+</style>
+</helmet>
+
+<div class="gr-page">
+
+<div class="gr-sec" style="padding-top:60px">
+  <div class="gr-lab">Distribution · working document · August 2026</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:62px;line-height:.92;letter-spacing:-.04em;max-width:860px">Finding the first<br>five hundred<br>collections</div>
+  <p class="gr-p" style="font-size:17px;margin-top:22px">Your instinct is right and worth stating precisely, because it changes what "growth" even means here: <strong>you don't need users, you need catalogued collections.</strong> Ten thousand people who add four objects and leave is a failed launch. Four hundred people with two hundred objects each is a real product, a real answer on every v2 gate, and a community that will defend you.</p>
+  <div class="gr-big" style="background:#FFD24A">
+    <div class="gr-bigt">So the target isn't downloads. It's: <span style="background:#17130F;color:#F3ECE0;padding:0 6px;border-radius:6px">400 people with 60+ objects</span> inside six months. Every channel below is judged on whether it delivers those, not installs.</div>
+  </div>
+  <p class="gr-note">That framing has a useful side effect: it makes the slow, unscalable, embarrassing-to-a-growth-person channels the <em>correct</em> ones. Forums, one club at a time, answering messages by hand. You're not trying to be big yet, you're trying to be deep.</p>
+</div>
+
+<div class="gr-sec">
+  <div class="gr-lab">01 · Forums, done properly</div>
+  <div class="gr-h2">The right instinct,<br>the wrong first post</div>
+  <p class="gr-p">Specialist forums are exactly where your users are — Discogs and Vinyl Engine, CGC and comic boards, NGC and Coin Community, BoardGameGeek, Watchuseek, r/vinyl, r/comicbooks, r/coincollecting, r/boardgames, plus the Discords and WhatsApp groups that are now bigger than the forums in some hobbies. And they are, without exception, hostile to app promotion. Most have an explicit no-self-promo rule and a moderator who has removed forty of these posts this year.</p>
+  <p class="gr-p">The thing that gets through isn't a launch post. It's a <strong>question only they can answer</strong> — and you happen to have the perfect one, because your app is built on fourteen declared field schemas.</p>
+  <div class="gr-cards">
+    <div class="gr-card" style="background:#17130F;color:#F3ECE0;box-shadow:4px 4px 0 #FF5B2E">
+      <div class="gr-ck" style="color:#FFD24A">DON'T POST THIS</div>
+      <div class="gr-cn">"I made an app for collectors, would love your feedback 🙏"</div>
+      <div class="gr-cv" style="color:rgba(243,236,224,.85)">Reads as an ad, gets removed or ignored, and burns the one first impression that community will give you. Even when it survives, it converts terribly — nobody's identity is "app tester".</div>
+    </div>
+    <div class="gr-card" style="background:#0E6E5E;color:#F3ECE0;box-shadow:4px 4px 0 #17130F">
+      <div class="gr-ck" style="color:#FFD24A">POST THIS</div>
+      <div class="gr-cn">"Here are the 11 fields I think describe a graded comic. What did I get wrong?"</div>
+      <div class="gr-cv" style="color:rgba(243,236,224,.9)">A field list is catnip. Every hobby has a decade-old argument about what matters — raw vs slabbed, pressing vs matrix number, mint mark, box condition vs figure condition. Post the list, get corrected at length, thank them, ship their version. You've now got a schema built by the people who care and forty people invested in seeing it exist.</div>
+    </div>
+  </div>
+  <p class="gr-note" style="margin-top:16px">Three rules that keep you welcome: <strong>message the moderators first</strong> (ask where this belongs — most will tell you, and some will pin it); <strong>be a real account</strong> that has answered other people's questions before posting your own; and <strong>never link the App Store in the first post.</strong> The link goes in a reply, when someone asks — and someone always asks.</p>
+</div>
+
+<div class="gr-sec">
+  <div class="gr-lab">02 · Co-creation</div>
+  <div class="gr-h2">Founding Cataloguers</div>
+  <p class="gr-p">You already designed the mechanism for this without meaning to: the type-proposal system, where a popular custom type becomes the next shipped type and the proposer's objects migrate in intact. Turn it into a named programme and it solves acquisition, retention and your v2 evidence at once.</p>
+  <div class="gr-list">
+    <div class="gr-item">
+      <div class="gr-ihd"><div class="gr-ib" style="background:#FFD24A">1</div><div class="gr-in">Recruit one person per hobby, not fifty per hobby</div><div class="gr-itag"><div class="gr-tag">TESTFLIGHT</div><div class="gr-tag">30–50 PEOPLE</div></div></div>
+      <div class="gr-ibody">
+        <div class="gr-cell"><div class="gr-ck">WHAT THEY GET</div><div class="gr-cv">Authorship of their type's field schema, credit by name in the app, a lifetime unlock, and a direct line to you. For a serious collector, being <em>the person who defined how watches work in this app</em> is worth more than money.</div></div>
+        <div class="gr-cell"><div class="gr-ck">WHAT YOU GET</div><div class="gr-cv">Fourteen schemas validated by experts, fourteen deep collections seeded on day one, and fourteen advocates inside the exact communities you can't advertise in. They'll post about it — and their post isn't an ad, it's their work.</div></div>
+        <div class="gr-cell" style="border-right:none"><div class="gr-ck">THE COST</div><div class="gr-cv">Your time, weekly, for months — reading long emails about mint marks and taking them seriously. This is the highest-return work available to you and it doesn't feel like work on a roadmap.</div></div>
+      </div>
+      <div class="gr-foot" style="background:#0E6E5E;color:#F3ECE0">Do this before you finish building. A schema corrected in TestFlight costs an evening; corrected after launch it costs a migration.</div>
+    </div>
+    <div class="gr-item">
+      <div class="gr-ihd"><div class="gr-ib" style="background:#2B44D6;color:#F3ECE0">2</div><div class="gr-in">Make importing their existing list the first thing that works</div><div class="gr-itag"><div class="gr-tag">HIGHEST LEVERAGE</div></div></div>
+      <div class="gr-ibody">
+        <div class="gr-cell"><div class="gr-ck">WHY</div><div class="gr-cv">Every serious collector already has a list — a spreadsheet, a Discogs export, a CLZ database, a Notion table, a notebook. That list <em>is</em> the deep collection you need. Nobody is going to photograph 300 records to try your app; they will paste a CSV.</div></div>
+        <div class="gr-cell"><div class="gr-ck">WHAT TO BUILD</div><div class="gr-cv">One importer per community's actual export format, not a generic CSV mapper. "Import your Discogs collection" is a headline; "map your columns" is a chore. Ask each Founding Cataloguer for their real file and build against it.</div></div>
+        <div class="gr-cell" style="border-right:none"><div class="gr-ck">THE PAYOFF</div><div class="gr-cv">A user goes from 0 to 300 objects in ten seconds, lands in the review queue you already designed, and immediately has something worth looking at. Your day-30 depth metric is decided by this one feature.</div></div>
+      </div>
+      <div class="gr-foot" style="background:#FFD24A">If you cut one thing from v1 to make room, don't cut this. It's the difference between a demo and a catalogue.</div>
+    </div>
+  </div>
+</div>
+
+<div class="gr-sec">
+  <div class="gr-lab">03 · Channels, ranked by return per hour</div>
+  <div class="gr-h2">Where else they are</div>
+  <div class="gr-tbl">
+    <div class="gr-tr gr-th"><div class="gr-td1"><div class="gr-tk">CHANNEL</div></div><div class="gr-td"><div class="gr-tk">WHAT IT ACTUALLY TAKES</div></div><div class="gr-td" style="flex:0 0 150px"><div class="gr-tk">VERDICT</div></div></div>
+    <div class="gr-tr"><div class="gr-td1">Collector YouTubers</div><div class="gr-td">A mid-size channel — 20k–200k subscribers, one hobby, an audience that owns hundreds of things. Offer a lifetime unlock code for their viewers and let them film their own shelf being catalogued. One good video outperforms every forum post you will ever write.</div><div class="gr-td" style="flex:0 0 150px;font:700 13px Archivo,sans-serif;color:#0E6E5E">DO FIRST</div></div>
+    <div class="gr-tr"><div class="gr-td1">Instagram &amp; TikTok shelf posts</div><div class="gr-td">Collectors already post their shelves constantly. Your 3D object view and the sparkle on a special edition are, bluntly, made for this — a 6-second clip of a sleeve turning is the whole pitch. Make a share export that looks good in a feed.</div><div class="gr-td" style="flex:0 0 150px;font:700 13px Archivo,sans-serif;color:#0E6E5E">DO FIRST</div></div>
+    <div class="gr-tr"><div class="gr-td1">Spreadsheet refugees</div><div class="gr-td">Search "collection spreadsheet template" in each hobby and go where those threads live. These people have already done the work of cataloguing and hate their tool — the shortest possible sales conversation.</div><div class="gr-td" style="flex:0 0 150px;font:700 13px Archivo,sans-serif;color:#0E6E5E">DO FIRST</div></div>
+    <div class="gr-tr"><div class="gr-td1">Physical: shops, fairs, flea markets</div><div class="gr-td">A record fair is a room full of your users holding the objects. A small card with a QR code, left with the owner's permission, at ten shops. Slow, unscalable, and it produces the deepest users you will get — they scan it while holding something they just bought.</div><div class="gr-td" style="flex:0 0 150px;font:700 13px Archivo,sans-serif;color:#17130F">HIGH VALUE</div></div>
+    <div class="gr-tr"><div class="gr-td1">Clubs, societies, Discords</div><div class="gr-td">Numismatic societies, comic shops' pull-list groups, board game cafés. Twenty members with 300 objects each is a better week than a viral post. Also your route into the business tier later.</div><div class="gr-td" style="flex:0 0 150px;font:700 13px Archivo,sans-serif;color:#17130F">HIGH VALUE</div></div>
+    <div class="gr-tr"><div class="gr-td1">Reddit, properly</div><div class="gr-td">Not a launch post — a "how do you all track your collection?" question, answered honestly in the comments over weeks. Then the schema post from section 01. Read each sub's rules; several ban links outright.</div><div class="gr-td" style="flex:0 0 150px;font:700 13px Archivo,sans-serif;color:#17130F">STEADY</div></div>
+    <div class="gr-tr"><div class="gr-td1">Apple editorial</div><div class="gr-td">Pitch it through App Store Connect once the app is genuinely beautiful and uses something current. A niche, well-designed, no-account, privacy-respecting catalogue is exactly the sort of thing that gets a "New Apps We Love" slot — and that slot is worth more than all of the above combined.</div><div class="gr-td" style="flex:0 0 150px;font:700 13px Archivo,sans-serif;color:#17130F">LOTTERY, FREE TICKET</div></div>
+    <div class="gr-tr" style="border-bottom:none"><div class="gr-td1">Product Hunt, HN, tech press</div><div class="gr-td">Brings developers, not collectors. Nice for your ego and your download graph for two days; almost nobody catalogues 200 objects afterwards.</div><div class="gr-td" style="flex:0 0 150px;font:700 13px Archivo,sans-serif;color:#8A7F70">SKIP</div></div>
+  </div>
+</div>
+
+<div class="gr-sec">
+  <div class="gr-lab">04 · The App Store itself</div>
+  <div class="gr-h2">One app, fourteen<br>front doors</div>
+  <p class="gr-p">Your idea about per-type pages is right, and Apple gives you two different tools that are easy to confuse. You want both, for different jobs.</p>
+  <div class="gr-list">
+    <div class="gr-item">
+      <div class="gr-ihd"><div class="gr-ib" style="background:#0E6E5E;color:#F3ECE0">A</div><div class="gr-in">Custom product pages — the one you're describing</div><div class="gr-itag"><div class="gr-tag">UP TO 35 PAGES</div><div class="gr-tag">OWN URL EACH</div></div></div>
+      <div class="gr-ibody">
+        <div class="gr-cell"><div class="gr-ck">WHAT IT IS</div><div class="gr-cv">Alternate versions of your product page — their own screenshots, preview and promo text — each with its own link. They aren't a test; they're front doors you hand out deliberately.</div></div>
+        <div class="gr-cell"><div class="gr-ck">HOW YOU'D USE IT</div><div class="gr-cv">One page per type. The vinyl page shows sleeves, crates and the turning 3D record. The coin page shows the mint-mark fields and ×12 quantities. Post <em>that</em> link in the coin forum, and the first screenshot a coin collector sees is coins — not somebody's records.</div></div>
+        <div class="gr-cell" style="border-right:none"><div class="gr-ck">WHY IT MATTERS HERE</div><div class="gr-cv">This app's weakness on the store is that "collection manager" looks generic. Fourteen specific doors turn a generic app into fourteen specific ones, at zero code cost. Conversion by page is visible in App Analytics, so you also learn which hobby wants you most.</div></div>
+      </div>
+      <div class="gr-foot" style="background:#0E6E5E;color:#F3ECE0">Build 5 at launch (your five strongest hobbies), not 14. Each needs real screenshots, and thin ones convert worse than none.</div>
+    </div>
+    <div class="gr-item">
+      <div class="gr-ihd"><div class="gr-ib" style="background:#FFD24A">B</div><div class="gr-in">Product page optimization — the experiment, not the door</div><div class="gr-itag"><div class="gr-tag">3 TREATMENTS MAX</div><div class="gr-tag">ONE TEST AT A TIME</div></div></div>
+      <div class="gr-ibody">
+        <div class="gr-cell"><div class="gr-ck">WHAT IT IS</div><div class="gr-cv">A/B testing of your <em>default</em> page: up to three alternate versions of icon, screenshots or preview shown to a slice of random visitors, results in App Analytics, one test at a time, up to 90 days. <a href="https://developer.apple.com/app-store/product-page-optimization/">Apple's page on it</a>.</div></div>
+        <div class="gr-cell"><div class="gr-ck">WHAT TO TEST FIRST</div><div class="gr-cv">Only one thing, and it's the big open design question: <strong>does the first screenshot show one object rendered beautifully, or a full shelf?</strong> That's a real fork in the app's positioning, and the store will answer it for you with data.</div></div>
+        <div class="gr-cell" style="border-right:none"><div class="gr-ck">THE CATCHES</div><div class="gr-cv">Test assets are reviewed, but can be submitted independently of the binary — <strong>except an alternate icon, which must ship inside the version being tested.</strong> 90% confidence means: rerun the experiment ten times and at least nine agree. With low traffic, tests take a long time to say anything.</div></div>
+      </div>
+      <div class="gr-foot" style="background:#FFD24A">Don't run this at launch. Apple's own three case studies averaged 154k, 430k and 2M impressions <em>per treatment</em> — you will have a rounding error of that, and you'll draw conclusions from noise.</div>
+      <div style="border-top:2.5px solid #17130F;padding:14px 16px;background:#17130F;color:#F3ECE0">
+        <div class="gr-ck" style="color:#FFD24A">OPERATING RULES, FROM APPLE'S OWN TECH TALK</div>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:10px">
+          <div style="flex:1 1 260px;min-width:250px;font:400 12.5px/1.5 Archivo,sans-serif;color:rgba(243,236,224,.88);text-wrap:pretty"><strong style="color:#F3ECE0">One asset per test.</strong> Change two things and you learn nothing about either.</div>
+          <div style="flex:1 1 260px;min-width:250px;font:400 12.5px/1.5 Archivo,sans-serif;color:rgba(243,236,224,.88);text-wrap:pretty"><strong style="color:#F3ECE0">Run in seven-day blocks, minimum one week.</strong> Collectors browse at weekends; a Monday-to-Wednesday test measures the wrong people.</div>
+          <div style="flex:1 1 260px;min-width:250px;font:400 12.5px/1.5 Archivo,sans-serif;color:rgba(243,236,224,.88);text-wrap:pretty"><strong style="color:#F3ECE0">Make the treatments obviously different.</strong> Subtle variations take far longer to reach confidence — which for a niche app means never.</div>
+          <div style="flex:1 1 260px;min-width:250px;font:400 12.5px/1.5 Archivo,sans-serif;color:rgba(243,236,224,.88);text-wrap:pretty"><strong style="color:#F3ECE0">All three of their case studies disproved the hypothesis.</strong> Icon, seasonal art, app preview — every developer guessed wrong. Treat your own instinct about the first screenshot as untested.</div>
+          <div style="flex:1 1 260px;min-width:250px;font:400 12.5px/1.5 Archivo,sans-serif;color:rgba(243,236,224,.88);text-wrap:pretty"><strong style="color:#F3ECE0">A "the control won" result is a win.</strong> It's permission to stop redesigning the page and go back to building.</div>
+          <div style="flex:1 1 260px;min-width:250px;font:400 12.5px/1.5 Archivo,sans-serif;color:rgba(243,236,224,.88);text-wrap:pretty"><strong style="color:#F3ECE0">Have the assets ready between releases.</strong> The gap between app versions is your only uninterrupted testing window.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="gr-h3">The interaction nobody mentions</div>
+  <p class="gr-note">Treatments are also shown to people arriving from <strong>external referral links</strong> — social posts, forum links, a YouTuber's description. Which means that if a test is running when your vinyl forum post goes out, that traffic gets split across treatments and lands on pages you didn't choose. So: <strong>community and creator links always point at a custom product page</strong> (one door, one message, fully attributable), and product page optimization is reserved for the organic search traffic you don't control. Keep those two tools on separate jobs and neither pollutes the other's numbers.</p>
+
+  <div class="gr-h3">The two free things people forget</div>
+  <p class="gr-note"><strong>The subtitle and keyword field are per-localization</strong> — "vinyl record collection tracker" is a winnable search; "collection manager" is not. Pick the long specific phrases your Founding Cataloguers actually type. And <strong>the app's name can carry one hobby word</strong> without ruining it — decide deliberately whether you're the vinyl app that also does coins, or the collection app. The first ranks; the second doesn't.</p>
+</div>
+
+<div class="gr-sec" style="border-bottom:none">
+  <div class="gr-lab">05 · The next ninety days</div>
+  <div class="gr-h2">Before you write<br>more code</div>
+  <div class="gr-steps">
+    <div class="gr-step"><div class="gr-sn"><div class="gr-sc">W1</div><div class="gr-sl"></div></div><div class="gr-sb"><div class="gr-st">Pick five hobbies, join five communities as a person</div><div class="gr-sv">Not fourteen. The five where you'd enjoy the conversations — probably vinyl, comics, board games, watches, retro games. Make an account, answer other people's questions, learn the local grammar. Nothing about your app yet.</div></div></div>
+    <div class="gr-step"><div class="gr-sn"><div class="gr-sc">W2–4</div><div class="gr-sl"></div></div><div class="gr-sb"><div class="gr-st">Post the schema question in each, after messaging the mods</div><div class="gr-sv">One post per community: the field list for that type, asking what's wrong with it. Reply to everyone. Collect names of the people who wrote paragraphs — those are your Founding Cataloguers, and they've now already contributed before being asked for anything.</div></div></div>
+    <div class="gr-step"><div class="gr-sn"><div class="gr-sc">W4–5</div><div class="gr-sl"></div></div><div class="gr-sb"><div class="gr-st">Ask ten of them what they'd pay, and for their export file</div><div class="gr-sv">Two questions, one message. The price answer sizes your unlock; the file gives you the importer to build. This is the twenty-conversation research from the business plan, and it costs you an afternoon.</div></div></div>
+    <div class="gr-step"><div class="gr-sn"><div class="gr-sc">W6–10</div><div class="gr-sl"></div></div><div class="gr-sb"><div class="gr-st">TestFlight with 30–50 of them, importers first</div><div class="gr-sv">Ship the import path before the polish. The measure of success in this phase isn't bug reports, it's <strong>median objects per tester</strong> — if fifty invested experts don't reach 60 objects each, no marketing will fix what's wrong.</div></div></div>
+    <div class="gr-step"><div class="gr-sn"><div class="gr-sc">W10–12</div><div class="gr-sl"></div></div><div class="gr-sb"><div class="gr-st">Launch with five custom product pages and two YouTubers</div><div class="gr-sv">Each community gets its own link, posted by you in a reply or by a Founding Cataloguer in their own words. Two videos from mid-size channels, paid for in lifetime codes rather than cash. Then leave the default page alone for a month before touching optimization.</div></div></div>
+    <div class="gr-step"><div class="gr-sn"><div class="gr-sc" style="background:#FF5B2E;color:#F3ECE0">ALL</div></div><div class="gr-sb"><div class="gr-st">Track one number per channel: median objects at day 30</div><div class="gr-sv">Tag every custom product page and code, then compare depth, not installs. A channel that sends 2,000 people who add five objects is worse than one that sends 40 who add three hundred — and only one of those tells you whether to build v2.</div></div></div>
+  </div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

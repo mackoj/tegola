@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#EAE3D6}a{color:#2B44D6}a:hover{color:#FF5B2E}</style>
+</helmet>
+
+<div style="width:1360px;margin:0 auto;padding:60px 28px 100px;font-family:Archivo,system-ui,sans-serif;color:#17130F">
+
+  <div style="display:flex;align-items:center;gap:14px">
+    <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70">CLCTN · TYPE MANIFEST · WINE · SEPTEMBER 2026</div>
+    <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#F3ECE0;background:linear-gradient(150deg,#6E2440,#C2371F);border-radius:999px;padding:5px 12px">75cl · MY CELLAR</div>
+  </div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:66px;line-height:.92;letter-spacing:-.045em;margin:16px 0 0;max-width:1020px;text-wrap:balance">The first type that disappears when you enjoy it.</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:870px;margin-top:20px;text-wrap:pretty">Wine passes the test for a new type easily — it is collected, catalogued, graded, insured and traded by people who already keep spreadsheets. But it is not another vinyl. <strong>It is the first type in the app whose objects are consumed, and the first whose value moves because time passed rather than because the market did.</strong> Both of those want something the engine does not have yet.</div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:870px;margin-top:14px;text-wrap:pretty">Written against <span style="font-family:'DM Mono',monospace">vinyl.yml</span> as the reference manifest. Where wine simply mirrors vinyl, it is not discussed — section 04 lists only the rows that differ and why.</div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">01 · FOUR THINGS WINE BREAKS</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:870px;margin-bottom:20px;text-wrap:pretty">Each of these is a genuine gap in the manifest schema, not a field that was overlooked. The good news is that all four are small, and three of them pay off in other types later.</div>
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px">
+    <sc-for list="{{ breaks }}" as="b" hint-placeholder-count="4">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #C2371F;overflow:hidden">
+        <div style="display:flex;align-items:baseline;gap:12px;padding:13px 20px;background:#17130F;color:#F3ECE0">
+          <div style="font:500 9.5px 'DM Mono',monospace;letter-spacing:.12em;opacity:.55">{{ b.n }}</div>
+          <div style="font:700 16px Archivo,sans-serif">{{ b.t }}</div>
+        </div>
+        <div style="padding:18px 20px">
+          <div style="font:400 13.5px/1.65 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ b.b }}</div>
+          <div style="margin-top:14px;padding-top:13px;border-top:2px solid #E0D6C4">
+            <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;margin-bottom:7px">WHAT IT NEEDS</div>
+            <div style="font:400 12.5px/1.6 'DM Mono',monospace;color:#2B44D6;text-wrap:pretty">{{ b.needs }}</div>
+          </div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">02 · THE DRINKING WINDOW — THE REASON TO BUILD THIS TYPE</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:10px;text-wrap:pretty">Every other type answers <em>what do I own and what is it worth</em>. Wine adds a third question nobody else answers well: <strong>what should I open tonight, and what have I left too long?</strong> A cellar is the only collection with a deadline, and missing it is the thing collectors genuinely fear.</div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:900px;margin-bottom:22px;text-wrap:pretty">A new field type — <span style="font-family:'DM Mono',monospace">yearRange</span> with an inner peak — and one derived state per bottle. Slide the vintage and bottle size in Tweaks; large formats mature slower, which is real and which the curve should respect.</div>
+
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+    <div style="display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;padding:18px 24px;background:#17130F;color:#F3ECE0">
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:24px;letter-spacing:-.03em">Château Léoville-Barton</div>
+      <div style="font:400 15px Archivo,sans-serif;opacity:.65">Saint-Julien · {{ formatLabel }}</div>
+      <div style="margin-left:auto;font-family:'DM Mono',monospace;font-weight:500;font-size:22px;color:#FFD24A">{{ vintageLabel }}</div>
+    </div>
+
+    <div style="padding:30px 24px 24px">
+      <div style="position:relative;padding-top:34px">
+        <div style="position:absolute;top:0;bottom:0;width:2.5px;background:#17130F;left: {{ nowLeft }}"></div>
+        <div style="position:absolute;top:0;transform:translateX(-50%);font:500 9px 'DM Mono',monospace;letter-spacing:.12em;background:#17130F;color:#F3ECE0;padding:5px 10px;border-radius:999px;white-space:nowrap;left: {{ nowLeft }}">NOW · 2026</div>
+        <div style="display:flex;border:2.5px solid #17130F;border-radius:14px;overflow:hidden;height:62px">
+          <sc-for list="{{ segments }}" as="s" hint-placeholder-count="5">
+            <div style="display:flex;flex-direction:column;justify-content:center;padding:0 12px;overflow:hidden;background: {{ s.bg }};color: {{ s.fg }};flex: {{ s.weight }}">
+              <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.1em;opacity:.75;white-space:nowrap;overflow:hidden">{{ s.years }}</div>
+              <div style="font:700 13px Archivo,sans-serif;white-space:nowrap;overflow:hidden;margin-top:3px">{{ s.name }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:22px">
+        <div style="border:2.5px solid #17130F;border-radius:16px;padding:18px 20px;background: {{ statusBg }};color: {{ statusFg }}">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;opacity:.7">STATE RIGHT NOW</div>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:27px;line-height:1.05;letter-spacing:-.03em;margin-top:9px;text-wrap:balance">{{ statusName }}</div>
+          <div style="font:400 13px/1.55 Archivo,sans-serif;margin-top:9px;opacity:.9;text-wrap:pretty">{{ statusNote }}</div>
+        </div>
+        <div style="border:2.5px solid #17130F;border-radius:16px;padding:18px 20px;background:#FBF6EC">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">THE DERIVED FIELD</div>
+          <div style="font:400 12.5px/1.75 'DM Mono',monospace;color:#17130F;margin-top:10px;white-space:pre-wrap">{{ derivedCode }}</div>
+        </div>
+        <div style="border:2.5px solid #17130F;border-radius:16px;padding:18px 20px;background:#FBF6EC">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">WHAT IT UNLOCKS</div>
+          <div style="display:flex;flex-direction:column;gap:9px;margin-top:11px">
+            <sc-for list="{{ unlocks }}" as="u" hint-placeholder-count="4">
+              <div style="display:flex;gap:10px;align-items:baseline">
+                <div style="flex:none;width:6px;height:6px;border-radius:50%;background:#C2371F"></div>
+                <div style="flex:1;font:400 13px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ u }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">03 · WINE.YML</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:870px;margin-bottom:20px;text-wrap:pretty">The whole type, in the shape vinyl already uses. Three keys are new to the schema and are marked in section 06; everything else is an existing primitive doing an ordinary job.</div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#0C0A08;color:#F3ECE0;padding:22px 24px;box-shadow:5px 5px 0 #C2371F;overflow-x:auto">
+    <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:14px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;color:#FFD24A">RESOURCES/TYPES/WINE.YML</div>
+      <div style="margin-left:auto;font:500 8.5px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #FFD24A;color:#FFD24A;border-radius:999px;padding:3px 9px">TYPE 15</div>
+    </div>
+    <div style="font:400 12.5px/1.72 'DM Mono',monospace;white-space:pre">{{ manifestYaml }}</div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">04 · VINYL → WINE, WHERE THEY DIVERGE</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:20px;text-wrap:pretty">Only the rows that differ. The parallels are worth noticing too: both types grade two things rather than one — vinyl grades media and sleeve, wine grades fill level and label — and in both cases collectors quote both numbers in the same breath.</div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;overflow:hidden;box-shadow:5px 5px 0 #17130F">
+    <div style="display:grid;grid-template-columns:170px 300px 300px 1fr;background:#17130F;color:#F3ECE0;font:500 9.5px 'DM Mono',monospace;letter-spacing:.1em">
+      <div style="padding:13px 16px">KEY</div>
+      <div style="padding:13px 16px">VINYL</div>
+      <div style="padding:13px 16px">WINE</div>
+      <div style="padding:13px 16px">WHY</div>
+    </div>
+    <sc-for list="{{ diffs }}" as="d" hint-placeholder-count="10">
+      <div style="display:grid;grid-template-columns:170px 300px 300px 1fr;border-top:2px solid #E0D6C4;background:#fff;align-items:start">
+        <div style="padding:14px 16px;font:400 12px/1.5 'DM Mono',monospace">{{ d.key }}</div>
+        <div style="padding:14px 16px;font:400 12.5px/1.6 Archivo,sans-serif;color:#6E6458;text-wrap:pretty">{{ d.vinyl }}</div>
+        <div style="padding:14px 16px;font:500 12.5px/1.6 Archivo,sans-serif;color:#17130F;text-wrap:pretty">{{ d.wine }}</div>
+        <div style="padding:14px 16px;font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ d.why }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">05 · OPENING A BOTTLE</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:22px;text-wrap:pretty">The action no other type has. Rule 09 says a quantity type is not individually tradable — you cannot lend one of four identical cards. That stays true for wine. <strong>But a quantity type can still be consumed individually, and consumption is not deletion.</strong> The bottle leaves the cellar and joins the history; the wine itself stays in the collection at count zero, because what you drank is the most interesting thing you can know about a cellar.</div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px">
+    <sc-for list="{{ openSteps }}" as="s" hint-placeholder-count="4">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;overflow:hidden;box-shadow:4px 4px 0 #17130F">
+        <div style="padding:11px 16px;background:#6E2440;color:#F3ECE0;font:500 9px 'DM Mono',monospace;letter-spacing:.12em">{{ s.k }}</div>
+        <div style="padding:16px">
+          <div style="font:700 15px/1.3 Archivo,sans-serif;text-wrap:pretty">{{ s.t }}</div>
+          <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">{{ s.b }}</div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#0C0A08;color:#F3ECE0;padding:22px 24px;box-shadow:5px 5px 0 #FFD24A">
+    <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;color:#FFD24A;margin-bottom:12px">THE CONSEQUENCE WORTH ARGUING ABOUT</div>
+    <div style="font:400 15px/1.7 Archivo,sans-serif;max-width:960px;text-wrap:pretty">A cellar's headline number stops being <em>what it is worth</em> and becomes <em>what is left</em>. Both matter, but a collector who has drunk half their cellar has not lost half their collection — they have used it correctly. The collection screen for wine should lead with bottles remaining and bottles drunk, and put value second. No other type in the app would want that, which is a good sign the type system is earning its keep.</div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">06 · IDENTIFICATION — AND WHAT THE ENGINE HAS TO GROW</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;padding:22px 24px;box-shadow:5px 5px 0 #C2371F">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">CAPTURE STRATEGY</div>
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:29px;line-height:1.05;letter-spacing:-.035em;margin-top:9px;text-wrap:balance">Transcription, not matching.</div>
+      <div style="font:400 13.5px/1.65 Archivo,sans-serif;color:#3A2F26;margin-top:12px;text-wrap:pretty">Empty symbologies, empty providers — wine barcodes are assigned per importer and never carry the vintage, and no open label corpus exists. So wine does not attempt a catalogue lookup at all. The camera reads the label and fills four fields, and that is the whole feature.</div>
+      <div style="font:400 13.5px/1.65 Archivo,sans-serif;color:#3A2F26;margin-top:11px;text-wrap:pretty">This is a good outcome rather than a compromise. A wine label is a large, flat, high-contrast, text-dominated surface photographed at arm's length — close to the best case OCR ever gets, and far easier than a record spine. The vintage is usually the only number on the label, which makes it trivially extractable.</div>
+      <div style="display:flex;flex-wrap:wrap;gap:7px;margin-top:16px">
+        <sc-for list="{{ ocrChips }}" as="c" hint-placeholder-count="4">
+          <div style="font:400 11.5px 'DM Mono',monospace;border:2px solid #17130F;border-radius:999px;padding:5px 11px;background:#FBF6EC">{{ c }}</div>
+        </sc-for>
+      </div>
+      <div style="font:400 12.5px/1.6 Archivo,sans-serif;color:#6E6458;margin-top:14px;text-wrap:pretty">Confidence never reaches the auto-commit band, because there is nothing to be confident against. Every wine lands in the flag-for-a-glance band with its fields pre-filled — which is still four fewer keyboard taps per bottle than any cellar app on the market.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <sc-for list="{{ newPrimitives }}" as="p" hint-placeholder-count="4">
+        <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;padding:16px 18px">
+          <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+            <div style="font:500 13px 'DM Mono',monospace;color:#2B44D6">{{ p.k }}</div>
+            <div style="margin-left:auto;font:500 8.5px 'DM Mono',monospace;letter-spacing:.1em;border-radius:999px;padding:3px 9px;border:2px solid #17130F;background: {{ p.tagBg }}">{{ p.tag }}</div>
+          </div>
+          <div style="font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">{{ p.b }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">07 · STILL OPEN</div>
+  <div style="display:flex;flex-direction:column;gap:11px">
+    <sc-for list="{{ open }}" as="o" hint-placeholder-count="4">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#FBF6EC;padding:18px 20px;display:flex;gap:18px;align-items:baseline">
+        <div style="flex:none;font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;width:52px">{{ o.k }}</div>
+        <div style="flex:1">
+          <div style="font:700 16px/1.3 Archivo,sans-serif;text-wrap:pretty">{{ o.q }}</div>
+          <div style="font:400 13.5px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:7px;max-width:920px;text-wrap:pretty">{{ o.b }}</div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;vintage&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:2015,&quot;min&quot;:1960,&quot;max&quot;:2024,&quot;step&quot;:1,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Sample bottle&quot;},&quot;bottleFormat&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;Standard 75cl&quot;,&quot;options&quot;:[&quot;Half 37.5cl&quot;,&quot;Standard 75cl&quot;,&quot;Magnum 1.5L&quot;,&quot;Jeroboam 5L&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Sample bottle&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const vintage = this.props.vintage ?? 2015;
+    const fmt = this.props.bottleFormat ?? 'Standard 75cl';
+    const now = 2026;
+
+    // Large formats age slower: less oxygen per unit of wine.
+    const k = { 'Half 37.5cl': 0.72, 'Standard 75cl': 1, 'Magnum 1.5L': 1.28, 'Jeroboam 5L': 1.5 }[fmt] ?? 1;
+    const at = (y) => vintage + Math.round(y * k);
+    const drinkFrom = at(10), peakFrom = at(15), peakTo = at(27), drinkTo = at(35), axisEnd = at(41);
+    const span = axisEnd - vintage;
+    const pct = (y) => Math.max(0, Math.min(100, ((y - vintage) / span) * 100));
+
+    const segments = [
+      { name: 'Too young', years: vintage + '–' + drinkFrom, bg: '#EDE4D6', fg: '#6E6458', weight: drinkFrom - vintage },
+      { name: 'Drinkable', years: drinkFrom + '–' + peakFrom, bg: '#B9F0C9', fg: '#17130F', weight: peakFrom - drinkFrom },
+      { name: 'At peak', years: peakFrom + '–' + peakTo, bg: '#0E6E5E', fg: '#F3ECE0', weight: peakTo - peakFrom },
+      { name: 'Declining', years: peakTo + '–' + drinkTo, bg: '#FFD24A', fg: '#17130F', weight: drinkTo - peakTo },
+      { name: 'Past it', years: 'after ' + drinkTo, bg: '#C2371F', fg: '#F3ECE0', weight: axisEnd - drinkTo }
+    ];
+
+    let status;
+    if (now < drinkFrom) status = { statusName: 'Hold — ' + (drinkFrom - now) + ' years', statusBg: '#EDE4D6', statusFg: '#17130F', statusNote: 'Opening it now wastes it. The cellar screen sorts these to the bottom and never nags.' };
+    else if (now < peakFrom) status = { statusName: 'Ready, improving', statusBg: '#B9F0C9', statusFg: '#17130F', statusNote: 'Perfectly good tonight, better in a few years. The honest answer to "can I open this?"' };
+    else if (now <= peakTo) status = { statusName: 'Drink it', statusBg: '#0E6E5E', statusFg: '#F3ECE0', statusNote: 'This is the whole reason the type exists. Surfaced first, every time the app is opened.' };
+    else if (now <= drinkTo) status = { statusName: 'Drink it soon', statusBg: '#FFD24A', statusFg: '#17130F', statusNote: 'Still good, no longer improving. The only nudge in the app that is genuinely urgent.' };
+    else status = { statusName: 'Likely past it', statusBg: '#C2371F', statusFg: '#F3ECE0', statusNote: 'Shown gently and never as a failure — plenty of bottles outlive the estimate.' };
+
+    return {
+      vintageLabel: String(vintage),
+      formatLabel: fmt,
+      nowLeft: pct(now).toFixed(2) + '%',
+      segments,
+      ...status,
+
+      derivedCode: 'maturity(now) →\n  .tooYoung\n  .ready\n  .peak\n  .declining\n  .past\n\nNot stored. Computed from\ndrinkingWindow on read,\nlike value from paid.',
+
+      unlocks: [
+        'A "drink tonight" shelf that is genuinely useful rather than a filter with a nice name.',
+        'One notification a year per bottle entering its peak — the only push worth sending.',
+        'Sort and filter by maturity across the whole cellar, not just by value.',
+        'Valuation that decays past the window, which no market feed will tell you.'
+      ],
+
+      breaks: [
+        { n: 'BREAK 01', t: 'Objects are consumed', needs: 'duplicates: quantity + consumable: true',
+          b: 'Every other type is permanent. A record you own in 2026 you still own in 2046. A bottle is opened and gone, and the count goes down. Rule 06 gives you quantity, but quantity in the app currently only ever increases — nothing decrements it, and nothing records why.' },
+        { n: 'BREAK 02', t: 'Value moves with the calendar', needs: 'derived maturity feeding valuationService',
+          b: 'A card is worth what the market says. A bottle five years past its window is worth less than the same bottle in 2030, and no price feed reports that, because the feed prices the wine and not your bottle. Maturity is a valuation input the engine has no concept of.' },
+        { n: 'BREAK 03', t: 'The date is the identity', needs: 'type: year with allowNV, in the spine',
+          b: 'Château Léoville-Barton 2015 and 2016 are different objects with different values and different windows. Vinyl treats year as descriptive; wine treats it as half the name. And non-vintage is legal — most Champagne has no year at all, which a plain year field cannot express.' },
+        { n: 'BREAK 04', t: 'There is a physical address', needs: 'Places — an app-level entity, see Places.dc.html',
+          b: 'Nobody asks which shelf a record is on — you can see it. A cellar of four hundred bottles in racks is opaque, and "where is it" is the question the app gets asked most after "what is it worth". Wine raised this, but the answer outgrew the type: places are shared across every collection, and wine only names its own noun for them.' }
+      ],
+
+      diffs: [
+        { key: 'duplicates', vinyl: 'rows — three pressings are three objects with three conditions', wine: 'quantity, plus consumable: true', why: 'Six bottles of one wine and vintage are genuinely interchangeable. Where vinyl splits on pressing, wine splits on vintage — and vintage is already a field, so the split comes free.' },
+        { key: 'conditions', vinyl: 'Mint → Poor, the Goldmine scale', wine: 'Into neck → Below low shoulder', why: 'You cannot grade a sealed bottle by looking at the wine, so the trade grades the ullage — how far the fill has dropped. Ordered best-first like every other scale, so the picker and the sort still come free.' },
+        { key: 'lookup.symbologies', vinyl: '[ean13, upc-a]', wine: '[] — empty', why: 'Wine barcodes are assigned by importer, vary by market, and almost never encode the vintage. Scanning one would return a confident wrong answer, which is worse than returning nothing.' },
+        { key: 'lookup.providers', vinyl: '[discogs, musicbrainz]', wine: '[] — empty, by design', why: 'No open corpus exists; Vivino and Cellar Tracker are closed. Rule 08 already covers this: sneakers proved an empty provider list is a designed state and not a defect.' },
+        { key: 'lookup.ocrFields', vinyl: 'n/a', wine: '[producer, cuvee, vintage, appellation]', why: 'New key. Where there is nothing to match against, the camera still earns its place by transcribing. Four fields filled from one photo is most of the data entry gone.' },
+        { key: 'spine.year', vinyl: 'Year — descriptive', wine: 'Vintage — identifying', why: 'Same slot, different weight. In a wine list the vintage sits beside the name at equal size, because a producer without a year is not a wine.' },
+        { key: 'second grade', vinyl: 'sleeveCondition', wine: 'labelCondition', why: 'An exact structural parallel. Both types grade the contents and the packaging separately, and in both trades a listing quotes the pair.' },
+        { key: 'format', vinyl: 'LP, 2×LP, 7" — descriptive', wine: 'Half → Salmanazar — a value multiplier', why: 'A magnum is worth more than two bottles of the same wine and matures slower. Format is an input to both valuation and the drinking window, not just a label.' },
+        { key: 'related', vinyl: '[subtitle, label]', wine: '[producer, appellation]', why: 'Same question in a shop — "do I already own something like this?" — but a collector buys vertically by producer, where a record buyer browses by artist and imprint.' },
+        { key: 'new field types', vinyl: 'event — one date', wine: 'yearRange, log', why: 'A drinking window is a span with an inner peak, and an opening history is an append-only list of dated entries with notes and scores. Vinyl\'s lastCleaned event is the single-entry version of the second one.' }
+      ],
+
+      openSteps: [
+        { k: 'STEP 01', t: 'Open', b: 'One action on the object screen, weighted like the primary action it is. Not buried beside Edit.' },
+        { k: 'STEP 02', t: 'Count decrements', b: 'Six becomes five. The object stays, the cellar total drops, the value drops by one bottle.' },
+        { k: 'STEP 03', t: 'Log the pour', b: 'Date pre-filled, occasion and note optional, a score if they want one. Skippable in one tap — a bottle opened and unlogged still counts.' },
+        { k: 'STEP 04', t: 'Zero is not gone', b: 'At count zero the wine moves to Drunk, keeps its notes, and still answers "have I had this?" in the shop. Deletion stays a separate, deliberate act.' }
+      ],
+
+      ocrChips: ['producer', 'cuvee', 'vintage', 'appellation', '→ region and country inferred', '→ colour inferred from appellation'],
+
+      newPrimitives: [
+        { k: 'consumable: true', tag: 'NEW', tagBg: '#FFD24A', b: 'Marks a quantity type whose count can decrease through use. Adds the Open action, the log, and the Drunk state. Nothing else in the app changes shape.' },
+        { k: 'type: yearRange', tag: 'NEW', tagBg: '#FFD24A', b: 'A span of years with an optional inner peak span. Editor is two or four year steppers; the display is the bar above. Whisky and cheese would use it unchanged.' },
+        { k: 'type: log', tag: 'NEW', tagBg: '#FFD24A', b: 'An append-only dated list with a per-type entry schema. A generalisation of event, which becomes the single-entry case. Lending history could move onto it later.' },
+        { k: 'type: year', tag: 'EXTEND', tagBg: '#B9F0C9', b: 'Needs allowNV so a bottle can honestly have no vintage. Sorts after all real years and displays as NV rather than as a blank.' },
+        { k: 'lookup.ocrFields', tag: 'NEW', tagBg: '#FFD24A', b: 'Already proposed in the identification pipeline. Wine is the type that forces it: the camera writes into fields rather than resolving an identifier.' }
+      ],
+
+      open: [
+        { k: 'Q1', q: 'Where do drinking windows come from?', b: 'Critics publish them, and none of it is free or structured. The fallback is a rule table by region, colour and vintage quality — crude, and honestly better than nothing, because a Saint-Julien from a good year has a well-known shape. The user can always override, and the override should feel expected rather than corrective.' },
+        { k: 'Q2', q: 'Is quantity really right, or do serious collectors need per-bottle rows?', b: 'Three bought en primeur and three from auction in 2022 have different provenance and different value. The clean answer is that provenance splits the object the way pressing splits vinyl — same wine, two rows. Worth deciding now, because it is painful to retrofit.' },
+        { k: 'Q3', q: 'Does the cellar screen lead with bottles or with value?', b: 'Section 05 argues bottles. That would make wine the only type whose collection header differs, which is either the type system working or the first crack in it.' },
+        { k: 'Q4', q: 'Is there a cellar layout view, or is bin just text?', b: 'A rack diagram is a genuinely delightful thing and a large amount of work for one type. Text first, and see whether anyone actually fills the field before drawing anything.' }
+      ],
+
+      manifestYaml: [
+        'id: wine',
+        'name:',
+        '  singular: Bottle',
+        '  plural: Bottles',
+        '  collection: My Cellar',
+        'mark: "75cl"',
+        'icon: wineglass',
+        'gradient: [plum, rust]',
+        '',
+        '# Six bottles of the same wine and vintage are one object with a count.',
+        '# Unlike every other quantity type, that count goes DOWN.',
+        'duplicates: quantity',
+        'consumable: true',
+        '',
+        'spine:',
+        '  title: Wine',
+        '  subtitle: Appellation',
+        '  year: Vintage',
+        '  acquired: Acquired on',
+        '  paid: Paid',
+        '  value: Value',
+        '',
+        '# Auction-house fill levels, best first. Label condition is separate,',
+        '# below — the same split as vinyl\u2019s media and sleeve.',
+        'conditions: [Into neck, Base of neck, Top shoulder, Upper shoulder,',
+        '             Mid shoulder, Low shoulder, Below low shoulder]',
+        '',
+        'lookup:',
+        '  identifier: none',
+        '  symbologies: []          # barcodes are per-importer, never carry vintage',
+        '  providers: []            # no open corpus exists; see Rule 08',
+        '  localCorpus: none',
+        '  ocrFields: [producer, cuvee, vintage, appellation]',
+        '',
+        'searchable: [title, subtitle, year, producer, appellation, region, grapes, place]',
+        '',
+        '# Places are app-level, shared across every type. The manifest names it only.',
+        'placeLabel: Where it is',
+        '',
+        '# In a shop: \u201cdo I already own this producer, or this vintage?\u201d',
+        'related: [producer, appellation]',
+        '',
+        'fields:',
+        '  - key: producer      | Producer   | text    | auto',
+        '  - key: cuvee         | Cuv\u00e9e      | text    | auto',
+        '  - key: vintage       | Vintage    | year    | allowNV, auto',
+        '  - key: appellation   | Appellation| text    | auto',
+        '  - key: region        | Region     | text    | auto',
+        '  - key: country       | Country    | text    | auto',
+        '  - key: colour        | Colour     | choice  | Red, White, Ros\u00e9, Orange,',
+        '                                                Sparkling, Fortified, Sweet',
+        '  - key: grapes        | Grapes     | list    | [variety, share], auto',
+        '  - key: format        | Bottle     | choice  | Half \u2192 Salmanazar',
+        '  - key: drinkingWindow| Drinking window | yearRange | peak: true, auto',
+        '  - key: labelCondition| Label      | choice  | Pristine \u2192 Missing',
+        '  - key: closure       | Closure    | choice  | Cork, Screwcap, Crown\u2026',
+        '  - key: abv           | Strength   | number  | % vol, auto',
+        '  - key: inBond        | In bond    | yesNo',
+        '  - key: provenance    | Provenance | text',
+        '  - key: scores        | Critic scores | list | [critic, score, year], auto',
+        '  - key: opened        | Bottles opened | log | [date, occasion, note, score]'
+      ].join('\n')
+    };
+  }
+}
+
+</script>
+</body>
+</html>

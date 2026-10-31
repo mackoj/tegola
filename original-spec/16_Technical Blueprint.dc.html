@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#EAE3D6}a{color:#2B44D6}a:hover{color:#FF5B2E}</style>
+</helmet>
+
+<div style="width:1360px;margin:0 auto;padding:60px 28px 100px;font-family:Archivo,system-ui,sans-serif;color:#17130F">
+
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70">CLCTN · TECHNICAL BLUEPRINT · TCA + SQLITE-DATA · SEPTEMBER 2026</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:66px;line-height:.92;letter-spacing:-.045em;margin:16px 0 0;max-width:1000px;text-wrap:balance">Every screen, every reducer.</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:840px;margin-top:20px;text-wrap:pretty">The whole app deconstructed into features a coding assistant can implement one at a time without holding the rest in its head. Sections 03 and 04 are the tables you asked for; section 00 is the preamble to paste above any single feature; and section 02 is the type manifest — the declarative file behind each of the sixteen types shipping today, which turns out to drive more of the screens than any other decision here.</div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:840px;margin-top:14px;text-wrap:pretty">Written against The Composable Architecture, <span style="font-family:'DM Mono',monospace">sqlite-data</span> and <span style="font-family:'DM Mono',monospace">swift-dependencies</span>. Where those libraries have an opinion, it is followed rather than wrapped — the fastest way to lose the value of this stack is to build an abstraction layer over it.</div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">00 · THE PREAMBLE TO PASTE WITH EVERY FEATURE</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:840px;margin-bottom:20px;text-wrap:pretty">One feature per conversation, this block on top, the feature's row from section 03 below it. Nothing else — a whole-app dump produces plausible code that compiles against imaginary APIs.</div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#0C0A08;color:#F3ECE0;padding:24px;box-shadow:5px 5px 0 #2B44D6;overflow-x:auto">
+    <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:16px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;opacity:.5">CLCTN-FEATURE-PREAMBLE.TXT</div>
+      <div style="margin-left:auto;font:500 8.5px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #FFD24A;color:#FFD24A;border-radius:999px;padding:3px 9px">ONE FEATURE PER CONVERSATION</div>
+    </div>
+    <sc-for list="{{ preamble }}" as="p" hint-placeholder-count="12">
+      <div style="font:400 12.5px/1.75 'DM Mono',monospace;white-space:pre-wrap;max-width:1040px;margin-bottom:14px">{{ p }}</div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">01 · GLOBAL CONVENTIONS</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:840px;margin-bottom:20px;text-wrap:pretty">Decided once here so no feature has to decide again. Each of these is load-bearing — breaking one produces code that works alone and fights everything around it.</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+    <sc-for list="{{ conventions }}" as="c" hint-placeholder-count="9">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;padding:18px">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">{{ c.k }}</div>
+        <div style="font:700 15px/1.3 Archivo,sans-serif;margin-top:8px;text-wrap:pretty">{{ c.t }}</div>
+        <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">{{ c.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">02 · THE TYPE MANIFEST</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:860px;margin-bottom:10px;text-wrap:pretty">Each type is a declarative file with a 3D model beside it. This is the most important structural fact in the document: <strong>the app does not hold sixteen implementations of a collection, it holds one implementation and sixteen files</strong> — and the seventeenth is a file too. The database is a compiled cache of those files, never their author.</div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:860px;margin-bottom:22px;text-wrap:pretty">Read this first — any reducer that hardcodes something in the table below is a reducer that must be reopened every time a type ships.</div>
+
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#0C0A08;color:#F3ECE0;padding:22px;box-shadow:5px 5px 0 #FFD24A;overflow-x:auto;margin-bottom:16px">
+    <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;color:#FFD24A;margin-bottom:6px">TYPES/VINYL.YAML · ABRIDGED</div>
+    <div style="font:400 12px Archivo,sans-serif;opacity:.6;line-height:1.6;max-width:820px">One of sixteen, and the count is a directory listing rather than a number in code. Every key is consumed by something — the table below says by what.</div>
+    <div style="font:400 12.5px/1.75 'DM Mono',monospace;white-space:pre;margin-top:14px">{{ manifestYaml }}</div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px">
+    <sc-for list="{{ manifestRules }}" as="m" hint-placeholder-count="6">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;padding:18px">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">{{ m.k }}</div>
+        <div style="font:700 15px/1.3 Archivo,sans-serif;margin-top:8px;text-wrap:pretty">{{ m.t }}</div>
+        <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">{{ m.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="border:2.5px solid #17130F;border-radius:18px;overflow:hidden;box-shadow:5px 5px 0 #17130F">
+    <div style="display:grid;grid-template-columns:230px 300px 1fr;background:#17130F;color:#F3ECE0;font:500 9.5px 'DM Mono',monospace;letter-spacing:.1em">
+      <div style="padding:13px 16px">MANIFEST KEY</div>
+      <div style="padding:13px 16px">CONSUMED BY</div>
+      <div style="padding:13px 16px">WHAT IT DOES, AND WHY IT IS DATA AND NOT CODE</div>
+    </div>
+    <sc-for list="{{ manifestKeys }}" as="k" hint-placeholder-count="16">
+      <div style="display:grid;grid-template-columns:230px 300px 1fr;border-top:2px solid #E0D6C4;background:#fff;align-items:start">
+        <div style="padding:14px 16px;font:400 12px/1.6 'DM Mono',monospace">{{ k.key }}</div>
+        <div style="padding:14px 16px;font:400 12.5px/1.55 Archivo,sans-serif;color:#3A2F26">{{ k.by }}</div>
+        <div style="padding:14px 16px;font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ k.what }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">03 · SCREEN OVERVIEW</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:840px;margin-bottom:20px;text-wrap:pretty">Twenty-four screens. Where the prototype explored several treatments of one idea, this is the single screen that survives, with the alternatives folded in as states. Purely textual — no mockup is referenced, and none is needed to build from this.</div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;overflow:hidden;box-shadow:5px 5px 0 #17130F">
+    <div style="display:grid;grid-template-columns:190px 250px 1fr 300px;background:#17130F;color:#F3ECE0;font:500 9.5px 'DM Mono',monospace;letter-spacing:.1em">
+      <div style="padding:13px 16px">SCREEN NAME</div>
+      <div style="padding:13px 16px">CORE PURPOSE</div>
+      <div style="padding:13px 16px">DETAILED USER WORKFLOW &amp; STATES</div>
+      <div style="padding:13px 16px">KEY USER INTERACTIONS</div>
+    </div>
+    <sc-for list="{{ screens }}" as="s" hint-placeholder-count="24">
+      <div style="display:grid;grid-template-columns:190px 250px 1fr 300px;border-top:2px solid #E0D6C4;background:#fff;align-items:start">
+        <div style="padding:15px 16px">
+          <div style="font:700 14px/1.25 Archivo,sans-serif">{{ s.name }}</div>
+          <div style="font:500 8.5px 'DM Mono',monospace;letter-spacing:.08em;color:#8A7F70;margin-top:6px">{{ s.route }}</div>
+        </div>
+        <div style="padding:15px 16px;font:400 13px/1.55 Archivo,sans-serif;text-wrap:pretty">{{ s.purpose }}</div>
+        <div style="padding:15px 16px;font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ s.flow }}</div>
+        <div style="padding:15px 16px;font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ s.actions }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">04 · TCA FEATURE ARCHITECTURE</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:840px;margin-bottom:8px;text-wrap:pretty">Twenty-one reducers. Each card carries the six fields you asked for — <strong>screen</strong>, <strong>reducer name</strong>, <strong>state &amp; inputs</strong>, <strong>actions</strong> split into view / internal / delegate, <strong>dependencies</strong>, and <strong>implementation rules</strong> — laid out as a card rather than a table row because state and action lists are code, and code in a 190-pixel column is unreadable.</div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:840px;margin-bottom:22px;text-wrap:pretty">Each card is self-contained: hand one card plus section 00 to the assistant and it has everything it needs. The rules are the part that matters most — they encode decisions already argued out, and every one of them exists because the obvious implementation is wrong.</div>
+
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <sc-for list="{{ features }}" as="f" hint-placeholder-count="21">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+        <div style="display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;background:#17130F;color:#F3ECE0;padding:14px 20px">
+          <div style="font:500 9.5px 'DM Mono',monospace;letter-spacing:.12em;opacity:.55">{{ f.n }}</div>
+          <div style="font-family:'DM Mono',monospace;font-weight:500;font-size:19px;letter-spacing:-.01em">{{ f.name }}</div>
+          <div style="margin-left:auto;font:500 9px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #FFD24A;color:#FFD24A;border-radius:999px;padding:4px 10px">{{ f.screen }}</div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;border-bottom:2px solid #E0D6C4">
+          <div style="padding:18px 20px;border-right:2px solid #E0D6C4">
+            <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;margin-bottom:11px">STATE &amp; INPUTS</div>
+            <div style="display:flex;flex-direction:column;gap:7px">
+              <sc-for list="{{ f.state }}" as="s" hint-placeholder-count="5">
+                <div style="font:400 12px/1.6 'DM Mono',monospace;color:#17130F;text-wrap:pretty">{{ s }}</div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="padding:18px 20px">
+            <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;margin-bottom:11px">ACTIONS</div>
+            <div style="display:flex;flex-direction:column;gap:11px">
+              <div>
+                <div style="font:500 8.5px 'DM Mono',monospace;letter-spacing:.1em;color:#0E6E5E;margin-bottom:5px">VIEW</div>
+                <div style="display:flex;flex-direction:column;gap:5px">
+                  <sc-for list="{{ f.view }}" as="a" hint-placeholder-count="4">
+                    <div style="font:400 12px/1.55 'DM Mono',monospace;text-wrap:pretty">{{ a }}</div>
+                  </sc-for>
+                </div>
+              </div>
+              <div>
+                <div style="font:500 8.5px 'DM Mono',monospace;letter-spacing:.1em;color:#2B44D6;margin-bottom:5px">INTERNAL</div>
+                <div style="display:flex;flex-direction:column;gap:5px">
+                  <sc-for list="{{ f.internal }}" as="a" hint-placeholder-count="3">
+                    <div style="font:400 12px/1.55 'DM Mono',monospace;text-wrap:pretty">{{ a }}</div>
+                  </sc-for>
+                </div>
+              </div>
+              <div>
+                <div style="font:500 8.5px 'DM Mono',monospace;letter-spacing:.1em;color:#C2371F;margin-bottom:5px">DELEGATE</div>
+                <div style="display:flex;flex-direction:column;gap:5px">
+                  <sc-for list="{{ f.delegate }}" as="a" hint-placeholder-count="2">
+                    <div style="font:400 12px/1.55 'DM Mono',monospace;text-wrap:pretty">{{ a }}</div>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="padding:14px 20px;border-bottom:2px solid #E0D6C4;background:#FBF6EC">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;margin-bottom:10px">DEPENDENCIES</div>
+          <div style="display:flex;flex-wrap:wrap;gap:7px">
+            <sc-for list="{{ f.deps }}" as="d" hint-placeholder-count="4">
+              <div style="font:400 11.5px 'DM Mono',monospace;border:2px solid #17130F;border-radius:999px;padding:5px 11px;background:#fff">{{ d }}</div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="padding:18px 20px">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;margin-bottom:12px">DETAILED IMPLEMENTATION RULES</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <sc-for list="{{ f.rules }}" as="r" hint-placeholder-count="4">
+              <div style="display:flex;gap:13px;align-items:baseline">
+                <div style="flex:none;width:7px;height:7px;border-radius:50%;background:#FF5B2E;margin-top:6px"></div>
+                <div style="flex:1;font:400 13.5px/1.65 Archivo,sans-serif;text-wrap:pretty">{{ r }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">05 · DEPENDENCY REGISTRY</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:840px;margin-bottom:20px;text-wrap:pretty">Every custom client, its surface, and what its test value does. A dependency without a deliberate <span style="font-family:'DM Mono',monospace">testValue</span> is a test suite that either crashes or lies.</div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;overflow:hidden;box-shadow:5px 5px 0 #17130F">
+    <div style="display:grid;grid-template-columns:230px 1fr 400px;background:#17130F;color:#F3ECE0;font:500 9.5px 'DM Mono',monospace;letter-spacing:.1em">
+      <div style="padding:13px 16px">CLIENT</div>
+      <div style="padding:13px 16px">SURFACE</div>
+      <div style="padding:13px 16px">LIVE / TEST BEHAVIOUR</div>
+    </div>
+    <sc-for list="{{ deps }}" as="d" hint-placeholder-count="10">
+      <div style="display:grid;grid-template-columns:230px 1fr 400px;border-top:2px solid #E0D6C4;background:#fff;align-items:start">
+        <div style="padding:14px 16px;font:400 12.5px/1.5 'DM Mono',monospace">{{ d.k }}</div>
+        <div style="padding:14px 16px;font:400 12px/1.7 'DM Mono',monospace;color:#3A2F26;white-space:pre-wrap">{{ d.api }}</div>
+        <div style="padding:14px 16px;font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ d.note }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:16px">06 · WHAT I NEED DECIDED</div>
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px">
+    <sc-for list="{{ questions }}" as="q" hint-placeholder-count="4">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#FFD24A;padding:22px;box-shadow:5px 5px 0 #17130F">
+        <div style="font:500 9.5px 'DM Mono',monospace;letter-spacing:.12em;color:#6E6458">{{ q.k }}</div>
+        <div style="font:700 18px/1.3 Archivo,sans-serif;margin-top:9px;text-wrap:pretty">{{ q.t }}</div>
+        <div style="font:400 13.5px/1.65 Archivo,sans-serif;margin-top:10px;text-wrap:pretty">{{ q.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1420,&quot;height&quot;:1000}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      manifestYaml:
+`id: vinyl
+name:
+  singular: Record
+  plural: Records
+  collection: My Vinyls        # authored, never computed from the singular
+mark: "33⅓"
+icon: opticaldisc
+gradient: [teal, cobalt]
+model: vinyl.usdz             # one 3D model per type
+
+duplicates: rows              # a second copy is its own object
+
+spine:
+  title: Album
+  subtitle: Artist
+  year: Year
+  acquired: Acquired on
+  paid: Paid
+  value: Value
+
+conditions: [Mint, Near Mint, VG+, VG, Good, Fair, Poor]
+
+lookup:
+  identifier: barcode
+  symbologies: [ean13, upc-a]
+  providers: [discogs, musicbrainz]
+
+searchable: [title, subtitle, year, catalogNumber, tracklist, label]
+related: [subtitle, label]    # "do I already own something like this?"
+
+fields:
+  - key: sleeveCondition
+    label: Sleeve condition
+    type: choice
+    options: [Mint, Near Mint, VG+, VG, Good, Fair, Poor]
+    sample: "VG+"
+  - key: catalogNumber
+    label: Catalogue number
+    type: text
+    sample: OBS-1287
+    auto: true                # provider-filled, never overwrites the user
+  - key: signed
+    label: Signed
+    type: yesNo
+    sample: "No"
+  - key: tracklist
+    label: Tracklist
+    type: list
+    entry: [position, title, duration]
+    auto: true
+  - key: lastCleaned
+    label: Last cleaned
+    type: event
+    sample: 3 Feb 2026`,
+      manifestRules: [
+        { k: 'RULE 01', t: 'Manifests are bundled files; the database is a cache', b: 'The sixteen YAML files ship in the app bundle with a version integer each. On launch, typeCatalogue decodes them and upserts collectionTypes and fieldDefinitions. Nothing about a built-in type is authored in SQL or in Swift.' },
+        { k: 'RULE 02', t: 'Compiling is idempotent, keyed by (typeID, fieldKey)', b: 'Running the compile twice must change nothing. That is what makes it safe to run on every launch, which is what makes shipping a new type a file addition rather than a migration.' },
+        { k: 'RULE 03', t: 'A user-drafted type is a manifest too', b: 'Drafting writes a manifest to the documents directory and feeds it through the same decoder. One code path, so a drafted type gets working filters, lookup, spine labels and search with no special casing anywhere.' },
+        { k: 'RULE 04', t: 'The 3D model is the type’s identity, and is never on the critical path', b: 'One model per type, loaded lazily behind the icon and gradient, which render instantly from the manifest. A shelf that waits on sixteen USDZ files to draw four cards is a broken shelf.' },
+        { k: 'RULE 05', t: 'auto: true is a one-way street', b: 'Providers may fill an auto field; they may never overwrite a value a human typed, and the nightly job respects the same rule. This is the valuation promise applied to metadata.' },
+        { k: 'RULE 06', t: 'duplicates decides rows versus quantity, per type', b: 'Vinyl says rows — three pressings are three objects with three conditions. Cards say quantity. The importer, the CSV specification and the duplicate check all read this one key instead of each guessing.' },
+        { k: 'RULE 07', t: 'Capture has three strategies, derived not switched', b: 'symbologies non-empty means scan a barcode. Empty symbologies with providers means recognise the object itself — a card has no barcode, so the camera reads the face. Neither means manual entry. Derived in one property on CollectionType; no feature ever switches on a type id.' },
+        { k: 'RULE 08', t: 'Empty providers is a designed state, not a failure', b: 'Sneakers have no open API worth the name, so that type is manually entered by intent. The no-match screen is not a fallback for sneakers — it is the primary experience, every single time, and it has to be good enough to carry a whole type.' },
+        { k: 'RULE 09', t: 'A quantity type is not individually tradable', b: 'You cannot lend one of four identical cards, and a disposal sheet cannot list a count as an object. Lending and selling filter on duplicates == .rows at the query level, so the affordance never appears rather than appearing and failing.' }
+      ],
+      manifestKeys: [
+        { key: 'id', by: 'Everything', what: 'The stable primary key of the type row. A manifest id never changes once shipped — renaming it orphans every object of that type.' },
+        { key: 'name.singular / plural\nname.collection', by: 'Every string in the UI', what: 'Authored rather than computed, because “My Vinyls” is not derivable from “Record” and no pluralisation library survives sixteen collecting vocabularies in four languages.' },
+        { key: 'mark', by: 'Type card, empty state, import rows', what: 'The typographic glyph that gives each type its own identity — 33⅓ for vinyl. Cheaper and better than an illustration, and it is what makes sixteen cards look like sixteen things.' },
+        { key: 'icon / gradient', by: 'Type card, tab bar, connector rows', what: 'SF Symbol name plus two palette keys resolved to colours in code. Colours are named, not hex, so a palette change is one file rather than sixteen.' },
+        { key: 'model', by: 'Type card hero, empty shelf, import reveal', what: 'The 3D model filename. Lazily loaded, cached, and always behind a rendered icon so it can fail or lag without holding up a screen.' },
+        { key: 'duplicates', by: 'Importer, capture, lending, selling', what: 'rows or quantity, and it decides far more than the importer. Vinyl and sneakers say rows: every pair is its own object with its own condition and history. Trading cards say quantity: a duplicate is a count. The consequence is structural — <strong>a quantity type cannot be lent or sold as an individual object</strong>, so lending and the disposal sheet must exclude it rather than fail at it.' },
+        { key: 'spine.*', by: 'Object screen, collection rows, insurance export', what: 'Six label slots (title, subtitle, year, acquired, paid, value) mapping to the fixed columns on items. A vinyl calls them Album and Artist; a watch calls them Model and Maker. Same schema, correct words.' },
+        { key: 'conditions', by: 'Condition picker, collection filter chips', what: 'Ordered best-first, so the picker order and the sort order both come free. Grading scales differ per type and are never converted between — stored verbatim as authored here.' },
+        { key: 'lookup.identifier', by: 'Capture, object screen', what: 'What the identifier column means here: barcode, catalogue number, certification number — or none. A single trading card has no barcode at all, so none is a real and common value, not a gap to be filled later.' },
+        { key: 'lookup.symbologies', by: 'CaptureFeature', what: 'Which barcode symbologies to enable. Enabling all of them everywhere slows detection and produces false reads. An empty list means this type has no code to scan, and the camera must read the object itself instead of hunting for one.' },
+        { key: 'lookup.providers', by: 'catalogueLookup, valuationService', what: 'Ordered catalogue and price sources. An empty list is a design decision, not a defect: sneakers have no open API worth the name, so that type is manually entered by intent. It is also why entering a new market is a data change — and exactly what Japan is blocked on, having no provider to list.' },
+        { key: 'searchable', by: 'FTS index, SearchFeature', what: 'Which spine columns and field keys are indexed for this type. Indexing everything makes results worse, not better — a tracklist match should find a record, a disc colour match should not.' },
+        { key: 'related', by: 'Capture, duplicate check', what: 'The fields that answer “do I already own something like this?” in a shop — artist and label for vinyl. The most commercially useful key in the whole manifest and the one no generic schema would have.' },
+        { key: 'fields[].type', by: 'Editor, schema, CSV import', what: 'text, number, money, date, choice, yesNo, list, event. Eight kinds is the whole vocabulary; a type needing a ninth is a conversation, not a manifest edit.' },
+        { key: 'fields[].options', by: 'Choice pickers, filter chips', what: 'Stored as JSON on the field definition. Editing options on a shipped type must never orphan a value already stored — removed options stay readable and are marked as retired.' },
+        { key: 'fields[].auto', by: 'catalogueLookup, ItemEdit', what: 'Marks a field as provider-fillable. The UI shows where a value came from, and a user edit permanently wins over any future automatic fill.' },
+        { key: 'fields[].unit', by: 'Editor, formatters', what: 'The unit a number is expressed in — US for a sneaker size, mm for a watch case. Displayed beside the value and never parsed out of it, because a size is not a measurement to convert.' },
+        { key: 'fields[].sample', by: 'Placeholders, CSV template', what: 'The example value. Doubles as the per-type sample row in the published CSV template, so the template teaches the format in the collector’s own vocabulary.' },
+        { key: 'fields[].entry', by: 'itemFieldEntries table', what: 'The column shape of a list field — tracklist is (position, title, duration). This is why a separate entries table exists rather than a JSON blob: a tracklist is searchable.' }
+      ],
+      preamble: [
+`You are implementing one feature of CLCTN, an iOS collection manager, in Swift 6.
+Implement ONLY the feature described below. Do not scaffold neighbouring features,
+do not invent screens, do not restate this preamble back to me.`,
+`STACK — use these APIs directly, never behind a wrapper of your own:
+  · The Composable Architecture (Point-Free) for all feature logic
+  · sqlite-data (Point-Free) for persistence — @Table, @FetchAll, @FetchOne, @Fetch
+  · swift-dependencies for every effectful boundary
+  · SwiftUI views only; no UIKit unless the feature says otherwise`,
+`SHAPE OF A FEATURE
+  @Reducer struct XFeature {
+    @ObservableState struct State: Equatable { ... }
+    enum Action: ViewAction { case view(View), internal(Internal), delegate(Delegate) }
+    @Dependency(\\.defaultDatabase) var database
+    var body: some ReducerOf<Self> { Reduce { state, action in ... } }
+  }
+  The view is @ViewAction(for: XFeature.self) and sends only .view cases.`,
+`READS — always through sqlite-data property wrappers held IN State:
+  @ObservableState struct State { @FetchAll(Item.order(by: \\.name)) var items }
+  Never load rows in an effect and store them in an array. The wrappers observe
+  the database and keep State current; a manual load goes stale the moment a
+  background revaluation writes.`,
+`WRITES — always in an effect, never in the reducer body:
+  return .run { _ in try await database.write { db in try Item.insert { draft }.execute(db) } }
+  The reducer mutates State only for UI state. The database is the source of truth
+  for domain data, and the @Fetch wrappers will deliver the change back.`,
+`ACTION DISCIPLINE
+  · view      — user did something. Named for the gesture: saveButtonTapped.
+  · internal  — results of our own effects. Named for the fact: valuationResponse.
+  · delegate  — the ONLY way a child talks upward. A parent never reaches into
+                child state, and a child never knows its parent's type.`,
+`NAVIGATION
+  Sheets, alerts and dialogs: @Presents var destination: Destination.State? with
+  @Reducer enum Destination, wired via .ifLet(\\.$destination, action: \\.destination).
+  Drill-downs: StackState<Path.State> owned by AppFeature only.`,
+`MONEY — never Double. Money is (amount: Int in minor units, currency: String).
+  Format at the view edge with a formatter dependency. A price shown wrong in one
+  currency is the fastest way to lose a collector's trust in a valuation.`,
+`NEVER, in any feature:
+  · Overwrite a user-entered value with a computed one
+  · Delete a row a user created — set deleted_at and filter it out
+  · Invent a number to fill an empty field, in the UI or in the database
+  · Call a network API outside a @Dependency client
+  · Put business logic in a SwiftUI view body`,
+`DELIVER: the reducer, its view, and a TestStore test per delegate case and per
+failure path. Use withDependencies to seed an in-memory database for tests.`
+      ],
+      conventions: [
+        { k: 'MODULES', t: 'One SPM target per domain', b: 'Collections, Valuation, Importing, Trading, Entitlements, plus a Models target holding every @Table struct and a DatabaseSupport target holding migrations. Features never import each other — they meet in the app target.' },
+        { k: 'IDENTITY', t: 'UUID primary keys, everywhere', b: 'Rows travel between a phone, an iPad and a co-shelf partner. Autoincrement integers make that a merge nightmare; UUIDs make it arithmetic. Generated through the uuid dependency so tests are deterministic.' },
+        { k: 'DELETION', t: 'Soft delete for anything a user made', b: 'deleted_at TEXT on items, collections, photos and custom fields. Every read filters it. Hard delete only for rows we generated ourselves — valuations, snapshots, import rows past their undo window.' },
+        { k: 'MONEY', t: 'Integer minor units + currency code', b: 'amount_cents INTEGER and currency TEXT(3), never REAL. Collections are bought across borders and half of them in the seventies, so per-row currency is required, not a nicety.' },
+        { k: 'TIME', t: 'ISO-8601 TEXT, UTC, via the date dependency', b: 'SQLite has no date type and every alternative invites drift. Partial dates — the bare year a collector remembers — get their own precision column rather than a fake 1 January.' },
+        { k: 'STATE OWNERSHIP', t: 'The database owns domain data; State owns UI', b: 'Selection, scroll position, draft text and sheet presentation live in State. Items, valuations and photos are read through @FetchAll. This is the single most consequential rule in the document.' },
+        { k: 'SHARED', t: '@Shared only for genuine app-wide settings', b: 'Tab configuration, active currency, unlock ladder position: @Shared(.appStorage) or a file-backed key. Not for domain data — that is what the database is for.' },
+        { k: 'CONCURRENCY', t: 'One database writer, serialized', b: 'defaultDatabase is a single writer queue. Nightly revaluation, import batches and user edits all queue through it, which is why the import writes in chunks and yields between them.' },
+        { k: 'TESTING', t: 'Every delegate case has a TestStore test', b: 'Delegates are the seams where features meet, so they are where regressions hide. Seed an in-memory database per test with prepareDependencies; never share fixtures between tests.' }
+      ],
+      screens: [
+        { name: 'Shelf (Home)', route: 'AppFeature → shelf tab', purpose: 'The whole collection at a glance, grouped by type, with today\u2019s total value.', flow: 'Loading skeleton for the first frame only, then one of three states: empty (a single invitation to import or scan), populated (type cards with count, total value and a photo strip), or stale (a banner when the last revaluation is over 48 hours old). Pull-to-refresh triggers a foreground revaluation. Long-press on a type card enters a multi-select mode used for building a disposal sheet.', actions: 'Tap type card → Collection. Tap total → Value over time. Long-press → multi-select. Pull to refresh. Tap the centre tab shutter → Capture. Swipe on a card to reorder types.' },
+        { name: 'Empty shelf', route: 'shelf · empty state', purpose: 'Turn a cold start into a populated collection in under two minutes.', flow: 'Not a separate screen but the state that decides whether the user stays. Three routes offered in priority order: import from a service, import a spreadsheet, scan something. A fourth line offers the published CSV template. Dismissing nothing — this state persists until at least one object exists.', actions: 'Tap a route → Import sources / Capture. Tap template link → share sheet with clctn-template.csv.' },
+        { name: 'Collection', route: 'shelf → collection(id)', purpose: 'One type\u2019s objects, sortable and filterable, with the type\u2019s own fields visible.', flow: 'Grid or list, remembered per collection. Sort by name, value, date acquired, condition. Filter chips derived from the type\u2019s field profile — condition grades for vinyl, completeness for games. Empty-filter state explains which filter is hiding everything rather than showing a bare screen. Rows flagged from an import sit pinned at the top until reviewed.', actions: 'Tap object → Object. Toggle grid/list. Sort menu. Filter chips. Search within collection. Select mode → disposal sheet or bulk edit. Tap a pinned import flag → Object in review mode.' },
+        { name: 'Object', route: 'collection → item(id)', purpose: 'Everything known about one physical thing, and what it is worth.', flow: 'Photo strip at the top, then value with a range and confidence, then the type\u2019s fields, then custom fields the user or an import created, then history. States: fully priced, priced with low confidence, unpriceable (no source for this type), needs review (imported and unsure), lent out (banner with borrower and due date), and listed (banner with the live sheet). Quantity objects show a per-unit and a total value — and deliberately show no Lend or Sell affordance, because you cannot lend one of four identical cards.', actions: 'Tap value → Price receipt. Tap photo → viewer. Edit. Add photo. Lend. Sell. Duplicate. Tap a custom field to rename or promote it to the type. Delete (soft).' },
+        { name: 'Capture', route: 'tab shutter → capture', purpose: 'Add an object with the camera in the time it takes to hold it up.', flow: 'Camera live, in whichever of the three strategies the type manifest implies. Barcode types (vinyl, games, books): detection runs continuously, and a match becomes a confirmation card with one tap to accept. Recognition types (trading cards): there is no barcode on the object at all, so the camera reads the card face and offers candidates from the set and number. Manual types (sneakers): the camera takes a photo and the form opens — no scanning theatre for a type with no source behind it. Rapid mode keeps the camera open and queues objects for later detail, the mode that matters in a record shop. Permission-denied state offers the photo library instead.', actions: 'Shutter. Accept match. Reject match → manual. Toggle rapid mode. Switch type. Flash. Close. Tap queue badge → Review queue.' },
+        { name: 'Review queue', route: 'capture → review', purpose: 'Turn the rapid-mode pile and unsure import rows into finished objects.', flow: 'One object per card, most recent first, with whatever is known and the single most valuable missing field focused. Progress counter. Empty state is silent and celebratory — no nagging. Skipped objects go to the back of the queue, never lost.', actions: 'Fill the focused field. Next / skip. Tap card → Object. Bulk-accept all suggested identifications. Dismiss queue.' },
+        { name: 'Object edit', route: 'item → edit', purpose: 'Change facts about an object without fear.', flow: 'Form driven by the type\u2019s field profile, with custom fields below. Unsaved-changes state guards the back gesture with a confirmation dialog. Validation is advisory, never blocking: a nonsensical date is flagged, not rejected. A user-entered value overrides the market value and is marked as doing so.', actions: 'Edit any field. Add a custom field. Save. Cancel → confirmation dialog. Override value. Clear a field.' },
+        { name: 'Type picker', route: 'any add flow → type', purpose: 'Choose which collection an object joins, including types we do not ship.', flow: 'Built-in types first, then the user\u2019s own drafted types, then a search field, then \u201cnone of these\u201d. Drafting a type asks for a name and a starting field profile copied from the nearest built-in. Objects can also live with no type at all, in Unsorted — a deliberate escape hatch, not a bug.', actions: 'Tap a type. Search. Draft a new type. Choose Unsorted. Propose the type to us (opt-in, anonymous).' },
+        { name: 'Custom fields', route: 'settings / item → fields', purpose: 'Let the collection carry the facts the owner cares about.', flow: 'List of fields for a type: built-in ones locked, user ones editable, imported ones marked with their origin file. Each field has a kind — text, number, money, date, choice, event. Deleting a field that holds data warns with the count and archives rather than deletes.', actions: 'Add field. Rename. Change kind (with a data-loss warning). Reorder. Archive. Promote an imported field to the type.' },
+        { name: 'Import sources', route: 'shelf → import', purpose: 'The first ninety seconds. Get a real collection in from wherever it already lives.', flow: 'Connector rows (Discogs, PriceCharting, CollX, Collectr) each in one of four states: available, connecting, connected with a row count, or unavailable with a reason. Below them the spreadsheet route, then the template offer. Auth happens in a web sheet; a failure returns to this screen with the reason, never a dead end.', actions: 'Tap connector → OAuth sheet. Tap spreadsheet → Import mapping. Download template. Retry a failed connector.' },
+        { name: 'Import mapping', route: 'import → csv', purpose: 'Show the user we read their columns rather than demanding ours.', flow: 'File summary (rows, columns, detected separator and encoding), then every column with its guessed target and a state: required, matched, custom, or ignored. Unmatched columns default to becoming custom fields, never to being dropped. Ambiguous dates raise one question about the file, not per row. A too-messy file offers the LLM conversion prompt. Counts of ready and unnamed rows sit above the commit button.', actions: 'Tap a mapping to change it. Mark a column ignored. Answer the date question. Copy conversion prompt. Commit import. Back out with nothing written.' },
+        { name: 'Import running', route: 'import → running', purpose: 'Make a long write feel survivable and interruptible.', flow: 'Live counter, current object name, and a cancel affordance that is honest about what is already written. Backgrounding continues the import. Failure of individual rows never stops the batch; they land as names-only and are counted. Completion transitions automatically to the reveal.', actions: 'Cancel (keeps what landed, offers undo). Background the app. Nothing else — deliberately.' },
+        { name: 'Import reveal', route: 'import → done', purpose: 'The emotional payoff, and the moment a free user meets the first meter.', flow: 'Count, total value, and the three most valuable objects found. Below: what needs review, and the undo affordance with its thirty-day window stated. If the import crosses a metered limit, the paywall appears here as an unlock offer rather than a wall — the objects are already theirs.', actions: 'Continue → Shelf. Review flagged objects. Undo the whole batch. Tap an unlock offer → Paywall.' },
+        { name: 'Price receipt', route: 'item → receipt', purpose: 'Answer \u201cwho says so?\u201d, which is the question every valuation must survive.', flow: 'The figure, then its range, then every source with its own figure, sample size, and date. Method stated in one sentence. States: multi-source confident, single-source cautious, stale (no fresh data, age shown), and unpriceable (says so plainly, offers the user\u2019s own value instead). Disagreement between sources is shown, never averaged away silently.', actions: 'Tap a source → its detail or original listing. Set my own value. Request a refresh. Report the price as wrong.' },
+        { name: 'Value over time', route: 'shelf → value', purpose: 'The collection as an asset, revalued nightly.', flow: 'Chart over 1M / 6M / 1Y / all, with paid-total as a baseline line. Below: biggest movers up and down, and the composition by type. States: insufficient history (under 30 days shows a plain total and says why), normal, and partially valued (the share of objects with no price is disclosed rather than treated as zero).', actions: 'Change range. Scrub the chart. Tap a mover → Object. Toggle paid baseline. Export for insurance.' },
+        { name: 'Insurance export', route: 'value → insure', purpose: 'Produce a document an insurer or a loss adjuster will accept.', flow: 'Scope selection (whole collection, one type, a selection), then a preview of the generated PDF with per-object valuations, methods and dates, then export. Objects with no valuation are listed separately rather than omitted — an honest schedule is the whole product here.', actions: 'Choose scope. Preview. Export / share. Include or exclude photos.' },
+        { name: 'Lending', route: 'shelf → lending', purpose: 'Know what is out and who has it.', flow: 'Two sections: out now (overdue first, with days) and history. Empty state explains the feature in one line. Each loan shows object, person, out date, due date. Overdue is coloured but never scolding.', actions: 'Tap loan → Object. Mark returned. Nudge borrower (share sheet, pre-written). Extend due date. Tap person → their loans.' },
+        { name: 'Lend sheet', route: 'item → lend', purpose: 'Record a loan in three taps at the door.', flow: 'Person picker (recent people first, then contacts, then a free-text name), optional due date, optional condition-on-departure note. Person creation is inline — never a detour into a contacts flow.', actions: 'Pick or type a person. Set due date. Add a note. Confirm. Cancel.' },
+        { name: 'Disposal sheet', route: 'select → disposal', purpose: 'Sell a mixed pile of objects as one sheet, across types.', flow: 'Selected objects with per-object floor prices, a sheet total, and the venue recommendation per object — where each one actually sells best. States: draft, published with views, offer received, and partially sold (sold objects leave the sheet, the rest continue). Objects priced below their venue\u2019s floor are flagged for the instant lane instead.', actions: 'Add or remove objects. Adjust a floor price. Change venue. Publish. Accept an offer. Withdraw the sheet.' },
+        { name: 'Instant lane', route: 'item → instant', purpose: 'Give the objects not worth listing a dignified exit.', flow: 'For objects below the listing floor: a single buyback quote, its expiry, and what happens next in three lines. States: quote available, quote expired (re-quote offered), no buyer for this type (says so, suggests the alternative), and accepted (shipping label and tracking). Batching is encouraged — five cheap objects in one parcel.', actions: 'Accept quote. Add more objects to the parcel. Get shipping label. Track. Decline and keep.' },
+        { name: 'Wishlist', route: 'tab → wishlist', purpose: 'The things not owned yet, and an alert when one appears.', flow: 'Entries with a target price and a match state: watching, matched (with the find and its price), or bought. Matching runs on the same schedule as revaluation. A match older than 48 hours is marked as possibly gone.', actions: 'Add entry. Set target price. Tap match → the listing. Mark as bought → creates the object. Share the wishlist. Delete entry.' },
+        { name: 'Paywall / unlocks', route: 'any meter → paywall', purpose: 'Sell the founding ladder without ever holding a collection hostage.', flow: 'Which meter was reached, in the user\u2019s own numbers, then the current ladder rung with the honest reason the price rises. Monthly, yearly and lifetime with the credit rule stated. States: not subscribed, subscribed (shows what is unlocked and the lifetime credit accrued), lapsed, and grandfathered founder. Data is never locked — the paywall gates new writes and premium reads, never access to what exists.', actions: 'Choose a term. Purchase. Restore. Read the credit rule. Dismiss and continue free.' },
+        { name: 'Search', route: 'tab → search', purpose: 'Find one object among six hundred, fast.', flow: 'Debounced full-text across name, notes, identifier, location and custom field values. Results grouped by type with a count per group. Recent searches when empty. Zero-results state suggests the nearest match and offers to create the object instead.', actions: 'Type. Tap result → Object. Tap group header → filtered Collection. Clear. Tap suggestion. Create from query.' },
+        { name: 'Settings', route: 'tab → settings', purpose: 'Control, export and leave.', flow: 'Sections: account and unlocks, currency, revaluation schedule, custom fields and types, tab bar arrangement, co-shelf members, data (export everything as the published CSV, delete account). Every destructive action confirms with what will be lost, counted.', actions: 'Change currency. Reorder tabs. Manage fields. Invite a co-shelf member. Export CSV. Delete account.' }
+      ],
+      features: [
+        { n: 'FEATURE 01', name: 'AppFeature', screen: 'ROOT', state: ['StackState<Path.State> path', '@Shared(.tabConfig) tabs: TabConfig', 'selectedTab: Tab', '@Presents destination: Destination.State?', '@FetchOne(EntitlementRequest()) entitlement'], view: ['tabSelected(Tab)', 'shutterTapped', 'onAppear'], internal: ['revaluationDue', 'deepLink(URL)', 'path(StackActionOf<Path>)'], delegate: ['— none, this is the root'], deps: ['\\.defaultDatabase', '\\.revaluationScheduler', '\\.continuousClock', '\\.storeKit'], rules: ['The only feature that owns a StackState. Every drill-down in the app is a Path case here; child features never push, they send a delegate action and this reducer decides. That single rule is what keeps twenty-four screens navigable.', 'Handle child delegates in one switch on path actions, before .forEach. Example: .element(_, .disposal(.delegate(.sheetPublished))) pops to the shelf and presents a confirmation — the disposal feature does not know it was in a stack.', 'onAppear compiles the bundled type manifests through typeCatalogue before anything reads a type, then starts the revaluation scheduler and refreshes StoreKit entitlements, all in cancellable long-living effects keyed by enum CancelID. Never start them in a view\u2019s .task.', 'The tab bar is user-configurable, so Tab is a stored value from @Shared, not a hardcoded enum ordering. The shutter is always centre and always present regardless of configuration — muscle memory in a shop is worth more than flexibility.'] },
+        { n: 'FEATURE 02', name: 'ShelfFeature', screen: 'SHELF (HOME)', state: ['@FetchAll(CollectionSummary.all) summaries: [CollectionSummary]', '@FetchOne(PortfolioTotalRequest()) total: Money?', '@FetchOne(LastRevaluationRequest()) lastValuedAt: Date?', 'selection: Set<Item.ID>', 'isSelecting: Bool', 'isRefreshing: Bool'], view: ['typeCardTapped(CollectionType.ID)', 'totalTapped', 'refreshPulled', 'selectionToggled(Item.ID)', 'selectModeEntered / exited', 'sellSelectionTapped', 'typesReordered(from:to:)'], internal: ['revaluationFinished(Result<Void, Error>)'], delegate: ['openCollection(CollectionType.ID)', 'openValueOverTime', 'openDisposal(Set<Item.ID>)', 'openCapture'], deps: ['\\.defaultDatabase', '\\.valuationService', '\\.date.now'], rules: ['CollectionSummary is an @Selection over a GROUP BY, not a Swift reduction over fetched items. Six hundred objects must not be loaded to display four type cards, and this is the screen where that mistake would first hurt.', 'Empty and populated are the same reducer. Branch in the view on summaries.isEmpty; a separate EmptyShelfFeature would duplicate every navigation delegate for no gain.', 'The stale banner is derived: lastValuedAt older than 48 hours. Derive it in a computed property on State, not by storing a Bool that goes wrong the moment a revaluation lands.', 'refreshPulled calls valuationService.revalueAll and must be cancellable and idempotent — a second pull while one is running is ignored via isRefreshing, not queued.'] },
+        { n: 'FEATURE 03', name: 'CollectionFeature', screen: 'COLLECTION', state: ['let typeID: CollectionType.ID', '@FetchAll items: [ItemRow] (dynamic query)', '@Shared(.collectionLayout(typeID)) layout: Layout', 'sort: SortOrder', 'activeFilters: Set<FilterChip>', 'searchText: String', 'selection: Set<Item.ID>'], view: ['itemTapped(Item.ID)', 'layoutToggled', 'sortChanged(SortOrder)', 'filterToggled(FilterChip)', 'searchTextChanged(String)', 'clearFiltersTapped'], internal: ['queryRebuilt'], delegate: ['openItem(Item.ID)', 'openDisposal(Set<Item.ID>)'], deps: ['\\.defaultDatabase'], rules: ['Sort and filter changes rebuild the query with $items.load(newQuery) — they never filter an in-memory array. This is the single most important performance rule in the app and the one an assistant will get wrong by default.', 'Filter chips are built from the manifest — conditions in its authored order, plus every choice field’s options. They are data, so a seventeenth type gets working filters the day its file lands, with no code change here.', 'The empty-with-filters state must name the filter responsible. A bare "no results" on a collection the user knows is full reads as data loss.', 'Imported-and-unsure rows sort first regardless of the active sort — a stable ORDER BY needs_review DESC prefix on every query this feature builds.'] },
+        { n: 'FEATURE 04', name: 'ItemDetailFeature', screen: 'OBJECT', state: ['let itemID: Item.ID', '@Fetch(ItemDetailRequest(id:)) detail: ItemDetail', '@Presents destination: Destination.State?', 'photoIndex: Int'], view: ['valueTapped', 'photoTapped(Int)', 'editTapped', 'lendTapped', 'sellTapped', 'duplicateTapped', 'deleteTapped', 'customFieldTapped(CustomField.ID)'], internal: ['deleteConfirmed', 'duplicateFinished(Item.ID)'], delegate: ['openReceipt(Item.ID)', 'openDisposal(Set<Item.ID>)', 'openInstantLane(Item.ID)', 'itemDeleted(Item.ID)'], deps: ['\\.defaultDatabase', '\\.date.now', '\\.uuid'], rules: ['ItemDetail is one @Selection joining item, its latest valuation, its photos, its custom values and any open loan — a single query, not five wrappers. Five wrappers means five database round trips and a visible cascade of pops as each lands.', 'sellTapped branches on the item\u2019s value against the venue floor: above it delegates to disposal, below it to the instant lane. That decision belongs here because it is about this object, not about either destination.', 'Lend and Sell are hidden entirely when the type’s duplicates is .quantity. Not disabled, not greyed — absent, because a count of cards is not an object that can leave the house. Read it from CollectionType.isIndividuallyTradable rather than testing the type id.', 'Delete is soft (deleted_at) and always behind a confirmationDialog. Photos, valuations and loan history stay in place — a mistaken delete that destroys fifteen years of provenance is unrecoverable and unforgivable.', 'The unpriceable state is a first-class render, not an error. Show the user\u2019s own value if set, otherwise say plainly that no source prices this type yet, and never display a zero.'] },
+        { n: 'FEATURE 05', name: 'ItemEditFeature', screen: 'OBJECT EDIT', state: ['@Fetch(ItemEditRequest(id:)) original: ItemEdit', 'draft: Item.Draft', 'customDraft: [CustomField.ID: FieldValue]', 'validation: [FieldKey: Advisory]', 'isDirty: Bool', '@Presents alert'], view: ['fieldChanged(FieldKey, FieldValue)', 'saveTapped', 'cancelTapped', 'addCustomFieldTapped', 'overrideValueTapped', 'clearFieldTapped(FieldKey)'], internal: ['saveResponse(Result<Void, Error>)', 'discardConfirmed'], delegate: ['saved(Item.ID)', 'dismissed'], deps: ['\\.defaultDatabase', '\\.date.now', '\\.dismiss'], rules: ['Edit a Item.Draft copy, never the fetched row. Save writes the whole draft in one transaction alongside its custom values, so a partial save cannot exist.', 'Validation is advisory. Populate the validation dictionary and show it inline, but never block saveTapped — a collector entering a date they know is odd is more often right than the rule is.', 'cancelTapped with isDirty presents a confirmation; without it, dismiss immediately. isDirty is computed by comparing draft to original, not tracked by a flag that drifts.', 'Setting an override writes value_amount_cents on the item and value_is_user_set = 1. The nightly revaluation must respect that flag forever after — the market never overwrites a figure a human typed.'] },
+        { n: 'FEATURE 06', name: 'CaptureFeature', screen: 'CAPTURE', state: ['mode: Mode (single, rapid)', 'typeID: CollectionType.ID?', 'detected: BarcodeMatch?', 'queue: IdentifiedArrayOf<CapturedDraft>', 'permission: CameraPermission', 'isTorchOn: Bool'], view: ['onAppear', 'shutterTapped', 'matchAccepted', 'matchRejected', 'modeToggled', 'typeChanged(CollectionType.ID)', 'torchToggled', 'queueBadgeTapped', 'closeTapped'], internal: ['permissionResponse(CameraPermission)', 'barcodeDetected(String)', 'lookupResponse(Result<BarcodeMatch, Error>)', 'photoSaved(Result<PhotoRef, Error>)'], delegate: ['openReviewQueue', 'itemsCreated([Item.ID])', 'dismissed'], deps: ['\\.camera', '\\.barcodeScanner', '\\.catalogueLookup', '\\.photoStorage', '\\.defaultDatabase', '\\.uuid', '\\.date.now', '\\.haptics'], rules: ['Branch once on collectionType.captureStrategy and never on a type id. .barcode enables exactly the manifest’s symbologies; .recognise skips barcode detection entirely and sends frames for object recognition against the manifest’s providers; .manual takes a photo and opens the form. Three strategies, sixteen types, one switch.', 'Barcode detection is an AsyncStream from the scanner client, consumed in one long-lived cancellable effect started on appear and cancelled on dismiss. Debounce identical codes for two seconds or a single barcode fires a dozen lookups.', 'A failed lookup is not an error state — it falls through to photo-only capture silently. The object still gets created, and that is the whole point of the screen.', 'For a .manual type the no-match form is not a fallback, it is the entire experience, every time. Sneakers will always land here, so this path gets the same care as the happy path: the manifest’s sample values as placeholders, units shown, and never an apology for the absence of a scan.', 'After a match, run the manifest’s related query — artist and label for vinyl, set and game for cards — and show what the collector already owns before creating anything. That is the question actually being asked while standing in a shop.', 'Rapid mode writes the row and the photo immediately, then clears detected and keeps the camera live. Nothing is held in memory waiting for a batch commit; a crash in a record shop must not cost the last twenty records.', 'Photos are written to the filesystem by photoStorage and referenced by relative path in the photos table. Never store image data in SQLite.', 'permission == .denied is a real render with a route to the photo library, not an alert. Denying the camera must not end the flow.'] },
+        { n: 'FEATURE 07', name: 'ReviewQueueFeature', screen: 'REVIEW QUEUE', state: ['@FetchAll(ItemRow.needsReview) pending: [ItemRow]', 'index: Int', 'focusedField: FieldKey?', 'skipped: Set<Item.ID>'], view: ['fieldSubmitted(FieldValue)', 'nextTapped', 'skipTapped', 'cardTapped(Item.ID)', 'acceptAllTapped', 'dismissTapped'], internal: ['writeResponse(Result<Void, Error>)'], delegate: ['openItem(Item.ID)', 'queueEmptied'], deps: ['\\.defaultDatabase', '\\.date.now'], rules: ['The focused field is chosen by information value, not form order: whichever missing field most improves valuation confidence for that type. A models-target function decides, so it is testable in isolation.', 'Skipping moves an id into skipped and re-appends the object at the end. Nothing is ever dropped from the queue — a skipped object the user never sees again is a silent data loss.', 'needs_review clears when the object has a name and at least one priced-relevant field, written in the same transaction as the field value.', 'The empty state is silent. No badge, no notification, no congratulation beyond a single line — the reward for an empty queue is being left alone.'] },
+        { n: 'FEATURE 08', name: 'TypePickerFeature', screen: 'TYPE PICKER', state: ['@FetchAll(CollectionType.builtIn) builtIn', '@FetchAll(CollectionType.userDrafted) drafted', 'searchText: String', '@Presents destination (draftType, propose)'], view: ['typeTapped(CollectionType.ID)', 'searchTextChanged(String)', 'draftTypeTapped', 'unsortedTapped', 'proposeTapped'], internal: ['draftCreated(CollectionType.ID)'], delegate: ['typeSelected(CollectionType.ID?)'], deps: ['\\.defaultDatabase', '\\.uuid', '\\.analytics'], rules: ['nil is a valid selection and means Unsorted. Model it as CollectionType.ID? through the whole flow rather than inventing a sentinel type row.', 'Drafting a type writes a manifest to the documents directory and feeds it through the same decoder as the bundled sixteen, seeded from the nearest built-in by name similarity in a pure function. One code path means a drafted type gets filters, spine labels, search and lookup for free; a blank profile would make it useless on arrival.', 'Proposing a type sends only the type name and field names through the analytics client, opt-in, never object data. Say so at the point of the tap, not in a policy page.'] },
+        { n: 'FEATURE 09', name: 'CustomFieldsFeature', screen: 'CUSTOM FIELDS', state: ['let typeID: CollectionType.ID', '@FetchAll(FieldDefinition.forType) fields', '@Presents destination (add, rename, kindChange, archiveConfirm)', 'reorderDraft: [FieldDefinition.ID]?'], view: ['addTapped', 'renameTapped(id)', 'kindChangeTapped(id)', 'reordered(from:to:)', 'archiveTapped(id)', 'promoteTapped(id)'], internal: ['usageCountResponse(FieldDefinition.ID, Int)', 'writeResponse(Result<Void, Error>)'], delegate: ['— none'], deps: ['\\.defaultDatabase', '\\.uuid'], rules: ['A kind change or archive must first count the rows holding a value, then present that count in the confirmation. "This will affect 214 objects" is the only honest way to ask.', 'Archive sets archived_at and hides the field; it never deletes item_field_values. The data outlives the field definition because the user may restore it.', 'Built-in fields are not editable but are reorderable. Enforce that in the reducer, not only by disabling the view control.', 'Promoting an imported field makes it a normal field of the type and keeps every existing value bound to the same definition id — a re-key here would orphan the whole import.'] },
+        { n: 'FEATURE 10', name: 'ImportSourcesFeature', screen: 'IMPORT SOURCES', state: ['connectors: IdentifiedArrayOf<ConnectorState>', '@Presents destination (auth web sheet, csvPicker)', 'error: ConnectorError?'], view: ['connectorTapped(Connector.ID)', 'spreadsheetTapped', 'templateTapped', 'retryTapped(Connector.ID)'], internal: ['authResponse(Connector.ID, Result<Token, Error>)', 'rowCountResponse(Connector.ID, Int)'], delegate: ['startConnectorImport(Connector.ID, Token)', 'openSpreadsheetMapping(URL)'], deps: ['\\.importClient', '\\.oauth', '\\.fileClient', '\\.keychain'], rules: ['Each connector is an independent state machine — available, connecting, connected(count), unavailable(reason). One failing connector must not disable the screen.', 'Tokens go to the keychain client and never into State. State holds only a Bool that a token exists.', 'A failed auth returns here with a readable reason and a retry. Never a dead end, and never a generic error alert — this is the first ninety seconds of the app.', 'templateTapped shares the bundled clctn-template.csv through fileClient. It is a bundled resource, not generated at runtime, so it is identical to the published specification.'] },
+        { n: 'FEATURE 11', name: 'ImportMappingFeature', screen: 'IMPORT MAPPING', state: ['let fileURL: URL', 'parse: ParseSummary? (rows, cols, separator, encoding)', 'columns: IdentifiedArrayOf<ColumnMapping>', 'dateAmbiguity: DateAmbiguity?', 'readyCount / unnamedCount: Int', '@Presents destination (targetPicker, promptSheet)'], view: ['onAppear', 'mappingTapped(Column.ID)', 'targetChosen(Column.ID, MappingTarget)', 'ignoreTapped(Column.ID)', 'dateOrderChosen(DateOrder)', 'copyPromptTapped', 'commitTapped', 'backTapped'], internal: ['parseResponse(Result<ParseSummary, ParseError>)', 'guessResponse([ColumnMapping])'], delegate: ['startImport(ImportPlan)', 'cancelled'], deps: ['\\.csvParser', '\\.columnMatcher', '\\.pasteboard', '\\.defaultDatabase'], rules: ['columnMatcher is a synonym dictionary, not a model — a plain lookup table per language and type, editable and shippable as data. Fuzzy matching is forbidden here: an unreadable similarity score cannot be fixed by the person answering the support email.', 'The default target for an unmatched column is "keep as my own field", never "ignore". Discarding a column a collector filled in for fifteen years is the single worst thing this app could do on day one.', 'Date ambiguity is resolved once per file with one question. Never per row, and never by guessing the locale.', 'commitTapped builds an immutable ImportPlan value and delegates. This feature writes nothing to the items table itself — that separation is what makes the mapping screen safe to back out of.', 'Remember the accepted mapping in column_mappings keyed by source signature, so the collector\u2019s second file maps itself.'] },
+        { n: 'FEATURE 12', name: 'ImportRunFeature', screen: 'IMPORT RUNNING', state: ['let plan: ImportPlan', 'processed / total: Int', 'currentName: String?', 'failures: [ImportFailure]', 'batchID: ImportBatch.ID', 'isCancelling: Bool'], view: ['onAppear', 'cancelTapped'], internal: ['progress(Int, String)', 'finished(ImportSummary)', 'failed(Error)'], delegate: ['completed(ImportBatch.ID)', 'cancelled(ImportBatch.ID, written: Int)'], deps: ['\\.importClient', '\\.defaultDatabase', '\\.uuid', '\\.date.now', '\\.backgroundTask'], rules: ['Write in chunks of about fifty rows per transaction, yielding between chunks so the writer queue stays available to the UI. One transaction around six hundred rows blocks every read in the app.', 'An unparseable row is imported as name-only with needs_review = 1 and recorded in failures. The batch never aborts, because a batch that aborts at row 400 leaves the collector with no idea what they now own.', 'Every row written carries the batch id. That is the entire undo mechanism, and it is why the undo window can be thirty days rather than one screen.', 'Cancel stops after the current chunk and reports how many rows landed. It never rolls back silently — the user decides via undo.', 'Wrap the effect in a background task assertion so backgrounding the app does not truncate the import.'] },
+        { n: 'FEATURE 13', name: 'ImportRevealFeature', screen: 'IMPORT REVEAL', state: ['let batchID: ImportBatch.ID', '@Fetch(ImportRevealRequest(batchID:)) reveal', '@FetchOne(EntitlementRequest()) entitlement', 'meterCrossed: Meter?', '@Presents destination (paywall, undoConfirm)'], view: ['continueTapped', 'reviewTapped', 'undoTapped', 'unlockTapped'], internal: ['undoResponse(Result<Int, Error>)', 'meterEvaluated(Meter?)'], delegate: ['finished', 'openReviewQueue', 'openPaywall(Meter)'], deps: ['\\.defaultDatabase', '\\.entitlements', '\\.date.now'], rules: ['Evaluate meters after the import, never before. The objects are already theirs; the paywall here is an offer on top of a gift, and reversing that order turns the best moment in the app into the worst.', 'The reveal query returns count, total value and the top three objects by value in one @Selection — this screen appears within a second of the last write or it loses its effect.', 'Undo deletes by batch id in one transaction and reports the count. The thirty-day window is enforced in SQL by comparing to the batch\u2019s created_at, not in the UI.'] },
+        { n: 'FEATURE 14', name: 'PriceReceiptFeature', screen: 'PRICE RECEIPT', state: ['let itemID: Item.ID', '@Fetch(ReceiptRequest(itemID:)) receipt', 'isRefreshing: Bool', '@Presents destination (setOwnValue, reportWrong)'], view: ['sourceTapped(ValuationSource.ID)', 'setOwnValueTapped', 'refreshTapped', 'reportWrongTapped'], internal: ['refreshResponse(Result<Valuation, Error>)', 'reportSubmitted'], delegate: ['openExternal(URL)', 'ownValueSet(Money)'], deps: ['\\.valuationService', '\\.defaultDatabase', '\\.openURL', '\\.feedbackClient'], rules: ['Show every source with its own figure, sample size and observation date. Never display an average without the spread that produced it — the spread is the honest part.', 'For a manual-entry type the receipt is a different document: the user’s own figure, when they set it, and what comparable objects in their own collection are worth. It says plainly that no public source prices sneakers, rather than showing an empty list of sources.', 'Confidence is stored on the valuation row, computed by the valuation service from source agreement and sample size. The view renders it; it is never recomputed in the view.', 'A stale valuation renders with its age rather than being hidden or refreshed automatically. The user decides whether to spend a refresh.', 'reportWrong writes locally and queues for send. It must work offline, because the moment a collector disagrees with a price is the moment they will tell you.'] },
+        { n: 'FEATURE 15', name: 'ValuationService (client, not a reducer)', screen: 'BACKGROUND', state: ['no TCA state — a dependency client', 'reads items, external_links', 'writes valuations, value_snapshots'], view: ['— not a reducer'], internal: ['revalueAll(force: Bool)', 'revalue(itemID:)', 'snapshotPortfolio()'], delegate: ['— exposed as async throws functions'], deps: ['\\.priceSources (per-market)', '\\.defaultDatabase', '\\.date.now', '\\.network'], rules: ['Never overwrite an item where value_is_user_set = 1. This is checked in the service, in SQL, and asserted in a test — three places, because it is the promise the whole valuation feature rests on.', 'Insert a new valuation row per run rather than updating; history is the product. Prune rows older than two years except one per month.', 'A portfolio snapshot is written once per day even when nothing changed, so the value chart has no gaps to interpolate across.', 'A source that fails leaves the previous valuation in place and records the failure. A missing price is never a zero, and never an empty chart point.', 'A type whose manifest has an empty providers list is never queued for valuation at all — not attempted, not marked failed, not retried. Sneakers are manually valued by design, and treating that as a missing integration would burn a nightly job on nothing for the life of the app.', 'Items with no source for their type are marked unpriceable rather than repeatedly retried — retrying them nightly for a year is how you burn an API quota.'] },
+        { n: 'FEATURE 16', name: 'ValueOverTimeFeature', screen: 'VALUE OVER TIME', state: ['range: Range (1M, 6M, 1Y, all)', '@FetchAll(SnapshotRequest(range:)) points', '@Fetch(MoversRequest(range:)) movers', '@FetchOne(CoverageRequest()) coverage', 'scrubIndex: Int?', 'showPaidBaseline: Bool'], view: ['rangeChanged(Range)', 'scrubbed(Int?)', 'moverTapped(Item.ID)', 'baselineToggled', 'exportTapped'], internal: ['— none'], delegate: ['openItem(Item.ID)', 'openInsuranceExport'], deps: ['\\.defaultDatabase'], rules: ['A range change reloads the query. Never fetch all history and slice it in Swift — an all-time query on a five-year collection is the one query here that can genuinely stall the UI.', 'Under thirty days of history renders a plain total and one sentence explaining why there is no chart. A three-point line implying a trend is a lie.', 'Coverage — the share of objects with any valuation — is always displayed. Treating unpriced objects as zero would make every collection look like it is losing value.'] },
+        { n: 'FEATURE 17', name: 'LendingFeature + LendSheetFeature', screen: 'LENDING', state: ['@FetchAll(LoanRow.open) out', '@FetchAll(LoanRow.closed) history', 'sheet: person picker state, dueDate: Date?, note: String'], view: ['loanTapped(Loan.ID)', 'markReturnedTapped(Loan.ID)', 'nudgeTapped(Loan.ID)', 'extendTapped(Loan.ID)', 'personPicked(Person.ID?)', 'nameTyped(String)', 'confirmTapped'], internal: ['contactsResponse([Person])', 'writeResponse(Result<Void, Error>)'], delegate: ['openItem(Item.ID)', 'loanCreated(Loan.ID)', 'shareNudge(String)'], deps: ['\\.defaultDatabase', '\\.contacts', '\\.date.now', '\\.uuid', '\\.calendar'], rules: ['The item picker only ever offers objects whose type has duplicates == .rows. A quantity type is excluded at the query, so the impossible loan cannot be constructed — validation after the fact would mean a user choosing a card and then being told no.', 'Person creation is inline from free text — a name with no contact record is a valid person. Requiring contacts access to lend a record to a friend loses the feature.', 'Overdue is derived from due_at against date.now, never stored. Storing it means a row that is wrong until something writes to it.', 'Returning a loan sets returned_at and optionally appends a condition note to the item\u2019s history. It never edits the item\u2019s condition field silently.', 'The nudge is a pre-written share-sheet message the user sends themselves. No push, no email from us — we are not going to message a collector\u2019s friend on their behalf.'] },
+        { n: 'FEATURE 18', name: 'DisposalSheetFeature', screen: 'DISPOSAL SHEET', state: ['items: IdentifiedArrayOf<SheetLine> (item, floor, venue)', 'sheetID: Listing.ID?', 'status: draft / published / offer / partiallySold', '@Fetch(VenueRecommendationRequest) recs', 'total: Money'], view: ['itemRemoved(Item.ID)', 'addItemsTapped', 'floorChanged(Item.ID, Money)', 'venueChanged(Item.ID, Venue)', 'publishTapped', 'acceptOfferTapped(Offer.ID)', 'withdrawTapped'], internal: ['publishResponse(Result<Listing.ID, Error>)', 'offerReceived(Offer)', 'saleConfirmed(Item.ID)'], delegate: ['openInstantLane([Item.ID])', 'sheetPublished(Listing.ID)', 'itemsSold([Item.ID])'], deps: ['\\.defaultDatabase', '\\.marketplaceClient', '\\.valuationService', '\\.date.now', '\\.uuid'], rules: ['Venue recommendation is per object, not per sheet — a watch and a vinyl in one pile sell in two different places, and pretending otherwise is exactly the gap in the market this feature exists to fill.', 'Quantity types never enter a sheet: the selection query filters them out upstream. Selling four of twelve identical cards is a different product with different mechanics, and half-supporting it here would produce listings nobody can fulfil.', 'Objects below their venue\u2019s floor are pulled out and delegated to the instant lane rather than silently listed at a loss.', 'A partial sale removes sold lines and keeps the sheet live. Sold items are marked sold, never deleted — the sale is provenance.', 'Publishing is an all-or-nothing transaction across listing and listing_items. A half-published sheet is unrecoverable from the user\u2019s side.'] },
+        { n: 'FEATURE 19', name: 'InstantLaneFeature', screen: 'INSTANT LANE', state: ['itemIDs: [Item.ID]', 'quote: BuybackQuote?', 'expiresAt: Date?', 'status: quoted / expired / unavailable / accepted', 'label: ShippingLabel?'], view: ['onAppear', 'acceptTapped', 'addMoreTapped', 'labelTapped', 'declineTapped', 'requoteTapped'], internal: ['quoteResponse(Result<BuybackQuote, QuoteError>)', 'expiryTicked', 'labelResponse(Result<ShippingLabel, Error>)'], delegate: ['openItemPicker', 'itemsDisposed([Item.ID])', 'dismissed'], deps: ['\\.buybackClient', '\\.defaultDatabase', '\\.continuousClock', '\\.date.now'], rules: ['Expiry runs on a continuousClock timer and flips to the expired state in the UI. Never let an expired quote stay tappable — accepting a stale price is a support ticket and a broken promise.', 'unavailable is a designed state with a named reason and an alternative, not an error alert. Several of the fourteen types will have no buyback partner at launch.', 'Batching is encouraged in the UI because it is the economics: one parcel of five cheap objects works, five parcels do not.', 'Accepting writes a disposal record per object and marks them disposed with the quote attached. The valuation history stays, because the object was real.'] },
+        { n: 'FEATURE 20', name: 'PaywallFeature', screen: 'PAYWALL / UNLOCKS', state: ['let trigger: Meter', '@FetchOne(EntitlementRequest()) entitlement', 'products: [Product]', 'rung: LadderRung', 'purchaseState: idle / purchasing / failed(String)', 'creditAccrued: Money'], view: ['onAppear', 'termTapped(Term)', 'purchaseTapped', 'restoreTapped', 'creditRuleTapped', 'dismissTapped'], internal: ['productsResponse([Product])', 'purchaseResponse(Result<Transaction, Error>)', 'entitlementUpdated'], delegate: ['unlocked(Entitlement)', 'dismissed'], deps: ['\\.storeKit', '\\.defaultDatabase', '\\.entitlements', '\\.date.now'], rules: ['The meter that triggered the paywall is stated in the user\u2019s own numbers ("you have 612 objects"), read from the database, never a generic limit message.', 'The ladder rung is server-driven and cached locally — founding prices rise with unlocks sold, so a hardcoded price will be wrong within weeks.', 'Lifetime credit accrual is computed from the transaction history in a pure function and displayed. This is the promise that makes yearly safe to buy, so it must be visible before purchase, not after.', 'Dismissing always leaves the app fully usable for everything already owned. The paywall gates new writes and premium reads — never access to a collection the user already has.'] },
+        { n: 'FEATURE 21', name: 'SearchFeature', screen: 'SEARCH', state: ['query: String', '@FetchAll(SearchRequest(query:)) results: [SearchHit]', '@Shared(.recentSearches) recents: [String]', 'suggestion: String?'], view: ['queryChanged(String)', 'resultTapped(Item.ID)', 'groupHeaderTapped(CollectionType.ID)', 'recentTapped(String)', 'clearTapped', 'createFromQueryTapped'], internal: ['debounced(String)', 'suggestionResponse(String?)'], delegate: ['openItem(Item.ID)', 'openCollection(CollectionType.ID, query: String)', 'createItem(name: String)'], deps: ['\\.defaultDatabase', '\\.continuousClock'], rules: ['Debounce 250ms with .debounce on the effect, keyed by a CancelID. Reloading an FTS query per keystroke on a six-hundred-object collection is felt immediately.', 'Which columns are indexed comes from each manifest’s searchable list — tracklist and label for vinyl, card number and game for cards, colourway and style code for sneakers. Indexing every field for every type makes results worse, not better.', 'Search spans name, subtitle, notes, identifier, location and the manifest-listed field values through an FTS5 virtual table kept current by triggers — not a LIKE across five joins.', 'Zero results offers to create the object from the query. A collector searching for something they own but never entered should end that search with the object entered.'] }
+      ],
+      deps: [
+        { k: '\\.defaultDatabase', api: 'any DatabaseWriter  (sqlite-data)\nread { db in } / write { db in }', note: 'Provided by sqlite-data. Live points at the on-disk database with the full migrator; tests use prepareDependencies with an in-memory database and the same migrator, so a schema mistake fails in tests rather than on a device.' },
+        { k: '\\.typeCatalogue', api: 'manifests() throws -> [TypeManifest]\ncompile(into: Database) throws\ndraft(TypeManifest) throws', note: 'Decodes the bundled YAML plus any user-drafted manifests and compiles both into collectionTypes and fieldDefinitions. Idempotent, called on every launch. Test value returns two hand-written manifests — one rows type, one quantity type — which is enough to cover every branch in the app.' },
+        { k: '\\.modelLoader', api: 'load(String) async throws -> Entity', note: 'Loads and caches a type’s 3D model. Never awaited on a render path: the icon and gradient draw first from the manifest, and the model swaps in when it arrives or never does.' },
+        { k: '\\.valuationService', api: 'revalueAll(force: Bool) async throws\nrevalue(itemID:) async throws -> Valuation\nsnapshotPortfolio() async throws', note: 'Live fans out to the per-market price sources and writes valuations. Test value returns fixed figures with a controllable spread so confidence rendering is testable. Never called from a view.' },
+        { k: '\\.priceSources', api: '[Market: PriceSource]\nquote(identifier:type:) async throws -> [SourceQuote]', note: 'One implementation per source (Discogs, PriceCharting, eBay sold, numismatic catalogues). Registered by collection type and market, so entering a new market is a registration, not a rewrite. Japan stays absent until a real source exists.' },
+        { k: '\\.importClient', api: 'connectors() -> [Connector]\nimport(plan:) -> AsyncStream<ImportEvent>', note: 'One stream of progress events per import, so ImportRunFeature has a single effect to consume and cancel. Test value emits a scripted sequence including failures, because the failure path is the one that matters.' },
+        { k: '\\.csvParser', api: 'summarize(URL) async throws -> ParseSummary\nrows(URL, plan:) -> AsyncThrowingStream<Row>', note: 'Wraps a real CSV library. Owns separator, encoding and decimal detection — the whole tolerance list from the format specification lives here and nowhere else.' },
+        { k: '\\.columnMatcher', api: 'guess([String], type:) -> [ColumnMapping]', note: 'A pure function over a shipped synonym dictionary. No network, no model, fully testable, and fixable by editing data when a French collector reports a missed column.' },
+        { k: '\\.barcodeScanner', api: 'stream() -> AsyncStream<String>', note: 'VisionKit behind a client. Test value lets a test push codes on demand, which is the only sane way to test the debounce and the fall-through to photo-only.' },
+        { k: '\\.catalogueLookup', api: 'identify(barcode:type:) async throws -> BarcodeMatch', note: 'Barcode to object identity. A miss is a normal return, not a thrown error, because a miss is a designed path through the capture screen.' },
+        { k: '\\.photoStorage', api: 'save(Data) async throws -> PhotoRef\nurl(PhotoRef) -> URL\ndelete(PhotoRef) async throws', note: 'Files on disk, relative paths in SQLite. Test value writes to a temporary directory. Image data never enters the database.' },
+        { k: '\\.buybackClient', api: 'quote([Item.ID]) async throws -> BuybackQuote\naccept(quote:) async throws -> ShippingLabel', note: 'Per-partner, per-type. Must be able to answer "no buyer for this type" as a value rather than an error — several types will have no partner at launch.' },
+        { k: '\\.marketplaceClient', api: 'publish(sheet:) async throws -> Listing.ID\noffers(Listing.ID) -> AsyncStream<Offer>', note: 'Venue-aware. Recommendation logic stays in the models target as a pure function so it can be tested without a network.' },
+        { k: '\\.entitlements', api: 'current() async -> Entitlement\nmeter(Meter) async -> MeterState\nladderRung() async throws -> LadderRung', note: 'Wraps StoreKit plus the local meter counters plus the server-driven founding ladder. The credit calculation is a pure function tested independently of StoreKit.' },
+        { k: '\\.revaluationScheduler', api: 'start() -> AsyncStream<Void>', note: 'BGTaskScheduler behind a client, emitting when a revaluation is due. Test value emits on demand, so the nightly path is testable without waiting for night.' }
+      ],
+      questions: [
+        { k: 'DECISION 1', t: 'What happens to objects when a manifest changes?', b: 'The manifest settles where field profiles live, but not what a version bump does. Renaming a label is safe. Removing a field, changing a choice list, or changing duplicates from rows to quantity are not — each can orphan data a collector entered. My proposal: labels and added fields apply silently; removed fields archive and keep their values; changed option lists retain retired options as read-only; and a duplicates change is refused outright on a type that already holds objects. Confirm that last one, because it means a mistake in a shipped manifest is permanent.' },
+        { k: 'DECISION 2', t: 'Do we sync in v1, or ship single-device?', b: 'UUID keys and soft deletes are here so sync is possible later without a migration, which costs nothing today. But co-shelf, the shared-collection feature, is genuinely blocked on it — a shared shelf needs a server or CloudKit from the first line. My read: ship single-device with sync-shaped data, and hold co-shelf for v2 rather than half-building it.' },
+        { k: 'DECISION 3', t: 'How much of the valuation service runs on device?', b: 'Running it on device means no backend, no per-user cost and the collection never leaves the phone — consistent with everything the import spec promises. Running it server-side means one API quota instead of thousands, cached prices shared across users, and no key shipped in a binary. This is the biggest architectural fork in the document and it should be settled before feature 15 is written.' },
+        { k: 'DECISION 4', t: 'Should FTS5 index custom field values in v1?', b: 'Searching what a collector typed into their own imported column is exactly the search that would delight them — and it is the one that makes the trigger set complicated, because a value change in a join table has to reindex a row in another table. Cheap to defer, awkward to retrofit. I would build the triggers now and populate the column later if it drags.' }
+      ]
+    };
+  }
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+id: thing
+name:
+  singular: Thing
+  plural: Things
+  collection: Collection     # the user renames this immediately
+mark: "00"
+icon: box
+gradient: [oxide, ink]
+
+# Same name twice = ask. Neither answer is right for everyone,
+# so this is the one question the generic type must put to the user.
+duplicates: ask
+
+spine:
+  title: Name
+  subtitle: Maker            # brand, artist, club, manufacturer
+  year: Year
+  acquired: Acquired on
+  paid: Paid
+  value: Value               # hideable per collection, not just globally
+
+# Plain words, not a grading scale. A scale is what a real type earns.
+conditions:
+  - Mint
+  - Excellent
+  - Good
+  - Worn
+  - Damaged
+
+lookup:
+  identifier: none
+  symbologies: [ean13, upc-a]   # tried anyway — modern things do scan
+  providers: [generic-barcode]
+  localCorpus: none
+  ocrFields: [title]            # read the words off the object, offer them
+
+searchable: [title, subtitle, year, series, variant, place, tags, notes]
+
+placeLabel: Where it is
+
+related: [subtitle, series, tags]
+
+# No signature, by design — the collapsed slot is the nudge toward
+# proposing a real type. See One Roof, section 03.
+signatures: []
+
+fields:
+  - key: variant
+    label: Variant
+    type: text
+    note: colourway, edition, print
+    sample: Black / gold
+  - key: series
+    label: Series / set
+    type: text
+    note: groups a shelf instantly
+    sample: Tour 1994
+  - key: material
+    label: Material
+    type: text
+    sample: Enamel
+  - key: size
+    label: Size
+    type: text
+    note: free-form on purpose
+    sample: 32 mm
+  - key: condition
+    label: Condition
+    type: choice
+    options: [Mint, Excellent, Good, Worn, Damaged]
+    sample: Excellent
+  - key: completeness
+    label: Completeness
+    type: choice
+    options: [Loose, Boxed, Sealed]
+    sample: Loose
+  - key: quantity
+    label: How many
+    type: number
+    default: 1
+    showIf: "> 1"
+    sample: "1"
+  - key: tags
+    label: Tags
+    type: list
+    sample: 3 tags
+  - key: notes
+    label: Notes
+    type: text
+    multiline: true
+    note: long-form, last in the form
+    sample: 1 paragraph
+
+# Everything above is optional except title. The add form shows four
+# fields and an "Add a detail" button; the rest appear as they are used.
+requiredFields: [title]
+customFields: true             # text | number | choice | boolean

@@ -1,0 +1,162 @@
+id: video-game
+name:
+  singular: Game
+  plural: Games
+  collection: The Library
+mark: "CIB"
+icon: cartridge
+gradient: [indigo, claret]
+
+# Supersedes the retro-game type. "Retro" was a moving date, not a category;
+# the era is now a consequence of the media field. See 43_Video Games.dc.html.
+supersedes:
+  - type: official/retro-game@1
+    fields:
+      cart   -> mediaCondition
+      box    -> boxCondition
+      manual -> manualCondition
+      cib    -> derived        # summary of the three axes; field removed
+
+# Same title, different region or print = different object.
+duplicates: rows
+
+spine:
+  title: Title
+  subtitle: Platform           # not the publisher — this is how shelves are read
+  year: Released               # this print, not the game's first release
+  acquired: Acquired on
+  paid: Paid
+  value: Value
+
+# One scale, shared by every axis and every medium. Missing is a step, so
+# completeness and condition are the same question asked once.
+conditions:
+  - Sealed
+  - Mint
+  - Near mint
+  - Very good
+  - Good
+  - Fair
+  - Poor
+allowMissing: true
+
+# Signature renderers — see One Roof, section 09. Two is the cap, and the
+# clock is not one of them: it renders in the status slot like every clock.
+signatures:
+  - renderer: ladder
+    axes: [mediaCondition, boxCondition, manualCondition]
+  - renderer: set
+    binds: inserts             # slots come from mediaRules, below
+
+# The era is a consequence of the medium, never a boundary. This table is
+# what lets one type cover 1977 to now without a second type.
+mediaRules:
+  cartridge:
+    identifier: catalogueNumber
+    inserts: [manual, map, insert, regCard, dustSleeve, spineCard]
+    clock: saveBattery         # lithium cell, ~25-35 yrs
+  optical:
+    identifier: barcode
+    inserts: [manual, inlay, regCard, demoDisc, obi]
+    clock: discRot             # pressing-plant dependent — held pending evidence
+  floppy:
+    identifier: catalogueNumber
+    inserts: [manual, codeWheel, feelies, map, disks]
+    clock: mediaRot
+  card:
+    identifier: barcode
+    inserts: [manual, insert]
+    clock: none
+  code:
+    identifier: none           # a licence is not an object; the card is
+    inserts: [codeCard, sleeve]
+    clock: codeExpiry          # the only clock that can reach zero
+
+lookup:
+  symbologies: [ean13, upc-a, jan]
+  providers: [openvgdb]
+  localCorpus: releases.json   # ~180k releases, region-resolved
+  ocrFields: [title, platform, catalogueNumber]
+  identifierPattern: per-platform
+
+searchable: [title, subtitle, year, publisher, region, edition, place]
+
+placeLabel: Where it is
+
+related: [subtitle, publisher, series]
+
+fields:
+  - key: platform
+    label: Platform
+    type: text
+    sample: Super Famicom
+    auto: true
+  - key: publisher
+    label: Publisher
+    type: text
+    sample: Square
+    auto: true
+  - key: catalogueNumber
+    label: Catalogue no.
+    type: text
+    note: the real identifier for pre-barcode media
+    sample: SHVC-AC6J-JPN
+    auto: true
+  - key: region
+    label: Region
+    type: choice
+    options: [NTSC-U, NTSC-J, PAL, Region-free]
+    required: true
+    sample: NTSC-J
+  - key: media
+    label: Media
+    type: choice
+    options: [Cartridge, Optical disc, Floppy, Card, Download code]
+    note: drives mediaRules
+    required: true
+    sample: Cartridge
+  - key: edition
+    label: Edition
+    type: text
+    note: first print, Greatest Hits, Platinum, budget reissue — never auto-filled
+    sample: First print
+  - key: revision
+    label: Revision
+    type: text
+    note: cart board rev / disc version; hidden on platforms without them
+    sample: Rev A
+  - key: mediaCondition
+    label: Cart / disc
+    type: scale
+    ladderAxis: 1
+    sample: Near mint
+  - key: boxCondition
+    label: Box
+    type: scale
+    ladderAxis: 2
+    sample: Very good
+  - key: manualCondition
+    label: Manual
+    type: scale
+    ladderAxis: 3
+    sample: Good
+  - key: inserts
+    label: What's inside
+    type: set
+    slotsFrom: mediaRules
+    sample: 4 of 6
+  - key: slab
+    label: Sealed / graded
+    type: choice
+    options: [None, Sealed ungraded, WATA, VGA]
+    sample: None
+  - key: saveBattery
+    label: Save battery
+    type: date
+    note: feeds the clock; original unless replaced
+    sample: Original · 1995
+  - key: playLog
+    label: Played
+    type: log
+    entry: [date, note, finished]
+    sample: 3 entries

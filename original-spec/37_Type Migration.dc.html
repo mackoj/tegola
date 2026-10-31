@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#EAE3D6}a{color:#2B44D6}a:hover{color:#FF5B2E}</style>
+</helmet>
+
+<div style="width:1360px;margin:0 auto;padding:60px 28px 100px;font-family:Archivo,system-ui,sans-serif;color:#17130F">
+
+  <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+    <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70">CLCTN · CHANGING A COLLECTION'S TYPE · SEPTEMBER 2026</div>
+    <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#F3ECE0;background:linear-gradient(150deg,#FF5B2E,#6E2440);border-radius:999px;padding:5px 12px">4 SCREENS · BUILT</div>
+  </div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:66px;line-height:.92;letter-spacing:-.045em;margin:16px 0 0;max-width:1060px;text-wrap:balance">The feature that makes every other type decision reversible.</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:890px;margin-top:20px;text-wrap:pretty">A collector builds a custom type for their synths. Six months later we ship an official Synthesisers type — better, with a catalogue, a grading scale, valuation, a 3D model. <strong>Without migration, the reward for helping us is being stuck on the worse version of the thing you asked for.</strong> With it, the entire type system becomes provisional in a good way: pick wrong, move later, lose nothing.</div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:890px;margin-top:14px;text-wrap:pretty">Screens live in the prototype as <span style="font-family:'DM Mono',monospace">migrate · remap · migrun · migdone</span>. This is the model underneath them. It closes Q3 from the generic-type page.</div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">01 · FOUR WAYS A COLLECTION CHANGES TYPE — ONE MACHINE</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:20px;text-wrap:pretty">The custom-to-official case is the one worth designing for, but it is not special. Build the remapper generically and three other problems we already have stop being problems.</div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+    <sc-for list="{{ cases }}" as="c" hint-placeholder-count="4">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;overflow:hidden;box-shadow:4px 4px 0 {{ c.sh }}">
+        <div style="padding:11px 16px;background: {{ c.bg }};color: {{ c.fg }};font:500 9px 'DM Mono',monospace;letter-spacing:.12em">{{ c.k }}</div>
+        <div style="padding:16px">
+          <div style="font:700 15.5px/1.28 Archivo,sans-serif;text-wrap:pretty">{{ c.t }}</div>
+          <div style="font:400 12.5px/1.55 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">{{ c.b }}</div>
+          <div style="font:400 11.5px/1.5 'DM Mono',monospace;color:#2B44D6;margin-top:10px;padding-top:9px;border-top:2px solid #E0D6C4">{{ c.f }}</div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">02 · THE PROMISE, STATED BEFORE THE MECHANICS</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+    <sc-for list="{{ promises }}" as="p" hint-placeholder-count="3">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background: {{ p.bg }};color: {{ p.fg }};padding:22px 24px;box-shadow:5px 5px 0 #17130F">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;opacity:.65">{{ p.k }}</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:27px;line-height:1.03;letter-spacing:-.033em;margin-top:9px;text-wrap:balance">{{ p.t }}</div>
+        <div style="font:400 13.5px/1.62 Archivo,sans-serif;margin-top:10px;opacity:.92;text-wrap:pretty">{{ p.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">03 · WHAT THE MAPPER PROPOSES, AND WHY</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:920px;margin-bottom:10px;text-wrap:pretty">The screen opens with every field already mapped. <strong>A migration screen that starts empty is a data-entry job, and nobody finishes one.</strong> Four deterministic passes produce the proposal; the collector only ever corrects it.</div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:920px;margin-bottom:22px;text-wrap:pretty">Switch the source type in Tweaks — a hand-rolled custom type maps worse than a community one, because a shipped official type can carry an explicit <span style="font-family:'DM Mono',monospace">supersedes:</span> block written by us.</div>
+
+  <div style="display:grid;grid-template-columns:1fr 430px;gap:12px;align-items:start">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+      <div style="display:grid;grid-template-columns:96px 1fr 1fr 130px;background:#17130F;color:#F3ECE0;font:500 9.5px 'DM Mono',monospace;letter-spacing:.1em">
+        <div style="padding:13px 16px">PASS</div>
+        <div style="padding:13px 16px">MATCHES ON</div>
+        <div style="padding:13px 16px">EXAMPLE</div>
+        <div style="padding:13px 16px;text-align:right">CONFIDENCE</div>
+      </div>
+      <sc-for list="{{ passes }}" as="p" hint-placeholder-count="4">
+        <div style="display:grid;grid-template-columns:96px 1fr 1fr 130px;border-top:2px solid #E0D6C4;align-items:start">
+          <div style="padding:14px 16px;font:500 12px 'DM Mono',monospace;color:#2B44D6">{{ p.n }}</div>
+          <div style="padding:14px 16px">
+            <div style="font:700 13.5px Archivo,sans-serif">{{ p.t }}</div>
+            <div style="font:400 12.5px/1.55 Archivo,sans-serif;color:#6E6458;margin-top:5px;text-wrap:pretty">{{ p.b }}</div>
+          </div>
+          <div style="padding:14px 16px;font:400 12px/1.6 'DM Mono',monospace;color:#3A2F26;white-space:pre-line">{{ p.ex }}</div>
+          <div style="padding:14px 16px;text-align:right">
+            <div style="display:inline-block;font:500 8.5px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:4px 10px;background: {{ p.bg }};color: {{ p.fg }}">{{ p.c }}</div>
+          </div>
+        </div>
+      </sc-for>
+      <div style="padding:15px 16px;border-top:2.5px solid #17130F;background:#FBF6EC;font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">No pass may silently drop a field. Anything unmatched after pass 04 becomes a custom field on the new type — the default is always <em>keep it</em>, never <em>lose it</em>, and the collector has to work to delete something.</div>
+    </div>
+
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#0C0A08;color:#F3ECE0;padding:22px 24px;box-shadow:5px 5px 0 #FF5B2E">
+      <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:14px">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;color:#FFD24A">{{ srcLabel }}</div>
+        <div style="margin-left:auto;font:500 8.5px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #FFD24A;color:#FFD24A;border-radius:999px;padding:3px 9px">{{ autoPct }} AUTO</div>
+      </div>
+      <div style="font:400 12.5px/1.72 'DM Mono',monospace;white-space:pre">{{ supersedesYaml }}</div>
+      <div style="margin-top:16px;padding-top:14px;border-top:2px solid rgba(243,236,224,.22);font:400 13px/1.6 Archivo,sans-serif;opacity:.85;text-wrap:pretty">{{ srcNote }}</div>
+    </div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">04 · FIELD KIND → FIELD KIND, WHAT SURVIVES</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:920px;margin-bottom:20px;text-wrap:pretty">The generic type offers four kinds; official types use eight. Most conversions are free, three are lossy, and the lossy ones are the only places the screen ever raises its voice.</div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;overflow:hidden;box-shadow:5px 5px 0 #2B44D6">
+    <div style="display:grid;grid-template-columns:210px 210px 128px 1fr;background:#17130F;color:#F3ECE0;font:500 9.5px 'DM Mono',monospace;letter-spacing:.1em">
+      <div style="padding:13px 16px">FROM</div>
+      <div style="padding:13px 16px">TO</div>
+      <div style="padding:13px 16px">RESULT</div>
+      <div style="padding:13px 16px">WHAT THE COLLECTOR SEES</div>
+    </div>
+    <sc-for list="{{ matrix }}" as="m" hint-placeholder-count="8">
+      <div style="display:grid;grid-template-columns:210px 210px 128px 1fr;border-top:2px solid #E0D6C4;background:#fff;align-items:center">
+        <div style="padding:13px 16px;font:400 12.5px 'DM Mono',monospace">{{ m.from }}</div>
+        <div style="padding:13px 16px;font:400 12.5px 'DM Mono',monospace;color:#2B44D6">{{ m.to }}</div>
+        <div style="padding:13px 16px">
+          <div style="display:inline-block;font:500 8.5px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:4px 10px;background: {{ m.bg }};color: {{ m.fg }}">{{ m.r }}</div>
+        </div>
+        <div style="padding:13px 16px;font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ m.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">05 · THE HARD PART IS VALUES, NOT FIELDS</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:920px;margin-bottom:22px;text-wrap:pretty">Mapping <span style="font-family:'DM Mono',monospace">condition → condition</span> is trivial and useless on its own. The collector wrote <em>Clean, Played, Rough</em>; the official scale has six grades with agreed meanings and a price attached to each. <strong>Getting this wrong misprices 47 objects, and every CSV importer in the world gets it wrong silently.</strong> So it is its own screen, with counts, because "21 objects become Good" is a decision and "condition maps to condition" is not.</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+    <sc-for list="{{ valueRules }}" as="v" hint-placeholder-count="3">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#FBF6EC;padding:18px 20px">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">{{ v.k }}</div>
+        <div style="font:700 16px/1.3 Archivo,sans-serif;margin-top:7px;text-wrap:pretty">{{ v.t }}</div>
+        <div style="font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">{{ v.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+  <div style="border:2.5px solid #17130F;border-radius:16px;background:#FFD24A;padding:18px 22px;margin-top:12px">
+    <div style="font:400 15px/1.65 Archivo,sans-serif;max-width:1010px;text-wrap:pretty"><strong>Never interpolate onto a finer scale.</strong> Three words cannot become six grades; they become three of the six, and the other three stay empty until the collector grades into them. An empty grade is honest. A machine-invented one corrupts the collection quietly and forever, and the collector will never know which values they actually wrote.</div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">06 · THE FOUR SCREENS</div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+    <sc-for list="{{ screens }}" as="s" hint-placeholder-count="4">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;overflow:hidden;box-shadow:4px 4px 0 #17130F">
+        <div style="display:flex;align-items:baseline;gap:8px;padding:11px 16px;background:#17130F;color:#F3ECE0">
+          <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.1em;color:#FFD24A">{{ s.k }}</div>
+          <div style="margin-left:auto;font:500 8.5px 'DM Mono',monospace;opacity:.5">{{ s.n }}</div>
+        </div>
+        <div style="padding:16px">
+          <div style="font:700 15px/1.3 Archivo,sans-serif;text-wrap:pretty">{{ s.t }}</div>
+          <div style="font:400 12.5px/1.55 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">{{ s.b }}</div>
+          <div style="font:400 11.5px/1.5 Archivo,sans-serif;color:#0E6E5E;margin-top:10px;padding-top:9px;border-top:2px solid #E0D6C4;text-wrap:pretty">{{ s.d }}</div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">07 · SAFETY — WHY THIS IS A TRANSACTION AND NOT A LOOP</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <div style="display:flex;flex-direction:column;gap:11px">
+      <sc-for list="{{ safety }}" as="s" hint-placeholder-count="4">
+        <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;padding:16px 18px;display:flex;gap:14px;align-items:baseline">
+          <div style="flex:none;font:500 9px 'DM Mono',monospace;letter-spacing:.1em;color:#8A7F70;width:46px">{{ s.k }}</div>
+          <div style="flex:1">
+            <div style="font:700 14.5px/1.3 Archivo,sans-serif;text-wrap:pretty">{{ s.t }}</div>
+            <div style="font:400 12.5px/1.55 Archivo,sans-serif;color:#3A2F26;margin-top:6px;text-wrap:pretty">{{ s.b }}</div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#0C0A08;color:#F3ECE0;padding:22px 24px;box-shadow:5px 5px 0 #0E6E5E">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;color:#FFD24A;margin-bottom:14px">MIGRATION RECORD · KEPT FOR 30 DAYS</div>
+      <div style="font:400 12.5px/1.72 'DM Mono',monospace;white-space:pre">{{ recordYaml }}</div>
+      <div style="margin-top:16px;padding-top:14px;border-top:2px solid rgba(243,236,224,.22);font:400 13px/1.6 Archivo,sans-serif;opacity:.85;text-wrap:pretty">The snapshot is the undo. It is also the audit trail — the only way to answer "what did I actually write in that field before the app changed it", which is the question a collector asks two years later when a number looks wrong.</div>
+    </div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">08 · STILL OPEN</div>
+  <div style="display:flex;flex-direction:column;gap:11px">
+    <sc-for list="{{ open }}" as="o" hint-placeholder-count="5">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#FBF6EC;padding:18px 20px;display:flex;gap:18px;align-items:baseline">
+        <div style="flex:none;font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;width:52px">{{ o.k }}</div>
+        <div style="flex:1">
+          <div style="font:700 16px/1.3 Archivo,sans-serif;text-wrap:pretty">{{ o.q }}</div>
+          <div style="font:400 13.5px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:7px;max-width:960px;text-wrap:pretty">{{ o.b }}</div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;source&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;A community type you downloaded&quot;,&quot;options&quot;:[&quot;A type you built yourself&quot;,&quot;A community type you downloaded&quot;,&quot;The generic Thing type&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Migrating from&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const src = this.props.source ?? 'A community type you downloaded';
+
+    const sources = {
+      'A type you built yourself': {
+        label: 'NO SUPERSEDES BLOCK · NAME MATCHING ONLY', pct: '61%',
+        note: 'Your own field names are yours — "voices", "rack ears", "serviced by". Name and kind matching gets most of them; the rest land as custom fields, which is a fine outcome and needs no apology from the screen.',
+        yaml: ['# thing → synthesiser', '# nothing declared; the mapper works it out', '', 'inferred:', '  voices        → polyphony    # synonym list', '  year          → year         # exact', '  condition     → condition    # exact key, values differ', '  serviced_by   → (custom)     # no official home', '  rack_ears     → (custom)     # no official home', '', 'auto: 7 of 11', 'needs_you: 1   # the condition scale'].join('\n')
+      },
+      'A community type you downloaded': {
+        label: 'SUPERSEDES BLOCK · WRITTEN BY US', pct: '94%',
+        note: 'The best case, and the common one. When we ship an official type that grew out of a community draft, we write the mapping ourselves against that exact manifest — so the collector opens a screen that is already right and taps once.',
+        yaml: ['supersedes:', '  - type: community/synths-by-mira@3', '    fields:', '      voices        → polyphony', '      cv_gate       → connectivity.cv', '      serviced_by   → serviceLog.by', '      rack_ears     → keep as custom', '    values:', '      condition:', '        Clean   → Excellent', '        Played  → Good', '        Rough   → Fair', '', 'auto: 10 of 11', 'needs_you: 0   # confirm and go'].join('\n')
+      },
+      'The generic Thing type': {
+        label: 'BASE SCHEMA · EVERY KEY IS SHARED', pct: '100%',
+        note: 'Thing is the intersection of every type, so nothing can fail to map — the destination always has a home for a Thing field. The screen barely needs to exist here; it is one confirm, and the interesting content is what the new type adds rather than what moves.',
+        yaml: ['# thing → any official type', '# thing is the intersection, so every key lands', '', 'guaranteed:', '  title    → title', '  subtitle → subtitle', '  year     → year', '  variant  → variant', '  series   → series', '  condition→ condition   # values still need you', '  quantity → quantity', '  notes    → notes', '', 'auto: 12 of 12', 'needs_you: 0'].join('\n')
+      }
+    };
+    const s = sources[src] ?? sources['A community type you downloaded'];
+
+    return {
+      srcLabel: s.label, autoPct: s.pct, srcNote: s.note, supersedesYaml: s.yaml,
+
+      cases: [
+        { k: 'CASE 01', t: 'Custom type → official type', b: 'The one that prompted this. Their type shipped as ours; they get the catalogue, the scale, the valuation and the model.', f: 'the design target', bg: '#0E6E5E', fg: '#F3ECE0', sh: '#17130F' },
+        { k: 'CASE 02', t: 'Thing → any real type', b: 'Someone catalogued 60 Things and then noticed there is a Watches type. Same machine, easier — Thing is a subset of everything.', f: 'closes generic Q3', bg: '#2B44D6', fg: '#F3ECE0', sh: '#17130F' },
+        { k: 'CASE 03', t: 'Wrong type on day one', b: 'They filed sealed games under Video games and meant Collectible games. Today that means re-entry; it should mean one screen.', f: 'fixes an old complaint', bg: '#FFD24A', fg: '#17130F', sh: '#17130F' },
+        { k: 'CASE 04', t: 'A type we revise', b: 'We add a field or rename a grade in v2 of an official type. That is the same remap, run silently with a declared mapping.', f: 'our own upgrades', bg: '#17130F', fg: '#F3ECE0', sh: '#FF5B2E' }
+      ],
+
+      promises: [
+        { k: 'PROMISE 01', t: 'No value is ever destroyed', bg: '#0E6E5E', fg: '#F3ECE0', b: 'A field with no home on the new type becomes a custom field on the new type. Deleting data is a separate, deliberate act that we ask about twice — never a side effect of moving.' },
+        { k: 'PROMISE 02', t: 'You see it before it happens', bg: '#fff', fg: '#17130F', b: 'Every field, its destination, and a real object rendered before and after. No migration runs on a described outcome; the collector approves a shown one.' },
+        { k: 'PROMISE 03', t: 'Thirty days to change your mind', bg: '#FFD24A', fg: '#17130F', b: 'The old type stays installed and a snapshot sits behind it. Undo restores every value exactly, and we warn before the snapshot expires rather than after.' }
+      ],
+
+      passes: [
+        { n: 'PASS 01', t: 'Declared', b: 'The new type\u2019s supersedes block names the old type and its fields outright.', ex: 'voices → polyphony\ncv_gate → connectivity.cv', c: 'EXACT', bg: '#B9F0C9', fg: '#17130F' },
+        { n: 'PASS 02', t: 'Same key', b: 'Both manifests use the same key. The spine fields always hit here.', ex: 'title → title\nyear  → year', c: 'EXACT', bg: '#B9F0C9', fg: '#17130F' },
+        { n: 'PASS 03', t: 'Synonym and kind', b: 'A curated synonym list, gated on compatible field kinds. Never fuzzy string distance — "maker" and "marker" are not the same field.', ex: 'maker  → manufacturer\nbought → acquired', c: 'SUGGESTED', bg: '#FFD24A', fg: '#17130F' },
+        { n: 'PASS 04', t: 'Unmatched', b: 'Everything left. Carried across as a custom field with its values and its position in the form.', ex: 'rack_ears → (custom)\nserviced_by → (custom)', c: 'KEPT AS-IS', bg: '#EDE4D6', fg: '#17130F' }
+      ],
+
+      matrix: [
+        { from: 'text', to: 'text', r: 'CLEAN', bg: '#B9F0C9', fg: '#17130F', b: 'Nothing to do. The overwhelming majority of mappings.' },
+        { from: 'number', to: 'number + unit', r: 'CLEAN', bg: '#B9F0C9', fg: '#17130F', b: 'The unit is declared on the new field; we ask once which unit the old numbers were in, and never guess.' },
+        { from: 'choice', to: 'choice', r: 'NEEDS YOU', bg: '#FFD24A', fg: '#17130F', b: 'Option by option, with counts. The only mapping that gets its own screen, because it is the only one that can be wrong invisibly.' },
+        { from: 'choice', to: 'grading scale', r: 'NEEDS YOU', bg: '#FFD24A', fg: '#17130F', b: 'Same screen, higher stakes — grades carry price. Unmapped grades stay empty rather than being interpolated.' },
+        { from: 'boolean', to: 'choice', r: 'CLEAN', bg: '#B9F0C9', fg: '#17130F', b: 'Yes and no become two of the options and the collector picks which two. Widening is always safe.' },
+        { from: 'choice', to: 'boolean', r: 'LOSSY', bg: '#C2371F', fg: '#F3ECE0', b: 'Narrowing. Offered, with the count that would collapse shown in red, and the keep-as-custom escape hatch above the button.' },
+        { from: 'text', to: 'number', r: 'PARTIAL', bg: '#FFD24A', fg: '#17130F', b: 'Parses what it can and reports the rest. The unparseable values stay in a custom text field rather than becoming zero.' },
+        { from: 'anything', to: 'log / composite', r: 'MANUAL', bg: '#EDE4D6', fg: '#17130F', b: 'A flat value cannot become a structured one automatically. It seeds the first entry and the collector fills the shape in over time.' }
+      ],
+
+      valueRules: [
+        { k: 'RULE 01', t: 'Order is preserved, not invented', b: 'Both scales are ordered, so best maps to best and worst to worst. Anything ambiguous in the middle is proposed and flagged, never assumed.' },
+        { k: 'RULE 02', t: 'Counts are always visible', b: '"Played × 21" next to the grade makes the consequence legible. A collector will happily fix a mapping affecting 21 objects and ignore an abstract one.' },
+        { k: 'RULE 03', t: 'Unmapped means empty, not invented', b: 'A six-grade scale fed by three words ends with three grades in use. We do not spread values to make the scale look populated.' }
+      ],
+
+      screens: [
+        { k: 'migrate', n: '01', t: 'The whole picture', b: 'Every field, old on the left, new on the right, with a badge per row: exact, suggested, kept as custom. One row is yellow because it needs a decision.', d: 'Opens fully mapped. Doing nothing and tapping Migrate is a valid, safe path.' },
+        { k: 'remap', n: '02', t: 'One field, four destinations', b: 'Tapping any row lands here: send it to the official field, to the alternative, keep it as yours, or leave it behind. Then value by value, with counts.', d: 'The alternative destination matters — our first guess is often the second-best one.' },
+        { k: 'migrun', n: '03', t: 'Snapshot, then transaction', b: 'On device, no network, ten seconds. Photos, notes and history are untouched because they belong to the object rather than the type.', d: 'Catalogue matching is queued for tonight rather than blocking the migration.' },
+        { k: 'migdone', n: '04', t: 'A receipt, not a toast', b: 'Objects moved, fields remapped, fields kept, values lost — stated as four numbers, with the last one being zero.', d: 'Ends on what the new type adds tonight, which is the reason they did this.' }
+      ],
+
+      safety: [
+        { k: 'S1', t: 'Snapshot before the first write', b: 'The complete old shelf, serialised, before anything changes. If the app dies mid-migration the next launch finds an incomplete run and rolls it back without asking.' },
+        { k: 'S2', t: 'All or nothing', b: 'One database transaction. There is no state in which half the collection is on the new type — a half-migrated shelf is worse than no migration at all.' },
+        { k: 'S3', t: 'Entirely on device', b: 'No network, so no failure mode involving a server, and it works on a train. The sync engine sees the result as an ordinary batch of edits.' },
+        { k: 'S4', t: 'The old type stays installed', b: 'Empty, greyed, for thirty days. Undo needs somewhere to put things back, and an old type that vanishes the moment you migrate makes the undo button a lie.' }
+      ],
+
+      recordYaml: ['migration: 2026-09-14T21:04:11Z', 'from: community/synths-by-mira@3', 'to:   official/synthesiser@1', 'objects: 47', '', 'fields:', '  remapped: 7', '  kept_as_custom: 2   # rack_ears, serviced_by', '  dropped: 0', '', 'values:', '  condition: {Clean→Excellent: 19,', '              Played→Good: 21,', '              Rough→Fair: 7}', '', 'snapshot: local, 412 KB', 'expires: 2026-10-14', 'reversible: true'].join('\n'),
+
+      open: [
+        { k: 'Q1', q: 'Do we ever migrate without asking?', b: 'For our own v1→v2 revisions of an official type, with a declared mapping and no lossy conversions, a silent migration is kinder than a prompt nobody understands. The line is probably lossless-and-declared runs silently with a note in the changelog; anything else asks. Worth writing down before the first revision ships, not after.' },
+        { k: 'Q2', q: 'Can a collection be split instead of moved?', b: '"These 30 are synths, those 17 are drum machines" is a real thing that happens during migration, and the mapper is the only place the app ever looks at a whole collection field by field. Tempting, and out of scope — but if split ever ships, it ships here.' },
+        { k: 'Q3', q: 'What happens to the community type you drafted?', b: 'Migrating off your own published type does not unpublish it; other people are using it. But a type whose author has left is a slightly odd object on the board, and it should probably say so — "superseded by the official Synthesisers type" is useful information for everyone still on it.' },
+        { k: 'Q4', q: 'Does undo after 30 days exist at all?', b: 'Once the snapshot is deleted, no — and the app has to say that clearly at day 23 rather than in the small print at day zero. Alternative: keep the snapshot until storage pressure, which is cheap for text and honest, and only expire the promise rather than the data.' },
+        { k: 'Q5', q: 'Does the CSV importer use this?', b: 'It should. An import is a migration from an unknown type, and the column-mapping screen we already have is a worse version of this one. Merging them means one mapper, one set of rules, and the import inheriting the value-level screen it badly needs.' }
+      ]
+    };
+  }
+}
+
+</script>
+</body>
+</html>

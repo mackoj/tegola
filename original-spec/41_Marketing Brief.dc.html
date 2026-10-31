@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#EAE3D6}
+a{color:#2B44D6}a:hover{color:#FF5B2E}
+.mb-page{width:1100px;margin:0 auto;padding:0 0 90px;font-family:Archivo,system-ui,sans-serif;color:#17130F}
+.mb-sec{padding:46px 0 40px;border-bottom:2px solid rgba(23,19,15,.12)}
+.mb-lab{font:500 10px 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#8A7F70;margin-bottom:12px}
+.mb-h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:34px;line-height:1;letter-spacing:-.03em;margin:0 0 18px}
+.mb-h3{font:700 15px Archivo,sans-serif;margin:26px 0 10px}
+.mb-p{max-width:740px;font:400 15px/1.65 Archivo,sans-serif;color:#3A2F26;margin:0 0 14px;text-wrap:pretty}
+.mb-note{max-width:740px;font:400 13px/1.6 Archivo,sans-serif;color:#6E6458;margin:0 0 14px;text-wrap:pretty}
+.mb-big{border:2.5px solid #17130F;border-radius:18px;padding:20px 22px;box-shadow:5px 5px 0 #17130F;max-width:860px;margin:6px 0 18px}
+.mb-bigt{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:26px;line-height:1.12;letter-spacing:-.02em;text-wrap:pretty}
+.mb-cards{display:flex;flex-wrap:wrap;gap:14px;margin:18px 0 6px}
+.mb-card{flex:1 1 300px;min-width:280px;box-sizing:border-box;border:2.5px solid #17130F;border-radius:16px;background:#fff;box-shadow:4px 4px 0 #17130F;padding:15px 16px}
+.mb-ck{font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:8px}
+.mb-cn{font:700 16px/1.25 Archivo,sans-serif;margin-bottom:7px}
+.mb-cv{font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty}
+.mb-quote{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:20px;line-height:1.1;letter-spacing:-.02em;text-wrap:balance}
+.mb-tag{display:inline-block;font:500 9px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:4px 9px;background:#fff;margin:0 6px 6px 0}
+.mb-tbl{border:2.5px solid #17130F;border-radius:16px;overflow:hidden;background:#fff;box-shadow:5px 5px 0 #17130F;max-width:1000px;margin:16px 0 8px}
+.mb-tr{display:flex;border-bottom:2px solid rgba(23,19,15,.12)}
+.mb-tr:last-child{border-bottom:none}
+.mb-th{background:#17130F;color:#F3ECE0}
+.mb-t1{flex:0 0 160px;padding:11px 13px;font:500 11px/1.4 'DM Mono',monospace;letter-spacing:.06em;border-right:2px solid rgba(23,19,15,.1)}
+.mb-t2{flex:1 1 280px;padding:11px 13px;font:400 13px/1.45 Archivo,sans-serif;color:#3A2F26;border-right:2px solid rgba(23,19,15,.1);text-wrap:pretty}
+.mb-t3{flex:1 1 380px;padding:11px 13px;font:400 13px/1.45 Archivo,sans-serif;text-wrap:pretty}
+.mb-t3 strong,.mb-t2 strong{color:#17130F}
+.mb-pf{display:flex;gap:16px;align-items:stretch;border:2.5px solid #17130F;border-radius:16px;background:#fff;box-shadow:4px 4px 0 #17130F;overflow:hidden;margin-bottom:12px;max-width:1000px}
+.mb-pain{flex:1 1 0;padding:15px 17px;background:#EDE4D6;border-right:2.5px solid #17130F}
+.mb-fix{flex:1.2 1 0;padding:15px 17px}
+.mb-pk{font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px}
+.mb-pq{font:500 15px/1.4 Archivo,sans-serif;font-style:italic;color:#17130F;text-wrap:pretty}
+.mb-ft{font:700 15px Archivo,sans-serif;margin-bottom:5px}
+.mb-fv{font:400 13px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty}
+.mb-line{font:500 11px 'DM Mono',monospace;letter-spacing:.04em;color:#2B44D6;margin-top:8px}
+.mb-house{border:2.5px solid #17130F;border-radius:18px;overflow:hidden;box-shadow:5px 5px 0 #17130F;max-width:1000px;margin:16px 0 8px;background:#fff}
+.mb-roof{padding:22px 24px;background:#17130F;color:#F3ECE0;text-align:center}
+.mb-pillars{display:flex}
+.mb-pillar{flex:1;padding:16px 18px;border-right:2px solid rgba(23,19,15,.12)}
+.mb-pillar:last-child{border-right:none}
+.mb-floor{padding:12px 24px;border-top:2.5px solid #17130F;background:#FFD24A;font:500 12.5px/1.5 Archivo,sans-serif;text-align:center}
+.mb-li{display:flex;gap:10px;align-items:flex-start;font:400 13px/1.5 Archivo,sans-serif;margin-bottom:8px;text-wrap:pretty}
+.mb-gl{flex:none;font:700 12px 'DM Mono',monospace;margin-top:1px}
+.mb-copy{border:2.5px solid #17130F;border-radius:14px;background:#fff;padding:12px 15px;margin-bottom:10px;max-width:1000px}
+.mb-ct{font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:8px}
+.mb-cl{display:flex;flex-wrap:wrap;gap:8px}
+.mb-cc{border:2px solid #17130F;border-radius:10px;padding:7px 11px;font:500 13px/1.35 Archivo,sans-serif;background:#F3ECE0;text-wrap:pretty}
+.mb-letter{border:2.5px solid #17130F;border-radius:18px;background:#F3ECE0;padding:26px 30px;box-shadow:5px 5px 0 #17130F;max-width:680px;font:400 15px/1.7 Archivo,sans-serif;color:#17130F;text-wrap:pretty}
+.mb-letter p{margin:0 0 14px}
+.mb-steps{display:flex;gap:0;border:2.5px solid #17130F;border-radius:16px;overflow:hidden;box-shadow:5px 5px 0 #17130F;background:#fff;max-width:1000px;margin:16px 0 8px}
+.mb-step{flex:1;padding:13px 13px;border-right:2px solid rgba(23,19,15,.14)}
+.mb-step:last-child{border-right:none}
+.mb-sk{font:500 9px 'DM Mono',monospace;letter-spacing:.11em;color:#8A7F70;margin-bottom:6px}
+.mb-sn{font:700 14px Archivo,sans-serif;margin-bottom:4px;line-height:1.2}
+.mb-sv{font:400 11.5px/1.45 Archivo,sans-serif;color:#6E6458;text-wrap:pretty}
+.mb-sm{font:700 12px 'DM Mono',monospace;margin-top:8px;color:#17130F}
+.mb-shots{display:flex;flex-wrap:wrap;gap:22px;margin:18px 0 4px;align-items:flex-start}
+.mb-shot{flex:none;width:200px;display:flex;flex-direction:column;gap:8px}
+.mb-frame{width:200px;height:433px;border:2.5px solid #17130F;border-radius:22px;background:#F3ECE0;box-shadow:4px 4px 0 #17130F;overflow:hidden;position:relative}
+.mb-scale{position:absolute;top:0;left:0;width:393px;height:852px;transform:scale(.509);transform-origin:top left}
+.mb-sd{font:400 12px/1.45 Archivo,sans-serif;color:#6E6458;text-wrap:pretty}
+.mb-q{border:2.5px solid #17130F;border-radius:16px;background:#17130F;color:#F3ECE0;padding:16px 17px;box-shadow:5px 5px 0 #FF5B2E;margin-bottom:12px;max-width:860px}
+.mb-qk{font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#FFD24A;margin-bottom:8px}
+.mb-qt{font:700 16px/1.35 Archivo,sans-serif;margin-bottom:7px;text-wrap:pretty}
+.mb-qv{font:400 13.5px/1.6 Archivo,sans-serif;color:rgba(243,236,224,.82);text-wrap:pretty}
+</style>
+</helmet>
+
+<div class="mb-page">
+
+<div class="mb-sec" style="padding-top:60px">
+  <div class="mb-lab">Marketing brief · from one collector to another · September 2026</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:64px;line-height:.92;letter-spacing:-.04em;max-width:880px">Don't sell an app.<br>Sell the feeling of<br>knowing.</div>
+  <p class="mb-p" style="font-size:17px;margin-top:22px">You said you're bad at this part. Good — the people who are "good at marketing" would sell CLCTN like software, and collectors can smell software being sold to them from across the room. The only voice that works here is the one you already have: <strong>a collector who built the thing he wanted, talking to another collector.</strong> This brief turns that voice into a system: one positioning, one message house, a copy bank you can paste, the loops built into the product, and the answers to every objection you'll hear.</p>
+  <div class="mb-big" style="background:#FFD24A">
+    <div class="mb-bigt">Nobody wants a catalogue. They want the moment of <em>knowing</em> — what it is, where it is, who has it, what it went through — without the guilt of a spreadsheet they stopped updating in 2019. Every line of copy sells that moment. The app is just how you get there.</div>
+  </div>
+  <p class="mb-note">Execution lives elsewhere: channels in the <a href="03_Growth Plan.dc.html">growth plan</a>, clips in the <a href="04_Video Playbook.dc.html">video playbook</a>, the store page in the <a href="39_App Store Brief.dc.html">App Store brief</a>, sequencing in the <a href="06_Master Plan.dc.html">master plan</a>. This is the <em>what to say</em> layer they all draw from.</p>
+</div>
+
+<div class="mb-sec">
+  <div class="mb-lab">01 · Positioning</div>
+  <div class="mb-h2">One sentence you can<br>say at a record fair</div>
+  <div class="mb-big" style="background:#fff">
+    <div class="mb-bigt" style="font-size:22px">For <span style="background:#FFD24A;padding:0 5px;border-radius:5px">people who collect on purpose</span> and are tired of not quite knowing what they have, CLCTN is <span style="background:#FFD24A;padding:0 5px;border-radius:5px">a private catalogue that remembers</span> — what each object is, where it is, who has it and what happened to it — unlike spreadsheets that die and marketplace apps that want to sell your stuff, because <span style="background:#FFD24A;padding:0 5px;border-radius:5px">it's built hobby by hobby, keeps history instead of overwriting it, and never puts your shelf on a server.</span></div>
+  </div>
+  <div class="mb-h3">The master line, and the lines under it</div>
+  <p class="mb-note">One line everywhere for a year. Repetition is the whole trick; alternating taglines is how small brands stay unknown. The master is chosen in Tweaks so you can see each one on the message house below.</p>
+  <div class="mb-cards">
+    <div class="mb-card" style="background:#17130F;color:#F3ECE0;box-shadow:4px 4px 0 #FF5B2E"><div class="mb-ck" style="color:#FFD24A">MASTER · MY PICK</div><div class="mb-quote">Know what you own.</div><div class="mb-cv" style="color:rgba(243,236,224,.8);margin-top:8px">Four words, a verb, a promise, and a quiet accusation: you don't, currently. Extends naturally: "…and who has it." Works on a screenshot, a sticker, a forum signature.</div></div>
+    <div class="mb-card"><div class="mb-ck">SUPPORT · THE ENEMY</div><div class="mb-quote">The shelf, not the spreadsheet.</div><div class="mb-cv" style="margin-top:8px">Names what they use today and why it fails. Best in community posts and video hooks, where naming the enemy earns a nod.</div></div>
+    <div class="mb-card"><div class="mb-ck">SUPPORT · THE PRIDE</div><div class="mb-quote">Your collection, finally worth looking at.</div><div class="mb-cv" style="margin-top:8px">Already on the website. The emotional line — pride, not utility. Best next to the 3D shelf, where it proves itself.</div></div>
+    <div class="mb-card"><div class="mb-ck">SUPPORT · THE TRIBE</div><div class="mb-quote">For people who own things on purpose.</div><div class="mb-cv" style="margin-top:8px">The identity line. Says who it's for by flattering them, and who it's not for without insulting anyone. Bio line, footer, end card.</div></div>
+  </div>
+</div>
+
+<div class="mb-sec">
+  <div class="mb-lab">02 · What it fixes</div>
+  <div class="mb-h2">Five things every collector<br>has said out loud</div>
+  <p class="mb-p">Marketing that works starts from a sentence the customer already says, not one you'd like them to say. These five are the ones you'll hear in any forum within an hour. Each has its fix and the exact line to use. Lead with the pain, always — the fix means nothing until they've felt the problem again.</p>
+  <div class="mb-pf"><div class="mb-pain"><div class="mb-pk">THE PAIN · IN THEIR WORDS</div><div class="mb-pq">"I have a spreadsheet. I haven't opened it since… honestly, years."</div></div><div class="mb-fix"><div class="mb-ft">Adding takes ten seconds, so it actually gets done</div><div class="mb-fv">Photo first — the app proposes the pressing, the edition, the year; you confirm. The spreadsheet died because every entry cost two minutes and a decision about column names. Here the type already made the decisions.</div><div class="mb-line">→ "Point. Confirm. Done. Ten seconds, and it's on the shelf."</div></div></div>
+  <div class="mb-pf"><div class="mb-pain"><div class="mb-pk">THE PAIN</div><div class="mb-pq">"Who did I lend that to? It's been… a year? Two?"</div></div><div class="mb-fix"><div class="mb-ft">A lending ledger both sides confirm</div><div class="mb-fv">Lend with a due date. They confirm they have it; they confirm it came back. Every person gets a page and a track record. This is the feature no competitor has and the one that makes non-cataloguers open the app.</div><div class="mb-line">→ "Lent it? Know who has it. And when it's due back."</div></div></div>
+  <div class="mb-pf"><div class="mb-pain"><div class="mb-pk">THE PAIN</div><div class="mb-pq">"My dad's records are in a crate. I don't even know what's in there."</div></div><div class="mb-fix"><div class="mb-ft">You don't need to be a collector to find out</div><div class="mb-fv">No grading scale to learn, no account, no commitment. Photograph the crate, one sleeve at a time, and the app tells you what your father kept. The history starts with him.</div><div class="mb-line">→ "Find out what's in the crate. Keep what it meant."</div></div></div>
+  <div class="mb-pf"><div class="mb-pain"><div class="mb-pk">THE PAIN</div><div class="mb-pq">"Every collecting app turns into eBay within a week."</div></div><div class="mb-fix"><div class="mb-ft">No selling, no prices, no server copy of your shelf</div><div class="mb-fv">v1 has no market, no valuations, no listings. Your catalogue lives in your iCloud; photos leave the phone only if you ask for a lookup. Pay once. This isn't a limitation to apologise for — it's the headline for anyone who's been burned.</div><div class="mb-line">→ "It's a catalogue. It's not trying to sell your stuff."</div></div></div>
+  <div class="mb-pf"><div class="mb-pain"><div class="mb-pk">THE PAIN</div><div class="mb-pq">"It guessed the wrong pressing and wouldn't let me fix it."</div></div><div class="mb-fix"><div class="mb-ft">Nothing is confirmed on your behalf</div><div class="mb-fv">Every guess sits in a review queue marked unconfirmed until you agree. Real grading scales — CGC, Sheldon, Goldmine — not a free-text box. The hardcore collector's trust is won or lost on this one point, and most apps lose it on object three.</div><div class="mb-line">→ "It proposes. You decide. Every time."</div></div></div>
+  <div class="mb-shots">
+    <div class="mb-shot"><div class="mb-frame"><div class="mb-scale"><dc-import name="35_Collections App" screen="lending" selling="{{ no }}" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="mb-sd">Pain 2, proven: the ledger.</div></div>
+    <div class="mb-shot"><div class="mb-frame"><div class="mb-scale"><dc-import name="35_Collections App" screen="scan" selling="{{ no }}" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="mb-sd">Pains 1 and 4: photo first, lookup toggle visible.</div></div>
+    <div class="mb-shot"><div class="mb-frame"><div class="mb-scale"><dc-import name="35_Collections App" screen="review" selling="{{ no }}" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="mb-sd">Pain 5: the review queue. Show doubt; it reads as honesty.</div></div>
+    <div class="mb-shot"><div class="mb-frame"><div class="mb-scale"><dc-import name="35_Collections App" screen="item" selling="{{ no }}" interactive="{{ no }}" hint-size="393px,852px"></dc-import></div></div><div class="mb-sd">The pride line, proven: an object worth looking at.</div></div>
+  </div>
+</div>
+
+<div class="mb-sec">
+  <div class="mb-lab">03 · Message house</div>
+  <div class="mb-h2">One roof, three pillars,<br>one floor</div>
+  <p class="mb-p">Every piece of copy — a post, a clip, a store screenshot, an email — makes one pillar's argument and points at the roof. Never all three at once; that's a feature list, and feature lists are what software does.</p>
+  <div class="mb-house">
+    <div class="mb-roof"><div class="mb-ck" style="color:#FFD24A">THE ROOF · SAID EVERYWHERE</div><div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:38px;line-height:1;letter-spacing:-.03em">{{ masterLine }}</div></div>
+    <div class="mb-pillars">
+      <div class="mb-pillar"><div class="mb-ck">PILLAR 1 · SPECIFICITY</div><div class="mb-cn">Built for your hobby, not for "items"</div><div class="mb-cv">Real fields, real grading scales, a type per hobby — and if yours isn't there, build it and it might ship. <br><br><strong>Proof:</strong> the add form, the types list, a proposed type becoming official.<br><strong>Reader:</strong> the hardcore.</div></div>
+      <div class="mb-pillar"><div class="mb-ck">PILLAR 2 · MEMORY</div><div class="mb-cn">It remembers what happened</div><div class="mb-cv">Lent, returned scratched, serviced, regraded, drink-by, open-it-this-week. History appends; nothing overwrites. <br><br><strong>Proof:</strong> the lending ledger, the History tab, the clocks.<br><strong>Reader:</strong> the hobbyist.</div></div>
+      <div class="mb-pillar"><div class="mb-ck">PILLAR 3 · OWNERSHIP</div><div class="mb-cn">It's yours — the data and the app</div><div class="mb-cv">No account, no server copy, photos stay home, CSV out anytime, pay once. Not a marketplace in disguise.<br><br><strong>Proof:</strong> the privacy label, the lookup toggle, the price.<br><strong>Reader:</strong> the owner, and everyone burned before.</div></div>
+    </div>
+    <div class="mb-floor">THE FLOOR · WHY BELIEVE IT: made by one collector, in the open — the decisions log is public, the types are written with the communities, and the founder answers every message himself.</div>
+  </div>
+</div>
+
+<div class="mb-sec">
+  <div class="mb-lab">04 · Three readers, three doors</div>
+  <div class="mb-h2">Same app, different<br>first sentence</div>
+  <div class="mb-tbl">
+    <div class="mb-tr mb-th"><div class="mb-t1">READER</div><div class="mb-t2" style="color:rgba(243,236,224,.75)">WHAT THEY FEAR · WHAT THEY WANT</div><div class="mb-t3">THE HOOK · WHERE IT LANDS</div></div>
+    <div class="mb-tr"><div class="mb-t1">THE HARDCORE<br><span style="color:#8A7F70">400+ objects</span></div><div class="mb-t2"><strong>Fears</strong> being dumbed down, wrong data he can't fix, losing ten years of Discogs notes. <strong>Wants</strong> field-level control and an export he trusts.</div><div class="mb-t3"><strong>"Here are the eleven fields I think describe a [record]. What did I get wrong?"</strong> — not a pitch, a schema question posted in his forum. He becomes a Founding Cataloguer; his corrected schema ships with his name in the release note. Channel: forums, Discord, Reddit. Never ads.</div></div>
+    <div class="mb-tr"><div class="mb-t1">THE HOBBYIST<br><span style="color:#8A7F70">60–150, growing</span></div><div class="mb-t2"><strong>Fears</strong> another app he'll abandon; looking like a nerd. <strong>Wants</strong> a shelf worth showing and to stop losing things to friends.</div><div class="mb-t3"><strong>"Who did you lend it to?"</strong> — a 12-second clip: object leaves, row turns dashed, notification arrives, it comes back. Channel: Reels/TikTok, the shelf-reveal format, a friend's share link. This reader is where volume comes from.</div></div>
+    <div class="mb-tr"><div class="mb-t1">THE OWNER<br><span style="color:#8A7F70">one inherited crate</span></div><div class="mb-t2"><strong>Fears</strong> being scammed, being judged, a subscription trap. <strong>Wants</strong> to know what's there and what it meant, once.</div><div class="mb-t3"><strong>"What's in your father's crate?"</strong> — the emotional door. Free tier is the product for him; he may never pay and he'll tell three people. Channel: App Store search ("inventory", "catalogue"), a share link from a collector friend, Google for "what are my dad's records worth".</div></div>
+  </div>
+</div>
+
+<div class="mb-sec">
+  <div class="mb-lab">05 · The letter</div>
+  <div class="mb-h2">The founder's note,<br>ready to paste</div>
+  <p class="mb-p">The single most reusable asset. It goes on the website, in the first community post after the schema question, in the TestFlight invite, in the "About" screen, and as the reply when someone asks "so what is this". You are the guide, not the hero — the reader is the hero, and his collection is the story.</p>
+  <div class="mb-letter">
+    <p>I collect records. Around three hundred, mostly seventies pressings, nothing that would impress you. For fifteen years I kept them in a spreadsheet, and for about twelve of those years the spreadsheet was wrong.</p>
+    <p>Two things finally broke me. I lent a first pressing to a friend and, two years later, neither of us could remember whether it had come back. And every app I tried to replace the spreadsheet with turned out to be a shop — it wanted a price on everything, and it wanted my shelf on its server.</p>
+    <p>So I built the thing I wanted. It's called CLCTN. You photograph an object and it tells you what it is; you confirm. It knows the grading scale for your hobby, not a generic one. It remembers who has what, and what happened to each thing over the years. And it lives in your iCloud, not mine — there's no account, and you pay once.</p>
+    <p>It's built with collectors: every type is written with the people who collect that thing, and if yours isn't there yet, you can build it and it might become the next one to ship.</p>
+    <p>If you own things on purpose, I'd like you to try it and tell me what I got wrong.</p>
+    <p style="margin:0">— Jérôme, one collector to another</p>
+  </div>
+  <p class="mb-note" style="margin-top:14px">Swap the numbers for your true ones; the only rule is that nothing in it is invented. Specific and slightly unflattering beats impressive every time — "nothing that would impress you" does more work than any adjective could. Placeholder name until you tell me yours.</p>
+</div>
+
+<div class="mb-sec">
+  <div class="mb-lab">06 · The mechanics</div>
+  <div class="mb-h2">Nine techniques, each<br>with a reason it's honest</div>
+  <p class="mb-p">Modern growth tactics work on collectors exactly as well as on anyone — as long as every one of them is <em>true</em>. The moment a tactic requires a small lie, this audience leaves and posts about it. Each item below passes that test.</p>
+  <div class="mb-cards">
+    <div class="mb-card"><div class="mb-ck">01 · FOUNDING PRICE LADDER</div><div class="mb-cn">Scarcity that's real</div><div class="mb-cv">€19.99 for the first 1,000 unlocks, then €24.99, then €29.99 — and the price you paid is yours forever. Show the counter on the website. Urgency without a fake timer: the price genuinely rises because the product genuinely improves.</div></div>
+    <div class="mb-card"><div class="mb-ck">02 · BUILD IN PUBLIC</div><div class="mb-cn">The decisions log is the content</div><div class="mb-cv">You have 35 numbered decisions with reasons. Post one a week — "why we cut valuation from v1", "why a wishlist is just an object you don't own yet". Collectors love reasoning. It also pre-answers every objection before it's raised.</div></div>
+    <div class="mb-card"><div class="mb-ck">03 · THE SCHEMA QUESTION</div><div class="mb-cn">Community-led, not community-spammed</div><div class="mb-cv">One post per hobby: the fields, and "what did I get wrong?" It's a contribution, not a launch. The people who answer in paragraphs are your first fifty users and they arrive already invested. Full recipe in the growth plan.</div></div>
+    <div class="mb-card"><div class="mb-ck">04 · FOUNDING CATALOGUERS</div><div class="mb-cn">Fifty names, credited forever</div><div class="mb-cv">The TestFlight cohort gets a badge in the app, their name in the type's release note, and the founding price locked. Status, not money. They will defend the app in threads you'll never see.</div></div>
+    <div class="mb-card"><div class="mb-ck">05 · PRODUCT LOOPS</div><div class="mb-cn">Three ways the app invites the next user</div><div class="mb-cv"><strong>Share link</strong> — one object, no account needed, ends on "keep yours too". <strong>Shared wishlist</strong> — "you own 3 of these" is irresistible. <strong>Type proposal</strong> — the proposer of a shipped type tells his whole community. Each loop ends on a shelf, not a signup form.</div></div>
+    <div class="mb-card"><div class="mb-ck">06 · TWELVE LAUNCHES A YEAR</div><div class="mb-cn">One type a month = one launch a month</div><div class="mb-cv">Each new type gets its own community post, clip, custom store page and release note. You never "launch" once and go quiet; there's always a hobby whose turn it is. Retro computers, wine and artwork are the next three, each with a ready-made story.</div></div>
+    <div class="mb-card"><div class="mb-ck">07 · THE SHELF REVEAL</div><div class="mb-cn">A format people copy</div><div class="mb-cv">A 10-second vertical clip: real shelf, cut to the rendered shelf scrolling, end card "Know what you own." Post yours; ask Founding Cataloguers to post theirs. Formats spread; ads don't. Prompts in the video playbook.</div></div>
+    <div class="mb-card"><div class="mb-ck">08 · REFER WITH THE PRICE, NOT CASH</div><div class="mb-cn">"Give a friend your founding price"</div><div class="mb-cv">After the ladder rises, an unlocked user can hand three friends the price he paid. Costs you nothing you wouldn't have discounted anyway, feels like a gift rather than a scheme, and the friend arrives via a person they trust.</div></div>
+    <div class="mb-card"><div class="mb-ck">09 · THE WAITLIST WITH A JOB</div><div class="mb-cn">Five emails, each one useful</div><div class="mb-cv">Not "we're excited!" — each email gives something: the vinyl schema PDF, the decision on valuation, a shelf-reveal, an invite to vote on the next type, then the TestFlight link. People who read five useful emails buy on day one.</div></div>
+  </div>
+</div>
+
+<div class="mb-sec">
+  <div class="mb-lab">07 · Copy bank</div>
+  <div class="mb-h2">Lines to paste, and<br>words never to use</div>
+  <div class="mb-copy"><div class="mb-ct">HEADLINES · WEBSITE, STORE, POSTERS</div><div class="mb-cl"><div class="mb-cc">Know what you own.</div><div class="mb-cc">Know what you own, and who has it.</div><div class="mb-cc">The shelf, not the spreadsheet.</div><div class="mb-cc">Your collection, finally worth looking at.</div><div class="mb-cc">Built hobby by hobby, with the people who collect it.</div><div class="mb-cc">It remembers, so you don't have to.</div><div class="mb-cc">A catalogue. Not a shop.</div><div class="mb-cc">Pay once. Own it. Like everything else you collect.</div></div></div>
+  <div class="mb-copy"><div class="mb-ct">VIDEO HOOKS · FIRST TWO SECONDS, SPOKEN OR ON SCREEN</div><div class="mb-cl"><div class="mb-cc">"Who did you lend it to?"</div><div class="mb-cc">"I found my dad's records. Here's what was in the crate."</div><div class="mb-cc">"Every collecting app becomes eBay. This one can't."</div><div class="mb-cc">"Ten seconds per record. I timed it."</div><div class="mb-cc">"This is my spreadsheet. This is what it should have been."</div><div class="mb-cc">"The app said Near Mint. I said VG+. The app agreed."</div><div class="mb-cc">"Three bottles hit their peak this month. My cellar told me."</div><div class="mb-cc">"It's a 1985 machine. The app says don't power it on. It's right."</div></div></div>
+  <div class="mb-copy"><div class="mb-ct">COMMUNITY POST OPENERS · NEVER A LINK IN THE FIRST POST</div><div class="mb-cl"><div class="mb-cc">"I'm building a catalogue app and I'd rather get the vinyl fields right than fast. Here are the 11 I have. What's wrong?"</div><div class="mb-cc">"Question for people who lend records: how do you keep track? Asking because I lost a first pressing this way."</div><div class="mb-cc">"Decision I made and I'm not sure about: no prices anywhere in v1. Would that be a dealbreaker for you?"</div></div></div>
+  <div class="mb-copy"><div class="mb-ct">EMAIL SUBJECT LINES</div><div class="mb-cl"><div class="mb-cc">The eleven fields of a record (PDF)</div><div class="mb-cc">Why there's no price on anything</div><div class="mb-cc">Vote on the next type</div><div class="mb-cc">Your TestFlight link, and one favour</div><div class="mb-cc">€19.99 until the thousandth collector</div><div class="mb-cc">Added: retro computers. Don't power it on.</div></div></div>
+  <div class="mb-copy" style="background:#17130F;color:#F3ECE0;border-color:#17130F"><div class="mb-ct" style="color:#FFD24A">NEVER · THESE WORDS END THE CONVERSATION WITH A COLLECTOR</div><div class="mb-cl"><div class="mb-cc" style="background:transparent;color:#F3ECE0;border-color:#FF5B2E;text-decoration:line-through">revolutionary</div><div class="mb-cc" style="background:transparent;color:#F3ECE0;border-color:#FF5B2E;text-decoration:line-through">AI-powered</div><div class="mb-cc" style="background:transparent;color:#F3ECE0;border-color:#FF5B2E;text-decoration:line-through">all-in-one</div><div class="mb-cc" style="background:transparent;color:#F3ECE0;border-color:#FF5B2E;text-decoration:line-through">seamless</div><div class="mb-cc" style="background:transparent;color:#F3ECE0;border-color:#FF5B2E;text-decoration:line-through">unlock the value of</div><div class="mb-cc" style="background:transparent;color:#F3ECE0;border-color:#FF5B2E;text-decoration:line-through">the ultimate</div><div class="mb-cc" style="background:transparent;color:#F3ECE0;border-color:#FF5B2E;text-decoration:line-through">items</div><div class="mb-cc" style="background:transparent;color:#F3ECE0;border-color:#FF5B2E;text-decoration:line-through">users</div><div class="mb-cc" style="background:transparent;color:#F3ECE0;border-color:#FF5B2E;text-decoration:line-through">don't miss out!</div></div><div class="mb-cv" style="color:rgba(243,236,224,.75);margin-top:10px">Say "objects", "collectors", the hobby's own nouns. Say what it does in the words they'd use to a friend. If a sentence would embarrass you at a record fair, cut it.</div></div>
+</div>
+
+<div class="mb-sec">
+  <div class="mb-lab">08 · Objections</div>
+  <div class="mb-h2">What they'll say, and<br>what you say back</div>
+  <div class="mb-tbl">
+    <div class="mb-tr mb-th"><div class="mb-t1">THEY SAY</div><div class="mb-t2" style="color:rgba(243,236,224,.75)">WHAT THEY MEAN</div><div class="mb-t3">YOU SAY</div></div>
+    <div class="mb-tr"><div class="mb-t1">"Discogs already does this for free."</div><div class="mb-t2">I've invested years there; don't make me start over.</div><div class="mb-t3">"Keep Discogs — import it in one tap, grades intact. CLCTN is for the things Discogs won't do: who has it, what happened to it, and everything you collect that isn't a record."</div></div>
+    <div class="mb-tr"><div class="mb-t1">"€30 for an app?"</div><div class="mb-t2">I've been burned by subscriptions and abandonware.</div><div class="mb-t3">"Once. Not a month, not a year. Less than one record, for the tool that looks after all of them. And fifty objects are free forever — decide after you've used it."</div></div>
+    <div class="mb-tr"><div class="mb-t1">"Where does my data go?"</div><div class="mb-t2">Is this another company building a database off my shelf?</div><div class="mb-t3">"Your iCloud. There's no account and no copy on our side — we literally can't see your shelf. Photos leave the phone only when you switch on a lookup, and the switch is on the camera screen."</div></div>
+    <div class="mb-tr"><div class="mb-t1">"My hobby isn't in the list."</div><div class="mb-t2">You built this for other people.</div><div class="mb-t3">"Then build it — the generic type takes any field, and the popular ones become official with your objects carried over. Three of our types started exactly that way."</div></div>
+    <div class="mb-tr"><div class="mb-t1">"No valuation? Then what's the point?"</div><div class="mb-t2">I want the number.</div><div class="mb-t3">"Not yet, on purpose — the moment money is on the screen it becomes the app. It's coming, and it'll be optional. What you paid is already there, on each object, if you want to type it."</div></div>
+    <div class="mb-tr"><div class="mb-t1">"What happens if you stop?"</div><div class="mb-t2">Solo dev, small app, I've seen this end badly.</div><div class="mb-t3">"Your data is in your iCloud and exports to CSV any day you like, with the type's schema attached. The app keeps working without a server because there isn't one. That's the honest answer, and it's also the design."</div></div>
+  </div>
+</div>
+
+<div class="mb-sec">
+  <div class="mb-lab">09 · The funnel, in collector terms</div>
+  <div class="mb-h2">Six steps, one number<br>each</div>
+  <div class="mb-steps">
+    <div class="mb-step" style="background:#FFD24A"><div class="mb-sk">HEAR</div><div class="mb-sn">Schema post read</div><div class="mb-sv">In a forum, by a person, without a link.</div><div class="mb-sm">5 hobbies · 5 posts</div></div>
+    <div class="mb-step"><div class="mb-sk">CARE</div><div class="mb-sn">Replied or joined the list</div><div class="mb-sv">A paragraph reply is worth a hundred likes.</div><div class="mb-sm">300 on the list</div></div>
+    <div class="mb-step"><div class="mb-sk">TRY</div><div class="mb-sn">First object in the first minute</div><div class="mb-sv">The only onboarding metric. Photo, confirm, shelf.</div><div class="mb-sm">70% of installs</div></div>
+    <div class="mb-step"><div class="mb-sk">STAY</div><div class="mb-sn">Sixty objects</div><div class="mb-sv">Past sixty nobody leaves. This is the north star.</div><div class="mb-sm">400 people · 6 months</div></div>
+    <div class="mb-step"><div class="mb-sk">PAY</div><div class="mb-sn">Unlock at the wall</div><div class="mb-sv">Fifty objects, one collection — the second collection is the moment.</div><div class="mb-sm">25% of "stay"</div></div>
+    <div class="mb-step" style="background:#17130F;color:#F3ECE0;border:none"><div class="mb-sk" style="color:#FFD24A">TELL</div><div class="mb-sn">Sent a share link</div><div class="mb-sv" style="color:rgba(243,236,224,.75)">One object, to one friend. The loop closes.</div><div class="mb-sm" style="color:#FFD24A">1 in 3 payers</div></div>
+  </div>
+  <p class="mb-note" style="margin-top:14px">The targets are the growth plan's, restated. Notice what isn't here: downloads, followers, impressions. If a tactic moves those and not these, it's noise.</p>
+</div>
+
+<div class="mb-sec" style="border-bottom:none">
+  <div class="mb-lab">10 · For your designer friend</div>
+  <div class="mb-h2">Three things I'd want<br>argued with</div>
+  <div class="mb-q"><div class="mb-qk">Q1 · THE MASTER LINE</div><div class="mb-qt">"Know what you own" — promise, or scold?</div><div class="mb-qv">It's chosen because it's short and true and implies a gap. The risk is that it reads as mild judgement to the owner persona, who already feels behind. Alternative is the pride line. <strong>My answer:</strong> keep it; "The shelf, not the spreadsheet" does the warmth in support.</div></div>
+  <div class="mb-q"><div class="mb-qk">Q2 · LEADING WITH "NOT A SHOP"</div><div class="mb-qt">Is defining yourself against marketplaces a position or a complaint?</div><div class="mb-qv">Pillar 3 leans on it hard and it's the line that gets the loudest agreement in forums. It's also the line that dates fastest if v2 adds selling. <strong>My answer:</strong> say "a catalogue first" rather than "never a shop", so v2 is a fulfilment rather than a betrayal.</div></div>
+  <div class="mb-q"><div class="mb-qk">Q3 · THE LETTER</div><div class="mb-qt">Founder story on the front page, or one click behind it?</div><div class="mb-qv">Founder-led sells to the first thousand and can look small to the ten-thousandth. <strong>My answer:</strong> front page until the founding ladder closes, then it moves to About — the price change is the natural moment.</div></div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;masterLine&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Know what you own.&quot;,&quot;The shelf, not the spreadsheet.&quot;,&quot;Your collection, finally worth looking at.&quot;,&quot;For people who own things on purpose.&quot;],&quot;default&quot;:&quot;Know what you own.&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Message house&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    return { no: false, masterLine: this.props.masterLine ?? 'Know what you own.' };
+  }
+}
+</script>
+</body>
+</html>

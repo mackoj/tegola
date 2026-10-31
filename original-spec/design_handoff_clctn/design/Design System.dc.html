@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#F3ECE0}a{color:#2B44D6}a:hover{color:#FF5B2E}</style>
+</helmet>
+<div style="width:1120px;margin:0 auto;padding:56px 48px 80px;font-family:Archivo,system-ui,sans-serif;color:#17130F;background:#F3ECE0">
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70">COLLECTION · DESIGN SYSTEM v1</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:62px;line-height:.9;letter-spacing:-.04em;margin:12px 0 14px">Collector zine</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#5A5045;max-width:640px;text-wrap:pretty">Objects are precious, so the interface acts like packaging: heavy ink outlines, hard offset shadows, halftone dots, stickers set at a tilt. Paper is warm, never white. One saturated colour owns each collection; the app itself stays quiet so the artwork shouts.</div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:18px">01 · COLOUR</div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:22px">
+    <sc-for list="{{ swatches }}" as="c" hint-placeholder-count="8">
+      <div style="border:2.5px solid #17130F;border-radius:14px;overflow:hidden;box-shadow:4px 4px 0 #17130F;background:#fff">
+        <div style="height:78px;background: {{ c.hex }}"></div>
+        <div style="padding:10px 12px;border-top:2.5px solid #17130F">
+          <div style="font:700 13px Archivo,sans-serif">{{ c.name }}</div>
+          <div style="font:500 10px 'DM Mono',monospace;color:#8A7F70;margin-top:4px">{{ c.hex }}</div>
+          <div style="font:400 11px/1.4 Archivo,sans-serif;color:#6E6458;margin-top:6px;text-wrap:pretty">{{ c.use }}</div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+  <div style="display:flex;gap:16px;align-items:stretch;margin-bottom:8px">
+    <div style="flex:1;border:2.5px solid #17130F;border-radius:14px;background:#fff;padding:16px">
+      <div style="font:700 14px Archivo,sans-serif;margin-bottom:6px">Rule of one</div>
+      <div style="font:400 13px/1.55 Archivo,sans-serif;color:#5A5045;text-wrap:pretty">A screen carries paper + ink + <em>one</em> accent. Collections each own an accent permanently — vinyl is teal, board games orange, retro games cobalt, books pink, sneakers yellow. Never recolour a collection to match a screen.</div>
+    </div>
+    <div style="flex:1;border:2.5px solid #17130F;border-radius:14px;background:#17130F;color:#F3ECE0;padding:16px">
+      <div style="font:700 14px Archivo,sans-serif;margin-bottom:6px">Pro mode = hue shift</div>
+      <div style="font:400 13px/1.55 Archivo,sans-serif;opacity:.75;text-wrap:pretty">Dealer mode rotates the whole palette −52° and keeps the neutrals. Same shapes, unmistakably a different mode. Never mix pro and personal colour on one screen.</div>
+      <div style="display:flex;gap:10px;margin-top:12px">
+        <div style="flex:1;height:34px;border-radius:8px;border:2px solid #F3ECE0;background:linear-gradient(90deg,#FF5B2E,#FFD24A,#0E6E5E)"></div>
+        <div style="flex:1;height:34px;border-radius:8px;border:2px solid #F3ECE0;background:linear-gradient(90deg,#FF5B2E,#FFD24A,#0E6E5E);filter:hue-rotate(-52deg) saturate(1.06)"></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:18px">02 · TYPE</div>
+  <div style="display:grid;grid-template-columns:1fr 320px;gap:28px;align-items:start">
+    <div>
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:44px;line-height:.92;letter-spacing:-.04em">Display / Bricolage 800</div>
+      <div style="font:500 10px 'DM Mono',monospace;color:#8A7F70;margin:6px 0 22px">Screen titles, values, cover type · −3 to −5% tracking · 22–62px</div>
+      <div style="font:700 22px Archivo,sans-serif">Heading / Archivo 700</div>
+      <div style="font:500 10px 'DM Mono',monospace;color:#8A7F70;margin:6px 0 22px">Item names, card titles, buttons · 13–15px in app</div>
+      <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A322A;max-width:560px">Body / Archivo 400 — descriptions, notes and the sentences that explain what a number means. Never below 12px on device.</div>
+      <div style="font:500 10px 'DM Mono',monospace;color:#8A7F70;margin:6px 0 22px">Line-height 1.5, text-wrap pretty</div>
+      <div style="font:500 12px 'DM Mono',monospace;letter-spacing:.14em">META / DM MONO 500 · UPPERCASE · .12–.18EM</div>
+      <div style="font:500 10px 'DM Mono',monospace;color:#8A7F70;margin-top:6px">Labels, dates, catalogue numbers, anything machine-ish · 8–11px</div>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:14px;background:#FFD24A;padding:16px;box-shadow:4px 4px 0 #17130F">
+      <div style="font:700 14px Archivo,sans-serif;margin-bottom:8px">Three voices only</div>
+      <div style="font:400 12.5px/1.55 Archivo,sans-serif;text-wrap:pretty">Display shouts, Archivo talks, DM Mono files the paperwork. If a piece of text doesn't fit one of those jobs, it probably shouldn't be on screen.</div>
+    </div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:18px">03 · SURFACES &amp; GEOMETRY</div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:18px">
+    <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;padding:16px;box-shadow:4px 4px 0 #17130F">
+      <div style="font:700 13px Archivo,sans-serif">Card</div>
+      <div style="font:500 10px/1.6 'DM Mono',monospace;color:#8A7F70;margin-top:8px">border 2.5px #17130F<br>radius 14–18px<br>shadow 4px 4px 0 ink</div>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;padding:16px">
+      <div style="font:700 13px Archivo,sans-serif">Inset row</div>
+      <div style="font:500 10px/1.6 'DM Mono',monospace;color:#8A7F70;margin-top:8px">no shadow<br>1.5px hairline divider<br>used inside cards</div>
+    </div>
+    <div style="border:2.5px dashed #B9AC99;border-radius:16px;background:transparent;padding:16px">
+      <div style="font:700 13px Archivo,sans-serif;color:#8A7F70">Empty slot</div>
+      <div style="font:500 10px/1.6 'DM Mono',monospace;color:#8A7F70;margin-top:8px">dashed #B9AC99<br>always an invitation,<br>never an error</div>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:16px;background:#17130F;color:#F3ECE0;padding:16px;box-shadow:4px 4px 0 #FF5B2E">
+      <div style="font:700 13px Archivo,sans-serif">Hero / dark</div>
+      <div style="font:500 10px/1.6 'DM Mono',monospace;opacity:.7;margin-top:8px">for the object itself<br>and for totals<br>coloured shadow allowed</div>
+    </div>
+  </div>
+  <div style="font:400 13px/1.6 Archivo,sans-serif;color:#5A5045;max-width:720px;text-wrap:pretty">Spacing scale: <strong>4 · 6 · 9 · 13 · 18 · 22 · 34</strong>. Screen gutter 20px. Cards never nest more than two deep. Halftone texture is <code style="font-family:'DM Mono',monospace;font-size:12px;background:#EDE4D6;padding:2px 5px;border-radius:4px">radial-gradient dots at 6–9px</code>, only on colour fields and cover art — never on paper.</div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:18px">04 · COMPONENTS</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:22px">
+    <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;padding:18px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;color:#8A7F70;margin-bottom:14px">BUTTONS · 44px MIN</div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="text-align:center;font:700 14px Archivo,sans-serif;padding:15px;border:2.5px solid #17130F;border-radius:999px;background:#17130F;color:#F3ECE0;box-shadow:4px 4px 0 #FF5B2E">Primary</div>
+        <div style="text-align:center;font:700 14px Archivo,sans-serif;padding:15px;border:2.5px solid #17130F;border-radius:999px;background:#FF5B2E;color:#F3ECE0;box-shadow:3px 3px 0 #17130F">Accent</div>
+        <div style="text-align:center;font:700 14px Archivo,sans-serif;padding:15px;border:2.5px solid #17130F;border-radius:999px;background:#fff">Secondary</div>
+        <div style="text-align:center;font:600 13px Archivo,sans-serif;padding:13px;color:#6E6458">Quiet / cancel</div>
+      </div>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;padding:18px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;color:#8A7F70;margin-bottom:14px">STICKERS &amp; CHIPS</div>
+      <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.08em;border:2px solid #17130F;border-radius:999px;padding:4px 8px;background:#FFD24A;transform:rotate(-2deg)">FUNK / SOUL</div>
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.08em;border:2px solid #17130F;border-radius:999px;padding:4px 8px;background:#E5457B;color:#F3ECE0;transform:rotate(2deg)">★ GRAIL</div>
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.08em;border:2px solid #17130F;border-radius:999px;padding:4px 8px;background:#fff">NM / VG+</div>
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.08em;border:2px solid #17130F;border-radius:999px;padding:4px 8px;background:#C2371F;color:#F3ECE0">OVERDUE</div>
+      </div>
+      <div style="font:400 12px/1.55 Archivo,sans-serif;color:#5A5045;text-wrap:pretty">Tilt is ±2–6°, and only on stickers that sit <em>on</em> an object. Chips in lists stay straight. Max two tilted stickers per screen.</div>
+      <div style="display:flex;gap:6px;margin-top:16px;border:2.5px solid #17130F;border-radius:999px;padding:3px;background:#EDE4D6">
+        <div style="flex:1;text-align:center;font:600 11px Archivo,sans-serif;padding:8px 4px;border-radius:999px;background:#17130F;color:#F3ECE0">Tab</div>
+        <div style="flex:1;text-align:center;font:600 11px Archivo,sans-serif;padding:8px 4px;border-radius:999px">Tab</div>
+        <div style="flex:1;text-align:center;font:600 11px Archivo,sans-serif;padding:8px 4px;border-radius:999px">Tab</div>
+      </div>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;padding:18px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;color:#8A7F70;margin-bottom:14px">FIELDS &amp; TOGGLE</div>
+      <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;margin-bottom:6px">ARTIST</div>
+      <div style="border:2.5px solid #17130F;border-radius:12px;background:#fff;padding:12px 13px;font:600 14px Archivo,sans-serif;box-shadow:3px 3px 0 #17130F;margin-bottom:14px">Anderson .Paak</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;border:2.5px solid #17130F;border-radius:14px;background:#FFD24A;padding:12px 14px;margin-bottom:14px">
+        <div style="font:600 12px Archivo,sans-serif">Remind me</div>
+        <div style="width:44px;height:26px;border-radius:999px;border:2.5px solid #17130F;background:#0E6E5E;display:flex;align-items:center;justify-content:flex-end;padding:2px"><div style="width:18px;height:18px;border-radius:999px;background:#F3ECE0;border:2px solid #17130F"></div></div>
+      </div>
+      <div style="font:400 12px/1.55 Archivo,sans-serif;color:#5A5045;text-wrap:pretty">Field values are typed: text, number, yes/no, list, date, photo, link, money. The type badge is always mono.</div>
+    </div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:18px">05 · THE OBJECT</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start">
+    <div style="border:2.5px solid #17130F;border-radius:16px;background:#17130F;padding:22px;display:flex;gap:16px;align-items:center">
+      <div style="position:relative;width:150px;height:150px;flex:none">
+        <div style="position:absolute;left:44px;top:0;width:150px;height:150px;border-radius:999px;background:radial-gradient(circle at 36% 32%,rgba(255,255,255,.6),rgba(14,110,94,.8) 58%,rgba(9,54,47,.95))">
+          <div style="position:absolute;inset:0;border-radius:999px;background:repeating-radial-gradient(circle at 50% 50%,rgba(255,255,255,.1) 0 1px,transparent 1px 3px)"></div>
+          <div style="position:absolute;inset:34%;border-radius:999px;background:#F3ECE0;display:flex;align-items:center;justify-content:center;font:700 8px Archivo,sans-serif">LABEL</div>
+        </div>
+        <div style="position:absolute;inset:0;border:2px solid #0C0A08;background:linear-gradient(150deg,#E5457B,#FF5B2E 55%,#FFD24A);display:flex;align-items:flex-end;padding:11px">
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:26px;line-height:.85;letter-spacing:-.04em">COVER</div>
+          <div style="position:absolute;inset:0;background-image:radial-gradient(rgba(23,19,15,.28) 1px,transparent 1.1px);background-size:6px 6px"></div>
+        </div>
+      </div>
+      <div style="color:#F3ECE0">
+        <div style="font:700 14px Archivo,sans-serif;margin-bottom:8px">Object hero</div>
+        <div style="font:400 12.5px/1.6 Archivo,sans-serif;opacity:.72;text-wrap:pretty">Always on the dark stage — the object is the only bright thing. Sleeve is a 3D box (front, back, two spines) and the disc sits behind it at translateZ(−3px), pulled out to the right. Drag to rotate; idle spin 0.22°/frame.</div>
+      </div>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;padding:18px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;color:#8A7F70;margin-bottom:12px">MATERIAL SWATCHES</div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px">
+        <sc-for list="{{ discs }}" as="d" hint-placeholder-count="5">
+          <div style="text-align:center">
+            <div style="width:56px;height:56px;border-radius:999px;border:2.5px solid #17130F;background: {{ d.bg }}"></div>
+            <div style="font:500 8px 'DM Mono',monospace;color:#8A7F70;margin-top:6px;max-width:60px;text-wrap:pretty">{{ d.name }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="font:400 12px/1.55 Archivo,sans-serif;color:#5A5045;text-wrap:pretty">Coloured, splattered and marbled pressings are part of why people buy the record. Every material is a real CSS gradient recipe, reusable for figurine plastics, cartridge shells and sneaker colourways.</div>
+    </div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:18px">06 · PRINCIPLES</div>
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px">
+    <sc-for list="{{ principles }}" as="p" hint-placeholder-count="6">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background: {{ p.bg }};color: {{ p.fg }};padding:16px">
+        <div style="font:700 14px Archivo,sans-serif;margin-bottom:7px">{{ p.title }}</div>
+        <div style="font:400 12.5px/1.6 Archivo,sans-serif;opacity:.85;text-wrap:pretty">{{ p.body }}</div>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      swatches: [
+        { name: 'Paper', hex: '#F3ECE0', use: 'Every light screen. Warm, never white.' },
+        { name: 'Ink', hex: '#17130F', use: 'Text, all borders, all hard shadows.' },
+        { name: 'Sand', hex: '#EDE4D6', use: 'Tracks, tab wells, inactive fills.' },
+        { name: 'Grey', hex: '#8A7F70', use: 'Mono labels and secondary text only.' },
+        { name: 'Orange', hex: '#FF5B2E', use: 'Primary action, board games.' },
+        { name: 'Yellow', hex: '#FFD24A', use: 'Attention, stickers, sneakers.' },
+        { name: 'Teal', hex: '#0E6E5E', use: 'Money in your favour, vinyl.' },
+        { name: 'Pink', hex: '#E5457B', use: 'Grails, books, delight.' },
+        { name: 'Cobalt', hex: '#2B44D6', use: 'Data and stats, retro games.' },
+        { name: 'Rust', hex: '#C2371F', use: 'Overdue, loss, the only red.' }
+      ],
+      discs: [
+        { name: 'Black', bg: 'repeating-radial-gradient(circle at 50% 50%,#101010 0 2px,#20201f 2px 4px)' },
+        { name: 'Coke-bottle', bg: 'radial-gradient(circle at 36% 32%,rgba(255,255,255,.6),rgba(14,110,94,.8) 58%,rgba(9,54,47,.95))' },
+        { name: 'Splatter', bg: 'radial-gradient(circle at 30% 28%,#FF5B2E 0 11%,transparent 12%),radial-gradient(circle at 68% 62%,#FFD24A 0 8%,transparent 9%),radial-gradient(circle at 54% 22%,#FFD24A 0 4%,transparent 5%),#141210' },
+        { name: 'Marbled', bg: 'conic-gradient(from 20deg,#E5457B,#F3ECE0 28%,#E5457B 52%,#C2371F 74%,#E5457B)' },
+        { name: 'Picture disc', bg: 'linear-gradient(150deg,#E5457B,#FF5B2E 55%,#FFD24A)' }
+      ],
+      principles: [
+        { title: 'The object outranks the app', body: 'Cover art, disc colour and photographs are the only images. Chrome is flat ink and paper so nothing competes.', bg: '#17130F', fg: '#F3ECE0' },
+        { title: 'Money is optional', body: 'Value, market links and selling live behind one switch. With it off, no screen loses its meaning.', bg: '#fff', fg: '#17130F' },
+        { title: 'An account is optional too', body: 'Cataloguing works offline forever. Accounts buy sync, sharing and selling — nothing else.', bg: '#fff', fg: '#17130F' },
+        { title: 'Every loan has a reason', body: 'Who, when and why are one record. The why is what makes the log worth reading in three years.', bg: '#FFD24A', fg: '#17130F' },
+        { title: 'Fields are typed, not free', body: 'Text, number, yes/no, list, date, photo, link, money. A type owns its field set; users extend it, never fight it.', bg: '#fff', fg: '#17130F' },
+        { title: 'Nothing saves silently', body: 'Scanning and lookups propose; the collector confirms. Auto-filled values are badged AUTO until touched.', bg: '#0E6E5E', fg: '#F3ECE0' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

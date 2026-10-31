@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#EAE3D6}a{color:#2B44D6}a:hover{color:#FF5B2E}</style>
+</helmet>
+
+<div style="width:1360px;margin:0 auto;padding:60px 28px 100px;font-family:Archivo,system-ui,sans-serif;color:#17130F">
+
+  <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+    <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70">CLCTN · WHERE A JUDGMENT EARNS ITS PLACE · SEPTEMBER 2026</div>
+    <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#F3ECE0;background:#0E6E5E;border-radius:999px;padding:5px 12px">SURVEY · 59 FILES READ</div>
+    <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;border:2px solid #C2371F;color:#C2371F;border-radius:999px;padding:4px 11px">NOTHING BUILT YET</div>
+  </div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:66px;line-height:.92;letter-spacing:-.045em;margin:16px 0 0;max-width:1040px;text-wrap:balance">The coexistence rules were already yes/no questions.</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-top:20px;text-wrap:pretty">I went through the project looking for places where the app needs common sense rather than a rule, and the strongest finding was sitting in <a href="42_One Roof.dc.html">One Roof</a>. The seven coexistence rules — does this type have a stable public scale, does it have a corpus, is it a near-duplicate of a type we ship, does its clock describe a real decay — were written as tests for a human moderator to apply by hand, two hundred times, for free, forever. <strong>They are already the right shape. They were just never going to get asked.</strong></div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:900px;margin-top:14px;text-wrap:pretty">Eight places in the product where a typed judgment does real work, nine unanswered questions it can stand in front of, and — more important — the list of questions it must not be allowed near. Written against the TypeSafe docs: code owns the workflow, the judgment answers one narrow thing, probabilities decide whether to act or ask.</div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">01 · THE LINE</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:40px;line-height:1;letter-spacing:-.035em;margin-bottom:18px;max-width:860px;text-wrap:balance">Code owns the shelf.<br>A judgment owns the doubt.</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;padding:20px 22px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:11px">STAYS IN CODE, FOREVER</div>
+      <sc-for list="{{ inCode }}" as="c" hint-placeholder-count="6">
+        <div style="display:flex;gap:9px;margin-bottom:8px">
+          <div style="font:700 13px 'DM Mono',monospace;color:#0E6E5E;flex:0 0 auto">✓</div>
+          <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ c }}</div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#17130F;color:#F3ECE0;box-shadow:5px 5px 0 #2B44D6;padding:20px 22px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#FFD24A;margin-bottom:11px">WHERE THE APP NEEDS COMMON SENSE</div>
+      <sc-for list="{{ inModel }}" as="c" hint-placeholder-count="6">
+        <div style="display:flex;gap:9px;margin-bottom:8px">
+          <div style="font:700 13px 'DM Mono',monospace;color:#B9F0C9;flex:0 0 auto">→</div>
+          <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:rgba(243,236,224,.9);text-wrap:pretty">{{ c }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#FFD24A;padding:22px 24px;margin-top:14px">
+    <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:25px;line-height:1.2;letter-spacing:-.025em;text-wrap:balance">The product rule I would write down first: <span style="background:#17130F;color:#F3ECE0;padding:0 6px;border-radius:6px">a judgment may only run where a network lookup already runs.</span></div>
+    <div style="font:400 14px/1.65 Archivo,sans-serif;color:#3A2F26;margin-top:10px;max-width:900px;text-wrap:pretty">CLCTN's pitch is a private, local catalogue, and the API is server-side. That tension is resolvable, but only by rule, not by good intentions — see section 06. Barcode lookups, CSV imports, listing publication, type proposals and the feedback form are all already network moments the user has accepted. The shelf at rest is not one, and nothing here asks it to become one.</div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">02 · EIGHT JUDGMENT SITES IN THE PRODUCT</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:920px;margin-bottom:10px;text-wrap:pretty">Each one is a single moment in the app, one request, many narrow questions asked in parallel, and code deciding what to do with the answers. Pick a site: the state it sends, the questions, the composition and the offline fallback are all different, but the shape never is.</div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:920px;margin-bottom:22px;text-wrap:pretty">Ordered by what I would build first. The top two cost nothing to try — they run on a server you already have and never touch a user's shelf.</div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px">
+    <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="8">
+      <div onClick="{{ t.pick }}" style="cursor:pointer;font:600 12.5px Archivo,sans-serif;border:2.5px solid #17130F;border-radius:999px;padding:9px 15px;background: {{ t.bg }};color: {{ t.fg }}"><span style="font-family:'DM Mono',monospace;font-size:10px;opacity:.6;margin-right:7px">{{ t.n }}</span>{{ t.name }}</div>
+    </sc-for>
+  </div>
+
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+    <div style="display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;padding:18px 24px;background:#17130F;color:#F3ECE0">
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:24px;letter-spacing:-.03em">{{ siteTitle }}</div>
+      <div style="font:400 14px Archivo,sans-serif;opacity:.65">{{ siteMoment }}</div>
+      <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #FFD24A;color:#FFD24A;border-radius:999px;padding:4px 10px">{{ siteWhen }}</div>
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.1em;border-radius:999px;padding:4px 10px;background: {{ siteRiskBg }};color: {{ siteRiskFg }}">{{ siteRisk }}</div>
+      </div>
+    </div>
+
+    <div style="padding:22px 24px;border-bottom:2.5px solid #17130F">
+      <div style="font:400 15px/1.7 Archivo,sans-serif;color:#3A2F26;max-width:1060px;text-wrap:pretty">{{ siteWhy }}</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1.1fr 1fr;gap:0">
+      <div style="padding:22px 24px;border-right:2.5px solid #17130F">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:10px">THE QUESTIONS · ONE REQUEST · EVALUATED IN PARALLEL</div>
+        <sc-for list="{{ questions }}" as="q" hint-placeholder-count="5">
+          <div style="border:2px solid #17130F;border-radius:12px;padding:12px 14px;margin-bottom:9px;background:#FBF6EC">
+            <div style="display:flex;align-items:baseline;gap:9px;flex-wrap:wrap">
+              <div style="font:500 11px 'DM Mono',monospace;color:#17130F">{{ q.id }}</div>
+              <div style="font:500 8.5px 'DM Mono',monospace;letter-spacing:.1em;border-radius:999px;padding:3px 8px;background: {{ q.kbg }};color: {{ q.kfg }}">{{ q.kind }}</div>
+              <sc-if value="{{ q.spec }}" hint-placeholder-val="{{ false }}">
+                <div style="font:500 8.5px 'DM Mono',monospace;letter-spacing:.1em;color:#8A7F70;border:1.5px dashed #8A7F70;border-radius:999px;padding:2px 8px">SPECULATIVE</div>
+              </sc-if>
+            </div>
+            <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;margin-top:7px;text-wrap:pretty">{{ q.ask }}</div>
+            <div style="font:400 11.5px/1.5 'DM Mono',monospace;color:#6E6458;margin-top:6px;text-wrap:pretty">{{ q.crit }}</div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="padding:22px 24px;display:flex;flex-direction:column;gap:14px">
+        <div style="border:2.5px solid #17130F;border-radius:16px;padding:15px 17px;background:#FBF6EC">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">THE STATE CODE SENDS</div>
+          <div style="font:400 12px/1.7 'DM Mono',monospace;color:#17130F;margin-top:9px;white-space:pre-wrap">{{ siteState }}</div>
+        </div>
+        <div style="border:2.5px solid #17130F;border-radius:16px;padding:15px 17px;background:#0C0A08;color:#F3ECE0">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#FFD24A">WHAT CODE DOES WITH THE ANSWERS</div>
+          <div style="font:400 12px/1.7 'DM Mono',monospace;margin-top:9px;white-space:pre-wrap">{{ siteCompose }}</div>
+        </div>
+        <div style="border:2.5px solid #17130F;border-radius:16px;padding:15px 17px;background:#FFD24A">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#6E5A2E">WHEN IT IS UNSURE, OR OFFLINE</div>
+          <div style="font:400 13px/1.6 Archivo,sans-serif;color:#17130F;margin-top:8px;text-wrap:pretty">{{ siteFallback }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">03 · STANDING IN FRONT OF THE UNANSWERED QUESTIONS</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:40px;line-height:1;letter-spacing:-.035em;margin-bottom:14px;max-width:900px;text-wrap:balance">It does not decide.<br>It makes deciding cheap.</div>
+  <div style="font:400 15px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:920px;margin-bottom:22px;text-wrap:pretty">I collected every open question still standing across the project — the five in <a href="43_Video Games.dc.html">Video Games</a>, the four in <a href="42_One Roof.dc.html">One Roof</a>, three in <a href="39_App Store Brief.dc.html">App Store Brief</a>, the nine dated decisions in <a href="06_Master Plan.dc.html">Master Plan</a>, and the two loose ends in <span style="font-family:'DM Mono',monospace;font-size:14px">decisions.md</span>. Most of them are blocked on the same thing: <strong>evidence nobody has time to gather.</strong> That is the gap a judgment fills — not the answer, the evidence.</div>
+  <div style="border:2.5px solid #17130F;border-radius:16px;overflow:hidden;background:#fff;box-shadow:5px 5px 0 #17130F">
+    <div style="display:flex;background:#17130F;color:#F3ECE0">
+      <div style="flex:0 0 250px;padding:11px 14px;font:500 10.5px 'DM Mono',monospace;letter-spacing:.06em;border-right:2px solid rgba(243,236,224,.14)">THE QUESTION, AND WHERE IT SITS</div>
+      <div style="flex:1 1 0;padding:11px 14px;font:500 10.5px 'DM Mono',monospace;letter-spacing:.06em;border-right:2px solid rgba(243,236,224,.14)">WHAT A JUDGMENT SUPPLIES</div>
+      <div style="flex:0 0 300px;padding:11px 14px;font:500 10.5px 'DM Mono',monospace;letter-spacing:.06em">WHAT IT MUST NOT DECIDE</div>
+    </div>
+    <sc-for list="{{ gaps }}" as="g" hint-placeholder-count="9">
+      <div style="display:flex;border-bottom:2px solid rgba(23,19,15,.12);background: {{ g.bg }}">
+        <div style="flex:0 0 250px;padding:13px 14px;border-right:2px solid rgba(23,19,15,.1)">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.1em;color:#8A7F70">{{ g.where }}</div>
+          <div style="font:600 13.5px/1.4 Archivo,sans-serif;margin-top:5px;text-wrap:pretty">{{ g.q }}</div>
+        </div>
+        <div style="flex:1 1 0;padding:13px 14px;font:400 12.5px/1.6 Archivo,sans-serif;border-right:2px solid rgba(23,19,15,.1);text-wrap:pretty">{{ g.supply }}</div>
+        <div style="flex:0 0 300px;padding:13px 14px;font:400 12.5px/1.6 Archivo,sans-serif;color:#7A2418;text-wrap:pretty">{{ g.never }}</div>
+      </div>
+    </sc-for>
+  </div>
+  <div style="font:400 13px/1.6 Archivo,sans-serif;color:#6E6458;max-width:920px;margin-top:16px;text-wrap:pretty">Three of the nine are shaded: those are the ones where I think the honest answer is no judgment, ever — the name, the price, and the slot-order question. They are a trademark problem, a values problem and a measurement problem respectively, and dressing any of them up as an inference would be the worst thing on this page.</div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">04 · THE TYPE BOARD — THE ONE PLACE THIS CHANGES THE BUSINESS</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:920px;margin-bottom:20px;text-wrap:pretty"><a href="40_Business Delta - Types.dc.html">Business Delta</a> flagged moderation as the new cost that arrived with community type proposals, and pulled type-board infrastructure a year earlier than planned. That cost is a queue of free-text proposals that one person has to read. Here is the same queue with the seven coexistence rules asked as questions before a human sees anything.</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+    <sc-for list="{{ board }}" as="b" hint-placeholder-count="3">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background: {{ b.bg }};color: {{ b.fg }};box-shadow:5px 5px 0 {{ b.sh }};padding:20px 22px">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;opacity:.7">{{ b.k }}</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:38px;line-height:1;letter-spacing:-.03em;margin:10px 0 4px">{{ b.big }}</div>
+        <div style="font:600 14px Archivo,sans-serif;margin-bottom:9px">{{ b.t }}</div>
+        <div style="font:400 13px/1.6 Archivo,sans-serif;opacity:.92;text-wrap:pretty">{{ b.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #0E6E5E;padding:22px 24px;margin-top:14px">
+    <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:12px">AND THE RULE THAT WAS UNCOMPUTABLE BECOMES A COUNT</div>
+    <div style="font:400 15px/1.7 Archivo,sans-serif;color:#3A2F26;max-width:1000px;text-wrap:pretty">One Roof's second rule says a renderer needs a <em>second customer</em> before it enters the kit — which until now meant waiting for a second type to turn up and argue for it. Ask every proposal in the queue <span style="font-family:'DM Mono',monospace;font-size:14px">which renderer would this type bind?</span> as a Choice over the kit plus <span style="font-family:'DM Mono',monospace;font-size:14px">none</span>, and the customer count for every renderer becomes a number you can read off the board at any moment. The <span style="font-family:'DM Mono',monospace;font-size:14px">set</span> renderer I proposed with eleven customers stops being my assertion and becomes a tally — and a proposed seventh renderer with one customer stays out on evidence instead of on my say-so.</div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">05 · WHERE I WOULD NOT USE IT</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:20px;text-wrap:pretty">Longer than I expected when I started, and the more useful half of the survey. Each of these is somewhere a judgment would technically work and would still be wrong for this product.</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <sc-for list="{{ nope }}" as="n" hint-placeholder-count="6">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#17130F;color:#F3ECE0;box-shadow:4px 4px 0 #C2371F;padding:17px 19px">
+        <div style="display:flex;gap:10px;align-items:baseline">
+          <div style="font:700 15px 'DM Mono',monospace;color:#FF5B2E">✕</div>
+          <div style="font:700 15.5px/1.35 Archivo,sans-serif;text-wrap:pretty">{{ n.t }}</div>
+        </div>
+        <div style="font:400 13px/1.6 Archivo,sans-serif;color:rgba(243,236,224,.84);margin-top:8px;text-wrap:pretty">{{ n.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">06 · THE PRIVACY LINE, WHICH IS YOUR CALL</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:920px;margin-bottom:20px;text-wrap:pretty">This is the decision the whole page depends on, and it is a positioning decision rather than a technical one. The API is a server API; the app's pitch is that your collection stays yours. Three ways to hold both, and the one I would sign.</div>
+  <div style="display:flex;flex-direction:column;gap:12px;max-width:1120px">
+    <sc-for list="{{ privacy }}" as="p" hint-placeholder-count="3">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background: {{ p.bg }};color: {{ p.fg }};box-shadow:4px 4px 0 {{ p.sh }};padding:18px 20px;display:flex;gap:18px;align-items:flex-start">
+        <div style="flex:0 0 30px;font:700 22px 'DM Mono',monospace;opacity:.5">{{ p.k }}</div>
+        <div style="flex:1 1 0">
+          <div style="font:700 17px/1.3 Archivo,sans-serif;text-wrap:pretty">{{ p.t }}</div>
+          <div style="font:400 13.5px/1.65 Archivo,sans-serif;opacity:.9;margin-top:7px;text-wrap:pretty">{{ p.b }}</div>
+        </div>
+        <div style="flex:0 0 150px;font:500 9.5px 'DM Mono',monospace;letter-spacing:.1em;text-align:right;opacity:.75">{{ p.verdict }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">07 · WHAT I WOULD DO FIRST</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+    <sc-for list="{{ first }}" as="f" hint-placeholder-count="3">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #FFD24A;padding:20px 22px">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70">{{ f.k }}</div>
+        <div style="font:700 17px/1.3 Archivo,sans-serif;margin:9px 0 8px;text-wrap:pretty">{{ f.t }}</div>
+        <div style="font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ f.b }}</div>
+        <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.08em;color:#0E6E5E;margin-top:12px;padding-top:10px;border-top:2px solid #E0D6C4">{{ f.cost }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:14px">08 · OPEN QUESTIONS, FOR YOU</div>
+  <div style="display:flex;flex-direction:column;gap:12px;max-width:1000px">
+    <sc-for list="{{ open }}" as="o" hint-placeholder-count="4">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#17130F;color:#F3ECE0;padding:17px 19px;box-shadow:5px 5px 0 #FF5B2E">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#FFD24A;margin-bottom:7px">{{ o.k }}</div>
+        <div style="font:700 16px/1.35 Archivo,sans-serif;margin-bottom:7px;text-wrap:pretty">{{ o.q }}</div>
+        <div style="font:400 13.5px/1.6 Archivo,sans-serif;color:rgba(243,236,224,.82);text-wrap:pretty">{{ o.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="font:400 12.5px/1.7 Archivo,sans-serif;color:#8A7F70;margin-top:44px;max-width:920px;text-wrap:pretty">Related: <a href="42_One Roof.dc.html">One Roof</a> for the coexistence rules and the signature kit · <a href="43_Video Games.dc.html">Video Games</a> for the five open questions this page tries to unblock · <a href="29_Identification Pipeline.dc.html">Identification Pipeline</a> for the confidence bands reused here · <a href="40_Business Delta - Types.dc.html">Business Delta</a> for the moderation cost · <a href="16_Technical Blueprint.dc.html">Technical Blueprint</a> for where a judgment would sit in the stack.</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;site&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Feedback triage&quot;,&quot;Type board&quot;,&quot;CSV import&quot;,&quot;Candidate select&quot;,&quot;Add: which type&quot;,&quot;Listing screen&quot;,&quot;Wishlist hits&quot;,&quot;Place names&quot;],&quot;default&quot;:&quot;Feedback triage&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Demonstration&quot;}}">
+class Component extends DCLogic {
+  state = { site: null };
+
+  renderVals() {
+    const cream = '#F3ECE0';
+    const K = {
+      noul: { kbg: '#2B44D6', kfg: cream },
+      choice: { kbg: '#0E6E5E', kfg: cream },
+      score: { kbg: '#6E2440', kfg: cream }
+    };
+    const q = (id, kind, ask, crit, spec) => Object.assign({ id, kind: kind.toUpperCase(), ask, crit, spec: !!spec }, K[kind]);
+
+    const sites = {
+      'Feedback triage': {
+        n: '01', moment: 'the live site, on submit', when: 'SHIP THIS WEEK', risk: 'ZERO PRODUCT RISK', riskBg: '#B9F0C9', riskFg: '#17130F',
+        why: 'The form at clctn is collecting a free-text field called wrong — the one where someone tells you what your five pains got wrong about their hobby — and right now you read them by hand, or you do not read them. Every decision this project is blocked on wants exactly that text turned into typed dimensions. The function is already server-side, the key never leaves it, and no user shelf is involved at all.',
+        state: 'submission: {\n  wrong,          // free text\n  hobbies[], today, size,\n  hook, price, country, lang\n}\nshipped_types: [wine, vinyl,\n  retro-computer, artwork,\n  video-game, thing]\nfive_pains: [...]           // site copy',
+        questions: [
+          q('pain_named', 'choice', 'Which of the five pains does `submission.wrong` describe, if any?', 'the five pains · a sixth thing we never wrote down · no pain, a feature request'),
+          q('names_a_type_we_lack', 'noul', 'Does `submission.wrong` name a collectible category absent from `shipped_types`?', 'yes: a nameable category · no: a category we ship, or no category at all'),
+          q('type_requested', 'choice', 'Which collectible category does `submission.wrong` ask for?', 'the fifteen candidate types · other · none named'),
+          q('intent_to_pay', 'score', 'How much does `submission.wrong` read like someone who would pay for this today?', 'curious · would try it free · already pays for something worse · asking where to send money'),
+          q('blocked_by_a_missing_type', 'noul', 'Does `submission.wrong` say the app would not work for them specifically because their category is missing?', 'distinguishes "add my hobby" from "your app is useless to me until you do"', true),
+          q('names_a_competitor', 'noul', 'Does `submission.wrong` name a specific app or spreadsheet they use now?', 'yes: a named product or a named workflow · no', true),
+          q('mentions_a_clock', 'noul', 'Does `submission.wrong` describe wanting to be told when to act on an object, rather than only to record it?', 'the retention thesis, tested against real words instead of my own')
+        ],
+        compose: 'rank = 0.5*intent_to_pay_norm\n     + 0.3*blocked_by_missing_type\n     + 0.2*mentions_a_clock\n\n// the sixth-type tally\nif (names_a_type_we_lack > 0.7)\n  votes[type_requested] += 1\n\n// the quotes worth reading\nif (rank > 0.7) inbox.pin(sub)',
+        fallback: 'Nothing breaks: the record is already stored raw in KV, and the judgment only annotates it. A failed call leaves an unannotated row, which is exactly what you have today. Re-run the whole KV store any time you change a weight — the raw text never moves.'
+      },
+
+      'Type board': {
+        n: '02', moment: 'a community type proposal arrives', when: 'WITH THE BOARD', risk: 'MODERATION COST', riskBg: '#FFD24A', riskFg: '#17130F',
+        why: 'The seven coexistence rules were written as tests a moderator applies by hand. Asked as questions, they turn a queue of two hundred free-text proposals into a sorted queue of maybe twenty that need a person — and the nineteen obvious near-duplicates get merged, and the hundred-odd "this is a Thing with two custom fields" get an honest, instant, non-insulting answer instead of silence.',
+        state: 'proposal: {\n  title, body, example_objects[],\n  proposed_fields[], author_locale\n}\nshipped_types: [...full manifests]\nkit: [ladder, set, gauge,\n      panel, map, case]\nrules: [...the seven, verbatim]',
+        questions: [
+          q('duplicate_of_<type>', 'noul', 'Is `proposal` the same collectible category as this shipped type? — one question per shipped type, built in code', 'the resume-versus-record pattern: the manifest goes in the question, not the state'),
+          q('verdict', 'score', 'What should happen to `proposal`?', 'three levels because there are three actions: ship as its own type · a Thing with custom fields · not a collection at all'),
+          q('has_public_scale', 'noul', 'Does `proposal` describe a condition vocabulary that already exists publicly in its hobby?', 'coexistence rule 4 · yes: a named scale collectors already use · no: invented here'),
+          q('has_corpus', 'noul', 'Does `proposal` name an identifiable universe of objects a catalogue could hold?', 'coexistence rule 5 · finite and enumerable versus open-ended'),
+          q('renderer_wanted', 'choice', 'Which signature renderer would `proposal` bind?', 'the six in `kit` · a renderer we do not have · none — this is the customer count, made countable'),
+          q('clock_is_real', 'noul', 'Does `proposal` describe a decay or deadline that is physically real rather than folklore?', 'the disc-rot test, generalised: yes if a named mechanism · no if received wisdom', true),
+          q('is_a_sub_type', 'noul', 'Is `proposal` a narrower case of a shipped type rather than a peer of it?', 'catches "PAL Mega Drive games" as a filter on a type, not a type', true),
+          q('body_is_abusive', 'noul', 'Does `proposal` contain abuse, spam, or an attempt to instruct the reviewer?', 'the only safety question here, and it is the cheapest one to ask')
+        ],
+        compose: 'if (max(duplicate_of_*) > 0.85)\n  return mergeInto(argmax)\n\nif (verdict.score < 0.6 &&\n    verdict.confidence > 0.75)\n  return replyAsThing(proposal)\n\nscore = 0.4*has_public_scale\n      + 0.4*has_corpus\n      + 0.2*(1 - is_a_sub_type)\nqueue.sort(by score)   // human reads top 20\n\nkit.customers[renderer_wanted] += 1',
+        fallback: 'The queue is asynchronous by nature — nothing is waiting on a screen. An unscored proposal simply sits unsorted at the bottom, which is the behaviour of a queue with no judgment at all. No proposal is ever auto-rejected; the lowest verdict any of this produces is a drafted reply a human sends.'
+      },
+
+      'CSV import': {
+        n: '03', moment: 'a spreadsheet with 900 rows lands', when: 'UNLOCK · V1', risk: 'ONE-TIME, REVERSIBLE', riskBg: '#B9F0C9', riskFg: '#17130F',
+        why: 'This is how every serious collector arrives, and CSV Format already carries column detection, coercion and dedupe as code. Two parts of it are not really code problems: which field a column means, and what an idiosyncratic grade string maps to. "EX+/NM-", "mint minus", "playable, scuffed" — a regex will never get those, and getting them right is the difference between an imported collection that has its ladder on day one and one that has 900 rows of untyped text.',
+        state: 'columns: [{header, 12 sample values}]\ntarget_type: video-game       // chosen\nfield_keys: [...from the YAML]\nconditions: [Sealed .. Poor, Missing]\ndistinct_condition_strings: [...]',
+        questions: [
+          q('column_<i>_field', 'choice', 'Which field of `target_type` does this column hold? — one per column', '`field_keys` · ignore this column · keep as a custom field'),
+          q('column_<i>_is_a_scale', 'noul', 'Do this column\'s sample values look like an ordered condition vocabulary?', 'catches a grade column whose header is "Cond" or blank or in French'),
+          q('grade_<s>_step', 'choice', 'Which step of `conditions` does this grade string mean?', 'the type\'s own steps · unmappable — selection over a closed set, never generation'),
+          q('column_<i>_is_a_price', 'choice', 'Is this column what they paid, what it is worth, or what they sold it for?', 'paid · value · sold · not money — three fields the spine treats very differently', true),
+          q('rows_<a>_<b>_same_object', 'noul', 'Are these two rows the same physical object, or two copies of the same title?', 'the entity-alignment pattern, applied to the dedupe pass code already runs', true)
+        ],
+        compose: 'for (col of columns)\n  if (col.field.confidence > 0.8)\n    map(col)\n  else\n    askUser(col, top3)\n\n// every unmapped grade string\n// becomes a row the user fixes once\nunmapped = grades.filter(g =>\n  g.step === "unmappable")',
+        fallback: 'The existing manual mapping screen. That screen has to exist anyway — the judgment only pre-fills it, and pre-filling 18 of 22 columns correctly is the entire feature. Every mapping stays editable before a single row is written, so a wrong guess costs one tap, never a corrupted import.'
+      },
+
+      'Candidate select': {
+        n: '04', moment: 'barcode or OCR returned three candidates', when: 'V1 · IF METERED', risk: 'ALREADY NETWORKED', riskBg: '#B9F0C9', riskFg: '#17130F',
+        why: 'The Identification Pipeline already has the right architecture — a local corpus, ranked candidates, and four confidence bands at 0.40, 0.70 and a tuned threshold. What it lacks is a good ranker for the middle band, where a barcode matched a title but three pressings or four editions share it. Code finds the candidates; the judgment picks. Nothing is ever generated, so a hallucinated pressing is structurally impossible.',
+        state: 'observed: { ocr_text, barcode,\n  photo_labels[] }\ncandidates: [3 corpus rows]\ntype: vinyl',
+        questions: [
+          q('candidate_<i>_match', 'score', 'How well does this candidate match `observed`? — one per candidate', 'three levels, three actions: this exact print · same release, wrong print · a different object'),
+          q('observed_names_a_region', 'noul', 'Does `observed.ocr_text` contain a region or territory marking?', 'the field that decides identity on half the types, per Video Games §04'),
+          q('observed_is_a_reissue', 'noul', 'Does `observed` carry markings indicating a later reissue rather than a first print?', 'the single most common and most expensive misidentification', true),
+          q('photo_is_of_the_object', 'noul', 'Is `observed.photo_labels` a single object rather than a shelf, a crate, or a room?', 'answers the loose end in decisions.md S1 about when to show a photo at all', true)
+        ],
+        compose: 'best = argmax(candidate_*_match)\nband = existing bands from §03\n  of the Identification Pipeline\n\n// no new UI, no new thresholds\nif (best.confidence >= T) commit()\nelse if (>= .70) commitAndFlag()\nelse if (>= .40) reviewQueue(top3)\nelse keepUnidentified()',
+        fallback: 'The pipeline\'s fourth band, which already exists and already works: kept anyway, unidentified, searchable, fixable later. The sweep never stops for a failed judgment — that was the design constraint before any of this, and it does not move.'
+      },
+
+      'Add: which type': {
+        n: '05', moment: 'an object is added with no type chosen', when: 'V1', risk: 'TOUCHES THE SHELF', riskBg: '#FFD24A', riskFg: '#17130F',
+        why: 'Six types plus Thing, and a first-run user who does not yet know the difference. The judgment reads what code already has — the OCR text, the barcode result, the collections they have made — and proposes a type. It also quietly answers the awkward key in <span style="font-family:\'DM Mono\',monospace;font-size:13px">thing.yml</span>: <span style="font-family:\'DM Mono\',monospace;font-size:13px">duplicates: ask</span>. That flag exists because neither answer is right for everyone, which means the generic type interrupts the user on every repeat. Most of those interruptions are answerable.',
+        state: 'observed: { ocr_text, barcode_hit }\nuser_types: [...active]\nexisting_rows: [8 nearest by title]\ntype_summaries: [one line each]',
+        questions: [
+          q('type_for_object', 'choice', 'Which type in `user_types` does `observed` belong to?', 'their active types · thing · none of these'),
+          q('same_object_as_<i>', 'noul', 'Is `observed` the same physical object as this existing row? — one per near row', 'the `duplicates: ask` question, asked of the data instead of the user'),
+          q('is_a_second_copy', 'noul', 'Is `observed` a second copy of an object already on the shelf rather than the same one re-scanned?', 'distinguishes a duplicate row from a quantity bump from a double scan'),
+          q('media', 'choice', 'Which medium is `observed`? — read only when the type is video-game', 'cartridge · optical · floppy · card · code — drives mediaRules', true),
+          q('is_wanted_not_owned', 'noul', 'Does `observed` come from a wishlist context rather than a shelf one?', 'D27\'s owned flag, guessed from context, always confirmed', true)
+        ],
+        compose: 'if (type.confidence < 0.7)\n  offerTwo(top2)     // never silent\n\nif (max(same_object_as_*) > .85)\n  return openExistingRow()\n\nif (is_a_second_copy > .7)\n  suggestQuantityBump()\n// otherwise the normal add form,\n// pre-filled, every field editable',
+        fallback: 'The add form as designed: Thing, four fields, an "Add a detail" button. A missing judgment costs the user one tap on a type picker they would have used anyway. This site is the one I would gate behind the privacy rule in §06 most carefully, because it is the only one that reads rows already on the shelf.'
+      },
+
+      'Listing screen': {
+        n: '06', moment: 'an owner marks an object available', when: 'V2 · IF D29 SHIPS', risk: 'SHARED INFRASTRUCTURE', riskBg: '#FFD24A', riskFg: '#17130F',
+        why: 'D29 accepts a public index of offers and flags it as hard to withdraw. The moment that index exists, it needs screening — not because your collectors are bad, but because a public index with no screen is a magnet. The useful judgments here are contradiction checks, not sentiment: does the free text admit damage the declared grade denies, does it push the buyer off-platform, is the price a typo.',
+        state: 'listing: { description, price,\n  declared_grade, type, photos_n }\nobject: { ...its fields }\ncomparable_prices: [median, IQR]',
+        questions: [
+          q('text_contradicts_grade', 'noul', 'Does `listing.description` describe damage that `listing.declared_grade` does not allow?', 'the citation-check pattern: a claim against its own evidence'),
+          q('pushes_offsite', 'noul', 'Does `listing.description` invite the buyer to complete the deal elsewhere?', 'yes: contact details or another platform named · no'),
+          q('describes_a_different_object', 'noul', 'Does `listing.description` describe an object other than `object`?', 'catches the relisted-photo problem without looking at photos at all'),
+          q('price_is_implausible', 'noul', 'Is `listing.price` implausible for `object` given `comparable_prices`?', 'a typo screen, not a valuation — the app never tells anyone what a thing is worth'),
+          q('is_a_bulk_dealer_listing', 'noul', 'Does `listing.description` read like trade inventory rather than a collector parting with an object?', 'the Vinted-model question: whether this index stays collector-to-collector', true)
+        ],
+        compose: 'if (pushes_offsite > .8 ||\n    describes_different > .8)\n  hold(listing)          // human\n\nif (text_contradicts_grade > .6)\n  askOwnerToConfirmGrade()\n\nif (price_is_implausible > .7)\n  confirmPriceOnce()\n// else publish immediately',
+        fallback: 'Publish, and screen asynchronously. The index is not a payment rail and nothing irreversible happens on publication, so the honest failure mode is a listing that goes live and gets held ten seconds later. Blocking publication on a judgment would be the wrong trade.'
+      },
+
+      'Wishlist hits': {
+        n: '07', moment: 'a listing enters the index', when: 'V2 · WITH D30', risk: 'NOTIFICATION LOOP', riskBg: '#FFD24A', riskFg: '#17130F',
+        why: 'D30 is right that hits fire on the full match only — print, grade and price cap together — and that near misses must stay silent or the alert gets muted in a week. That rule is code and should stay code. The brittle part is the word print: two rows describing the same pressing rarely agree as strings. One narrow judgment fixes that without touching the rule.',
+        state: 'wishlist_row: { title, print_details,\n  grade_floor, price_cap }\nlisting: { ...same fields }',
+        questions: [
+          q('same_print', 'noul', 'Do `wishlist_row.print_details` and `listing` describe the same pressing, edition, or print?', 'the only genuinely semantic comparison in D30 — everything else is arithmetic'),
+          q('grade_meets_floor', 'noul', 'Does `listing.declared_grade` sit at or above `wishlist_row.grade_floor` on the type\'s scale?', 'only needed when the two rows use different vocabularies for the same ladder', true)
+        ],
+        compose: 'hit = same_print > 0.9\n   && grade_meets_floor > 0.9\n   && listing.price <= cap\n\n// D30 unchanged: full match only.\n// The threshold is deliberately\n// severe — a false alarm here\n// costs a muted channel forever.',
+        fallback: 'Exact string match, which is what D30 would have shipped with anyway. The judgment only widens the net; if it is unavailable, fewer hits fire and nothing wrong fires. That asymmetry is why this site is safe: the failure mode is silence, and silence is the designed-for default.'
+      },
+
+      'Place names': {
+        n: '08', moment: 'a free-text place is typed', when: 'NICE TO HAVE', risk: 'TRIVIAL', riskBg: '#B9F0C9', riskFg: '#17130F',
+        why: 'The smallest site here and the one I would cut first, included because it shows the shape at its cheapest. Places lets people type where a thing is, which within a year means "loft", "the loft", "Loft" and "upstairs, loft box 3" are four places. A taxonomy would fix it and would also be the wrong answer — the free text is the feature.',
+        state: 'typed: "upstairs, loft box 3"\nexisting_places: [...theirs]',
+        questions: [
+          q('matches_existing_place', 'choice', 'Which of `existing_places` does `typed` refer to?', 'their places · a new place · too vague to place'),
+          q('is_a_container_within', 'noul', 'Does `typed` name a container inside a place rather than a new place?', '"box 3" is not a room; Places already has one level of nesting for this', true)
+        ],
+        compose: 'if (match.confidence > 0.8)\n  suggestMerge(existing)\n// a suggestion, never a rewrite —\n// the user typed what they typed',
+        fallback: 'A new place is created, exactly as today. The drift this prevents is slow and cosmetic, which is precisely why it must never overrule what someone typed.'
+      }
+    };
+
+    const names = Object.keys(sites);
+    const pick = this.state.site || this.props.site || names[0];
+    const s = sites[pick] || sites[names[0]];
+
+    return {
+      inCode: [
+        'The seven slots, their order, and every rule in One Roof §03.',
+        'Grades, dates, prices, quantities — everything the user typed. A judgment never overwrites a declared field.',
+        'The clocks. A maturity window is arithmetic on a vintage and a range; a save battery is a date plus a constant.',
+        'Barcode decoding, corpus lookup, CSV parsing, dedupe arithmetic, the type-migration field map.',
+        'Money: the 50-object limit, the unlock gate, every price.',
+        'D30\'s full-match rule, D27\'s owned flag, and which shelf a share link exposes.'
+      ],
+      inModel: [
+        'Which of three corpus candidates is the object in this photo.',
+        'What "EX+/NM-" means on a scale it was never written for.',
+        'Whether a proposed community type is a real peer of wine, or wine with a different noun.',
+        'Whether 400 words of free-text feedback describe a pain you already named.',
+        'Whether this row and that row are the same physical object or two copies.',
+        'Whether a listing\'s prose quietly contradicts the grade its owner declared.'
+      ],
+
+      tabs: names.map(n => ({ name: n, n: sites[n].n, pick: () => this.setState({ site: n }), bg: n === pick ? '#17130F' : '#fff', fg: n === pick ? cream : '#17130F' })),
+
+      siteTitle: pick, siteMoment: s.moment, siteWhen: s.when, siteRisk: s.risk,
+      siteRiskBg: s.riskBg, siteRiskFg: s.riskFg,
+      siteWhy: s.why,
+      questions: s.questions, siteState: s.state, siteCompose: s.compose, siteFallback: s.fallback,
+
+      gaps: [
+        { where: 'VIDEO GAMES · Q2', q: 'Does disc rot survive contact with evidence?', bg: '#fff',
+          supply: 'The question was always "is this decay real for this pressing, or received wisdom?" — a Noul over plant codes and reported failures, asked across the corpus rather than argued about once. The same question generalises to every clock a proposed type wants, which is why it is on the type board battery too.',
+          never: 'Whether to ship the clock. A calibrated probability that rot is real for a plant is evidence; deciding to put a red chip on someone\'s shelf is a product call with a trust cost attached.' },
+        { where: 'BUSINESS DELTA', q: 'Which type is the sixth, chosen by community vote?', bg: '#fff',
+          supply: 'A tally instead of an impression. Every feedback submission and every board proposal answers "which category does this name" and "is this person blocked without it", so the vote arrives with a ranked, deduplicated, honestly-counted shortlist rather than whatever you remember reading.',
+          never: 'The pick. You said the community chooses the sixth type, and a ranked list that quietly becomes the decision would break that promise in the least visible and most damaging way.' },
+        { where: 'BUSINESS DELTA', q: 'Is proposal moderation affordable at all?', bg: '#fff',
+          supply: 'This is the one gap where a judgment changes a number rather than informing a decision. Merging near-duplicates and answering the "this is a Thing" cases turns an unbounded reading queue into a sorted twenty. Section 04 has the arithmetic.',
+          never: 'Rejection. Nothing here says no to anyone: the worst outcome a judgment may produce is a drafted reply a human reads before it sends.' },
+        { where: 'ONE ROOF · RULE 2', q: 'Does a renderer have a second customer?', bg: '#fff',
+          supply: 'A Choice on every proposal — which renderer would this type bind — turns the kit\'s admission rule into a running count. My claim that `set` has eleven customers becomes checkable, and a seventh renderer stays out on a tally rather than on my judgment.',
+          never: 'Adding the renderer. The count is the evidence the rule asked for; the rule still needs someone to apply it.' },
+        { where: 'DECISIONS.MD · S1', q: 'Photo or clean render, when there is no catalogue match?', bg: '#fff',
+          supply: 'The unresolved sub-question was what to show when the default is a render and no match exists. The missing piece is not taste, it is one fact: is their photo a picture of the object, or of a shelf, a crate, a room. That is a Noul, and it decides between their photo and a typographic card.',
+          never: 'The scope question — per object, per collection, or layered. That is a settings-model decision and it wants a user, not an inference.' },
+        { where: 'THING.YML', q: 'duplicates: ask — must the app really ask every time?', bg: '#fff',
+          supply: 'The flag exists because neither answer is right for everyone, so the generic type interrupts on every repeat. Asking "same physical object / second copy / re-scan" of the data resolves most of them and leaves the flag for genuinely ambiguous cases. Site 05.',
+          never: 'Merging rows silently. A wrongly merged object is the one data loss this app cannot apologise its way out of, so a high probability buys a suggestion, not a write.' },
+        { where: 'APP STORE BRIEF · Q1', q: 'The name.', bg: '#EDE4D6',
+          supply: 'Nothing worth having. The most I would claim is a confusability screen against existing App Store names, which is a search problem with a judgment bolted on, and you would still need a lawyer and your own ear.',
+          never: 'All of it. This is trademark, taste, and how it sounds when you say it out loud in French. No.' },
+        { where: 'MARKETING · PRICING', q: 'Is €29.99 the right unlock?', bg: '#EDE4D6',
+          supply: 'Typed willingness signals from real submissions — ranked, quoted, grouped by hobby and country — so the decision is made against evidence. That is the whole contribution, and it stops at the evidence.',
+          never: 'The number. A price is a values decision about who the app is for, and there is no probability that answers it.' },
+        { where: 'ONE ROOF · §08', q: 'Fixed slot order, or type-owned?', bg: '#EDE4D6',
+          supply: 'Nothing. I already proposed the right instrument in §08: log time-to-first-scroll per type and look at it. That is measurement, and a judgment standing where a measurement belongs is the most seductive mistake on this page.',
+          never: 'Anything. Included precisely because it looks like a judgment problem and is not one.' }
+      ],
+
+      board: [
+        { k: 'TODAY, AS FLAGGED', big: '200', t: 'free-text proposals, one reader', b: 'Every one needs reading, deduplicating and answering, and the answer is usually "that is a Thing with two custom fields" — the least interesting reply to write two hundred times, and the one that most needs writing kindly.', bg: '#fff', fg: '#17130F', sh: '#C2371F' },
+        { k: 'AFTER THE BATTERY', big: '~20', t: 'reach a person, sorted', b: 'Near-duplicates merge on a Noul per shipped type. The Thing cases get an instant, honest, drafted reply. What is left is sorted by whether it has a public scale and a corpus — the two rules that actually predict whether a type can ship.', bg: '#17130F', fg: '#F3ECE0', sh: '#0E6E5E' },
+        { k: 'WHAT DOES NOT CHANGE', big: '0', t: 'proposals auto-rejected', b: 'No one is told no by a probability. The board\'s output is a sorted queue and a set of drafted replies; every reply has a human behind it. That is the line I would not move even if the numbers got better.', bg: '#FFD24A', fg: '#17130F', sh: '#17130F' }
+      ],
+
+      nope: [
+        { t: 'Never as a valuation', b: 'The app already says ESTIMATE on its clocks and refuses to be a price index. A probability dressed as a number in the value slot would undo that in one screen, and the sealed-market position in Video Games §05 exists exactly to avoid it.' },
+        { t: 'Never as the grade', b: 'Condition is a claim its owner makes and stands behind when they sell. Inferring it from a photo turns a claim into an accusation the first time the app disagrees with someone about their own object.' },
+        { t: 'Never inside a type manifest', b: 'The YAML declares conditions, fields and bindings. If a scale can be inferred at runtime it is not a scale, and the coexistence rules stop being enforceable. Judgments read manifests; they never replace a line in one.' },
+        { t: 'Never on the retention loop', b: 'The clocks earn attention because they are arithmetic on facts the user entered. The moment a nudge is generated rather than computed, every nudge becomes suspect — including the true ones, which are the product.' },
+        { t: 'Never to write to the shelf unasked', b: 'Every site here either pre-fills a form, sorts a queue, or annotates a record. Nothing merges, deletes, re-grades or re-types an object on a probability. The strongest signal buys a suggestion.' },
+        { t: 'Never as a chat surface', b: 'Not what this is for, and not what the app is. The judgments here are invisible: a better-ordered queue, a pre-filled import, a type picker that guessed right. If a user can tell there is a model in the product, I have designed it badly.' }
+      ],
+
+      privacy: [
+        { k: 'A', t: 'Judgments anywhere, including the shelf at rest', b: 'Background enrichment, semantic search over everything, the whole catalogue legible to a server. Genuinely the most capable version, and it contradicts the sentence the app is sold on. If you ever want this, it has to be an explicit opt-in with its own screen and its own words — not a clause.', verdict: 'CONTRADICTS THE PITCH', bg: '#17130F', fg: '#F3ECE0', sh: '#C2371F' },
+        { k: 'B', t: 'Only where a network lookup already runs', b: 'Barcode and OCR identification, CSV import, listing publication, type proposals, the feedback form. Five moments the user already understands as online, all of them either already metered or already server-side. Sites 01–04 and 06–07 fit inside this rule untouched; site 05 fits only if it reads the eight nearest rows and nothing more.', verdict: 'WHAT I WOULD SIGN', bg: '#B9F0C9', fg: '#17130F', sh: '#0E6E5E' },
+        { k: 'C', t: 'On-device only, nothing leaves', b: 'The purest answer and not currently available — this is a server API. Worth keeping as the direction of travel, and worth noting that the two sites with the best return, the feedback form and the type board, never touch a user\'s collection at all. Those two are compatible with C today, because the data being judged is yours, not theirs.', verdict: 'NOT AVAILABLE · AIM HERE', bg: '#fff', fg: '#17130F', sh: '#17130F' }
+      ],
+
+      first: [
+        { k: 'THIS WEEK', t: 'Annotate the feedback you are already collecting', b: 'One function, server-side, on data you own. It answers nothing about the app and everything about the decisions the app is blocked on — the sixth type, the price, whether the clock thesis survives contact with real collectors.', cost: 'ONE FILE · NO APP CHANGE · NO USER DATA' },
+        { k: 'WITH THE BOARD', t: 'Ask the seven rules as questions', b: 'The rules are written. Asking them of every proposal before a human reads it is what makes the moderation cost survivable, and it is the only item here that changes a business number rather than informing a judgment call.', cost: 'SHIPS WITH INFRA YOU ALREADY PULLED FORWARD' },
+        { k: 'WITH THE UNLOCK', t: 'Pre-fill the CSV mapping screen', b: 'The screen exists either way. Mapping 18 of 22 columns and resolving idiosyncratic grade strings onto the type\'s ladder is the difference between an import that arrives finished and 900 rows of text.', cost: 'ONE SCREEN, PRE-FILLED · EVERY GUESS EDITABLE' }
+      ],
+
+      open: [
+        { k: 'Q1', q: 'Do you accept the "only where a lookup already runs" rule?', b: 'Everything on this page depends on it, and it is a positioning decision rather than an engineering one. If the answer is no — nothing leaves the device, ever — then sites 03 through 07 fall away and the two best ones, feedback and the type board, survive untouched. That is a coherent product, and a smaller one.' },
+        { k: 'Q2', q: 'Is the type board allowed to draft a reply, or only to sort?', b: 'Drafting is where most of the moderation saving actually lives: the hundred "this is a Thing" answers. Sorting alone saves reading time but still leaves you writing. Leaning: drafting, clearly labelled as a draft, never sent unread.' },
+        { k: 'Q3', q: 'Does a judgment ever get to read rows already on a shelf?', b: 'Site 05 needs the eight nearest rows to answer "is this the same object". Every other site sends only what the user is adding or publishing. That eight-row window is the narrowest useful version, and it is still a real crossing of the line in Q1.' },
+        { k: 'Q4', q: 'Should any of this be visible to the user?', b: 'My instinct is no — invisible, and judged only by whether the picker guessed right. But an import that silently mapped a grade column deserves a "we guessed these 18, check them" moment, and a review queue that was sorted for you is arguably owed an explanation. Leaning: invisible everywhere except the import summary.' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

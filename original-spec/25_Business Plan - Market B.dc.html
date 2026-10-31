@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#EAE3D6}a{color:#2B44D6}a:hover{color:#FF5B2E}</style>
+</helmet>
+
+<div style="width:1360px;margin:0 auto;padding:60px 28px 100px;font-family:Archivo,system-ui,sans-serif;color:#17130F">
+
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70">CLCTN · BUSINESS PLAN · MARKET B · ANDROID-FIRST · 19 SEP 2026</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:66px;line-height:.92;letter-spacing:-.045em;margin:16px 0 0;max-width:1030px;text-wrap:balance">A different business, wearing the same app.</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-top:20px;text-wrap:pretty">Market B is not market A with lower prices. The user is a different person, the storefront is a different app, the money moves on different rails, the app is found in a different place, and the cost base has to be structurally lower. Five differences — so it earns a plan of its own rather than a discount column in the existing one.</div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:900px;margin-top:14px;text-wrap:pretty">Read alongside the <a href="02_Business Plan.dc.html">Business Plan</a> (market A) and <a href="24_Business Plan - Android.dc.html">Business Plan · Android</a>. Numbers illustrative and deliberately conservative, as in the original.</div>
+
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#FFD24A;padding:24px 26px;box-shadow:5px 5px 0 #17130F;max-width:1000px;margin:32px 0 10px">
+    <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:30px;line-height:1.1;letter-spacing:-.025em;text-wrap:pretty">Nothing is sold once. Everything is sold small and often — and no user who has never paid may cost you a cent to serve.</div>
+  </div>
+  <div style="font:400 15px/1.7 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:8px;text-wrap:pretty">Market A's principle was <em>sell once for what costs you nothing monthly.</em> It doesn't transfer, because there is no "once" here — a single €25 decision is a barrier, while ₹49 a month is not a decision at all. The second half matters more: at this ARPU, one recurring cent per free user eats the business. Zero marginal cost isn't hygiene here, it's the whole model.</div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">01 · WHO THIS PERSON ACTUALLY IS</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:20px;text-wrap:pretty">The single biggest mistake would be to imagine a Brazilian version of the collector on the sofa. In these markets the line between collecting and small-scale trading barely exists — the person with 200 objects is usually moving some of them, and that changes what the app is <em>for</em>.</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+    <sc-for list="{{ people }}" as="p" hint-placeholder-count="3">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+        <div style="padding:14px 18px;background:{{ p.tone }};border-bottom:2.5px solid #17130F">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;opacity:.65">{{ p.share }}</div>
+          <div style="font:700 19px Archivo,sans-serif;letter-spacing:-.01em;margin-top:5px">{{ p.name }}</div>
+        </div>
+        <div style="padding:16px 18px">
+          <div style="font:400 13.5px/1.6 Archivo,sans-serif;text-wrap:pretty">{{ p.who }}</div>
+          <div style="height:2px;background:#E0D6C4;margin:14px 0"></div>
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">WHAT THEY'D PAY FOR</div>
+          <div style="font:400 13.5px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:7px;text-wrap:pretty">{{ p.pay }}</div>
+          <div style="height:2px;background:#E0D6C4;margin:14px 0"></div>
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">WHAT THEY'D NEVER PAY FOR</div>
+          <div style="font:400 13.5px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:7px;text-wrap:pretty">{{ p.never }}</div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+  <div style="font:400 14px/1.65 Archivo,sans-serif;color:#6E6458;max-width:900px;margin-top:18px;text-wrap:pretty">All three are served by the app you're already building. What changes is the noun on the store listing: in market A it is <strong>a catalogue of things you love</strong>; in market B it is <strong>the stock book for what you buy and sell</strong>. Same screens, same data model, different promise — and the second one is a business expense, which is the only reliable reason anyone at this income level pays for software.</div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">02 · THE STOREFRONT IS WHATSAPP, NOT YOUR APP</div>
+  <div style="display:grid;grid-template-columns:1.05fr .95fr;gap:16px;align-items:start">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#0C0A08;color:#F3ECE0;padding:28px;box-shadow:5px 5px 0 #12A594">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;opacity:.5">THE ONE PRODUCT DECISION THAT DECIDES THE REST</div>
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:34px;letter-spacing:-.03em;line-height:1.05;margin-top:14px;text-wrap:balance">Selling happens in group chats. Your job is to make the message, not to host the sale.</div>
+      <div style="font:400 15px/1.7 Archivo,sans-serif;opacity:.84;margin-top:16px;text-wrap:pretty">In these markets the trade already has a venue and it is a WhatsApp group of 180 people who collect the same thing. Nobody is going to migrate that group into your marketplace, and the plan already concluded you shouldn't try — market C's whole lesson is that fighting off-platform completion is unwinnable.</div>
+      <div style="font:400 15px/1.7 Archivo,sans-serif;opacity:.84;margin-top:12px;text-wrap:pretty">So invert it. The most valuable screen in the market-B build is not the shelf — it's <strong>"share my list"</strong>: pick twelve objects, get a clean price list image plus a link, paste into the group. The app becomes the tool that makes a seller look professional in a chat window, and every message it produces carries a link back.</div>
+      <div style="height:2px;background:#2E2823;margin:22px 0"></div>
+      <div style="font:400 13.5px/1.6 Archivo,sans-serif;opacity:.55;text-wrap:pretty">This is also the growth engine and the reason the acquisition cost can be near zero. It is the same received-share screen v3 already needs — no account, no install, opens in a browser.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <sc-for list="{{ productShifts }}" as="s" hint-placeholder-count="4">
+        <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;padding:18px">
+          <div style="display:flex;align-items:baseline;gap:10px">
+            <div style="font:700 15px/1.3 Archivo,sans-serif;text-wrap:pretty">{{ s.t }}</div>
+            <div style="margin-left:auto;flex:none;font:500 9px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:3px 9px;background:{{ s.tone }}">{{ s.cost }}</div>
+          </div>
+          <div style="font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">{{ s.b }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">03 · THE REVENUE STACK, IN ORDER OF SIZE</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:20px;text-wrap:pretty">Five lines. None of them is a lump sum, none of them requires you to process a transaction, and each has a floor of zero rather than a negative — no line here costs you money when nobody buys.</div>
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <sc-for list="{{ revenue }}" as="r" hint-placeholder-count="5">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+        <div style="display:flex;align-items:center;gap:12px;padding:14px 18px;background:#EDE4D6;border-bottom:2.5px solid #17130F;flex-wrap:wrap">
+          <div style="width:30px;height:30px;border:2.5px solid #17130F;border-radius:8px;display:flex;align-items:center;justify-content:center;font:700 13px Archivo,sans-serif;background:{{ r.tone }}">{{ r.n }}</div>
+          <div style="font:700 18px Archivo,sans-serif;letter-spacing:-.01em">{{ r.name }}</div>
+          <div style="margin-left:auto;font:500 10px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:5px 10px;background:#fff">{{ r.price }}</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr)">
+          <div style="padding:15px 18px;border-right:2px solid #E0D6C4">
+            <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px">HOW IT WORKS</div>
+            <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ r.how }}</div>
+          </div>
+          <div style="padding:15px 18px;border-right:2px solid #E0D6C4">
+            <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px">WHY IT FITS THIS CROWD</div>
+            <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ r.why }}</div>
+          </div>
+          <div style="padding:15px 18px">
+            <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px">WHAT IT COSTS YOU</div>
+            <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ r.cost }}</div>
+          </div>
+        </div>
+        <div style="border-top:2.5px solid #17130F;padding:12px 18px;font:700 13.5px/1.5 Archivo,sans-serif;background:{{ r.footBg }};color:{{ r.footFg }};text-wrap:pretty">{{ r.foot }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">04 · SACHET PRICING — WHY THE SHAPE OF THE PRICE MATTERS MORE THAN THE PRICE</div>
+  <div style="font:400 16px/1.7 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:8px;text-wrap:pretty">Shampoo in these markets sells in single-use sachets, not bottles — not because a bottle is bad value, but because the bottle asks for money the buyer doesn't have <em>today</em>. Software follows the same rule: streaming services in India sell weekly plans, mobile data sells in daily packs, and both outperform the monthly equivalent at higher effective cost per day.</div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:900px;margin-bottom:22px;text-wrap:pretty">The practical consequence: offer the smallest interval Play will let you sell, price it under the cost of a snack, and let people lapse without friction. Churn is not a failure mode here — it's the product working as intended, and they come back the week they have stock to move.</div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+    <sc-for list="{{ sachet }}" as="s" hint-placeholder-count="4">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;padding:18px">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">{{ s.k }}</div>
+        <div style="font-family:'DM Mono',monospace;font-weight:500;font-size:20px;letter-spacing:-.02em;margin-top:8px">{{ s.v }}</div>
+        <div style="font:400 12.5px/1.55 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">{{ s.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">05 · PICK ONE COUNTRY — "MARKET B" IS NOT A MARKET</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:20px;text-wrap:pretty">Eight countries means eight payment rails, eight affiliate programmes, eight support languages and eight collector cultures — none of which a solo developer can carry. One country, one language, one playbook, and only then copy it.</div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;overflow:hidden;box-shadow:5px 5px 0 #17130F">
+    <div style="display:grid;grid-template-columns:150px 1fr 1fr 1fr 130px;background:#17130F;color:#F3ECE0;font:500 9.5px 'DM Mono',monospace;letter-spacing:.1em">
+      <div style="padding:13px 15px">COUNTRY</div>
+      <div style="padding:13px 15px">WHY IT COULD WORK</div>
+      <div style="padding:13px 15px">PAYMENT REALITY</div>
+      <div style="padding:13px 15px">WHAT MAKES IT HARD</div>
+      <div style="padding:13px 15px">VERDICT</div>
+    </div>
+    <sc-for list="{{ countries }}" as="c" hint-placeholder-count="5">
+      <div style="display:grid;grid-template-columns:150px 1fr 1fr 1fr 130px;border-top:2px solid #E0D6C4;background:{{ c.bg }};align-items:start">
+        <div style="padding:15px">
+          <div style="font:700 16px Archivo,sans-serif">{{ c.name }}</div>
+          <div style="font:400 10px/1.4 'DM Mono',monospace;color:#8A7F70;margin-top:5px">{{ c.lang }}</div>
+        </div>
+        <div style="padding:15px;font:400 12.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ c.pro }}</div>
+        <div style="padding:15px;font:400 12.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ c.pay }}</div>
+        <div style="padding:15px;font:400 12.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ c.con }}</div>
+        <div style="padding:15px">
+          <div style="display:inline-block;font:500 9px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:4px 9px;background:{{ c.tone }}">{{ c.verdict }}</div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#0E6E5E;color:#F3ECE0;padding:22px 24px;box-shadow:5px 5px 0 #17130F;max-width:1000px;margin-top:18px">
+    <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;color:#FFD24A;margin-bottom:10px">BEACHHEAD</div>
+    <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:26px;line-height:1.12;letter-spacing:-.02em;text-wrap:pretty">{{ beachheadLine }}</div>
+  </div>
+
+  <sc-if value="{{ showScenario }}" hint-placeholder-val="{{ true }}">
+    <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+    <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">06 · WHAT IT MAKES — AND THE ONLY SHAPE IN WHICH IT MATTERS</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start">
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div style="border:2.5px solid #17130F;border-radius:18px;background:#17130F;color:#F3ECE0;padding:20px 22px;box-shadow:5px 5px 0 #FF5B2E">
+          <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.14em;color:#FFD24A;margin-bottom:12px">YEAR ONE · ONE COUNTRY · ANDROID ONLY</div>
+          <sc-for list="{{ y1 }}" as="s" hint-placeholder-count="9">
+            <div style="display:flex;gap:14px;align-items:baseline;padding:9px 0;border-bottom:1.5px solid rgba(243,236,224,.16)">
+              <div style="flex:1;font:400 13.5px/1.4 Archivo,sans-serif;color:rgba(243,236,224,.8)">{{ s.k }}</div>
+              <div style="flex:none;font:700 14px 'DM Mono',monospace;color:{{ s.tone }}">{{ s.v }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="border:2.5px solid #17130F;border-radius:18px;background:#0E6E5E;color:#F3ECE0;padding:20px 22px;box-shadow:5px 5px 0 #17130F">
+          <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.14em;color:#FFD24A;margin-bottom:12px">YEAR THREE · IF THE PLAYBOOK COPIES · 5 COUNTRIES</div>
+          <sc-for list="{{ y3 }}" as="s" hint-placeholder-count="5">
+            <div style="display:flex;gap:14px;align-items:baseline;padding:9px 0;border-bottom:1.5px solid rgba(243,236,224,.18)">
+              <div style="flex:1;font:400 13.5px/1.4 Archivo,sans-serif;color:rgba(243,236,224,.85)">{{ s.k }}</div>
+              <div style="flex:none;font:700 14px 'DM Mono',monospace;color:{{ s.tone }}">{{ s.v }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <sc-for list="{{ reads }}" as="r" hint-placeholder-count="4">
+          <div style="border:2.5px solid #17130F;border-radius:16px;background:{{ r.bg }};padding:20px">
+            <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">{{ r.k }}</div>
+            <div style="font:700 16px/1.35 Archivo,sans-serif;margin-top:8px;text-wrap:pretty">{{ r.t }}</div>
+            <div style="font:400 13.5px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">{{ r.b }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </sc-if>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">07 · THE COST FLOOR — THE PART THAT ACTUALLY DECIDES IT</div>
+  <div style="font:400 16px/1.7 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:20px;text-wrap:pretty">At roughly <strong>€0.10 of annual revenue per install</strong>, any per-user recurring cost is fatal. A service costing €0.02 per user per month is €0.24 a year — more than twice what the average user brings in. This is why the market-B build has to be more disciplined than the market-A one, not less.</div>
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px">
+    <sc-for list="{{ costs }}" as="c" hint-placeholder-count="6">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;padding:18px;display:flex;gap:14px;align-items:flex-start">
+        <div style="flex:none;width:34px;height:34px;border:2.5px solid #17130F;border-radius:999px;display:flex;align-items:center;justify-content:center;font:700 14px Archivo,sans-serif;background:{{ c.tone }}">{{ c.mark }}</div>
+        <div>
+          <div style="font:700 15px/1.35 Archivo,sans-serif;text-wrap:pretty">{{ c.t }}</div>
+          <div style="font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:7px;text-wrap:pretty">{{ c.b }}</div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">08 · HOW ANYONE FINDS IT</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:20px;text-wrap:pretty">Paid acquisition is arithmetically impossible — you cannot pay €0.30 for an install worth €0.10. Every channel here has to be free, and all of them are the same channel wearing different clothes: <strong>an existing community, reached through one person in it.</strong></div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+    <sc-for list="{{ channels }}" as="c" hint-placeholder-count="4">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:{{ c.bg }};padding:18px">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">{{ c.k }}</div>
+        <div style="font:700 16px/1.3 Archivo,sans-serif;margin-top:8px;text-wrap:pretty">{{ c.t }}</div>
+        <div style="font:400 12.5px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">{{ c.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">09 · THE TRAPS, SPECIFIC TO THIS MARKET</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+    <sc-for list="{{ traps }}" as="t" hint-placeholder-count="6">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:{{ t.bg }};color:{{ t.fg }};padding:18px;box-shadow:4px 4px 0 {{ t.shadow }}">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:{{ t.kc }}">{{ t.k }}</div>
+        <div style="font:700 16px/1.3 Archivo,sans-serif;margin-top:8px;text-wrap:pretty">{{ t.t }}</div>
+        <div style="font:400 13px/1.6 Archivo,sans-serif;margin-top:8px;opacity:.88;text-wrap:pretty">{{ t.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">10 · WHAT I'D ACTUALLY DO</div>
+  <div style="display:flex;flex-direction:column;max-width:940px">
+    <sc-for list="{{ steps }}" as="s" hint-placeholder-count="6">
+      <div style="display:flex;gap:16px;align-items:flex-start">
+        <div style="flex:none;display:flex;flex-direction:column;align-items:center;width:32px">
+          <div style="width:32px;height:32px;border:2.5px solid #17130F;border-radius:999px;display:flex;align-items:center;justify-content:center;font:700 13px Archivo,sans-serif;background:{{ s.tone }}">{{ s.n }}</div>
+          <div style="width:2.5px;flex:1;min-height:24px;background:#17130F"></div>
+        </div>
+        <div style="flex:1;padding-bottom:22px">
+          <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+            <div style="font:700 16px Archivo,sans-serif;text-wrap:pretty">{{ s.t }}</div>
+            <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:3px 9px">{{ s.when }}</div>
+          </div>
+          <div style="font:400 13.5px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:7px;max-width:760px;text-wrap:pretty">{{ s.b }}</div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#FFD24A;padding:22px 24px;box-shadow:5px 5px 0 #17130F;max-width:940px;margin-top:6px">
+    <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:25px;line-height:1.14;letter-spacing:-.02em;text-wrap:pretty">The whole plan is one experiment: can a market-B seller be given a reason to send a price list from your app once a week. If yes, everything on this page follows. If no, no pricing decision rescues it — and you'll know for the price of one country and one language.</div>
+  </div>
+
+  <div style="font:400 12.5px/1.7 Archivo,sans-serif;color:#8A7F70;margin-top:44px;max-width:900px;text-wrap:pretty">Companion pages: <a href="02_Business Plan.dc.html">Business Plan</a> · <a href="24_Business Plan - Android.dc.html">Business Plan · Android</a> · <a href="14_Pricing by Market.dc.html">Pricing by Market</a> · <a href="23_Android via Swift.dc.html">Android via Swift</a>. Local price points, payment-rail availability inside Play billing, and affiliate programme terms all move — confirm each before committing a tier.</div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1416,&quot;height&quot;:900},&quot;beachhead&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Brazil&quot;,&quot;Indonesia&quot;,&quot;India&quot;,&quot;Mexico&quot;],&quot;default&quot;:&quot;Brazil&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Strategy&quot;},&quot;showScenario&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Content&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const bh = this.props.beachhead ?? "Brazil";
+    const lines = {
+      "Brazil": "Brazil first. One language, one payment rail that everybody already uses, a genuine collector culture across sneakers, vinyl, figures and cards, and a resale habit that predates any app. It is the only market-B country where you can run the whole playbook without a partner on the ground — and if the price-list loop doesn't work there, it won't work anywhere.",
+      "Indonesia": "Indonesia first. One language, extremely high social-commerce fluency, and a population that already buys and sells through chat as a default rather than a workaround. Harder to read from Europe than Brazil, and the payment landscape has more moving parts — take this route only if you have someone local to check your assumptions.",
+      "India": "India first — the volume case, and the hardest one. The biggest audience by a distance and the lowest revenue per user by a distance, with a language surface no solo developer can staff. Justifiable only if you deliberately treat year one as unpaid audience-building and monetise nothing but rewarded video.",
+      "Mexico": "Mexico first. Smaller than Brazil but the easiest to reason about from Europe, with strong Mercado Libre affiliate infrastructure and a collector scene concentrated enough to reach through a handful of groups. A reasonable low-risk rehearsal for the Brazil playbook."
+    };
+    return {
+      showScenario: this.props.showScenario ?? true,
+      beachheadLine: lines[bh] ?? lines["Brazil"],
+      people: [
+        { share: "≈ 60% OF INSTALLS", tone: "#EAE3D6", name: "The chat-group trader", who: "Buys and sells constantly inside two or three WhatsApp or Facebook groups. Twenty to eighty objects moving at any time, tracked in photos, notes and memory. Not a business — a habit that produces income.", pay: "Anything that makes a price list look professional and saves a Sunday of typing. Tiny amounts, frequently, and only while actively trading.", never: "A yearly plan, a €25 unlock, or anything that requires a card at signup." },
+        { share: "≈ 30% OF INSTALLS", tone: "#B9F0C9", name: "The micro-merchant", who: "A market stall, a back room, a resale Instagram with 4,000 followers. Sneakers, phones, figures, comics, secondhand games. Real stock, real margins, real anxiety about what is in the box under the bed.", pay: "Stock control they'd otherwise do in a paper ledger: what's in, what's out, what's owed. This is a business cost and it is treated as one — which is why it's the only reliably paying segment.", never: "Anything that threatens to expose their supplier prices or move their customers onto someone else's platform." },
+        { share: "≈ 10% OF INSTALLS", tone: "#A8E0F0", name: "The pure collector", who: "The market-A person, living in a market-B country — usually higher income, often already owns an iPhone. Real, valuable, and far too small a group to build a business on here.", pay: "The same things market A pays for, at a locally adjusted price. Worth serving with the existing tier rather than a separate build.", never: "Ads in a paid app. Keep the paid tier genuinely ad-free or this segment writes the one-star reviews." }
+      ],
+      productShifts: [
+        { t: "Price-list share as a first-class screen", tone: "#FF9B8A", cost: "REAL WORK", b: "Multi-select objects, generate one image plus a link, open the chat share sheet. This is the market-B equivalent of the beautiful shelf render — the thing people open the app to do." },
+        { t: "Aggressive offline-first", tone: "#FFD24A", cost: "MODERATE", b: "Prepaid data, patchy coverage, and a habit of turning data off. Everything must work fully offline and sync opportunistically. Never block an action on a network call." },
+        { t: "Install size and low-end devices", tone: "#FFD24A", cost: "MODERATE", b: "Target a small download and 2–3 GB RAM devices. A 120 MB app with heavy on-device models is a dead app here — which constrains the ML backlog directly." },
+        { t: "No account, no signup, ever", tone: "#B9F0C9", cost: "FREE", b: "Already your design. Here it is not a principle but a conversion mechanic: every signup screen loses a large share of this audience outright." }
+      ],
+      revenue: [
+        { n: "1", tone: "#FFD24A", name: "Seller sachet subscription", price: "≈ €1.20–1.80 / MONTH, LOCAL TIER", how: "Free app, unlimited objects, no cap. Paid: the price-list generator beyond three sends a week, bulk edit, stock in/out ledger, sold history and margin. Monthly, and weekly where Play allows it.", why: "It is a business expense for the traders and merchants who make up 90% of installs, and it renews only while they are actively trading. Small enough to buy without a decision.", cost: "The features have to be genuinely worth it every month — this is the one line with a real obligation attached.", foot: "The spine of the market-B model, replacing the €24.99 unlock. Expect low single-digit conversion of monthly actives and short, repeating subscription lives.", footBg: "#0E6E5E", footFg: "#F3ECE0" },
+        { n: "2", tone: "#B9F0C9", name: "Local marketplace affiliate", price: "3–8% OF SALE", how: "Wishlist and identification link out to the dominant local marketplace. The user already wants the object; you provide the shortest path to it and take the standard affiliate cut.", why: "It costs the user nothing, which matters more here than anywhere. And in these markets one or two marketplaces hold nearly all the volume, so a single integration covers the country.", cost: "One integration per country, and total dependence on a programme that can change its rates without notice.", foot: "Deferred to v2 in market A on principle. Here it is defensible from day one, because linking out to where people already shop is a service, not a shop.", footBg: "#FFD24A", footFg: "#17130F" },
+        { n: "3", tone: "#FF5B2E", name: "Rewarded video for lookups", price: "≈ €0.002–0.006 / VIEW", how: "Barcode and photo lookups are metered. Fifty free a month, then watch a video for twenty-five more, or they come with the subscription. Never a banner, never an ad rendered against someone's inventory.", why: "A fair trade the user chooses, and the single most accepted monetisation in this market. It also caps your variable cost exactly where it occurs.", cost: "An ad SDK in the app, a privacy disclosure, and the discipline to keep it to one placement.", foot: "Tiny per view and only meaningful at scale — but it is the mechanism that lets you serve non-payers without losing money, which is what makes the free tier survivable.", footBg: "#fff", footFg: "#17130F" },
+        { n: "4", tone: "#E5457B", name: "Boosts on the shared list", price: "≈ €0.30–0.80", how: "A consumable that pushes one object to the top of a local search or notifies matching wishlists. Bought with the same wallet balance, no subscription, no cut of the sale.", why: "Sellers here already pay for visibility on other platforms and understand exactly what they're buying. Works whether or not the deal ever closes in your app.", cost: "Search integrity, and it only exists once there is an index worth appearing in — so it is a v2 line, not a launch line.", foot: "Small but high-margin, and it scales with activity rather than headcount. Mark promoted results unmistakably or it poisons the one screen people trust.", footBg: "#fff", footFg: "#17130F" },
+        { n: "5", tone: "#12A594", name: "Micro-merchant tier", price: "≈ €3–6 / MONTH", how: "The same app with two or three staff logins, a shared stock, and a public list page for the shop. Sold to the stall, the back-room reseller, the games café.", why: "Digital ledger apps proved at enormous scale that micro-merchants in these markets will adopt a free tool eagerly. The ones who run real stock will pay a small monthly for multi-user access.", cost: "Roles, permissions and support expectations — the same second-product risk the market-A plan flagged for shops.", foot: "Highest revenue per user on this page and the most defensible. Also the one those ledger apps struggled to convert — treat adoption as likely and payment as unproven.", footBg: "#fff", footFg: "#17130F" }
+      ],
+      sachet: [
+        { k: "INTERVAL", v: "Weekly if possible", b: "The smallest interval the store supports. A weekly plan at a higher effective annual rate outsells a monthly one at a lower rate, consistently, in these markets." },
+        { k: "ANCHOR", v: "Under a snack", b: "The reference price is not other apps — it is a cold drink or a bus fare. If the tier costs more than that, it becomes a decision, and decisions don't convert." },
+        { k: "CHURN", v: "Expected, not fought", b: "People subscribe while they have stock moving and lapse when they don't. Make resubscribing one tap and never punish a lapse with data loss." },
+        { k: "RAILS", v: "Wallet and carrier", b: "Card penetration is low. Play billing reaches local wallets and carrier billing in most of these countries — a genuine reason to stay inside Play rather than bill yourself." }
+      ],
+      countries: [
+        { name: "Brazil", lang: "PT-BR · 1 LANGUAGE", bg: "#F5FBF6", tone: "#B9F0C9", verdict: "START HERE", pro: "Deep collector culture in sneakers, vinyl, figures and trading cards, plus a national habit of resale through social channels. Large enough to matter, singular enough to learn from.", pay: "Instant bank transfer is universal and free at the point of use; card ownership is far higher than the market-B average.", con: "Ad rates are low, and the market has sophisticated local incumbents in classifieds and resale." },
+        { name: "Indonesia", lang: "ID · 1 LANGUAGE", bg: "#fff", tone: "#FFD24A", verdict: "STRONG SECOND", pro: "Among the most chat-commerce-native populations anywhere — selling through messaging is the default, not a workaround. Very large and very young.", pay: "E-wallets and carrier billing dominate; both are reachable through Play billing, cards largely are not.", con: "Hard to read from Europe, lower device specs on average, and affiliate terms that differ by platform." },
+        { name: "India", lang: "HI/EN + 10 MORE", bg: "#fff", tone: "#FFD24A", verdict: "VOLUME, LATER", pro: "The largest Android audience on earth and a proven appetite for sachet-priced digital subscriptions. If any market-B model reaches real scale, it is here.", pay: "Instant payments are ubiquitous and cost nothing to use; Play billing covers them well.", con: "Lowest revenue per user, and a language surface that a solo developer cannot honestly support." },
+        { name: "Mexico", lang: "ES · 1 LANGUAGE", bg: "#fff", tone: "#EAE3D6", verdict: "REHEARSAL", pro: "A concentrated collector scene, strong regional marketplace affiliate infrastructure, and Spanish opens several neighbours at once.", pay: "Card penetration is moderate and cash remains common; wallet adoption is growing but uneven.", con: "Smaller than the others and more exposed to US-based competition." },
+        { name: "Türkiye · Vietnam · Philippines · Nigeria", lang: "VARIOUS", bg: "#fff", tone: "#EAE3D6", verdict: "NOT YET", pro: "Each has an active collector or resale culture and meaningful Android volume.", pay: "Varies sharply; several require rails that Play billing covers only partially.", con: "None offers a reason to go first, and each adds a language and a payment rail. Copy the playbook here, don't invent it here." }
+      ],
+      y1: [
+        { k: "Installs, one country, organic only", v: "45,000", tone: "#F3ECE0" },
+        { k: "Monthly actives by month 12", v: "12,000", tone: "#F3ECE0" },
+        { k: "Sachet subscribers (3% of actives, avg 4 months)", v: "360", tone: "#F3ECE0" },
+        { k: "Subscription revenue, net of 15%", v: "€1,900", tone: "#F3ECE0" },
+        { k: "Affiliate (900 conversions × €1.60)", v: "€1,440", tone: "#F3ECE0" },
+        { k: "Rewarded video", v: "€1,100", tone: "#F3ECE0" },
+        { k: "Micro-merchant tier (30 shops, avg 6 months)", v: "€760", tone: "#F3ECE0" },
+        { k: "Lookups, ad SDK, localisation, Play operations", v: "−€2,400", tone: "#F3ECE0" },
+        { k: "Year one, net", v: "≈ €2,800", tone: "#FFD24A" }
+      ],
+      y3: [
+        { k: "Countries running the same playbook", v: "5", tone: "#F3ECE0" },
+        { k: "Cumulative installs", v: "900,000", tone: "#F3ECE0" },
+        { k: "Monthly actives", v: "190,000", tone: "#F3ECE0" },
+        { k: "Blended revenue per install per year", v: "≈ €0.11", tone: "#F3ECE0" },
+        { k: "Year three, net", v: "≈ €62,000", tone: "#FFD24A" }
+      ],
+      reads: [
+        { k: "HOW TO READ YEAR ONE", bg: "#fff", t: "It does not pay for itself", b: "€2,800 against several months of work. Nobody should build this for the year-one number — it is a market-entry cost, and the page is honest that the return arrives in year three or not at all." },
+        { k: "WHAT THE SHAPE TELLS YOU", bg: "#FFD24A", t: "Replication, not growth", b: "The business does not compound inside one country — it compounds by copying a working playbook into the next one at near-zero incremental design cost. That only works if country one is genuinely solved first." },
+        { k: "THE REAL RETURN", bg: "#B9F0C9", t: "Supply for the v2 index", b: "190,000 actives listing objects across five countries is a marketplace with real density — the single hardest thing to buy and the reason market A's v2 might work at all." },
+        { k: "THE KILL CRITERION", bg: "#fff", t: "Sub-2% subscriber conversion", b: "If actives who send price lists weekly still won't pay a snack's worth a month, the segment doesn't monetise. Stop at one country, keep the app free there for the index supply, and put the effort back into market A." }
+      ],
+      costs: [
+        { mark: "✓", tone: "#B9F0C9", t: "Sync via the user's own Drive folder", b: "Free to you, inside their storage quota, no account. The same rule as iCloud on iOS: never host someone's catalogue yourself." },
+        { mark: "✓", tone: "#B9F0C9", t: "On-device identification wherever possible", b: "Every server lookup is a bill attached to a user who likely pays nothing. Local matching is not an optimisation here — it is the difference between viable and not." },
+        { mark: "✓", tone: "#B9F0C9", t: "Images stay on the device", b: "No thumbnail CDN, no cloud processing. Compress hard on capture; these photos are being taken on modest cameras for chat anyway." },
+        { mark: "✗", tone: "#FF9B8A", t: "No support inbox you promise to answer", b: "A free user in a country whose language you don't speak cannot cost you thirty minutes. In-app FAQ, a community group, and a slow queue for paying users only." },
+        { mark: "✗", tone: "#FF9B8A", t: "No per-user third-party services", b: "Analytics, crash reporting, push, ad mediation — each one has a per-user tier that looks trivial and isn't at €0.10 per install. Free tiers or nothing." },
+        { mark: "✗", tone: "#FF9B8A", t: "No paid acquisition, at any price", b: "The arithmetic never closes. If a channel needs money to work, it is not a channel for this market." }
+      ],
+      channels: [
+        { k: "CHANNEL 01", bg: "#B9F0C9", t: "The price list itself", b: "Every shared list lands in a group of people who collect the same thing, carrying a link. This is the only channel that scales, and it is a product feature rather than a marketing spend." },
+        { k: "CHANNEL 02", bg: "#fff", t: "Ten seller partnerships", b: "Find the ten people whose lists everyone in a category already reads. Give them the paid tier free, permanently. Their lists become your advertising, sent by someone the group trusts." },
+        { k: "CHANNEL 03", bg: "#fff", t: "Store listing in the local language", b: "Properly localised, screenshots showing a price list in a chat rather than a shelf, and the promise written as stock control. Free, and most foreign apps get it wrong." },
+        { k: "CHANNEL 04", bg: "#fff", t: "Short video, made by sellers", b: "\"How I list 40 pairs in ten minutes.\" You don't produce it — the partner sellers do, because it makes them look organised. Ask for it as part of the free tier deal." }
+      ],
+      traps: [
+        { k: "TRAP 1", bg: "#17130F", fg: "#F3ECE0", shadow: "#FF5B2E", kc: "#FFD24A", t: "Porting the market-A pricing page", b: "A localised €24.99 is still a lump sum. The shape of the price is the problem, not the number — and a discounted lump sum converts barely better than the full one." },
+        { k: "TRAP 2", bg: "#fff", fg: "#17130F", shadow: "#17130F", kc: "#8A7F70", t: "Eight countries at once", b: "Eight payment rails, eight affiliate integrations, eight support languages, eight collector cultures. It is the most common way this exact plan dies, and it dies quietly over about a year." },
+        { k: "TRAP 3", bg: "#fff", fg: "#17130F", shadow: "#17130F", kc: "#8A7F70", t: "Building a marketplace to capture the trade", b: "The trade lives in chat groups and will not move. Every hour spent trying to pull it into your app is an hour not spent making the chat message better." },
+        { k: "TRAP 4", bg: "#fff", fg: "#17130F", shadow: "#17130F", kc: "#8A7F70", t: "Banner ads anywhere", b: "Rewarded video is a trade the user chooses. A banner over someone's stock list is the same privacy betrayal trap 5 named in the original plan, just cheaper-looking." },
+        { k: "TRAP 5", bg: "#fff", fg: "#17130F", shadow: "#17130F", kc: "#8A7F70", t: "Letting market B set the product direction", b: "This audience will ask for invoicing, delivery tracking and customer lists. Follow that and you are building small-business software, and the collector app quietly stops being good." },
+        { k: "TRAP 6", bg: "#FFD24A", fg: "#17130F", shadow: "#17130F", kc: "#8A7F70", t: "Counting on year three", b: "The replication case assumes country one produces a playbook that copies. It very often doesn't — collector cultures are local. Treat year three as an option you've bought, not a forecast." }
+      ],
+      steps: [
+        { n: "1", tone: "#FFD24A", when: "BEFORE ANY CODE", t: "Join four chat groups in the target country and read for a month", b: "Not research in the formal sense — just read. What gets sold, how prices are quoted, what a good listing message looks like, where the arguments happen. The price-list feature has to look native to those groups or it is worthless, and you cannot guess that from here." },
+        { n: "2", tone: "#FFD24A", when: "WITH iOS v1", t: "Meter lookups and build the share-list screen anyway", b: "Both are needed in market A too — lookup metering for packs, sharing for the wishlist. Building them with market B in mind costs almost nothing extra now and is the whole foundation later." },
+        { n: "3", tone: "#FFD24A", when: "AFTER iOS v1 SHIPS", t: "Android build, one country, one language, free", b: "No subscription at launch. Get the price-list loop working and watch one number: what share of monthly actives send a list at least once a week. That is the entire hypothesis of this page." },
+        { n: "4", tone: "#FFD24A", when: "MONTH 3–4", t: "Ten seller partnerships, free tier forever", b: "Hand-picked, personally contacted, no contract. If you cannot find ten sellers who want this, the plan has already answered itself — and that is a cheap answer to get." },
+        { n: "5", tone: "#FFD24A", when: "ONCE THE LOOP HOLDS", t: "Turn on the sachet tier and affiliate", b: "Only after weekly senders exist in volume. Price it under a snack, make it monthly or weekly, and expect short repeating lives. Affiliate goes in at the same time because it costs the user nothing." },
+        { n: "6", tone: "#FF5B2E", when: "MONTH 12", t: "Copy it, or stop", b: "Sub-2% conversion among weekly senders means the segment doesn't pay — keep the app free there for index supply and go back to market A. Above it, take the exact same playbook to country two and change nothing but the language and the marketplace." }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

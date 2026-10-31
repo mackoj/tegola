@@ -1,0 +1,141 @@
+id: wine
+name:
+  singular: Bottle
+  plural: Bottles
+  collection: My Cellar
+mark: "75cl"
+icon: wineglass
+gradient: [plum, rust]
+
+# Six bottles of the same wine and vintage are one object with a count.
+# Unlike every other quantity type, that count goes DOWN — see `consumable`.
+duplicates: quantity
+consumable: true
+
+spine:
+  title: Wine
+  subtitle: Appellation
+  year: Vintage
+  acquired: Acquired on
+  paid: Paid
+  value: Value
+
+# Auction-house fill levels, best first. You cannot grade a sealed bottle by
+# looking at the wine, so the trade grades the ullage instead. Label condition
+# is separate, below — the same split as vinyl's media and sleeve.
+conditions:
+  - Into neck
+  - Base of neck
+  - Top shoulder
+  - Upper shoulder
+  - Mid shoulder
+  - Low shoulder
+  - Below low shoulder
+
+lookup:
+  identifier: none
+  symbologies: []          # wine barcodes are per-importer and never carry vintage
+  providers: []            # no open corpus exists; see Rule 08
+  localCorpus: none
+  ocrFields: [producer, cuvee, vintage, appellation]
+
+searchable: [title, subtitle, year, producer, appellation, region, grapes, place]
+
+# Places are app-level, shared across every type. The manifest only names it.
+placeLabel: Where it is
+
+# In a shop: "do I already own this producer, or anything from this vintage?"
+related: [producer, appellation]
+
+fields:
+  - key: producer
+    label: Producer
+    type: text
+    sample: Château Léoville-Barton
+    auto: true
+  - key: cuvee
+    label: Cuvée
+    type: text
+    sample: Grand Vin
+    auto: true
+  - key: vintage
+    label: Vintage
+    type: year
+    allowNV: true
+    sample: "2015"
+    auto: true
+  - key: appellation
+    label: Appellation
+    type: text
+    sample: Saint-Julien
+    auto: true
+  - key: region
+    label: Region
+    type: text
+    sample: Bordeaux
+    auto: true
+  - key: country
+    label: Country
+    type: text
+    sample: France
+    auto: true
+  - key: colour
+    label: Colour
+    type: choice
+    options: [Red, White, Rosé, Orange, Sparkling, Fortified, Sweet]
+    sample: Red
+    auto: true
+  - key: grapes
+    label: Grapes
+    type: list
+    entry: [variety, share]
+    sample: 4 entries
+    auto: true
+  - key: format
+    label: Bottle
+    type: choice
+    options:
+      ["Piccolo 20cl", "Half 37.5cl", "Standard 75cl", "Magnum 1.5L",
+       "Double magnum 3L", "Jeroboam 5L", "Imperial 6L", "Salmanazar 9L"]
+    sample: Standard 75cl
+  - key: drinkingWindow
+    label: Drinking window
+    type: yearRange
+    peak: true
+    sample: 2025 – 2050, peak 2030 – 2042
+    auto: true
+  - key: labelCondition
+    label: Label
+    type: choice
+    options: [Pristine, Slightly scuffed, Bin-soiled, Torn, Damp-stained, Missing]
+    sample: Bin-soiled
+  - key: closure
+    label: Closure
+    type: choice
+    options: [Cork, Screwcap, Crown cap, Glass stopper, Synthetic]
+    sample: Cork
+  - key: abv
+    label: Strength
+    type: number
+    unit: "% vol"
+    sample: "13.5"
+    auto: true
+  - key: inBond
+    label: In bond
+    type: yesNo
+    sample: "No"
+  - key: provenance
+    label: Provenance
+    type: text
+    sample: Purchased en primeur, ex-château
+  - key: scores
+    label: Critic scores
+    type: list
+    entry: [critic, score, year]
+    sample: 3 entries
+    auto: true
+  - key: opened
+    label: Bottles opened
+    type: log
+    entry: [date, occasion, note, score]
+    sample: 2 entries

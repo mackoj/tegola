@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#EAE3D6}a{color:#2B44D6}a:hover{color:#FF5B2E}</style>
+</helmet>
+<div style="max-width:1360px;margin:0 auto;padding:60px 28px 100px;font-family:Archivo,system-ui,sans-serif;color:#17130F;box-sizing:border-box">
+  <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+    <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70">CLCTN · TYPE SYSTEM · SUBTYPES · OCTOBER 2026</div>
+    <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#F3ECE0;background:#2B44D6;border-radius:999px;padding:5px 12px">PROPOSAL</div>
+    <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;border:2px solid #C2371F;color:#C2371F;border-radius:999px;padding:4px 11px">ABSORBS MEDIARULES</div>
+  </div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:66px;line-height:.92;letter-spacing:-.045em;margin:16px 0 0;max-width:1060px;text-wrap:balance">A Saturn game is a video game, plus three things.</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-top:20px;text-wrap:pretty">Each platform has details only its collectors care about. A Saturn game has a spine card. A Neo Geo game is either AES or MVS. An N64 game might need the Expansion Pak. Building a type per platform would split one shelf into forty. Leaving it all in one type means fields that are empty for 95% of items. <strong>A subtype inherits the whole type and adds a few fields of its own. That's all a subtype can do.</strong></div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">00 · ONE LEVEL ABOVE · FIELDS EVERY TYPE INHERITS</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:920px;margin-bottom:20px;text-wrap:pretty">Some facts apply to any collectible: who signed it, what's inside it. Type → subtype has a parent too: the <strong>item</strong>. Its fields come for free on wine, vinyl, pins and games. They stay hidden until the item has a value for them, and each one is added with “+ Add” on the item screen. The first case comes from the import (49): a Turtles cart signed by JDG.</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:16px;margin-bottom:8px">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#0C0A08;color:#F3ECE0;padding:20px 22px;box-shadow:5px 5px 0 #6E2440;overflow-x:auto">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;opacity:.55;margin-bottom:12px">ITEM.YML · INHERITED BY EVERY TYPE</div>
+      <pre style="margin:0;font:400 12.5px/1.7 'DM Mono',monospace;white-space:pre">fields:
+  - title | acquired | price | place | story
+
+  - key: signed            | Signed       | object
+    by:          text      # "JDG", "Château Musar"
+    dedication:  text?     # "pour Max"
+    date:        date?
+    proof:       photo?    # photo of the signature,
+                           # certificate, event ticket
+
+  - key: contains          | Bundle of    | list&lt;work&gt;
+    # empty = a single thing
+    # 2+    = a bundle: Doom + Doom 2, a 6-bottle
+    #         case, a vinyl box set, a pin set
+    sealed:      bool      # still in the bundle?</pre>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;padding:20px 22px;display:flex;flex-direction:column;gap:12px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70">WHY AN OBJECT, NOT A BOOL</div>
+      <div style="font:400 13.5px/1.6 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">“Signed” alone doesn't say much. Who signed it is what collectors talk about and what buyers ask. A dedication to a named person lowers resale value, while proof raises it. A plain yes/no would throw both away.</div>
+      <div style="font:400 13.5px/1.6 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty"><strong>What it drives:</strong> a “Signed” badge on the shelf tile, a one-of-a-kind entry in the log, and a filter (“everything signed by JDG”). Signed items are never treated as duplicates.</div>
+      <div style="font:400 13.5px/1.6 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty"><strong>Bundles are also a list, not an is_bundle flag.</strong> “Doom + Doom 2” is one object on the shelf but two works. Series sets and “also exists on” (47) must count both, or the Doom tracker misses one. A flag would say “bundle” without saying of what. The bundle is a derived value: <span style="font-family:'DM Mono',monospace">contains.length &gt; 1</span>. It renders with the existing <span style="font-family:'DM Mono',monospace">case</span> signature, so no new UI is needed.</div>
+      <div style="font:400 13.5px/1.6 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty"><strong>The rule for this level:</strong> a field goes here only if it means the same thing for every type. Signed passes the test. Condition doesn't, because grading a wine and grading a cart are different scales.</div>
+    </div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:20px">01 · THE RULE</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px">
+    <sc-for list="{{ rules }}" as="r" hint-placeholder-count="3">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 {{ r.c }};overflow:hidden">
+        <div style="padding:12px 18px;background:#17130F;color:#F3ECE0;font:700 16px Archivo,sans-serif">{{ r.t }}</div>
+        <div style="padding:14px 18px;display:flex;flex-direction:column;gap:8px">
+          <sc-for list="{{ r.items }}" as="i" hint-placeholder-count="4">
+            <div style="display:flex;gap:10px;font:400 13.5px/1.5 Archivo,sans-serif;color:#3A2F26">
+              <div style="font:500 11px 'DM Mono',monospace;color:{{ r.c }};flex:none;padding-top:2px">{{ r.mark }}</div>
+              <div style="text-wrap:pretty">{{ i }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+  <div style="font:400 13px/1.6 Archivo,sans-serif;color:#6E6458;max-width:920px;margin-top:16px;text-wrap:pretty">The thesis still holds: the app owns the verbs, the type owns the nouns, and a subtype can only add nouns. Item screen, signatures and slots don't change. A subtype is a short list of extra fields and a few presets.</div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">02 · SAME TYPE, DIFFERENT SUBTYPES</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:20px;text-wrap:pretty">Pick a subtype. Grey fields come from the parent type and are identical everywhere. Coloured ones are what the subtype adds. Storage and care are where platforms differ most: a Game Boy cart and a Saturn disc age in completely different ways.</div>
+  <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px">
+    <sc-for list="{{ parentTabs }}" as="p" hint-placeholder-count="2">
+      <div onClick="{{ p.on }}" style="cursor:pointer;border:2.5px solid #17130F;border-radius:12px;padding:8px 14px;font:700 14px Archivo,sans-serif;background:{{ p.bg }};color:{{ p.fg }}">{{ p.t }}</div>
+    </sc-for>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px">
+    <sc-for list="{{ subTabs }}" as="s" hint-placeholder-count="5">
+      <div onClick="{{ s.on }}" style="cursor:pointer;border:2px solid #17130F;border-radius:999px;padding:6px 13px;font:600 13px Archivo,sans-serif;background:{{ s.bg }};color:{{ s.fg }}">{{ s.t }}</div>
+    </sc-for>
+  </div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;padding:14px 22px;background:#17130F;color:#F3ECE0">
+      <div style="font:700 17px Archivo,sans-serif">{{ cur.path }}</div>
+      <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.12em;opacity:.7">{{ cur.count }}</div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr))">
+      <div style="padding:20px 22px;border-right:2px solid #E0D6C4">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:10px">FIELDS</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">
+          <sc-for list="{{ cur.inherited }}" as="f" hint-placeholder-count="10">
+            <div style="border:2px solid #D6CCBA;border-radius:8px;padding:5px 9px;font:500 12px 'DM Mono',monospace;color:#8A7F70;background:#FAF6EF">{{ f }}</div>
+          </sc-for>
+        </div>
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:{{ cur.accent }};margin:18px 0 10px">ADDED BY {{ cur.name }}</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <sc-for list="{{ cur.added }}" as="a" hint-placeholder-count="2">
+            <div style="border:2.5px solid #17130F;border-radius:12px;padding:10px 14px;display:flex;flex-direction:column;gap:3px;box-shadow:3px 3px 0 {{ cur.accent }}">
+              <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap">
+                <div style="font:700 14px Archivo,sans-serif">{{ a.l }}</div>
+                <div style="font:500 11px 'DM Mono',monospace;color:#6E6458">{{ a.k }} · {{ a.kind }}</div>
+              </div>
+              <div style="font:400 12.5px/1.5 Archivo,sans-serif;color:#5A5045;text-wrap:pretty">{{ a.why }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="padding:20px 22px;background:#FAF6EF">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:10px">PRESETS · VALUES THE SUBTYPE FILLS IN OR NARROWS</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <sc-for list="{{ cur.presets }}" as="p" hint-placeholder-count="3">
+            <div style="display:grid;grid-template-columns:120px 1fr;gap:12px;border-bottom:1.5px solid #E0D6C4;padding-bottom:8px">
+              <div style="font:500 12px 'DM Mono',monospace;color:#17130F">{{ p.k }}</div>
+              <div style="font:400 13px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ p.v }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin:22px 0 10px">STORAGE</div>
+        <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ cur.store }}</div>
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:{{ cur.accent }};margin:18px 0 10px">CARE · CLOCKS FROM THE LIBRARY</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <sc-for list="{{ cur.care }}" as="c" hint-placeholder-count="2">
+            <div style="border:2.5px solid #17130F;border-radius:12px;padding:10px 14px;background:#fff;display:flex;flex-direction:column;gap:3px">
+              <div style="font:700 14px Archivo,sans-serif">{{ c.c }}</div>
+              <div style="font:400 12.5px/1.5 Archivo,sans-serif;color:#5A5045;text-wrap:pretty">{{ c.v }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">03 · WHAT IT REPLACES</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:20px;text-wrap:pretty">43 used a <span style="font-family:'DM Mono',monospace">mediaRules</span> table so that one field could change the clock, lookup and parts. That was already a subtype, just keyed on media instead of platform. Platform is the better key, because it implies the media in nearly every case and collectors already shelve by platform.</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:16px">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#0C0A08;color:#F3ECE0;padding:20px 22px;box-shadow:5px 5px 0 #6E2440;overflow-x:auto">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;opacity:.55;margin-bottom:12px">VIDEO-GAME.YML · AFTER</div>
+      <pre style="margin:0;font:400 12.5px/1.7 'DM Mono',monospace;white-space:pre">type: video-game
+fields: [title, platform, region, edition,
+         condition, saveBattery, playStatus, …]
+
+subtypes:
+  - key: saturn
+    label: Sega Saturn
+    presets:
+      media: disc
+      region: [NTSC-J, NTSC-U, PAL]
+      parts: [case, manual, disc, spineCard]
+    adds:
+      - spineCard   | Spine card     | bool
+      - ramCart     | Needs RAM cart | enum [1MB, 4MB]
+      - satakore    | Satakore ID    | text</pre>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;padding:20px 22px;display:flex;flex-direction:column;gap:12px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70">CONSEQUENCES</div>
+      <sc-for list="{{ effects }}" as="e" hint-placeholder-count="4">
+        <div style="display:flex;flex-direction:column;gap:3px;border-bottom:1.5px solid #E0D6C4;padding-bottom:10px">
+          <div style="font:700 14px Archivo,sans-serif">{{ e.t }}</div>
+          <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ e.b }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">04 · WHY IT HELPS THE STAGED LAUNCH</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:20px;text-wrap:pretty">You said you'd rather ship a few types that are well tested. Subtypes let that happen at a finer grain.</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px">
+    <sc-for list="{{ staged }}" as="s" hint-placeholder-count="3">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;box-shadow:4px 4px 0 #0E6E5E;padding:16px 18px">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;margin-bottom:7px">{{ s.k }}</div>
+        <div style="font:700 15px Archivo,sans-serif;margin-bottom:6px">{{ s.t }}</div>
+        <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ s.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:20px">05 · OPEN QUESTIONS</div>
+  <div style="display:flex;flex-direction:column;gap:12px;max-width:1000px">
+    <sc-for list="{{ open }}" as="o" hint-placeholder-count="4">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#17130F;color:#F3ECE0;padding:17px 19px;box-shadow:5px 5px 0 #FF5B2E">
+        <div style="display:flex;gap:12px;align-items:baseline">
+          <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.12em;opacity:.55">{{ o.k }}</div>
+          <div style="font:700 16px Archivo,sans-serif">{{ o.q }}</div>
+        </div>
+        <div style="font:400 13.5px/1.6 Archivo,sans-serif;opacity:.82;margin-top:8px;text-wrap:pretty">{{ o.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { parent: "game", sub: 0 };
+  renderVals() {
+    const P = {
+      game: { label: "Video Game", inherited: ["title", "platform", "region", "edition", "year", "publisher", "condition", "media", "saveBattery", "playStatus", "playLog", "grade", "place"], subs: [
+        { name: "SATURN", label: "Sega Saturn", accent: "#2B44D6", store: "Upright, out of light. Jewel case hinges crack, so keep spares.", care: [{ c: "Disc rot", v: "Rare on Saturn. Check every 5 years." }, { c: "Spine card fade", v: "UV-sensitive. Keep it away from windows." }],
+          added: [
+            { l: "Spine card", k: "spineCard", kind: "bool", why: "Japanese releases ship with a paper spine card. Without it, a CIB game counts as incomplete." },
+            { l: "Needs RAM cart", k: "ramCart", kind: "enum", why: "Some games won't boot without the 1MB or 4MB expansion. It links to the console's accessories." }],
+          presets: [{ k: "media", v: "disc. Media picker is hidden." }, { k: "parts", v: "case · manual · disc · spine card" }, { k: "lookup", v: "Product code on the spine (T-xxxxG)" }] },
+        { name: "N64", label: "Nintendo 64", accent: "#0E6E5E", store: "Cart in dust cover, upright in its box. Don't crush cardboard boxes; use protectors.", care: [{ c: "Save battery", v: "CR2032, about 15–25 years. Back up the save, then replace." }, { c: "Contacts", v: "Isopropyl clean when it won't boot." }],
+          added: [
+            { l: "Expansion Pak", k: "expansionPak", kind: "enum [no, enhanced, required]", why: "Majora's Mask won't run without it. Collectors want to know before they buy." },
+            { l: "Rumble / Controller Pak", k: "pakSupport", kind: "set", why: "Shows what the game supports. Useful for sorting, not for its value." }],
+          presets: [{ k: "media", v: "cart" }, { k: "parts", v: "box · manual · cart · dust cover · insert" }, { k: "clock", v: "Save battery, enabled by default for carts that have one" }] },
+        { name: "NEO GEO", label: "Neo Geo", accent: "#C2371F", store: "AES carts are heavy, so store them flat in their box. MVS boards go in anti-static bags.", care: [{ c: "Save battery", v: "Only on MVS motherboards, not on carts." }, { c: "Capacitors", v: "Check boards over 30 years old for leaks." }],
+          added: [
+            { l: "Board", k: "board", kind: "enum [AES, MVS]", why: "Home cart or arcade cart. Same game, worth 10× more or less. It's the first thing anyone asks." },
+            { l: "Conversion", k: "conversion", kind: "bool", why: "An MVS board rehoused as AES. It must never pass for an original." }],
+          presets: [{ k: "media", v: "cart" }, { k: "parts", v: "box · manual · cart · (MVS) marquee" }] },
+        { name: "GAME BOY", label: "Game Boy", accent: "#6E2440", store: "Cart in a sleeve or a hard case. Boxes are fragile; the inner tray matters.", care: [{ c: "Save battery", v: "Pokémon-era carts are dying now. This is the highest-priority clock." }, { c: "Label wear", v: "Sun bleaches labels fast." }],
+          added: [
+            { l: "Super Game Boy", k: "sgb", kind: "bool", why: "Enhanced border and palette on SNES. Matters to people who collect for completeness." }],
+          presets: [{ k: "media", v: "cart" }, { k: "parts", v: "box · manual · cart · inner tray" }, { k: "clock", v: "Save battery" }] },
+        { name: "PS1", label: "PlayStation", accent: "#8A7F70", store: "Upright, with the disc in the case. Replace cracked jewel cases; long boxes need protectors.", care: [{ c: "Disc rot", v: "Uncommon. Check every 5 years." }, { c: "Scratches", v: "Resurfacing is possible, but log it." }],
+          added: [
+            { l: "Label", k: "label", kind: "enum [black, Platinum, Greatest Hits, Best]", why: "Price and desirability depend on the reprint label." }],
+          presets: [{ k: "media", v: "disc" }, { k: "parts", v: "case · manual · disc · (JP) spine card" }, { k: "lookup", v: "SCES / SLUS / SLPS serial" }] }
+      ] },
+      music: { label: "Music", inherited: ["title", "artist", "year", "label", "catalogue", "country", "format", "condition", "tracklist", "grade", "place", "playLog"], subs: [
+        { name: "VINYL", label: "Vinyl", accent: "#2B44D6", store: "Always upright, never stacked. Anti-static inner sleeves, away from heat.", care: [{ c: "Cleaning", v: "Clean after N plays, or before the first play." }, { c: "Warping", v: "Check after summer if stored in a hot room." }],
+          added: [
+            { l: "Speed and size", k: "rpm / size", kind: "enum", why: "33, 45 or 78 rpm. 7, 10 or 12 inch. Different pressings of the same release can differ here." },
+            { l: "Matrix / runout", k: "matrix", kind: "text", why: "The only reliable way to tell a first pressing from a repress." }],
+          presets: [{ k: "parts", v: "sleeve · inner · record · insert" }, { k: "condition", v: "Goldmine scale (M → P), media and sleeve graded separately" }] },
+        { name: "CD", label: "Compact Disc", accent: "#0E6E5E", store: "Upright, out of light. Japanese obi go in their own sleeve.", care: [{ c: "Disc rot", v: "Known bad plants from the 80s and 90s. Check every 5 years." }],
+          added: [
+            { l: "Obi", k: "obi", kind: "bool", why: "On Japanese pressings, a missing obi halves the price." },
+            { l: "Disc rot", k: "rot", kind: "enum", why: "Bronzing on some 80s/90s pressings. Uses the same evidence pattern as the clocks." }],
+          presets: [{ k: "parts", v: "case · booklet · disc · tray card · (JP) obi" }] },
+        { name: "CASSETTE", label: "Cassette", accent: "#C2371F", store: "Upright, away from speakers and magnets. Cool and dry.", care: [{ c: "Tape degradation", v: "Play every couple of years to avoid sticky-shed." }, { c: "Pressure pad", v: "Check it before playing." }],
+          added: [
+            { l: "Tape type", k: "tapeType", kind: "enum [I, II, IV]", why: "Ferric, chrome or metal. Collectors sort by it." }],
+          presets: [{ k: "parts", v: "case · J-card · shell" }, { k: "clock", v: "Tape degrades, so it's a candidate for a clock" }] }
+      ] }
+    };
+    const par = P[this.state.parent];
+    const s = par.subs[Math.min(this.state.sub, par.subs.length - 1)];
+    const ink = (on) => on ? { bg: "#17130F", fg: "#F3ECE0" } : { bg: "#fff", fg: "#17130F" };
+    return {
+      parentTabs: Object.keys(P).map(k => ({ t: P[k].label, ...ink(k === this.state.parent), on: () => this.setState({ parent: k, sub: 0 }) })),
+      subTabs: par.subs.map((x, i) => ({ t: x.label, ...ink(x === s), on: () => this.setState({ sub: i }) })),
+      cur: { ...s, path: par.label + "  →  " + s.label, count: par.inherited.length + " INHERITED · " + s.added.length + " ADDED", inherited: par.inherited },
+      rules: [
+        { t: "A subtype inherits", c: "#8A7F70", mark: "=", items: ["Every field of the parent", "The item screen and its seven slots", "The signatures and the fields that feed them", "Search, sets, sharing and export"] },
+        { t: "A subtype can", c: "#0E6E5E", mark: "+", items: ["Add fields that only make sense on this platform. Past ~5, it gets reviewed as a possible type", "Preset a field's value and hide it (Saturn → media: disc)", "Narrow an enum (regions, editions)", "Add parts to the condition ladder", "Declare how it's stored and how it's cared for, using clocks from the app's library"] },
+        { t: "A subtype can't", c: "#C2371F", mark: "×", items: ["Remove or rename a parent field", "Invent a new signature or a new kind of clock", "Have its own subtypes (one level only)", "Change the item screen"] }
+      ],
+      effects: [
+        { t: "mediaRules goes away", b: "Each subtype presets its media. The five media rows in 43 become defaults on about 40 platforms." },
+        { t: "The platform field is the subtype", b: "Migration is free: every existing item already has a platform value." },
+        { t: "Sets still cross subtypes", b: "Doom on six platforms is one work in six subtypes. Subtypes split fields, never the shelf." },
+        { t: "Filters get sharper", b: "\"Saturn games missing a spine card\" is a query, not a note in a free-text field." }
+      ],
+      staged: [
+        { k: "SHIP", t: "The parent type is enough on day one", b: "Every platform works without a subtype, with the 13 parent fields. A subtype only adds detail." },
+        { k: "TEST", t: "A subtype is small enough to test", b: "A few fields and some presets. Five collectors of that platform can validate one in a week." },
+        { k: "GROW", t: "The community proposes subtypes", b: "They're bounded and moderation is cheap, so it's a good first contribution before anyone proposes a whole type." }
+      ],
+      open: [
+        { k: "Q1", q: "Platform or format as the key for music?", b: "Games use platform, so music would use format (vinyl, CD, cassette). Some collectors shelve by genre or label, but those are filters, not shapes. Leaning: format." },
+        { k: "Q2", q: "Does vinyl stop being a type of its own?", b: "If Music is the parent, vinyl.yml becomes a subtype. That's a migration for the reference type the rest was written against, so decide early." },
+        { k: "Q3 · DECIDED", q: "No fixed limit on fields. Each field is tested instead.", b: "1. Only meaningful on this platform? It goes in the subtype. 2. Needed by two or more subtypes? It moves up to the parent. 3. Feeds a signature or a clock? It belongs to the type. Past ~5 added fields, the subtype is reviewed as a possible type of its own. That flags it for review; it doesn't block it." },
+        { k: "Q4", q: "Do consoles become a subtype too?", b: "No. Hardware has different verbs (repair, mod). It stays its own type, and a Saturn console links to Saturn games." }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

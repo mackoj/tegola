@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#EAE3D6}a{color:#2B44D6}a:hover{color:#FF5B2E}</style>
+</helmet>
+<div style="max-width:1360px;margin:0 auto;padding:60px 28px 100px;font-family:Archivo,system-ui,sans-serif;color:#17130F;box-sizing:border-box">
+  <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+    <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70">CLCTN · BUILD · IMPLEMENTATION PLAN · OCTOBER 2026</div>
+    <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#F3ECE0;background:#2B44D6;border-radius:999px;padding:5px 12px">PROPOSAL</div>
+    <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;border:2px solid #0E6E5E;color:#0E6E5E;border-radius:999px;padding:4px 11px">{{ teamLabel }}</div>
+  </div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:66px;line-height:.92;letter-spacing:-.045em;margin:16px 0 0;max-width:1060px;text-wrap:balance">Build the verbs once. Ship the nouns as data.</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-top:20px;text-wrap:pretty">The core feature is the type engine: one item, described by a type file, shown on a shelf, with a signal that says when to act. Everything else (onboarding, import, pricing, 3D boxes, selling) sits on top of it. <strong>So the engine ships first, the five launch types are written as YAML against it, and nothing in the app code ever names “wine” or “vinyl”.</strong></div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">00 · THE CORE, IN ONE SENTENCE PER LAYER</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px">
+    <sc-for list="{{ layers }}" as="l" hint-placeholder-count="5">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:{{ l.bg }};color:{{ l.fg }};box-shadow:4px 4px 0 #17130F;padding:16px 18px;display:flex;flex-direction:column;gap:6px">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;opacity:.6">{{ l.k }}</div>
+        <div style="font:700 16px Archivo,sans-serif">{{ l.t }}</div>
+        <div style="font:400 13px/1.55 Archivo,sans-serif;opacity:.85;text-wrap:pretty">{{ l.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:8px">
+    <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70">01 · PHASES TO V1</div>
+    <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.12em;color:#17130F">{{ totalLabel }}</div>
+  </div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:20px;text-wrap:pretty">Each phase ends with something a person can use, and each has an exit test. Don't start the next phase until the test passes.</div>
+  <div style="display:flex;height:34px;border:2.5px solid #17130F;border-radius:10px;overflow:hidden;margin-bottom:18px">
+    <sc-for list="{{ phases }}" as="p" hint-placeholder-count="6">
+      <div onClick="{{ p.on }}" style="cursor:pointer;flex:{{ p.w }};background:{{ p.barBg }};color:{{ p.barFg }};border-right:2px solid #17130F;display:flex;align-items:center;justify-content:center;font:500 10px 'DM Mono',monospace;letter-spacing:.08em;min-width:0;overflow:hidden">{{ p.k }}</div>
+    </sc-for>
+  </div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;padding:14px 22px;background:#17130F;color:#F3ECE0">
+      <div style="font:700 17px Archivo,sans-serif">{{ cur.k }} · {{ cur.t }}</div>
+      <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.12em;opacity:.7">{{ cur.span }}</div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr))">
+      <div style="padding:20px 22px;border-right:2px solid #E0D6C4">
+        <div style="font:400 14px/1.6 Archivo,sans-serif;color:#3A2F26;margin-bottom:16px;text-wrap:pretty">{{ cur.goal }}</div>
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:10px">BUILD</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <sc-for list="{{ cur.tasks }}" as="t" hint-placeholder-count="5">
+            <div style="display:grid;grid-template-columns:22px 1fr;gap:10px;border-bottom:1.5px solid #E0D6C4;padding-bottom:8px">
+              <div style="font:500 11px 'DM Mono',monospace;color:#8A7F70">{{ t.n }}</div>
+              <div style="display:flex;flex-direction:column;gap:2px">
+                <div style="font:700 14px Archivo,sans-serif">{{ t.t }}</div>
+                <div style="font:400 12.5px/1.5 Archivo,sans-serif;color:#5A5045;text-wrap:pretty">{{ t.b }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="padding:20px 22px;background:#FAF6EF;display:flex;flex-direction:column;gap:18px">
+        <div>
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#0E6E5E;margin-bottom:10px">EXIT TEST</div>
+          <div style="border:2.5px solid #17130F;border-radius:12px;padding:12px 14px;background:#fff;box-shadow:3px 3px 0 #0E6E5E;font:600 14px/1.5 Archivo,sans-serif;text-wrap:pretty">{{ cur.exit }}</div>
+        </div>
+        <div>
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#2B44D6;margin-bottom:10px">WHAT THIS MAKES EASY LATER</div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <sc-for list="{{ cur.later }}" as="x" hint-placeholder-count="2">
+              <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty;padding-left:12px;border-left:3px solid #2B44D6">{{ x }}</div>
+            </sc-for>
+          </div>
+        </div>
+        <div>
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:10px">REFERENCE PAGES</div>
+          <div style="font:500 12px/1.6 'DM Mono',monospace;color:#17130F">{{ cur.refs }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">02 · DECISIONS THAT ARE CHEAP NOW, EXPENSIVE LATER</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:20px;text-wrap:pretty">Make these in phase 0 even though v1 barely uses some of them. Each one is a migration you won't have to write.</div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow-x:auto">
+    <div style="display:grid;grid-template-columns:minmax(200px,1.2fr) minmax(240px,1.6fr) minmax(200px,1.2fr);min-width:720px">
+      <div style="padding:12px 18px;background:#17130F;color:#F3ECE0;font:500 10px 'DM Mono',monospace;letter-spacing:.12em">DECISION</div>
+      <div style="padding:12px 18px;background:#17130F;color:#F3ECE0;font:500 10px 'DM Mono',monospace;letter-spacing:.12em">WHY NOW</div>
+      <div style="padding:12px 18px;background:#17130F;color:#F3ECE0;font:500 10px 'DM Mono',monospace;letter-spacing:.12em">UNLOCKS</div>
+      <sc-for list="{{ decisions }}" as="d" hint-placeholder-count="7">
+        <div style="padding:12px 18px;border-top:1.5px solid #E0D6C4;font:700 13.5px/1.45 Archivo,sans-serif">{{ d.d }}</div>
+        <div style="padding:12px 18px;border-top:1.5px solid #E0D6C4;font:400 13px/1.5 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ d.w }}</div>
+        <div style="padding:12px 18px;border-top:1.5px solid #E0D6C4;font:500 12px/1.5 'DM Mono',monospace;color:#2B44D6">{{ d.u }}</div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:20px">03 · NOT IN V1, BUT THE SEAM IS READY</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px">
+    <sc-for list="{{ later }}" as="l" hint-placeholder-count="5">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;box-shadow:4px 4px 0 #8A7F70;padding:16px 18px;display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;justify-content:space-between;gap:8px">
+          <div style="font:700 15px Archivo,sans-serif">{{ l.t }}</div>
+          <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.1em;color:#8A7F70">{{ l.v }}</div>
+        </div>
+        <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ l.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:20px">04 · RISKS</div>
+  <div style="display:flex;flex-direction:column;gap:12px;max-width:1000px">
+    <sc-for list="{{ risks }}" as="o" hint-placeholder-count="4">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#17130F;color:#F3ECE0;padding:17px 19px;box-shadow:5px 5px 0 #FF5B2E">
+        <div style="display:flex;gap:12px;align-items:baseline">
+          <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.12em;opacity:.55">{{ o.k }}</div>
+          <div style="font:700 16px Archivo,sans-serif">{{ o.q }}</div>
+        </div>
+        <div style="font:400 13.5px/1.6 Archivo,sans-serif;opacity:.82;margin-top:8px;text-wrap:pretty">{{ o.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;team&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Solo&quot;,&quot;2 developers&quot;,&quot;4 developers&quot;],&quot;default&quot;:&quot;2 developers&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state = { ph: 0 };
+  renderVals() {
+    const team = this.props.team ?? "2 developers";
+    const f = { "Solo": 1.7, "2 developers": 1, "4 developers": 0.65 }[team] ?? 1;
+    const P = [
+      { k: "P0", t: "Foundations", w: 4, refs: "48 Subtypes · 43 Video Games · video-game.yml",
+        goal: "No screens worth showing yet. The goal is a type file that loads, validates and produces a working data model, so every later phase builds on data, not code.",
+        tasks: [
+          { t: "Type schema v1", b: "Freeze the YAML shape from video-game.yml: spine, fields, conditions, signatures, subtypes, presets. Write it as a JSON Schema and validate every type file in CI." },
+          { t: "Subtype resolver", b: "One function: parent + subtype → effective field list, with narrowed enums, hidden fields and presets. Test it against Video Games (5) and Video Media (8)." },
+          { t: "Local-first store", b: "SQLite on device. Items as rows with typed JSON, plus indexed columns for spine fields and search." },
+          { t: "Event log", b: "Every change is an event (created, field set, photo added, watched, moved). Current state is derived from it." },
+          { t: "Stable IDs and type versions", b: "ULIDs for items, a version number on every type file, and a migration rule for when a field is renamed." }],
+        exit: "Loading video-game.yml and video-media.yml produces correct field lists for all 13 subtypes, with tests.",
+        later: ["New types and the community vote's sixth type ship as a file, without an app release.", "The event log becomes sync, clocks, history and, in v2, provenance for C2C sales."] },
+      { k: "P1", t: "Core loop: add, see, find", w: 6, refs: "00 Design System · 43 Video Games",
+        goal: "The smallest useful app: add one item by hand, see it on a shelf, open it, find it again. Forms are generated from the type file, never hand-built.",
+        tasks: [
+          { t: "Form renderer", b: "One renderer per field kind (text, choice, scale, bool, set, log, int). The add screen is assembled from the resolved field list." },
+          { t: "Shelf and item detail", b: "Spine view driven by spine: title, subtitle, year. Detail shows fields grouped as the type defines them." },
+          { t: "Universal fields", b: "Signed (who, dedication, date, proof), Bundle of, Place, photos. Built once at the item level, available on every type." },
+          { t: "Search and related", b: "Local full-text search over the searchable list; related items over the related list." },
+          { t: "Thing type", b: "The fallback type with a minimal spine. It proves the engine works with almost nothing defined." }],
+        exit: "Someone adds 30 items across Video Games and Thing in one sitting without asking how.",
+        later: ["Each launch type is now days of YAML and copy work, not weeks of screens.", "The form renderer is the one the import mapper fills in automatically in P4."] },
+      { k: "P2", t: "Signals: the app owns the verbs", w: 4, refs: "43 Video Games · 48 Subtypes",
+        goal: "This is the thesis feature. Clocks and signatures turn a list into something that tells you when to act.",
+        tasks: [
+          { t: "Clock library", b: "mediaRot, discRot, drinking window, etc. as named, parameterised functions over the event log. Types reference them; they can't define new logic." },
+          { t: "Signature renderers", b: "Ladder and set, as in 43. Limit of 0–2 per type is enforced by the validator." },
+          { t: "Signal feed", b: "One screen of what needs attention, sorted by urgency. Local notifications only in v1." }],
+        exit: "A test collection of 200 items produces a signal list that a collector agrees with on 8 of 10 items.",
+        later: ["A new clock is added once and every type can use it.", "Signals are the hook for the yearly subscription and, later, “sell now” prompts in C2C."] },
+      { k: "P3", t: "Five launch types + onboarding", w: 4, refs: "46 Onboarding · 47 Friend Feedback",
+        goal: "Write the five launch types as data and build the first five minutes: start with the one item that has a story, end with it filled on screen.",
+        tasks: [
+          { t: "Five type files", b: "Each passes the validator and the three-question test from 48. Review any subtype that adds about 5 fields." },
+          { t: "Onboarding flow", b: "Emotion first, no taxonomy picker. The type is inferred from the user's description and confirmed, not chosen from a list." },
+          { t: "Empty-state signals", b: "One filled item must already show its first signal or clock, so the payoff is visible on day one." }],
+        exit: "5 of 6 testers finish onboarding with one complete item and can say what the app will tell them.",
+        later: ["Type inference from onboarding is reused by import and by the add screen."] },
+      { k: "P4", t: "Lookup and import", w: 5, refs: "49 Import Pipeline",
+        goal: "Make adding the second hundred items fast. Lookup fills one item; import fills many. Both feed the same form renderer.",
+        tasks: [
+          { t: "Product lookup", b: "Barcode and title search against public APIs, behind one adapter per source. Results map onto type fields; user always confirms." },
+          { t: "CSV / TSV import", b: "One AI mapper: columns → type fields, with a preview. Unknown items are always kept as Thing unless the user deletes them." },
+          { t: "Box art policy", b: "Public database scans for retro games, user photo fallback. No scraped artwork." }],
+        exit: "A 500-row spreadsheet imports in under 3 minutes with fewer than 5% of rows needing manual fixing.",
+        later: ["New sources are a new adapter, not a new pipeline.", "Mapped imports are events, so they can be undone as a batch."] },
+      { k: "P5", t: "Accounts, sync, pricing", w: 3, refs: "50 Pricing Calculator · 02 Business Plan",
+        goal: "Turn the local app into a product: backup, multiple devices, and payment.",
+        tasks: [
+          { t: "Accounts and sync", b: "Upload the event log; merge per field, last write wins. No real-time collaboration in v1." },
+          { t: "Entitlements", b: "Yearly subscription (€50) and the one-time unlock (€29.99) as flags on the account. Features check flags, never payment state." },
+          { t: "Export", b: "Users can export their collection as CSV at any time. Same format the importer reads." }],
+        exit: "A paid account restored on a second device shows the same collection and signals.",
+        later: ["3D boxes and custom signatures just switch on behind the unlock flag.", "Server-side accounts are the identity C2C selling needs in v2."] }
+    ];
+    const idx = this.state.ph;
+    const total = P.reduce((a, p) => a + Math.round(p.w * f), 0);
+    let start = 0;
+    const phases = P.map((p, i) => {
+      const w = Math.round(p.w * f);
+      const span = "WEEKS " + (start + 1) + "–" + (start + w) + " · " + w + " WK";
+      start += w;
+      const on = i === idx;
+      return { ...p, w, span, barBg: on ? "#17130F" : "#fff", barFg: on ? "#F3ECE0" : "#17130F", on: () => this.setState({ ph: i }),
+        tasks: p.tasks.map((t, j) => ({ ...t, n: String(j + 1).padStart(2, "0") })) };
+    });
+    return {
+      teamLabel: team.toUpperCase(),
+      totalLabel: "≈ " + total + " WEEKS · " + team.toUpperCase(),
+      phases, cur: phases[idx],
+      layers: [
+        { k: "NOUNS", t: "Type files", b: "YAML. Fields, subtypes, conditions, which clocks and signatures apply. No logic.", bg: "#fff", fg: "#17130F" },
+        { k: "ENGINE", t: "Resolver + validator", b: "Reads a type and its subtype, returns the fields an item has. One code path for all types.", bg: "#fff", fg: "#17130F" },
+        { k: "DATA", t: "Items + event log", b: "Every change is recorded. The shelf is a view of the log.", bg: "#fff", fg: "#17130F" },
+        { k: "VERBS", t: "Clocks + signatures", b: "A fixed library the app owns. Types choose from it; they can't add to it.", bg: "#17130F", fg: "#F3ECE0" },
+        { k: "SURFACE", t: "Generated UI", b: "Add form, shelf, detail and signal feed are rendered from the resolved type.", bg: "#fff", fg: "#17130F" }
+      ],
+      decisions: [
+        { d: "Types are versioned data, loaded at runtime", w: "Hard-coding the first type in screens is the fastest start and the hardest thing to undo.", u: "6th type by vote · Video Media · user types" },
+        { d: "Event log as the source of truth", w: "Adding history to a mutable table later means losing everything before that day.", u: "sync · undo import · clocks · C2C provenance" },
+        { d: "Local-first, server optional", w: "Collectors enter data in basements and storage units with no signal.", u: "offline · cheap hosting · privacy story" },
+        { d: "One item = one physical object", w: "Already decided (duplicates: rows). Enforce it in the schema now.", u: "selling a specific copy · condition history" },
+        { d: "Work and object are separate", w: "Doom on six platforms, Blade Runner on three formats. Store a work ID on every item from day one.", u: "“also exists on” · series completion (v2) · upgrades" },
+        { d: "Entitlements as flags", w: "Pricing will change; the calculator in 50 already models four company structures.", u: "unlock · promos · family plans" },
+        { d: "Money as integer cents + currency", w: "Purchase price is entered in v1. Floats and missing currencies break valuation and selling.", u: "valuation · C2C · multi-currency" }
+      ],
+      later: [
+        { t: "Community-voted sixth type", v: "V1.X", b: "Ships as a type file. Video Media (51) is ready to enter the vote." },
+        { t: "3D boxes", v: "V2", b: "Renders from photos plus box dimensions on the subtype. Behind the unlock flag." },
+        { t: "Series completion", v: "V2", b: "Uses the work ID: a series is a list of works, completion is how many you own an object for." },
+        { t: "Friend feedback signals", v: "V2", b: "Read-only shared shelves over the sync layer. Timing to review against 47." },
+        { t: "C2C selling", v: "V2", b: "Needs accounts, money in cents and the event log as condition history. All three exist after P5." }
+      ],
+      risks: [
+        { k: "R1", q: "The schema freezes too early", b: "Video Games and Video Media are the stress tests. If a launch type needs a schema change in P3, allow it once and bump the version. After launch, changes go through migrations only." },
+        { k: "R2", q: "Signals that feel wrong", b: "One bad “drink now” and trust is gone. Every signal shows its reason and can be dismissed; dismissals are logged and used to tune clock parameters." },
+        { k: "R3", q: "Lookup APIs change terms", b: "Each source sits behind an adapter and every looked-up value is stored on the item. Losing a source stops new lookups, not existing data." },
+        { k: "R4", q: "Generated UI looks generic", b: "Budget design time in P1 for each field kind. A strong renderer is reused hundreds of times; a weak one is everywhere." }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

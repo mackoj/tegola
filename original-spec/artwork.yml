@@ -1,0 +1,129 @@
+id: artwork
+name:
+  singular: Work
+  plural: Works
+  collection: The Wall
+mark: "ART"
+icon: frame
+gradient: [claret, verdigris]
+
+# Unique objects cannot duplicate. An edition can — two impressions of
+# the same print are two rows, split on the impression number.
+duplicates: rows
+
+spine:
+  title: Title              # "Untitled" is a real, common answer
+  subtitle: Artist          # prefixed by the attribution qualifier
+  year: Made
+  acquired: Acquired on
+  paid: Paid
+  value: Appraised at       # hidden by default on this type
+
+# Conservator's language, not a marketplace scale. Museums grade
+# stability, not desirability, and collectors of art follow them.
+conditions:
+  - Excellent
+  - Stable
+  - Minor issues
+  - Needs attention
+  - Damaged
+
+attribution: [Signed, Attributed to, Studio of, After, Unknown]
+
+lookup:
+  identifier: none          # nothing on the object is unique to it
+  symbologies: []
+  providers: []             # permanent, not a gap to be filled
+  localCorpus: artists.json # name authority only, ~40k names
+  ocrFields: [verso]        # labels, stamps, stencils on the back
+
+searchable: [title, subtitle, year, medium, place, provenance, tags]
+
+placeLabel: Where it hangs  # or the flat file, or storage
+
+related: [subtitle, medium, series]
+
+# Signature renderers — see One Roof, section 03.
+signatures:
+  - renderer: gauge         # cumulative light exposure, ESTIMATE
+    binds: displayed
+
+fields:
+  - key: medium
+    label: Medium
+    type: text
+    sample: Oil
+  - key: support
+    label: Support
+    type: text
+    sample: Canvas
+  - key: dimensions
+    label: Size
+    type: dims
+    note: H × W × D, unframed
+    sample: 60 × 45 cm
+  - key: framedSize
+    label: Framed size
+    type: dims
+    note: for the wall and the insurer
+    sample: 74 × 59 cm
+  - key: editioned
+    label: Editioned
+    type: yesNo
+    unlocks: [impression, printed]
+    sample: "No"
+  - key: impression
+    label: Impression
+    type: text
+    sample: 12/25
+  - key: printed
+    label: Printed
+    type: date
+    note: vintage vs later print — often most of the value
+    sample: "1974"
+  - key: signed
+    label: Signature
+    type: choice
+    options: [Recto, Verso, Stamped, None]
+    sample: Recto
+  - key: attribution
+    label: Attribution
+    type: choice
+    options: [Signed, Attributed to, Studio of, After, Unknown]
+    sample: Signed
+  - key: framed
+    label: Framing
+    type: choice
+    options: [Unframed, Framed, UV glass, Museum glass]
+    sample: Museum glass
+  - key: displayed
+    label: Light
+    type: choice
+    options: [Dark storage, Low light, Room light, Direct sun]
+    note: drives the light clock
+    sample: Room light
+  - key: provenance
+    label: Provenance
+    type: log
+    entry: [owner, from, to, source]
+    sample: 2 entries
+  - key: exhibited
+    label: Exhibited
+    type: log
+    entry: [show, venue, year, catalogueNumber]
+    sample: 1 entry
+  - key: conserved
+    label: Conservation
+    type: log
+    entry: [date, work, by, report]
+    sample: 1 entry
+  - key: appraisals
+    label: Appraisals
+    type: log
+    entry: [date, value, appraiser]
+    sample: 2 entries
+  - key: documents
+    label: Documents
+    type: files
+    note: COA, receipts, reports
+    sample: 3 files

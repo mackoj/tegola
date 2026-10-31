@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#EAE3D6}a{color:#2B44D6}a:hover{color:#FF5B2E}</style>
+</helmet>
+
+<div style="width:1360px;margin:0 auto;padding:60px 28px 100px;font-family:Archivo,system-ui,sans-serif;color:#17130F">
+
+  <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+    <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70">CLCTN · TYPE MANIFEST · ARTWORK · SEPTEMBER 2026</div>
+    <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#F3ECE0;background:linear-gradient(150deg,#6E2440,#0E6E5E);border-radius:999px;padding:5px 12px">ART · THE WALL</div>
+  </div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:66px;line-height:.92;letter-spacing:-.045em;margin:16px 0 0;max-width:1030px;text-wrap:balance">One of one. Every assumption in the app breaks here.</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:890px;margin-top:20px;text-wrap:pretty">Fifteen types identify an object by finding its twin in a catalogue. <strong>A painting has no twin, no model number, no barcode and no release date — the object in front of you is the only one that has ever existed, and proving what it is <em>is</em> the hobby.</strong> Photography then does something stranger: it reintroduces editions, so one type has to hold both the unique and the numbered.</div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:890px;margin-top:14px;text-wrap:pretty">You asked painting <em>or</em> photo. They are one type. A painting and a silver gelatin print share fifteen of eighteen fields, hang on the same wall, insure on the same schedule and fade under the same light — the real axis is unique versus editioned, and that is one field, not two types.</div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">01 · FIVE THINGS ART BREAKS</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+    <sc-for list="{{ breaks }}" as="b" hint-placeholder-count="5">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 {{ b.sh }};overflow:hidden">
+        <div style="display:flex;align-items:baseline;gap:10px;padding:13px 18px;background:#17130F;color:#F3ECE0">
+          <div style="font:500 9.5px 'DM Mono',monospace;letter-spacing:.12em;opacity:.55">{{ b.n }}</div>
+          <div style="font:700 15px Archivo,sans-serif">{{ b.t }}</div>
+        </div>
+        <div style="padding:17px 18px">
+          <div style="font:400 13px/1.62 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ b.b }}</div>
+          <div style="margin-top:13px;padding-top:12px;border-top:2px solid #E0D6C4">
+            <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;margin-bottom:6px">WHAT IT NEEDS</div>
+            <div style="font:400 12px/1.6 'DM Mono',monospace;color:#2B44D6;text-wrap:pretty">{{ b.needs }}</div>
+          </div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">02 · ONE TYPE, TWO SHAPES</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:920px;margin-bottom:10px;text-wrap:pretty">Switch the work in Tweaks. Same manifest, same add form, different fields awake — because <span style="font-family:'DM Mono',monospace">editioned</span> is a field, not a fork. <strong>A vintage print and a later print from the same negative differ by ten times in price and by one date field, which is the single most valuable thing this type can teach someone.</strong></div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:920px;margin-bottom:22px;text-wrap:pretty">Note what the attribution line does as you switch. Certainty about who made it is a spectrum in this hobby, and every other type in the app treats identity as a fact.</div>
+
+  <div style="display:grid;grid-template-columns:1fr 440px;gap:12px;align-items:start">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+      <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;padding:18px 24px;background:#17130F;color:#F3ECE0">
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:24px;letter-spacing:-.03em">{{ workName }}</div>
+        <div style="font:400 14px Archivo,sans-serif;opacity:.65">{{ workSub }}</div>
+        <div style="margin-left:auto;font-family:'DM Mono',monospace;font-weight:500;font-size:15px;color:#FFD24A">{{ workDims }}</div>
+      </div>
+      <div style="padding:20px 24px 24px">
+        <sc-for list="{{ workRows }}" as="r" hint-placeholder-count="9">
+          <div style="display:grid;grid-template-columns:172px 1fr 150px;gap:14px;align-items:baseline;padding:11px 0;border-bottom:2px solid #E0D6C4">
+            <div style="font:500 11.5px 'DM Mono',monospace;color:#8A7F70">{{ r.k }}</div>
+            <div style="font:500 14px/1.45 Archivo,sans-serif;color: {{ r.fg }};text-wrap:pretty">{{ r.v }}</div>
+            <div style="justify-self:end;font:500 8.5px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:4px 10px;background: {{ r.bg }};color: {{ r.tag }};white-space:nowrap">{{ r.note }}</div>
+          </div>
+        </sc-for>
+        <div style="margin-top:18px;border:2.5px solid #17130F;border-radius:14px;background: {{ attrBg }};color: {{ attrFg }};padding:15px 18px">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;opacity:.7">ATTRIBUTION · HOW SURE ARE WE</div>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:23px;line-height:1.05;letter-spacing:-.03em;margin-top:7px">{{ attrName }}</div>
+          <div style="font:400 13px/1.6 Archivo,sans-serif;margin-top:7px;opacity:.92;text-wrap:pretty">{{ attrNote }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#0C0A08;color:#F3ECE0;padding:20px 22px;box-shadow:5px 5px 0 #FFD24A">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;color:#FFD24A">THE LIGHT CLOCK · DERIVED, NEVER STORED</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:26px;line-height:1.03;letter-spacing:-.033em;margin-top:9px;text-wrap:balance">{{ lightHead }}</div>
+        <div style="font:400 13px/1.6 Archivo,sans-serif;margin-top:9px;opacity:.86;text-wrap:pretty">{{ lightNote }}</div>
+        <div style="position:relative;height:22px;border:2.5px solid #F3ECE0;border-radius:999px;background:rgba(243,236,224,.12);overflow:hidden;margin-top:14px">
+          <div style="position:absolute;top:0;bottom:0;left:0;background: {{ lightBg }};width: {{ lightW }}"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:8px;font:500 9px 'DM Mono',monospace;letter-spacing:.08em;opacity:.55">
+          <div>SAFE</div><div>{{ lightState }}</div><div>IRREVERSIBLE</div>
+        </div>
+        <div style="margin-top:14px;padding-top:13px;border-top:2px solid rgba(243,236,224,.22);font:400 12.5px/1.6 Archivo,sans-serif;opacity:.8;text-wrap:pretty">Third type to want a clock, after wine and retro computers — and the first where the damage is silent and total. Nobody notices fading; they notice it in the photo from ten years ago.</div>
+      </div>
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#FFD24A;padding:18px 20px">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em">WHY NOT TWO TYPES</div>
+        <div style="font:400 13.5px/1.62 Archivo,sans-serif;margin-top:9px;text-wrap:pretty">Splitting would duplicate provenance, exhibition history, framing, dimensions, insurance and conservation — six hard features, twice, forever. And a collector who owns eleven paintings and four photographs wants one wall, not two shelves. Medium is a field; the app should not make it a schism.</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">03 · ARTWORK.YML</div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#0C0A08;color:#F3ECE0;padding:22px 24px;box-shadow:5px 5px 0 #6E2440;overflow-x:auto">
+    <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:14px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;color:#FFD24A">RESOURCES/TYPES/ARTWORK.YML</div>
+      <div style="margin-left:auto;font:500 8.5px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #FFD24A;color:#FFD24A;border-radius:999px;padding:3px 9px">TYPE 17</div>
+    </div>
+    <div style="font:400 12.5px/1.72 'DM Mono',monospace;white-space:pre">{{ manifestYaml }}</div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">04 · IDENTIFICATION — THE BACK, NOT THE FRONT</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;padding:22px 24px;box-shadow:5px 5px 0 #2B44D6">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">CAPTURE STRATEGY</div>
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:29px;line-height:1.05;letter-spacing:-.035em;margin-top:9px;text-wrap:balance">Photograph the verso first.</div>
+      <div style="font:400 13.5px/1.65 Archivo,sans-serif;color:#3A2F26;margin-top:12px;text-wrap:pretty">The front is the part everyone photographs and the part that identifies nothing. <strong>The back carries the evidence:</strong> gallery labels, exhibition stickers, auction lot stencils, a stamped estate mark, the framer's ticket, a title in pencil on the stretcher. Same structural move as the retro computer's underside label — the identity is printed on the side nobody displays.</div>
+      <div style="font:400 13.5px/1.65 Archivo,sans-serif;color:#3A2F26;margin-top:11px;text-wrap:pretty">So the add flow asks for two photos, front and back, and runs OCR on the second one. Every string it finds becomes a suggested provenance entry the collector accepts or ignores — never an auto-filled field, because a gallery label is a claim rather than a fact.</div>
+      <div style="display:flex;flex-wrap:wrap;gap:7px;margin-top:16px">
+        <sc-for list="{{ versoChips }}" as="c" hint-placeholder-count="6">
+          <div style="font:400 11.5px 'DM Mono',monospace;border:2px solid #17130F;border-radius:999px;padding:5px 11px;background:#FBF6EC">{{ c }}</div>
+        </sc-for>
+      </div>
+      <div style="font:400 12.5px/1.6 Archivo,sans-serif;color:#6E6458;margin-top:14px;text-wrap:pretty">No provider, no corpus, no barcode — and unlike every other type, that is permanent rather than a gap we might fill. What ships instead is an artist-name authority list so that Ansel Adams, A. Adams and Adams, Ansel stop being three artists on one wall.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <sc-for list="{{ primitives }}" as="p" hint-placeholder-count="5">
+        <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;padding:16px 18px">
+          <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+            <div style="font:500 13px 'DM Mono',monospace;color:#2B44D6">{{ p.k }}</div>
+            <div style="margin-left:auto;font:500 8.5px 'DM Mono',monospace;letter-spacing:.1em;border-radius:999px;padding:3px 9px;border:2px solid #17130F;background: {{ p.bg }}">{{ p.tag }}</div>
+          </div>
+          <div style="font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">{{ p.b }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">05 · WHERE THE MONEY CHANGES THE APP</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:920px;margin-bottom:22px;text-wrap:pretty">A shelf of records is worth four thousand euros and a wall of art can be worth four hundred thousand. <strong>Nothing about the interface should shout about that, but three features stop being optional.</strong></div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+    <sc-for list="{{ money }}" as="m" hint-placeholder-count="3">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background: {{ m.bg }};color: {{ m.fg }};padding:19px 21px;box-shadow:4px 4px 0 #17130F">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;opacity:.68">{{ m.k }}</div>
+        <div style="font:700 17px/1.28 Archivo,sans-serif;margin-top:8px;text-wrap:pretty">{{ m.t }}</div>
+        <div style="font:400 13px/1.62 Archivo,sans-serif;margin-top:8px;opacity:.92;text-wrap:pretty">{{ m.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">06 · STILL OPEN</div>
+  <div style="display:flex;flex-direction:column;gap:11px">
+    <sc-for list="{{ open }}" as="o" hint-placeholder-count="5">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#FBF6EC;padding:18px 20px;display:flex;gap:18px;align-items:baseline">
+        <div style="flex:none;font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;width:52px">{{ o.k }}</div>
+        <div style="flex:1">
+          <div style="font:700 16px/1.3 Archivo,sans-serif;text-wrap:pretty">{{ o.q }}</div>
+          <div style="font:400 13.5px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:7px;max-width:960px;text-wrap:pretty">{{ o.b }}</div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;work&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;Vintage photograph&quot;,&quot;options&quot;:[&quot;Oil painting&quot;,&quot;Vintage photograph&quot;,&quot;Contemporary edition print&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Sample work&quot;},&quot;light&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;Bright room, no direct sun&quot;,&quot;options&quot;:[&quot;Flat file, in the dark&quot;,&quot;Dim hallway&quot;,&quot;Bright room, no direct sun&quot;,&quot;Direct sun, part of the day&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Sample work&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const work = this.props.work ?? 'Vintage photograph';
+    const light = this.props.light ?? 'Bright room, no direct sun';
+
+    const H = { bg: '#B9F0C9', tag: '#17130F' }, N = { bg: '#F1EADD', tag: '#A79C8C' }, W = { bg: '#FFD24A', tag: '#17130F' };
+    const row = (k, v, note, s, dim) => ({ k, v, note, bg: s.bg, tag: s.tag, fg: dim ? '#A79C8C' : '#17130F' });
+
+    const works = {
+      'Oil painting': {
+        name: 'Harbour, evening', sub: 'Unsigned · Danish school', dims: '46 × 61 cm · 58 × 73 framed',
+        attrName: 'Attributed to Peder Balke', attrBg: '#FFD24A', attrFg: '#17130F',
+        attrNote: 'Not a fact, and the app must not print it as one. The scale runs from signed and documented down to "in the manner of" — four steps, each worth roughly an order of magnitude, and the collector picks honestly because they are the one who gets hurt by lying.',
+        rows: [
+          row('medium', 'Oil on canvas', 'CORE', H), row('support', 'Linen, relined 1970s', 'CORE', H),
+          row('made', '1856 (circa)', 'FUZZY OK', W), row('printed', '—', 'EDITION ONLY', N, true),
+          row('edition', 'Unique', 'ONE OF ONE', H), row('signed', 'No · monogram verso', 'CORE', H),
+          row('provenance', '4 entries · 1971 → 2024', 'THE VALUE', H), row('exhibited', '1 entry · Oslo, 1994', 'LOG', H),
+          row('condition', 'Craquelure, stable', 'CONSERVATOR', H), row('conserved', '2 entries · last 2019', 'LOG', H)
+        ],
+        lightHead: 'Oil is the durable one', lightBase: 0.22,
+        lightNote: 'Varnished oil tolerates daylight for decades. The clock still runs — UV yellows varnish and embrittles the canvas — but in centuries rather than years.'
+      },
+      'Vintage photograph': {
+        name: 'Aspens, Northern New Mexico', sub: 'Silver gelatin print', dims: '39 × 49 cm · 61 × 71 framed',
+        attrName: 'Signed in pencil, recto', attrBg: '#B9F0C9', attrFg: '#17130F',
+        attrNote: 'The top of the scale. A signature on the mount, a matching estate stamp on the verso and a documented chain of owners is as certain as this hobby gets — and it is the difference between a print you can sell and a picture you own.',
+        rows: [
+          row('medium', 'Gelatin silver print', 'CORE', H), row('support', 'Fibre-based paper, dry mounted', 'CORE', H),
+          row('made', '1958 · negative', 'TWO DATES', W), row('printed', '1962 · vintage', 'MOST OF THE VALUE', W),
+          row('edition', 'Unnumbered, pre-edition', 'PHOTO ONLY', H), row('signed', 'Yes · pencil, lower right', 'CORE', H),
+          row('provenance', '3 entries · 1962 → 2019', 'THE VALUE', H), row('exhibited', '2 entries', 'LOG', H),
+          row('condition', 'Slight silvering at edges', 'CONSERVATOR', H), row('conserved', 'None', 'LOG', H)
+        ],
+        lightHead: 'Paper is the fragile one', lightBase: 1.0,
+        lightNote: 'A vintage print is the most light-sensitive object the app will ever hold. Fading and silvering do not stop, cannot be reversed, and take value with them permanently.'
+      },
+      'Contemporary edition print': {
+        name: 'Untitled (Blue Field)', sub: 'Pigment print, 12 of 25', dims: '70 × 100 cm · unframed',
+        attrName: 'Certificate of authenticity held', attrBg: '#B9F0C9', attrFg: '#17130F',
+        attrNote: 'Editions come with paperwork, which makes attribution easy and makes the paperwork itself part of the object. A COA is an attachment on the record, and a lost COA is a real and quantified loss of value.',
+        rows: [
+          row('medium', 'Archival pigment print', 'CORE', H), row('support', 'Cotton rag, 310gsm', 'CORE', H),
+          row('made', '2019 · image', 'TWO DATES', W), row('printed', '2021 · this impression', 'EDITION', W),
+          row('edition', '12 / 25 · + 5 AP', 'PHOTO ONLY', H), row('signed', 'Verso, with edition number', 'CORE', H),
+          row('provenance', '1 entry · gallery, 2021', 'THE VALUE', H), row('exhibited', 'None', 'LOG', H),
+          row('condition', 'Mint, unframed, flat file', 'CONSERVATOR', H), row('conserved', 'None', 'LOG', H)
+        ],
+        lightHead: 'Modern pigment is in between', lightBase: 0.55,
+        lightNote: 'Rated for decades behind UV glass and far less kind to bare daylight. Currently in a flat file, which is the only genuinely safe place any work on paper can be.'
+      }
+    };
+    const w = works[work] ?? works['Vintage photograph'];
+
+    const lights = { 'Flat file, in the dark': 0.04, 'Dim hallway': 0.3, 'Bright room, no direct sun': 0.62, 'Direct sun, part of the day': 1.0 };
+    const exposure = Math.min(1, (lights[light] ?? 0.62) * w.lightBase);
+    const band = exposure < 0.25 ? { s: 'ARCHIVAL', bg: '#B9F0C9' } : exposure < 0.5 ? { s: 'ACCEPTABLE', bg: '#FFD24A' } : exposure < 0.78 ? { s: 'FADING', bg: '#C2371F' } : { s: 'ACTIVE DAMAGE', bg: '#6E2440' };
+
+    return {
+      workName: w.name, workSub: w.sub, workDims: w.dims, workRows: w.rows,
+      attrName: w.attrName, attrNote: w.attrNote, attrBg: w.attrBg, attrFg: w.attrFg,
+      lightHead: w.lightHead, lightNote: w.lightNote,
+      lightW: Math.max(3, exposure * 100).toFixed(1) + '%', lightBg: band.bg, lightState: band.s,
+
+      breaks: [
+        { n: 'BREAK 01', t: 'There is no catalogue', sh: '#2B44D6', needs: 'lookup.providers: [] · permanently', b: 'Every identification feature in the app assumes a shared list of manufactured things. Unique works have none and never will. Capture here is transcription and photography, and the app has to be good at that rather than apologetic about it.' },
+        { n: 'BREAK 02', t: 'Identity is a probability', sh: '#FF5B2E', needs: 'attribution: an ordered scale', b: 'Signed, attributed to, studio of, after — four levels of certainty about who made the thing, each worth roughly ten times the next. This is the first type where the app must let a collector record that they are not sure, without treating it as a blank field.' },
+        { n: 'BREAK 03', t: 'The paperwork is the value', sh: '#0E6E5E', needs: 'provenance + exhibited, both logs', b: 'A documented chain of ownership can be most of what a work is worth, and a gap in it is a discount. Two more customers for the log primitive — and the first time a log is worth more than the object it hangs off.' },
+        { n: 'BREAK 04', t: 'Size is a field you sort by', sh: '#6E2440', needs: 'dimensions, framed and unframed', b: '"Will it fit above the sideboard" is a real query, and so is the insurance schedule that needs framed dimensions. Height × width × depth, two sets, with unit handling — dull to build and the first thing a collector notices missing.' },
+        { n: 'BREAK 05', t: 'It degrades on the wall', sh: '#17130F', needs: 'light exposure · derived, per medium', b: 'Wine ages, machines rot in storage, and art is damaged by being displayed. The one type where the app has to gently suggest taking something down — which is a strange thing for a collection app to say and exactly why it earns trust.' }
+      ],
+
+      versoChips: ['gallery label', 'exhibition sticker', 'auction lot stencil', 'estate stamp', 'framer ticket', 'inscription in pencil'],
+
+      primitives: [
+        { k: 'attribution', tag: 'NEW', bg: '#FFD24A', b: 'An ordered certainty scale attached to the creator field: Signed, Attributed to, Studio of, After, Unknown. Shown as a qualifier before the artist name everywhere, so the app never overstates what the collector actually knows.' },
+        { k: 'dimensions', tag: 'NEW', bg: '#FFD24A', b: 'A real dimension type — H × W × D, metric or imperial, with a second framed set. Sortable and filterable. Quietly wanted by half the existing types and always faked with text until now.' },
+        { k: 'type: log', tag: 'REUSE ×3', bg: '#B9F0C9', b: 'Provenance, exhibition history and conservation are all logs. Third, fourth and fifth customers after wine and retro computers — the primitive is now unambiguously core rather than a per-type indulgence.' },
+        { k: 'attachments', tag: 'EXTEND', bg: '#B9F0C9', b: 'Certificates, appraisals, condition reports, receipts. Photos already attach to objects; this is the same feature admitting the file is sometimes a PDF and sometimes worth more than the frame.' },
+        { k: 'derived exposure', tag: 'PATTERN', bg: '#B9F0C9', b: 'Third clock in the app, and the argument for making derived-state a declared manifest concept rather than three bespoke implementations. Medium and location in, one word out.' }
+      ],
+
+      money: [
+        { k: 'INSURANCE', t: 'Two values, not one', bg: '#0E6E5E', fg: '#F3ECE0', b: 'Replacement value for the schedule and market value for the collection total, and they are rarely the same number. The insure screen already exists; art is the type that makes it the reason someone pays.' },
+        { k: 'APPRAISAL', t: 'A value with a date and a source', bg: '#fff', fg: '#17130F', b: 'Nightly price tracking is meaningless for a unique object. What replaces it is an appraisal record — who valued it, when, at what, with the document attached — and a nudge when it is five years stale.' },
+        { k: 'DISCRETION', t: 'The wall total is off by default', bg: '#17130F', fg: '#F3ECE0', b: 'A six-figure number on the shelf header is the wrong first impression and a security risk in a shared screenshot. Art is the type that should ship with value hidden until asked for, inverting the default everywhere else.' }
+      ],
+
+      manifestYaml: [
+        'id: artwork',
+        'name:',
+        '  singular: Work',
+        '  plural: Works',
+        '  collection: The Wall',
+        'mark: "ART"',
+        'icon: frame',
+        'gradient: [claret, verdigris]',
+        '',
+        '# Unique objects cannot duplicate. An edition can \u2014 two impressions of',
+        '# the same print are two rows, split on the impression number.',
+        'duplicates: rows',
+        '',
+        'spine:',
+        '  title: Title              # \u201cUntitled\u201d is a real, common answer',
+        '  subtitle: Artist          # prefixed by the attribution qualifier',
+        '  year: Made',
+        '  acquired: Acquired on',
+        '  paid: Paid',
+        '  value: Appraised at       # hidden by default on this type',
+        '',
+        '# Conservator\u2019s language, not a marketplace scale. Museums grade',
+        '# stability, not desirability, and collectors of art follow them.',
+        'conditions: [Excellent, Stable, Minor issues, Needs attention,',
+        '             Damaged]',
+        '',
+        'attribution: [Signed, Attributed to, Studio of, After, Unknown]',
+        '',
+        'lookup:',
+        '  identifier: none          # nothing on the object is unique to it',
+        '  symbologies: []',
+        '  providers: []             # permanent, not a gap to be filled',
+        '  localCorpus: artists.json # name authority only, ~40k names',
+        '  ocrFields: [verso]        # labels, stamps, stencils on the back',
+        '',
+        'searchable: [title, subtitle, year, medium, place, provenance, tags]',
+        'placeLabel: Where it hangs  # or the flat file, or storage',
+        'related: [subtitle, medium, series]',
+        '',
+        'fields:',
+        '  - key: medium        | Medium       | text   | oil, gelatin silver',
+        '  - key: support       | Support      | text   | canvas, paper, panel',
+        '  - key: dimensions    | Size         | dims   | H \u00d7 W \u00d7 D, unframed',
+        '  - key: framedSize    | Framed size  | dims   | for the wall and the',
+        '                                                 insurer',
+        '  - key: editioned     | Editioned    | bool   | unlocks the two below',
+        '  - key: impression    | Impression   | text   | 12/25, AP, artist proof',
+        '  - key: printed       | Printed      | date   | vintage vs later print \u2014',
+        '                                                 often most of the value',
+        '  - key: signed        | Signature    | choice | Recto, Verso, Stamped,',
+        '                                                 None',
+        '  - key: attribution   | Attribution  | choice | see above',
+        '  - key: framed        | Framing      | choice | Unframed, Framed,',
+        '                                                 UV glass, Museum glass',
+        '  - key: displayed     | Light        | choice | drives the light clock',
+        '  - key: provenance    | Provenance   | log    | [owner, from, to, source]',
+        '  - key: exhibited     | Exhibited    | log    | [show, venue, year, cat#]',
+        '  - key: conserved     | Conservation | log    | [date, work, by, report]',
+        '  - key: appraisals    | Appraisals   | log    | [date, value, appraiser]',
+        '  - key: documents     | Documents    | files  | COA, receipts, reports'
+      ].join('\n'),
+
+      open: [
+        { k: 'Q1', q: 'Does the app have any business suggesting you take a picture down?', b: 'The light clock is honest and slightly rude — a collection app telling you to stop displaying your collection. Leaning: it never nags, it only sorts and annotates, and the one place it speaks up is when a work on paper sits in direct sun, which is the case where silence is negligence.' },
+        { k: 'Q2', q: 'Is the artist a first-class object or a string?', b: 'A name authority list fixes spelling, but collectors want an artist page — everything I own by them, a biography, a total. That is a person entity the app does not have, and it would also serve the label in vinyl and the maker in watches. Big, useful, and not for v1.' },
+        { k: 'Q3', q: 'Where do prints and multiples stop being art?', b: 'A numbered lithograph is clearly here; a signed concert poster is arguably a Thing; a mass-market reproduction is neither. The honest line is editioned-and-attributed, and everything below it belongs to the generic type — but this will be the most argued-with sentence on the page.' },
+        { k: 'Q4', q: 'Does sculpture ride along in this type?', b: 'Three dimensions, no light problem, same provenance and attribution machinery. Probably yes, as a medium rather than a type — but it makes "The Wall" the wrong collection name, and the name is doing real work for the majority case.' },
+        { k: 'Q5', q: 'What does the 3D object show?', b: 'Rule 04 wants a model per type, and the only sensible one is a framed rectangle that takes the front photo as its face — which is genuinely good, because a wall of correctly proportioned frames is a better collection view than a grid of crops. First type where the model is generated from the object rather than shipped with the type.' }
+      ]
+    };
+  }
+}
+
+</script>
+</body>
+</html>

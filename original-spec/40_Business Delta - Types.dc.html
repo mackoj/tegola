@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#EAE3D6}
+a{color:#2B44D6}a:hover{color:#FF5B2E}
+.bd-page{width:1100px;margin:0 auto;padding:60px 0 80px;font-family:Archivo,system-ui,sans-serif;color:#17130F}
+.bd-lab{font:500 10px 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#8A7F70;margin-bottom:12px}
+.bd-h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:26px;line-height:1;letter-spacing:-.03em;margin:34px 0 14px}
+.bd-p{max-width:760px;font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;margin:0 0 12px;text-wrap:pretty}
+.bd-note{max-width:760px;font:400 13px/1.55 Archivo,sans-serif;color:#6E6458;margin:0 0 12px;text-wrap:pretty}
+.bd-big{border:2.5px solid #17130F;border-radius:18px;padding:20px 22px;box-shadow:5px 5px 0 #17130F;background:#FFD24A;max-width:860px;margin:22px 0 0}
+.bd-bigt{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:25px;line-height:1.14;letter-spacing:-.02em;text-wrap:pretty}
+.bd-cards{display:flex;flex-wrap:wrap;gap:14px}
+.bd-card{flex:1 1 240px;min-width:240px;box-sizing:border-box;border:2.5px solid #17130F;border-radius:16px;background:#fff;box-shadow:4px 4px 0 #17130F;padding:15px 16px}
+.bd-ck{font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:8px}
+.bd-cn{font:700 15px/1.25 Archivo,sans-serif;margin-bottom:7px}
+.bd-cv{font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty}
+.bd-so{margin-top:10px;padding-top:9px;border-top:2px solid #E0D6C4;font:400 12.5px/1.5 Archivo,sans-serif;color:#17130F}
+.bd-so b{font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#2B44D6;display:block;margin-bottom:3px}
+.bd-tbl{border:2.5px solid #17130F;border-radius:16px;overflow:hidden;background:#fff;box-shadow:5px 5px 0 #17130F;max-width:1000px}
+.bd-tr{display:flex;border-bottom:2px solid rgba(23,19,15,.12)}
+.bd-tr:last-child{border-bottom:none}
+.bd-th{background:#17130F;color:#F3ECE0}
+.bd-t1{flex:0 0 170px;padding:11px 13px;font:500 11px/1.4 'DM Mono',monospace;letter-spacing:.06em;border-right:2px solid rgba(23,19,15,.1)}
+.bd-t2{flex:1 1 300px;padding:11px 13px;font:400 13px/1.45 Archivo,sans-serif;color:#6E6458;border-right:2px solid rgba(23,19,15,.1);text-wrap:pretty}
+.bd-t3{flex:1 1 380px;padding:11px 13px;font:400 13px/1.45 Archivo,sans-serif;text-wrap:pretty}
+.bd-t3 strong{color:#17130F}
+.bd-two{display:flex;flex-wrap:wrap;gap:14px;max-width:1000px}
+.bd-col{flex:1 1 380px;min-width:340px;border:2.5px solid #17130F;border-radius:16px;padding:15px 17px;box-shadow:4px 4px 0 #17130F}
+.bd-li{display:flex;gap:10px;align-items:flex-start;font:400 13px/1.5 Archivo,sans-serif;margin-bottom:8px;text-wrap:pretty}
+.bd-gl{flex:none;font:700 12px 'DM Mono',monospace;margin-top:1px}
+</style>
+</helmet>
+
+<div class="bd-page">
+
+  <div class="bd-lab">Business delta · what the new types change · one page · September 2026</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:56px;line-height:.92;letter-spacing:-.04em;max-width:880px">The model holds.<br>The sequence and<br>the story don't.</div>
+  <p class="bd-p" style="font-size:16px;margin-top:20px">Since the <a href="02_Business Plan.dc.html">business plan</a> and <a href="07_Revenue Model.dc.html">revenue model</a> were written, five things were designed: <a href="30_Wine Type.dc.html">Wine</a>, <a href="32_Retro Computer Type.dc.html">Retro Computer</a>, <a href="38_Artwork Type.dc.html">Artwork</a>, the <a href="33_Generic Type.dc.html">Thing</a> type with community proposals, and <a href="37_Type Migration.dc.html">migration</a>. None of them breaks the money model — free fifty, one-time unlock, no subscription on the catalogue, no ads. Four of them change what the unlock is <em>for</em>, who it's sold to first, and what it costs to run.</p>
+  <div class="bd-big"><div class="bd-bigt">Before, the pitch was <em>"a catalogue that remembers."</em> Wine and retro computers make it <em>"a catalogue that tells you when to act."</em> That is the first honest reason for anyone to open this app on a Tuesday — and retention, not features, is what the €29.99 was missing.</div></div>
+
+  <div class="bd-h2">What each type changes</div>
+  <div class="bd-cards">
+    <div class="bd-card">
+      <div class="bd-ck">WINE · CONSUMABLE, ON A CLOCK</div>
+      <div class="bd-cn">The first type people already pay for</div>
+      <div class="bd-cv">Drinking windows, "drink tonight", one notification a year per bottle. Cellar apps charge subscriptions and people pay them — this is a market with a paying habit and a real incumbent.</div>
+      <div class="bd-so"><b>SO</b>Wine is the strongest type for the unlock's value, and the one where "no subscription" is a visible advantage on the store page. Also the first type whose free tier of fifty is too small — a modest cellar is 200 bottles. Keep fifty; wine converts faster, not slower.</div>
+    </div>
+    <div class="bd-card">
+      <div class="bd-ck">RETRO COMPUTER · DEGRADES, NEEDS SERVICE</div>
+      <div class="bd-cn">Zero lookup cost, maximum loyalty</div>
+      <div class="bd-cv">The whole catalogue ships in the bundle; identification needs no network. A service clock that says "open it this week" makes the app an obligation, in the good sense. Small community, no incumbent app.</div>
+      <div class="bd-so"><b>SO</b>Lookup credits earn nothing here and cost nothing either — the metered meter is type-dependent, so it can't be the headline SKU. A cheap community to win completely, and the best possible reference customers for the "types by collectors" story.</div>
+    </div>
+    <div class="bd-card">
+      <div class="bd-ck">ARTWORK · UNIQUE, HIGH VALUE</div>
+      <div class="bd-cn">Pulls insurance forward</div>
+      <div class="bd-cv">Few objects, each worth a lot, each with provenance — which is exactly what History already records. Art collectors already pay for appraisals and insurance riders; they are the v2 insurance-export customer, arriving in v1.</div>
+      <div class="bd-so"><b>SO</b>The insurance conversation (plan step 3) moves before launch, not before v2. And a second segment appears: artists cataloguing their own inventory. That is a professional use — the one place a subscription would be honest. Resist it until they ask.</div>
+    </div>
+    <div class="bd-card">
+      <div class="bd-ck">THING + PROPOSALS + MIGRATION</div>
+      <div class="bd-cn">The roadmap becomes public</div>
+      <div class="bd-cv">Nobody is turned away on day one; the popular custom types become official ones; the proposer's objects migrate intact. Each promotion is a free launch moment in its own community.</div>
+      <div class="bd-so"><b>SO</b>The "five types at launch, cut nine" argument softens: ship five real types <em>plus Thing</em>. But proposals are user-generated content — moderation is the first ongoing cost that isn't Apple's €99, and the shared type board is shared infrastructure arriving a year earlier than the index was meant to.</div>
+    </div>
+  </div>
+
+  <div class="bd-h2">Where the plan moves</div>
+  <div class="bd-tbl">
+    <div class="bd-tr bd-th"><div class="bd-t1">LINE</div><div class="bd-t2" style="color:rgba(243,236,224,.7)">WAS</div><div class="bd-t3">NOW</div></div>
+    <div class="bd-tr"><div class="bd-t1">LAUNCH SCOPE</div><div class="bd-t2">Five types, nine cut to v1.1+</div><div class="bd-t3"><strong>Five types + Thing.</strong> The cut types stay cut; the proposal board tells you which to build next instead of guessing. Retro computer is a candidate for slot five: cheapest to build (offline corpus), loudest community.</div></div>
+    <div class="bd-tr"><div class="bd-t1">WHAT THE UNLOCK BUYS</div><div class="bd-t2">Unlimited objects, import, exports</div><div class="bd-t3"><strong>Plus the clocks.</strong> Drinking windows, service risk, maturity sort. Computed on-device from stored fields, so zero cost — they go in the paid entitlement whatever its container (lifetime in FR/DE, yearly in UK/US), never as a separate SKU. Pricing rule 6 holds: plans differ in how you pay, not what you get. This is what justifies €29.99 over €19.99.</div></div>
+    <div class="bd-tr"><div class="bd-t1">RETENTION</div><div class="bd-t2">Lending — the reason non-cataloguers open the app</div><div class="bd-t3"><strong>Lending + time.</strong> Two reasons to return that aren't "I bought something". Add "objects with an active clock" to the seven numbers; it predicts renewal of attention better than objects-per-user does.</div></div>
+    <div class="bd-tr"><div class="bd-t1">INSURANCE</div><div class="bd-t2">Step 3 — before building v2</div><div class="bd-t3"><strong>Step 1½ — before launch.</strong> Artwork and wine collectors need the export in v1. Two emails, same as before, a year earlier. The referral is revenue with no marketplace.</div></div>
+    <div class="bd-tr"><div class="bd-t1">LOOKUP CREDITS</div><div class="bd-t2">A meter across the app</div><div class="bd-t3"><strong>A meter for network types only.</strong> Vinyl and cards spend credits; wine, retro computers and Thing never do. Fine — but it stops being a story you tell on the store page.</div></div>
+    <div class="bd-tr"><div class="bd-t1">COSTS</div><div class="bd-t2">€99/year and your evenings</div><div class="bd-t3"><strong>Plus moderation.</strong> AI pass is cents; the human pass is your hours until proposals exceed ~20/week, then a trusted-collector council before a paid moderator. Budget it as time, and cap proposals per user per month.</div></div>
+    <div class="bd-tr"><div class="bd-t1">SHARED INFRASTRUCTURE</div><div class="bd-t2">The v2 index of offers is the first</div><div class="bd-t3"><strong>The type board is the first.</strong> Lower stakes than money, same lesson: once people download types from it, you can't switch it off. Decide now that it's free forever and never carries a shelf — types only, no objects.</div></div>
+  </div>
+
+  <div class="bd-h2">Across the markets already planned</div>
+  <p class="bd-note" style="max-width:1000px">Read against <a href="14_Pricing by Market.dc.html">Pricing by Market</a>, the <a href="12_Japan Research Brief.dc.html">Japan brief</a>, the <a href="17_Vinted Model.dc.html">Vinted model</a> and <a href="25_Business Plan - Market B.dc.html">Market B</a>. The types don't change any of those calls; they change the argument for three of them.</p>
+  <div class="bd-tbl">
+    <div class="bd-tr bd-th"><div class="bd-t1">DOCUMENT</div><div class="bd-t2" style="color:rgba(243,236,224,.7)">ITS OPEN PROBLEM</div><div class="bd-t3">WHAT THE TYPES DO TO IT</div></div>
+    <div class="bd-tr"><div class="bd-t1">PRICING · US / UK<br><span style="color:#8A7F70">yearly-led</span></div><div class="bd-t2">"People finish cataloguing and stop. The renewal must land on a screen that shows what changed in a year, or it dies at month 13."</div><div class="bd-t3"><strong>The clocks are that screen.</strong> "Three bottles entered their peak, two machines are due a service, one artwork's insurance value was updated." A yearly container was the weakest part of the plan because a finished catalogue has nothing to renew for; time-aware types are the first honest answer. Yearly-led markets gain more from these types than lifetime-led ones.</div></div>
+    <div class="bd-tr"><div class="bd-t1">PRICING · FR / DE<br><span style="color:#8A7F70">lifetime-led</span></div><div class="bd-t2">"Cash arrives once. No recurring floor in the market we know best."</div><div class="bd-t3"><strong>Unchanged — deliberately.</strong> Tempting to make the clocks a subscription here; it would break rules 1 and 6 and the "no abonnement" pitch that sells the app in France. The recurring floor in FR/DE stays the insurance referral, which artwork and wine now bring forward.</div></div>
+    <div class="bd-tr"><div class="bd-t1">JAPAN<br><span style="color:#8A7F70">blocked on research</span></div><div class="bd-t2">Three questions out, nothing back yet. Placeholder prices. "Would a Japanese collector use this at all?"</div><div class="bd-t3"><strong>Retro computer is the Japan door.</strong> MSX, PC-88/98, X68000, Famicom — a hobby Japan leads, with a closed corpus that ships in the bundle, so it needs no Japanese-language API and no server. Add a fourth question to the brief: where do retro-computer collectors gather, and do they keep lists? If the answer is yes, that's the launch type for JP and the pricing question becomes answerable.</div></div>
+    <div class="bd-tr"><div class="bd-t1">VINTED MODEL<br><span style="color:#8A7F70">decisions 2 and 4</span></div><div class="bd-t2">"Free tier — wall at the object count, or at the second type?" and "What is our defensible virtue claim?"</div><div class="bd-t3"><strong>Thing settles decision 2: count, not type.</strong> A type-gated free tier leaks the moment Thing exists — everyone's second collection is a Thing. Fifty objects, one collection, any type. And decision 4's longevity claim becomes instrumentable: service logs on machines, repairs, intact transfers — the retro computer type is the first that <em>records</em> longevity rather than asserting it. Model C (the provenance rail) gets stronger with artwork and composites; still not a v1 question.</div></div>
+    <div class="bd-tr"><div class="bd-t1">MARKET B<br><span style="color:#8A7F70">Android, Brazil-first</span></div><div class="bd-t2">Chat-group traders and micro-merchants with mixed stock; offline-first; trap 5 — "don't let market B set the product direction."</div><div class="bd-t3"><strong>Thing is mandatory there; wine and artwork are irrelevant there.</strong> Mixed merchant stock needs a type that says yes to everything, and the offline corpus pattern from retro computers is exactly what a prepaid-data market wants. The new risk is the proposal board: market-B users will propose "phone lot", "sneaker resale batch" — merchant types, not collector types. Moderation policy needs a market rule before Android ships: proposals are scoped per storefront and promoted per storefront.</div></div>
+  </div>
+
+  <div class="bd-h2">What doesn't move, and the one risk</div>
+  <div class="bd-two">
+    <div class="bd-col" style="background:#fff">
+      <div class="bd-ck">UNCHANGED</div>
+      <div class="bd-li"><div class="bd-gl">=</div><div>Free for one collection of fifty; one-time unlock with a rising founding price; the only subscription is v2 market data.</div></div>
+      <div class="bd-li"><div class="bd-gl">=</div><div>Never subscribe the catalogue, never ads, never sell schemas — proposing and downloading types is free, always.</div></div>
+      <div class="bd-li"><div class="bd-gl">=</div><div>Gate 1 (fifty collectors at sixty objects) and Gate 2 (latent supply and demand) stay where they are.</div></div>
+      <div class="bd-li"><div class="bd-gl">=</div><div>Go deep with fifty collectors before going wide. Thing widens the door; it doesn't change who you sit down with first.</div></div>
+    </div>
+    <div class="bd-col" style="background:#17130F;color:#F3ECE0;box-shadow:4px 4px 0 #FF5B2E">
+      <div class="bd-ck" style="color:#FFD24A">THE NEW RISK</div>
+      <div class="bd-cv" style="color:rgba(243,236,224,.85)">Time-aware types make the app <em>responsible</em>. A missed "open it this week" on a leaking battery, or a "drink it" on a bottle that was already gone, is the first moment CLCTN can be wrong about something that matters. The pitch gets stronger and the tone has to get more careful: every clock is an estimate, labelled as one, and the notification is opt-in per type — one push a year for wine, one per machine for computers, none by default for anything else.</div>
+      <div class="bd-so" style="border-color:rgba(243,236,224,.25);color:#F3ECE0"><b style="color:#FFD24A">LOG IT</b>D33 — clocks are estimates, computed on-device, included in the unlock, never subscribed, opt-in to notify. D34 — the type board is free forever, carries types never objects, and is scoped per storefront. D35 — the free wall is a count (fifty), never a type.</div>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>

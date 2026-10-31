@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#EAE3D6}a{color:#2B44D6}a:hover{color:#FF5B2E}</style>
+</helmet>
+
+<div style="width:1360px;margin:0 auto;padding:60px 28px 100px;font-family:Archivo,system-ui,sans-serif;color:#17130F">
+
+  <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+    <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70">CLCTN · TYPE MANIFEST · THING — THE GENERIC TYPE · SEPTEMBER 2026</div>
+    <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#F3ECE0;background:linear-gradient(150deg,#6E2440,#2B44D6);border-radius:999px;padding:5px 12px">TYPE 00 · THE SHELF</div>
+  </div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:66px;line-height:.92;letter-spacing:-.045em;margin:16px 0 0;max-width:1040px;text-wrap:balance">The type for everything we haven't built yet.</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:880px;margin-top:20px;text-wrap:pretty">Sixteen types cover maybe sixty percent of the people who will open this app. The other forty collect enamel pins, concert lanyards, running trophies, vintage band tees, hotel keycards, matchbooks, gig tickets, Lego minifigs, perfume miniatures — and if the answer to them is <em>sorry, not supported</em>, the app is a demo. <strong>Thing is the type that says yes to all of them on day one, and then quietly turns the popular ones into real types.</strong></div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:880px;margin-top:14px;text-wrap:pretty">Three things in one document: the generic field set (01–03), the route from a Thing to a proposed type (04–05), and the shared board where other collectors' types are downloaded (06). Screens for <span style="font-family:'DM Mono',monospace">notype</span> and <span style="font-family:'DM Mono',monospace">propose</span> exist already — this is the schema and the policy underneath them.</div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">01 · THE ONE HARD CONSTRAINT</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:20px;text-wrap:pretty">A generic type fails in one of two directions, and both are fatal. <strong>Too empty and it is a notes app with a photo.</strong> Too full and the pin collector faces forty blank fields about provenance and dimensions and gives up on object three. The field set below is the smallest one that still answered every question, tested against six hobbies that share almost nothing.</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+    <sc-for list="{{ stress }}" as="s" hint-placeholder-count="6">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;padding:16px 18px;box-shadow:4px 4px 0 #17130F">
+        <div style="display:flex;align-items:baseline;gap:9px">
+          <div style="font:700 15px Archivo,sans-serif">{{ s.t }}</div>
+          <div style="margin-left:auto;font:500 8.5px 'DM Mono',monospace;letter-spacing:.1em;color:#8A7F70">{{ s.n }}</div>
+        </div>
+        <div style="font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">{{ s.b }}</div>
+        <div style="font:400 11.5px/1.5 'DM Mono',monospace;color:#2B44D6;margin-top:10px;padding-top:9px;border-top:2px solid #E0D6C4">{{ s.f }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">02 · THING.YML — TWELVE FIELDS, NINE OF THEM OPTIONAL</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:880px;margin-bottom:20px;text-wrap:pretty">Nothing here is invented. Every key already exists in a shipped type; Thing is the intersection rather than a new schema, which is why it costs a manifest file and no code. Switch the starter kit in Tweaks to see which fields a hobby actually turns on.</div>
+  <div style="display:grid;grid-template-columns:1fr 420px;gap:12px;align-items:start">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#0C0A08;color:#F3ECE0;padding:22px 24px;box-shadow:5px 5px 0 #6E2440;overflow-x:auto">
+      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:14px">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;color:#FFD24A">RESOURCES/TYPES/THING.YML</div>
+        <div style="margin-left:auto;font:500 8.5px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #FFD24A;color:#FFD24A;border-radius:999px;padding:3px 9px">TYPE 00</div>
+      </div>
+      <div style="font:400 12.5px/1.72 'DM Mono',monospace;white-space:pre">{{ manifestYaml }}</div>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+      <div style="padding:16px 20px;background:#17130F;color:#F3ECE0">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;opacity:.55">STARTER KIT</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:26px;letter-spacing:-.03em;margin-top:5px">{{ kitName }}</div>
+        <div style="font:400 13px/1.5 Archivo,sans-serif;opacity:.75;margin-top:6px;text-wrap:pretty">{{ kitNote }}</div>
+      </div>
+      <div style="padding:16px 20px 20px">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;margin-bottom:10px">FIELDS ON · {{ kitCount }} OF 12</div>
+        <div style="display:flex;flex-wrap:wrap;gap:7px">
+          <sc-for list="{{ kitFields }}" as="f" hint-placeholder-count="12">
+            <div style="font:400 11.5px 'DM Mono',monospace;border:2px solid #17130F;border-radius:999px;padding:5px 11px;background: {{ f.bg }};color: {{ f.fg }}">{{ f.k }}</div>
+          </sc-for>
+        </div>
+        <div style="margin-top:16px;padding-top:14px;border-top:2px solid #E0D6C4">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;margin-bottom:8px">PLUS, DECLARED BY THE COLLECTOR</div>
+          <div style="display:flex;flex-wrap:wrap;gap:7px">
+            <sc-for list="{{ kitCustom }}" as="c" hint-placeholder-count="3">
+              <div style="font:400 11.5px 'DM Mono',monospace;border:2px dashed #6E2440;color:#6E2440;border-radius:999px;padding:5px 11px">{{ c }}</div>
+            </sc-for>
+          </div>
+          <div style="font:400 12.5px/1.6 Archivo,sans-serif;color:#6E6458;margin-top:12px;text-wrap:pretty">Custom fields are typed, not free text — that is the whole difference between a spreadsheet and a catalogue. A typed field sorts, filters, charts and exports; a text field does none of those.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">03 · FOUR FIELD KINDS, AND NO MORE</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:900px;margin-bottom:20px;text-wrap:pretty">Asking a collector to pick a field type is asking a normal person to do database design. So the picker offers four plain-language kinds with an example each, and the manifest keys stay hidden. Everything the shipped types use beyond these four — grading scales, logs, composites — is deliberately unavailable here, because those are the things that earn a real type.</div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+    <sc-for list="{{ kinds }}" as="k" hint-placeholder-count="4">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;overflow:hidden;box-shadow:4px 4px 0 #2B44D6">
+        <div style="padding:11px 16px;background:#2B44D6;color:#F3ECE0;font:500 9px 'DM Mono',monospace;letter-spacing:.12em">{{ k.tag }}</div>
+        <div style="padding:16px">
+          <div style="font:700 16px/1.25 Archivo,sans-serif">{{ k.t }}</div>
+          <div style="font:400 12.5px/1.55 Archivo,sans-serif;color:#3A2F26;margin-top:7px;text-wrap:pretty">{{ k.b }}</div>
+          <div style="font:400 11.5px/1.5 'DM Mono',monospace;color:#8A7F70;margin-top:10px">{{ k.ex }}</div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+  <div style="border:2.5px solid #17130F;border-radius:16px;background:#FFD24A;padding:18px 22px;margin-top:12px">
+    <div style="font:400 15px/1.65 Archivo,sans-serif;max-width:1000px;text-wrap:pretty"><strong>The rule that keeps this honest:</strong> a custom field is the same primitive a shipped type uses, stored the same way, exported the same way. When a Thing becomes a real type, the collector's fields map onto the official ones and their data survives — no re-entry, no export-and-reimport. A contribution that costs you your own data is a tax, and nobody pays it twice.</div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">04 · FROM A THING TO A TYPE — THE LADDER</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:920px;margin-bottom:10px;text-wrap:pretty">A collector never sits down to design a schema. They catalogue forty pins, and somewhere around the fifteenth they have already invented one — three custom fields, used consistently. <strong>The proposal is not a form we ask them to fill in; it is a summary of the work they have already done, offered back to them at the right moment.</strong></div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:920px;margin-bottom:22px;text-wrap:pretty">Five rungs. Each one is a state on the public board, and each one has an exit that is not shipping — because most proposals will not ship, and the ones that close have to close well or nobody proposes a second time.</div>
+  <div style="display:flex;flex-direction:column;gap:10px">
+    <sc-for list="{{ ladder }}" as="r" hint-placeholder-count="5">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:4px 4px 0 #17130F;display:grid;grid-template-columns:150px 1fr 330px;gap:0;align-items:stretch;overflow:hidden">
+        <div style="padding:18px 20px;background: {{ r.bg }};color: {{ r.fg }};display:flex;flex-direction:column;justify-content:center">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;opacity:.7">{{ r.n }}</div>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:23px;line-height:1;letter-spacing:-.03em;margin-top:6px">{{ r.state }}</div>
+        </div>
+        <div style="padding:18px 22px">
+          <div style="font:700 16px/1.3 Archivo,sans-serif;text-wrap:pretty">{{ r.t }}</div>
+          <div style="font:400 13.5px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:7px;text-wrap:pretty">{{ r.b }}</div>
+        </div>
+        <div style="padding:18px 22px;border-left:2px solid #E0D6C4;background:#FBF6EC">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">{{ r.ck }}</div>
+          <div style="font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:7px;text-wrap:pretty">{{ r.c }}</div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">05 · THE BOARD, AND BORROWING SOMEONE ELSE'S TYPE</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:920px;margin-bottom:22px;text-wrap:pretty">Waiting for us to ship a type is a bad deal for the collector — a month at best, never at worst. So a published type is <strong>usable the moment it is published, by anyone, without our involvement.</strong> Shipping it later is a quality upgrade, not the unlock. That reordering is the single most important decision on this page.</div>
+  <div style="display:grid;grid-template-columns:1fr 430px;gap:12px;align-items:start">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #0E6E5E;overflow:hidden">
+      <div style="display:grid;grid-template-columns:1fr 92px 130px 104px;background:#17130F;color:#F3ECE0;font:500 9.5px 'DM Mono',monospace;letter-spacing:.1em">
+        <div style="padding:13px 18px">PROPOSED TYPE</div>
+        <div style="padding:13px 10px;text-align:right">WANTS</div>
+        <div style="padding:13px 14px">STATE</div>
+        <div style="padding:13px 14px;text-align:right">IN USE</div>
+      </div>
+      <sc-for list="{{ board }}" as="b" hint-placeholder-count="7">
+        <div style="display:grid;grid-template-columns:1fr 92px 130px 104px;border-top:2px solid #E0D6C4;align-items:center">
+          <div style="padding:13px 18px">
+            <div style="font:700 15px Archivo,sans-serif">{{ b.name }}</div>
+            <div style="font:400 12px/1.45 Archivo,sans-serif;color:#8A7F70;margin-top:3px;text-wrap:pretty">{{ b.by }}</div>
+          </div>
+          <div style="padding:13px 10px;text-align:right;font:500 16px 'DM Mono',monospace">{{ b.wants }}</div>
+          <div style="padding:13px 14px">
+            <div style="display:inline-block;font:500 8.5px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:4px 10px;background: {{ b.bg }};color: {{ b.fg }}">{{ b.state }}</div>
+          </div>
+          <div style="padding:13px 14px;text-align:right;font:400 12px 'DM Mono',monospace;color:#6E6458">{{ b.use }}</div>
+        </div>
+      </sc-for>
+      <div style="padding:16px 18px;border-top:2.5px solid #17130F;background:#FBF6EC;font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Sorted by wants, filtered to your interests, and closed proposals stay visible with their reason written out. <em>Cassettes became a format inside Vinyl</em> is a better answer than silence, and it teaches the next proposer where the line is.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <sc-for list="{{ borrow }}" as="x" hint-placeholder-count="4">
+        <div style="border:2.5px solid #17130F;border-radius:16px;background: {{ x.bg }};color: {{ x.fg }};padding:17px 19px">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;opacity:.65">{{ x.k }}</div>
+          <div style="font:700 16px/1.3 Archivo,sans-serif;margin-top:6px;text-wrap:pretty">{{ x.t }}</div>
+          <div style="font:400 13px/1.6 Archivo,sans-serif;margin-top:7px;opacity:.92;text-wrap:pretty">{{ x.b }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">06 · CAN ICLOUD BE THE BACKEND FOR THIS?</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:920px;margin-bottom:10px;text-wrap:pretty">Yes — for almost all of it, and it is the right call. <strong>CloudKit's public database gives you shared storage, a stable per-app identity for every user, and record-level permissions, for no monthly cost and no server to run.</strong> Publishing a type, downloading one, voting and reporting all fit inside it. Two things do not, and both are countable rather than architectural.</div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:920px;margin-bottom:22px;text-wrap:pretty">It also protects the promise on the website, which matters more than the saving: the public database holds <em>manifests, votes and reports</em> — schemas and counters. No shelf, no object, no photo, no value ever leaves the user's private iCloud. "We run no server that could hold your collection" stays literally true.</div>
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:12px">
+    <sc-for list="{{ icloudFits }}" as="i" hint-placeholder-count="4">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;box-shadow:4px 4px 0 #0E6E5E;overflow:hidden">
+        <div style="display:flex;align-items:baseline;gap:10px;padding:12px 18px;background:#0E6E5E;color:#F3ECE0">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;opacity:.7">WORKS AS-IS</div>
+          <div style="margin-left:auto;font:400 11px 'DM Mono',monospace;opacity:.85">{{ i.rec }}</div>
+        </div>
+        <div style="padding:16px 18px">
+          <div style="font:700 15.5px/1.3 Archivo,sans-serif">{{ i.t }}</div>
+          <div style="font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:7px;text-wrap:pretty">{{ i.b }}</div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px">
+    <sc-for list="{{ icloudGaps }}" as="g" hint-placeholder-count="2">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#0C0A08;color:#F3ECE0;padding:20px 22px;box-shadow:4px 4px 0 #C2371F">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#FFD24A">{{ g.k }}</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:25px;line-height:1.05;letter-spacing:-.03em;margin-top:8px;text-wrap:balance">{{ g.t }}</div>
+        <div style="font:400 13.5px/1.6 Archivo,sans-serif;margin-top:9px;opacity:.88;text-wrap:pretty">{{ g.b }}</div>
+        <div style="margin-top:13px;padding-top:12px;border-top:2px solid rgba(243,236,224,.22)">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#B9F0C9">THE FIX</div>
+          <div style="font:400 13px/1.6 Archivo,sans-serif;margin-top:6px;opacity:.95;text-wrap:pretty">{{ g.fix }}</div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;margin-top:12px;overflow:hidden">
+    <div style="padding:16px 22px;background:#17130F;color:#F3ECE0">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;opacity:.55">THE MODERATION PIPELINE YOU DESCRIBED</div>
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:25px;letter-spacing:-.03em;margin-top:5px">On-device first, AI second, you last.</div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr)">
+      <sc-for list="{{ modSteps }}" as="m" hint-placeholder-count="4">
+        <div style="padding:18px 20px;border-right:2px solid #E0D6C4">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">{{ m.k }}</div>
+          <div style="font:700 15px/1.3 Archivo,sans-serif;margin-top:7px;text-wrap:pretty">{{ m.t }}</div>
+          <div style="font:400 12.5px/1.55 Archivo,sans-serif;color:#3A2F26;margin-top:7px;text-wrap:pretty">{{ m.b }}</div>
+          <div style="font:400 11px/1.45 'DM Mono',monospace;color:#2B44D6;margin-top:9px">{{ m.w }}</div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="padding:15px 22px;border-top:2.5px solid #17130F;background:#FFD24A;font:400 13.5px/1.6 Archivo,sans-serif;text-wrap:pretty">Only the schema is free-for-all; the <em>words</em> are moderated. A type carries a name, a paragraph and field labels written by a stranger, which makes this user-generated content under App Review guideline 1.2 — filtering, reporting, blocking and a contact route are required, not optional. The good news is that it is three short strings per type, not a feed.</div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">07 · STILL OPEN</div>
+  <div style="display:flex;flex-direction:column;gap:11px">
+    <sc-for list="{{ open }}" as="o" hint-placeholder-count="5">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#FBF6EC;padding:18px 20px;display:flex;gap:18px;align-items:baseline">
+        <div style="flex:none;font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;width:52px">{{ o.k }}</div>
+        <div style="flex:1">
+          <div style="font:700 16px/1.3 Archivo,sans-serif;text-wrap:pretty">{{ o.q }}</div>
+          <div style="font:400 13.5px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:7px;max-width:960px;text-wrap:pretty">{{ o.b }}</div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;kit&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;Enamel pins&quot;,&quot;options&quot;:[&quot;Enamel pins&quot;,&quot;Band t-shirts&quot;,&quot;Trophies &amp; medals&quot;,&quot;Hotel keycards&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Starter kit&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const kit = this.props.kit ?? 'Enamel pins';
+
+    const base = ['title', 'maker', 'year', 'variant', 'series', 'material', 'size', 'condition', 'completeness', 'quantity', 'place', 'notes'];
+    const kits = {
+      'Enamel pins': { on: ['title','maker','year','variant','series','quantity','place'], custom: ['Backing type · choice', 'Edition size · number', 'Artist · text'], note: 'Small, cheap, owned in quantity, traded constantly. Value lives in the variant and the edition size, not the condition.' },
+      'Band t-shirts': { on: ['title','maker','year','variant','size','material','condition','place'], custom: ['Tour · text', 'Single-stitch · yes/no', 'Tag era · choice'], note: 'Closest to vinyl: a tour name, a year, a print run. Size and material are pricing fields here, not descriptions.' },
+      'Trophies & medals': { on: ['title','year','material','size','condition','place','notes'], custom: ['Event · text', 'Placing · choice', 'Discipline · choice'], note: 'Sentimental, not traded. Value is usually off, and the fields that matter are the ones no marketplace cares about.' },
+      'Hotel keycards': { on: ['title','maker','year','variant','series','quantity','place'], custom: ['City · text', 'Chain · text', 'Still magnetic · yes/no'], note: 'A long-tail hobby with real depth and zero commercial catalogue. The kind of type that only ever exists because a user built it.' }
+    };
+    const k = kits[kit] ?? kits['Enamel pins'];
+
+    const labels = { title: 'title', maker: 'maker', year: 'year', variant: 'variant', series: 'series', material: 'material', size: 'size', condition: 'condition', completeness: 'completeness', quantity: 'quantity', place: 'place', notes: 'notes' };
+
+    return {
+      kitName: kit,
+      kitNote: k.note,
+      kitCount: String(k.on.length),
+      kitCustom: k.custom,
+      kitFields: base.map(f => k.on.includes(f)
+        ? { k: labels[f], bg: '#B9F0C9', fg: '#17130F' }
+        : { k: labels[f], bg: '#F1EADD', fg: '#A79C8C' }),
+
+      stress: [
+        { n: 'PINS', t: 'Hundreds of tiny things', b: 'Owned in quantity, worth two euros each, traded in lots. Needs a count on the row and a value that only makes sense in aggregate.', f: 'needs · quantity, variant' },
+        { n: 'SHIRTS', t: 'Worn, washed, faded', b: 'Condition is real but the scale is clothing, not Goldmine. A size field that a coin collector would never see.', f: 'needs · size, condition, material' },
+        { n: 'TROPHIES', t: 'Priceless and worthless', b: 'Value is meaningless and the money UI has to disappear cleanly. The date and the story are the entire record.', f: 'needs · value off, notes' },
+        { n: 'HATS', t: 'One name, many colourways', b: 'Same model, different colour, different year — the duplicates question every type has to answer, arriving on day one.', f: 'needs · variant, duplicates' },
+        { n: 'TICKETS', t: 'Paper, dated, unique', b: 'Every object is a one-off tied to a place and a date. No catalogue will ever exist, so typing is the only capture route.', f: 'needs · year, place, photo' },
+        { n: 'MINIFIGS', t: 'A set with an official ID', b: 'A real catalogue exists but we do not ship it. The collector pastes an ID into a custom text field and sorts by it.', f: 'needs · custom identifier' }
+      ],
+
+      ladder: [
+        { n: 'RUNG 01', state: 'Noticed', bg: '#F1EADD', fg: '#17130F', t: 'The app spots a schema before the collector names one', ck: 'THE TRIGGER',
+          b: 'Fifteen Things sharing the same three custom fields and the same collection name is not a coincidence — it is a type. A single quiet banner on the collection screen, once: "these forty pins look like a type. Want to name it?" Never a modal, never twice.',
+          c: 'Fifteen objects, three consistent custom fields, one collection. Dismissing it is permanent for that collection.' },
+        { n: 'RUNG 02', state: 'Drafted', bg: '#FFD24A', fg: '#17130F', t: 'A private type, working immediately', ck: 'WHAT THEY GET',
+          b: 'Naming it promotes the collection to a real custom type: its own singular and plural, its own icon, its own field order, its own add form. Nothing is shared yet and nothing is reviewed. This rung is where most collectors will stop, and stopping here has to feel like a finished product, not an abandoned form.',
+          c: 'A named type on their device, an add form with only their fields, and a proper empty state. No account needed.' },
+        { n: 'RUNG 03', state: 'Published', bg: '#0E6E5E', fg: '#F3ECE0', t: 'Shared with every other collector, by them', ck: 'THE DEAL',
+          b: 'One tap sends the manifest to the board, credited. It is immediately downloadable by anyone with the app — this does not wait for us. The collector writes two sentences on what they collect and why the fields are what they are; that paragraph does more for adoption than the schema does.',
+          c: 'Their name on the type, forever, in the app and on the website. The only credit we can offer and the only one asked for.' },
+        { n: 'RUNG 04', state: 'Adopted', bg: '#2B44D6', fg: '#F3ECE0', t: 'Other people are using it, which is the real vote', ck: 'THE SIGNAL',
+          b: 'Wants are cheap and downloads are not. A type in active use by forty collections with objects in it outranks a type with four hundred upvotes and nine users, so the board sorts on use and shows wants as context. Forks appear here too — two rival pin schemas is information, not a problem.',
+          c: 'Usage, not votes. Forty active collections is the threshold for a look; nothing is automatic.' },
+        { n: 'RUNG 05', state: 'Shipped', bg: '#17130F', fg: '#F3ECE0', t: 'We rewrite it properly and it becomes official', ck: 'THE MIGRATION',
+          b: 'Our version adds what a user manifest cannot: a real grading scale, a catalogue or corpus, a 3D model, identification, tuned layouts. The community fields map onto the official ones, unmapped fields survive as custom, and every value stays put. The proposer is asked to review the mapping before it goes out.',
+          c: 'Zero re-entry, reviewed by the proposer, announced in their community under their name.' }
+      ],
+
+      board: [
+        { name: 'Enamel pins', by: 'drafted by Mira K. · 11 fields', wants: '412', state: 'ADOPTED', bg: '#2B44D6', fg: '#F3ECE0', use: '183 shelves' },
+        { name: 'Fountain pens', by: 'drafted by J. Alvarez · 14 fields', wants: '388', state: 'SHIPPING v1.3', bg: '#17130F', fg: '#F3ECE0', use: '204 shelves' },
+        { name: 'Band t-shirts', by: 'drafted by pressplay · 9 fields', wants: '265', state: 'ADOPTED', bg: '#2B44D6', fg: '#F3ECE0', use: '97 shelves' },
+        { name: 'Mineral specimens', by: 'drafted by T. Okonkwo · 16 fields', wants: '211', state: 'PUBLISHED', bg: '#0E6E5E', fg: '#F3ECE0', use: '34 shelves' },
+        { name: 'Lego minifigs', by: 'two rival drafts · fork', wants: '190', state: 'PUBLISHED', bg: '#0E6E5E', fg: '#F3ECE0', use: '61 shelves' },
+        { name: 'Perfume miniatures', by: 'drafted by anon · 8 fields', wants: '54', state: 'PUBLISHED', bg: '#0E6E5E', fg: '#F3ECE0', use: '7 shelves' },
+        { name: 'Cassettes', by: 'closed · became a format inside Vinyl', wants: '146', state: 'CLOSED', bg: '#6E2440', fg: '#F3ECE0', use: '—' }
+      ],
+
+      borrow: [
+        { k: 'DOWNLOADING ONE', t: 'A type is a file, so this is a download', bg: '#fff', fg: '#17130F', b: 'Tap a type on the board and it installs as a custom type on your device — offline from then on, editable, yours. Community types sit in their own section of the picker, credited, never mixed in with the sixteen.' },
+        { k: 'THE HONEST BADGE', t: 'Community types say what they are', bg: '#FFD24A', fg: '#17130F', b: 'A dashed edge and a line of credit, everywhere the type appears. No 3D model, no catalogue, no price data — because a user manifest cannot carry those, and pretending otherwise is how the app loses trust on object one.' },
+        { k: 'EDITING A BORROWED ONE', t: 'Your copy forks on first edit', bg: '#fff', fg: '#17130F', b: 'Change a field and you own a private fork; the original keeps updating for everyone else. Republishing a fork is allowed and credits both people. Two good schemas competing is how the right one gets found.' },
+        { k: 'WHAT WE MODERATE', t: 'Names and words, not schemas', bg: '#0C0A08', fg: '#F3ECE0', b: 'A published type carries a name and a paragraph written by a stranger, which is user-generated content and needs a report route and a review queue. The fields themselves need no policing — a bad schema simply goes unused.' }
+      ],
+
+      icloudFits: [
+        { rec: 'CKRecord · Manifest', t: 'A published type is one record in the public database', b: 'The YAML rides as an asset, the name and paragraph as fields. Public read, creator-only write, enforced by CloudKit rather than by code we wrote. Downloading a type is a fetch; using it offline afterwards is free, because it was always just a file.' },
+        { rec: 'CKUserRecordID', t: 'Identity without asking for anything', b: 'Every signed-in user already has a stable, opaque, per-app identifier — it tells us nothing about them and cannot be forged. That is exactly the handle a proposal needs for ownership, and the display name stays a handle they type themselves, never their Apple account name.' },
+        { rec: 'Deterministic recordName', t: 'One vote per person, with no vote server', b: 'Name the record vote_<typeID>_<userID> and CloudKit rejects the second one for you. Uniqueness comes from the key, not from logic — and the same trick counts installs, so "in use on 183 shelves" is honest rather than self-reported.' },
+        { rec: 'Free tier', t: 'The cost is zero, and the quota grows with users', b: 'Public-database allowances scale with your active user count, and this payload is text measured in kilobytes. Type sharing never becomes the reason the app needs a subscription — which is the promise you have already made on pricing.' }
+      ],
+
+      icloudGaps: [
+        { k: 'GAP 01', t: 'CloudKit cannot count', b: 'There is no COUNT, no aggregate and no trigger. Fetching every vote record to display a number does not survive four hundred votes, and each client doing it is worse.',
+          fix: 'A denormalised counter on the type record, recomputed by a nightly job using a server-to-server key — about fifty lines run from a cron. Clients only ever read the number. Votes are not live data; an hour stale is invisible.' },
+        { k: 'GAP 02', t: 'There is nowhere to run the AI', b: 'No server-side code means no place to put a moderation call between a user tapping Publish and the record appearing. CloudKit takes the write and the text is public that second.',
+          fix: 'Split it: an on-device pass gates publishing instantly, and the same nightly job runs the cloud model over new records and flags. The one small process you already accepted for the for-sale index (D29) does both jobs.' }
+      ],
+
+      modSteps: [
+        { k: 'STEP 01', t: 'On device, before it leaves', b: 'The name, the paragraph and the field labels go through an on-device model. Clean text publishes instantly, which keeps the rung 03 promise intact.', w: 'blocks · slurs, contact details, spam' },
+        { k: 'STEP 02', t: 'The nightly AI sweep', b: 'Every new or edited type is re-checked server-side with a real model, which catches what a small on-device one misses.', w: 'flags · status → pending' },
+        { k: 'STEP 03', t: 'Reports from collectors', b: 'A report route on every community type, one tap, no form. Three independent reports hide the type pending review rather than waiting for us.', w: 'CKRecord · Report' },
+        { k: 'STEP 04', t: 'You, in the dashboard', b: 'Flagged and reported items only. CloudKit Dashboard is a usable admin UI at this scale, so there is no console to build.', w: 'human · approve, edit, remove' }
+      ],
+
+      open: [
+        { k: 'Q1', q: 'Does publishing need an account? — settled: yes, an iCloud one', b: 'Cataloguing never does, and that promise holds. But publishing needs an owner, and an Apple account gives one for free with no sign-up screen and no personal data — the user is already signed in. The prompt appears at rung 03 and reads as "this needs your iCloud so the type stays yours", not as a registration. Downloading and using types needs nothing at all.' },
+        { k: 'Q2', q: 'Is Thing visible in the type picker, or only a fallback?', b: 'Listed plainly, it is the easy choice and half the shelves become untyped mush that no feature can improve. Hidden behind "none of these fit", it is honest but two taps deeper than it should be for someone who genuinely collects miscellany. Leaning hidden, with the search box always able to reach it.' },
+        { k: 'Q3', q: 'What happens to a Thing collection when its type ships?', b: 'Migration is safe for the drafter, who chose their fields. It is less safe for the borrower who downloaded a community type and has been using it for six months. A shipped type should offer the migration and never impose it — and the old custom type stays installed until they say otherwise.' },
+        { k: 'Q4', q: 'Do community types get the 3D object?', b: 'Rule 04 gives every type a model, and the generic one gets a plain box. It is the weakest thing on the page — the box is the visual difference between a real type and a borrowed one, and that may be a feature rather than a gap. A small library of neutral forms, picked by the drafter, is the cheap middle.' },
+        { k: 'Q5', q: 'How many custom fields before it is a database?', b: 'No hard cap today. Somewhere past fifteen the add form is worse than the spreadsheet the collector left, and the app should probably say so rather than let them build the thing they were escaping. A soft warning at twelve, and the noticed-a-type prompt firing earlier for heavy field users.' }
+      ],
+
+      kinds: [
+        { tag: 'KIND 01', t: 'Some words', b: 'Free text, sorts alphabetically, searchable. The safe default when nothing else fits.', ex: 'Artist · Tour · Chain' },
+        { tag: 'KIND 02', t: 'A number', b: 'Sorts, sums, charts, and can carry a unit. The only kind that can appear on a stats screen.', ex: 'Edition size · Weight · Height' },
+        { tag: 'KIND 03', t: 'One of a list', b: 'You write the options once and then tap them. Becomes a filter chip and a group-by automatically.', ex: 'Backing · Placing · Tag era' },
+        { tag: 'KIND 04', t: 'Yes or no', b: 'A switch, and a filter. Collectors use it for the one detail that splits their shelf in half.', ex: 'Single-stitch · Signed · Sealed' }
+      ],
+
+      manifestYaml: [
+        'id: thing',
+        'name:',
+        '  singular: Thing',
+        '  plural: Things',
+        '  collection: Collection      # the user renames this immediately',
+        'mark: "00"',
+        'icon: box',
+        'gradient: [oxide, ink]',
+        '',
+        '# Same name twice = ask. Neither answer is right for everyone,',
+        '# so this is the one question the generic type must put to the user.',
+        'duplicates: ask',
+        '',
+        'spine:',
+        '  title: Name',
+        '  subtitle: Maker             # brand, artist, club, manufacturer',
+        '  year: Year',
+        '  acquired: Acquired on',
+        '  paid: Paid',
+        '  value: Value                # hideable per collection, not just globally',
+        '',
+        '# Plain words, not a grading scale. A scale is what a real type earns.',
+        'conditions: [Mint, Excellent, Good, Worn, Damaged]',
+        '',
+        'lookup:',
+        '  identifier: none',
+        '  symbologies: [ean13, upc-a]  # tried anyway — modern things do scan',
+        '  providers: [generic-barcode]',
+        '  localCorpus: none',
+        '  ocrFields: [title]           # read the words off the object, offer them',
+        '',
+        'searchable: [title, subtitle, year, series, variant, place, tags, notes]',
+        'placeLabel: Where it is',
+        'related: [subtitle, series, tags]',
+        '',
+        'fields:',
+        '  - key: variant       | Variant      | text    | colourway, edition, print',
+        '  - key: series        | Series / set | text    | groups a shelf instantly',
+        '  - key: material      | Material     | text',
+        '  - key: size          | Size         | text    | free-form on purpose',
+        '  - key: condition     | Condition    | choice  | see above',
+        '  - key: completeness  | Completeness | choice  | Loose, Boxed, Sealed',
+        '  - key: quantity      | How many     | number  | default 1, shown if > 1',
+        '  - key: tags          | Tags         | list',
+        '  - key: notes         | Notes        | text    | long-form, last in the form',
+        '',
+        '# Everything above is optional except title. The add form shows four',
+        '# fields and a Add a detail button; the rest appear as they are used.',
+        'requiredFields: [title]',
+        'customFields: true            # text | number | choice | boolean'
+      ].join('\n')
+    };
+  }
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#EAE3D6}a{color:#2B44D6}a:hover{color:#FF5B2E}</style>
+</helmet>
+
+<div style="width:1360px;margin:0 auto;padding:60px 28px 100px;font-family:Archivo,system-ui,sans-serif;color:#17130F">
+
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70">CLCTN · PLATFORM WATCH · IPHONE DUO · ASSESSED 19 SEP 2026</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:66px;line-height:.92;letter-spacing:-.045em;margin:16px 0 0;max-width:1000px;text-wrap:balance">The phone folds. The app mostly shouldn't care.</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:880px;margin-top:20px;text-wrap:pretty">Apple announced the iPhone Duo on 9 September: a book-style foldable with a 5.4″ outer display and a 7.6″ inner one, from $1,999, shipping 23 October. The right response for CLCTN is <strong>one engineering constraint and one idea parked for later</strong> — not a redesign, and not a single Duo-specific screen.</div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:880px;margin-top:14px;text-wrap:pretty">The reason this page exists rather than a Slack message: the constraint is cheap today and expensive in eighteen months. Fixed-width grids and orientation-keyed layout are the kind of debt you only discover when a device you didn't plan for makes them visible — and iPad makes them visible anyway.</div>
+
+  <div style="height:2.5px;background:#17130F;margin:44px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">00 · THE VERDICT, BEFORE THE DETAIL</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+    <sc-for list="{{ verdicts }}" as="v" hint-placeholder-count="3">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;padding:22px">
+        <div style="display:inline-block;font:500 9px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:4px 10px;background:{{ v.tone }}">{{ v.tag }}</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:23px;letter-spacing:-.02em;line-height:1.1;margin-top:14px;text-wrap:pretty">{{ v.t }}</div>
+        <div style="font:400 14px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:10px;text-wrap:pretty">{{ v.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">01 · WHAT THE DEVICE ACTUALLY IS</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:840px;margin-bottom:20px;text-wrap:pretty">Enough to reason about, no more. The number that governs the whole decision is the last one.</div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+    <sc-for list="{{ facts }}" as="f" hint-placeholder-count="8">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;padding:18px">
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">{{ f.k }}</div>
+        <div style="font-family:'DM Mono',monospace;font-weight:500;font-size:22px;letter-spacing:-.02em;margin-top:8px">{{ f.v }}</div>
+        <div style="font:400 12.5px/1.55 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">{{ f.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">02 · WHAT THE HIG ACTUALLY ASKS FOR</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:880px;margin-bottom:10px;text-wrap:pretty">Less than you'd expect, and that is the headline. Apple explicitly does <em>not</em> want a custom layout per fold angle — it names the physical positions "poses" and then tells you to ignore them. You design for two size classes and let the system's layout engine do the adapting.</div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:880px;margin-bottom:22px;text-wrap:pretty">Practically, the work is an audit rather than a build: find the places where our layout is keyed off something that isn't available width, and stop doing that.</div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;overflow:hidden;box-shadow:5px 5px 0 #17130F">
+    <div style="display:grid;grid-template-columns:230px 1fr 360px;background:#17130F;color:#F3ECE0;font:500 9.5px 'DM Mono',monospace;letter-spacing:.1em">
+      <div style="padding:13px 16px">CONCEPT</div>
+      <div style="padding:13px 16px">WHAT IT MEANS</div>
+      <div style="padding:13px 16px">WHAT IT MEANS FOR US</div>
+    </div>
+    <sc-for list="{{ hig }}" as="h" hint-placeholder-count="5">
+      <div style="display:grid;grid-template-columns:230px 1fr 360px;border-top:2px solid #E0D6C4;background:#fff;align-items:start">
+        <div style="padding:15px 16px">
+          <div style="font-family:'DM Mono',monospace;font-weight:500;font-size:15px;letter-spacing:-.01em">{{ h.name }}</div>
+          <div style="font:400 10px/1.4 'DM Mono',monospace;color:#8A7F70;margin-top:5px">{{ h.when }}</div>
+        </div>
+        <div style="padding:15px 16px;font:400 13px/1.55 Archivo,sans-serif;text-wrap:pretty">{{ h.means }}</div>
+        <div style="padding:15px 16px;font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ h.us }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">03 · THE FOUR SCREENS IT TOUCHES</div>
+  <div style="font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:840px;margin-bottom:20px;text-wrap:pretty">Of the eight screens in the prototype, four have any Duo exposure at all and only one of them is a real design question. The others are a consequence of building adaptively.</div>
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <sc-for list="{{ screens }}" as="s" hint-placeholder-count="4">
+      <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+        <div style="display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;background:#17130F;color:#F3ECE0;padding:14px 20px">
+          <div style="font:500 9.5px 'DM Mono',monospace;letter-spacing:.12em;opacity:.55">{{ s.n }}</div>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:21px;letter-spacing:-.02em">{{ s.title }}</div>
+          <div style="margin-left:auto;font:500 9px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #FFD24A;color:#FFD24A;border-radius:999px;padding:4px 10px">{{ s.effort }}</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr">
+          <div style="padding:18px 20px;border-right:2px solid #E0D6C4">
+            <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;margin-bottom:8px">FOLDED · 5.4″</div>
+            <div style="font:400 13.5px/1.6 Archivo,sans-serif;text-wrap:pretty">{{ s.folded }}</div>
+          </div>
+          <div style="padding:18px 20px;border-right:2px solid #E0D6C4">
+            <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;margin-bottom:8px">OPEN · 7.6″</div>
+            <div style="font:400 13.5px/1.6 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ s.open }}</div>
+          </div>
+          <div style="padding:18px 20px">
+            <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;margin-bottom:8px">THE TRAP</div>
+            <div style="font:400 13.5px/1.6 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ s.trap }}</div>
+          </div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">04 · THE ONE GENUINELY INTERESTING IDEA</div>
+  <div style="display:grid;grid-template-columns:1.15fr .85fr;gap:16px;align-items:start">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#0C0A08;color:#F3ECE0;padding:28px;box-shadow:5px 5px 0 #2B44D6">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;opacity:.5">TRIPOD SHELF CAPTURE · PARKED, NOT PLANNED</div>
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:34px;letter-spacing:-.03em;line-height:1.05;margin-top:14px;text-wrap:balance">The phone stands up on its own, and you step back.</div>
+      <div style="font:400 15px/1.7 Archivo,sans-serif;opacity:.82;margin-top:16px;text-wrap:pretty">The hardest photo in CLCTN is the first one: a whole bookcase, shot straight on, far enough back and steady enough that shelf segmentation has something to work with. Held in one hand at arm's length, that photo is crooked, close, and shot at whatever angle the wall allows.</div>
+      <div style="font:400 15px/1.7 Archivo,sans-serif;opacity:.82;margin-top:14px;text-wrap:pretty">A half-folded Duo stands on a table by itself, and Apple's camera work puts a live preview on the <em>outer</em> display while the high-resolution rear cameras shoot. So the collector props it up, walks to the shelf, and watches the framing from where they're standing. That is a better shelf photo than a tripod they don't own.</div>
+      <div style="height:2px;background:#2E2823;margin:22px 0"></div>
+      <div style="font:400 13.5px/1.6 Archivo,sans-serif;opacity:.5;text-wrap:pretty">Worth writing down, worth zero engineering now. It pairs with the shelf-segmentation model in <a href="21_On-Device ML Ideas.dc.html" style="color:#FFD24A">On-Device ML Ideas</a> — and if that model is ever built, this is the capture flow it deserves. Both are contingent; neither is a v1 commitment.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <sc-for list="{{ against }}" as="a" hint-placeholder-count="3">
+        <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;padding:20px">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">{{ a.k }}</div>
+          <div style="font:700 15px/1.35 Archivo,sans-serif;margin-top:8px;text-wrap:pretty">{{ a.t }}</div>
+          <div style="font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">{{ a.b }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:8px">05 · THE ACTUAL CHANGE TO MAKE — AND WHY IT ISN'T A DUO COST</div>
+  <div style="font:400 17px/1.65 Archivo,sans-serif;color:#3A2F26;max-width:880px;margin-bottom:10px;text-wrap:pretty">One paragraph into the Technical Blueprint, and nothing else. <strong>The reason it is worth doing has almost nothing to do with the Duo.</strong> "Works at any width" is one rule that buys four platforms — and three of them are ones we plausibly ship to.</div>
+  <div style="font:400 14px/1.6 Archivo,sans-serif;color:#6E6458;max-width:880px;margin-bottom:22px;text-wrap:pretty">Framed as foldable support, this is speculative work for a device nobody owns. Framed as resizability, it is the price of admission for iPad and Mac — both of which are real destinations for a cataloguing app, where a big screen genuinely serves the task. The Duo is the cheapest of the four to support because the other three already forced the work.</div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px">
+    <sc-for list="{{ payoff }}" as="p" hint-placeholder-count="4">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;box-shadow:5px 5px 0 #2B44D6;padding:20px">
+        <div style="display:flex;align-items:baseline;gap:8px">
+          <div style="font-family:'DM Mono',monospace;font-weight:500;font-size:17px;letter-spacing:-.01em">{{ p.name }}</div>
+          <div style="margin-left:auto;font:500 8.5px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:3px 8px;background:{{ p.tone }}">{{ p.odds }}</div>
+        </div>
+        <div style="font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:10px;text-wrap:pretty">{{ p.b }}</div>
+        <div style="height:2px;background:#E0D6C4;margin:14px 0"></div>
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70;margin-bottom:5px">EXTRA WORK BEYOND THE RULE</div>
+        <div style="font:400 12.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">{{ p.extra }}</div>
+      </div>
+    </sc-for>
+  </div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#0C0A08;color:#F3ECE0;padding:24px;box-shadow:5px 5px 0 #FF5B2E;overflow-x:auto">
+    <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.14em;opacity:.5;margin-bottom:16px">BLUEPRINT · LAYOUT CONSTRAINT · PROPOSED WORDING</div>
+    <div style="font:400 12.5px/1.85 'DM Mono',monospace;white-space:pre-wrap;max-width:1040px">{{ constraint }}</div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px">
+    <sc-for list="{{ steps }}" as="s" hint-placeholder-count="3">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#fff;padding:18px">
+        <div style="display:flex;align-items:baseline;gap:10px">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.12em;color:#8A7F70">{{ s.n }}</div>
+          <div style="margin-left:auto;font:500 9px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:3px 9px;background:{{ s.tone }}">{{ s.when }}</div>
+        </div>
+        <div style="font:700 15px/1.35 Archivo,sans-serif;margin-top:10px;text-wrap:pretty">{{ s.t }}</div>
+        <div style="font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">{{ s.b }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="height:2.5px;background:#17130F;margin:52px 0 26px"></div>
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.18em;color:#8A7F70;margin-bottom:14px">06 · WHAT WOULD CHANGE THIS PAGE</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <sc-for list="{{ triggers }}" as="t" hint-placeholder-count="4">
+      <div style="border:2.5px solid #17130F;border-radius:16px;background:#EAE3D6;padding:18px">
+        <div style="font:400 15px/1.5 Archivo,sans-serif;font-weight:700;text-wrap:pretty">{{ t.q }}</div>
+        <div style="font:400 13px/1.6 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">{{ t.a }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="font:400 12.5px/1.7 Archivo,sans-serif;color:#8A7F70;margin-top:44px;max-width:880px;text-wrap:pretty">Sources: Apple's <a href="https://developer.apple.com/design/human-interface-guidelines/designing-for-iphone-duo">Designing for iPhone Duo</a> HIG chapter and the 9 September newsroom announcement, plus launch press. Exact pixel dimensions and the final shape of the arrangement APIs should be treated as provisional until confirmed against the shipping SDK.</div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1416,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      verdicts: [
+        { tag: "DO NOW · ~0 COST", tone: "#B9F0C9", t: "Write the constraint down", b: "Size-class adaptive, no fixed-width grids, no orientation-keyed logic. One paragraph in the Technical Blueprint. It is iPad hygiene that happens to also be Duo support." },
+        { tag: "DO NOT", tone: "#FFD24A", t: "Design Duo screens", b: "Zero Duo-specific layouts, zero pose handling, zero mockups. Apple's own guidance is that the layout engine does this work; hand-built fold states are the thing to avoid." },
+        { tag: "PARK", tone: "#EAE3D6", t: "Tripod shelf capture", b: "The one idea that is genuinely better on a foldable, and it happens to sit on our hardest onboarding problem. A note, not a roadmap item." }
+      ],
+      facts: [
+        { k: "FORM", v: "Book fold", b: "Opens like a book rather than flipping like a clamshell. Both halves share one continuous frame." },
+        { k: "OUTER", v: "5.4″", b: "Usable closed — this is the display most Duo owners will spend most of their day on." },
+        { k: "INNER", v: "7.6″", b: "Largest display ever in an iPhone. Reads closer to a small iPad than to a phone." },
+        { k: "ASPECT", v: "Matched", b: "Both displays share an aspect ratio, so content carries across the fold without reflowing into a different shape." },
+        { k: "OS", v: "iOS 27", b: "Adapts automatically. Arrangement views and reserved-region APIs arrive in 27.1, not the initial release." },
+        { k: "SHIPS", v: "23 Oct 26", b: "Preorders opened 16 October. Announced 9 September alongside iPhone 18 Pro." },
+        { k: "PRICE", v: "$1,999+", b: "Up to $3,199 at 2TB. This is a halo device, not a volume device, for at least two product cycles." },
+        { k: "OUR USERS", v: "≈0", b: "The number that decides everything else on this page. Designing for it now is designing for a population that does not exist yet." }
+      ],
+      hig: [
+        { name: "Two size classes", when: "AVAILABLE NOW", means: "Compact width for the outer display, regular width for the inner one. The same size-class vocabulary iPhone and iPad already use — not a new axis.", us: "If the collection grid uses adaptive columns, we are already compliant. If it hardcodes three-up, that is the one line of real debt." },
+        { name: "Poses, ignored", when: "AVAILABLE NOW", means: "Apple names the physical positions — folded, open, propped, partially folded — and then tells you not to build a layout for each. Adapt to available space, not to a hinge angle.", us: "Nothing to build. Mostly this is permission to not think about it, which is the useful part." },
+        { name: "Arrangements", when: "iOS 27.1", means: "A new container between navigation and content that lays out a primary and secondary view by available space. Split behaves like an upgraded stack; overlay behaves like a ZStack that flips to side-by-side.", us: "The natural home for collection list + item detail. Not urgent, but worth knowing the shape before we commit to a push-only navigation model." },
+        { name: "Reserved regions", when: "iOS 27.1", means: "The inner display's camera is an occlusion region — it covers part of the display rather than dividing it, and only while the camera is active. Queryable like a safe area.", us: "Only matters if we ever draw a full-bleed custom camera UI. Standard containers handle it." },
+        { name: "Fold continuity", when: "AVAILABLE NOW", means: "Layout reflows live as the device opens or closes, and in-progress work is expected to survive the transition intact.", us: "The real requirement hiding in here. A half-written listing or an in-flight capture must not reset. Cheap if state lives in the store; painful to retrofit." }
+      ],
+      screens: [
+        { n: "S1", title: "Collection grid", effort: "ONE LINE, IF THAT", folded: "Two to three columns, exactly as today. The outer display is an ordinary compact-width phone screen.", open: "Four to five columns of the same cell. A collection grid is the single easiest layout to widen — more items, same cell, no new design.", trap: "A hardcoded column count. If the grid says three, the 7.6″ display shows three enormous covers and the device looks worse than the phone." },
+        { n: "S2", title: "Item detail", effort: "STRUCTURAL", folded: "Push navigation from the grid, unchanged.", open: "List on the left, detail on the right — the arrangement container's home case, and a real improvement in how the app feels to browse.", trap: "Building navigation as push-only everywhere. This degrades cleanly to push on compact if we start from a split; it does not go the other way." },
+        { n: "S3", title: "Shelf capture", effort: "PARKED", folded: "Standard capture, unchanged.", open: "Propped half-open on a table, the phone becomes its own tripod with the live preview on the outer display while the rear cameras shoot. See section 04.", trap: "Treating this as a feature request. It is contingent on shelf segmentation existing, which is itself uncommitted." },
+        { n: "S4", title: "Add / edit item", effort: "STATE, NOT LAYOUT", folded: "A form, as today.", open: "A wider form, or form plus live preview. Neither needs design work if the form is built from standard containers.", trap: "Losing a half-filled form when the user opens the phone. This is the fold-continuity requirement, and it is a state bug rather than a layout one." }
+      ],
+      against: [
+        { k: "THE CASE AGAINST", t: "Nobody has one", b: "At $1,999, Duo owners will be a fraction of a percent of our addressable users through the whole of year one. Building for them first is building for a demo." },
+        { k: "THE CASE AGAINST", t: "It needs a model we haven't built", b: "Tripod capture is only worth anything if shelf segmentation turns that photo into items. Without it, it is a nicer way to take a photo nobody parses." },
+        { k: "THE CASE FOR", t: "It is free to write down", b: "Costing nothing now, it means that if shelf segmentation ever ships, the capture flow already has a best-case device story instead of starting from scratch." }
+      ],
+      payoff: [
+        { name: "iPad", odds: "LIKELY", tone: "#B9F0C9", b: "A cataloguing app is a big-screen app. Browsing a thousand items, bulk-editing metadata, reconciling a CSV import — all of it is better on a 13″ screen than a phone, and iPad is a free target from a SwiftUI codebase.", extra: "Pointer and keyboard affordances. Sidebar navigation, which the split-view rule already gives us." },
+        { name: "Mac", odds: "PLAUSIBLE", tone: "#B9F0C9", b: "Designed for iPad runs on Apple silicon with no extra project; Catalyst is a checkbox. A resizable window is the entire requirement, and arbitrary window sizes are a stricter test than any fold state.", extra: "Menu bar, window restoration, drag-and-drop from Finder — the CSV import gets much better here." },
+        { name: "Dynamic Type", odds: "REQUIRED", tone: "#FFD24A", b: "Not optional and not a platform — an accessibility obligation. At the largest sizes a fixed three-up grid breaks exactly the way a foldable breaks it, on hardware every user already owns.", extra: "None. Adaptive columns and flexible containers are the whole fix." },
+        { name: "iPhone Duo", odds: "RARE", tone: "#EAE3D6", b: "The device that prompted the page, and the least important of the four. It arrives free once the other three are handled, which is the correct order to think about it in.", extra: "Fold-continuity state preservation. Genuinely Duo-specific, and about a day of work." }
+      ],
+      constraint: [
+        "LAYOUT",
+        "",
+        "  · Adapt to size class and available width. Never to device model,",
+        "    never to orientation, never to a hardcoded screen dimension.",
+        "  · Grids declare a minimum cell width and let the column count fall out.",
+        "    No fixed column counts anywhere.",
+        "  · List-plus-detail is built as a split that collapses to push on compact —",
+        "    not as push that someone widens later.",
+        "  · In-progress state (draft listing, active capture, scroll position, selection)",
+        "    survives any layout change, including a live fold transition.",
+        "",
+        "  Consequence: iPad, Split View, Dynamic Type at large sizes and iPhone Duo",
+        "  are all handled by the same rule. None of them is a separate workstream."
+      ].join("\n"),
+      steps: [
+        { n: "STEP 01", when: "THIS WEEK", tone: "#B9F0C9", t: "Paste the constraint into the blueprint", b: "Under the architecture section, next to the existing platform commitments — filed as a resizability rule, not as foldable support. Five minutes, and it is the entire deliverable of this page." },
+        { n: "STEP 02", when: "AT BUILD", tone: "#FFD24A", t: "Audit the grid and the navigation", b: "Two specific things to check when the SwiftUI views are written: adaptive columns, and a split that collapses. Everything else follows." },
+        { n: "STEP 03", when: "IF SEGMENTATION SHIPS", tone: "#EAE3D6", t: "Revisit tripod capture", b: "Only then. Re-read section 04, check what the shipping SDK actually exposes for outer-display preview, and decide with a real device in hand." }
+      ],
+      triggers: [
+        { q: "Duo sells far better than expected", a: "Unlikely at this price, but if foldables become 5% of new iPhones by mid-2027, the split-view work moves from nice-to-have to expected. The constraint in step 01 is what makes that a week rather than a quarter." },
+        { q: "Shelf segmentation gets built", a: "Section 04 stops being a parked note and becomes a real capture-flow question. It is the only path by which this page produces a feature." },
+        { q: "Apple ships a cheaper foldable", a: "A second-generation device at iPhone Pro pricing changes the install-base maths entirely. Worth re-reading this page at the autumn 2027 event, not before." },
+        { q: "We build an iPad app", a: "Then every adaptive-layout item here is already required, Duo or not — and this page becomes redundant, which is the ideal outcome." }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#EAE3D6}
+a{color:#2B44D6}a:hover{color:#FF5B2E}
+</style>
+</helmet>
+
+<div style="width:1100px;margin:0 auto;padding:0 0 90px;font-family:Archivo,system-ui,sans-serif;color:#17130F">
+
+<div style="padding:60px 0 40px;border-bottom:2px solid rgba(23,19,15,.12)">
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#8A7F70;margin-bottom:12px">Funding · August 2026</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:62px;line-height:.92;letter-spacing:-.04em;max-width:900px">Money, yes.<br>Investors, no.</div>
+  <p style="max-width:780px;font:400 17px/1.6 Archivo,sans-serif;color:#3A2F26;margin:22px 0 14px;text-wrap:pretty">The right question isn't "should I raise" — it's "what would money buy that I can't get by shipping?" For this app the honest list is short, cheap, and almost entirely coverable without giving away a single share. That's not a limitation. It's the best position a founder can be in.</p>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#FFD24A;padding:22px 24px;box-shadow:5px 5px 0 #17130F;max-width:880px;margin:8px 0 20px">
+    <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:27px;line-height:1.12;letter-spacing:-.02em;text-wrap:pretty">Everything on the shopping list costs about €20k. A thousand founding unlocks at €19.99 nets you roughly €17k. The app pays for its own expansion — which means the only real fundraise you need is <em>shipping</em>.</div>
+  </div>
+  <p style="max-width:760px;font:400 13px/1.6 Archivo,sans-serif;color:#6E6458;margin:0;text-wrap:pretty">French scheme figures below were checked in August 2026 and change with each finance law. Treat them as directional and confirm with your regional Bpifrance and an accountant before building a plan on them.</p>
+</div>
+
+<div style="padding:46px 0 40px;border-bottom:2px solid rgba(23,19,15,.12)">
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#8A7F70;margin-bottom:12px">01 · the case against equity</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:34px;line-height:1;letter-spacing:-.03em;margin:0 0 8px">A seed round would break<br>the thing that makes this work</div>
+  <p style="max-width:780px;font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;margin:0 0 22px;text-wrap:pretty">This isn't caution or modesty. Venture money has a shape, and forcing this business into it would destroy the four advantages the competition read just spent forty listings establishing.</p>
+
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;padding:18px 20px">
+      <div style="font:700 17px Archivo,sans-serif;letter-spacing:-.01em;margin-bottom:9px">The numbers don't fit, and that's fine</div>
+      <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Your base case is €24k, then €69k, then €128k. That is a genuinely good independent business and a catastrophic venture bet — a fund needs a path to a hundred million, and there isn't one here that doesn't involve becoming a different company. Pitching it would mean either lying about the ceiling or being told no by people who were right.</div>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;padding:18px 20px">
+      <div style="font:700 17px Archivo,sans-serif;letter-spacing:-.01em;margin-bottom:9px">Investors would demand the model you rejected</div>
+      <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">The first thing any board asks a one-time-purchase app is why it isn't a subscription. The second is why the marketplace doesn't take a percentage. Your entire differentiation — buy once, no account, no server, no rent on your own shelf — is precisely what growth capital exists to convert into recurring revenue.</div>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;padding:18px 20px">
+      <div style="font:700 17px Archivo,sans-serif;letter-spacing:-.01em;margin-bottom:9px">There's almost nothing to burn money on</div>
+      <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">No servers, no accounts, no infrastructure — the data lives in the user's iCloud by design. API calls are metered and passed through. You are the engineering team. A funded competitor's main advantage is usually runway to absorb costs; you barely have costs to absorb.</div>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#0E6E5E;color:#F3ECE0;box-shadow:5px 5px 0 #17130F;padding:18px 20px">
+      <div style="font:700 17px Archivo,sans-serif;letter-spacing:-.01em;margin-bottom:9px">And nothing is proven yet</div>
+      <div style="font:400 13.5px/1.55 Archivo,sans-serif;text-wrap:pretty">Zero ratings, zero users, no evidence that first sessions reach ten objects. Raising now means selling the story at its cheapest and buying things you can't yet use — you don't know which market, which feature, or which price is right. Six months of shipping makes every subsequent conversation cheaper, if you still want one.</div>
+    </div>
+  </div>
+</div>
+
+<div style="padding:46px 0 40px;border-bottom:2px solid rgba(23,19,15,.12)">
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#8A7F70;margin-bottom:12px">02 · the shopping list</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:34px;line-height:1;letter-spacing:-.03em;margin:0 0 8px">What money would actually buy</div>
+  <p style="max-width:780px;font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;margin:0 0 22px;text-wrap:pretty">Rough French market rates, ordered by how much they change the outcome. Write your own numbers over mine — the point is the shape, and the shape is small.</p>
+
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+    <div style="display:grid;grid-template-columns:1.5fr 92px 2.3fr 118px;background:#17130F;color:#F3ECE0;font:500 9px 'DM Mono',monospace;letter-spacing:.13em">
+      <div style="padding:11px 14px">WHAT</div>
+      <div style="padding:11px 10px">ROUGH COST</div>
+      <div style="padding:11px 12px">WHY IT'S WORTH IT, OR ISN'T</div>
+      <div style="padding:11px 12px">WHEN</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1.5fr 92px 2.3fr 118px;border-bottom:2px solid rgba(23,19,15,.12);background:#EDE4D6">
+      <div style="padding:12px 14px;font:700 13.5px Archivo,sans-serif">Native German copy</div>
+      <div style="padding:12px 10px;font:700 13px 'DM Mono',monospace">€2–3k</div>
+      <div style="padding:12px;font:400 12.5px/1.45 Archivo,sans-serif;color:#3A2F26">Store listing, onboarding, object pages, written by a person. The segment leader sits at 4.4★ in Germany precisely because nobody did this. Highest return per euro on the whole list.</div>
+      <div style="padding:12px;font:600 12px Archivo,sans-serif;color:#0E6E5E">Launch + 3 months</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1.5fr 92px 2.3fr 118px;border-bottom:2px solid rgba(23,19,15,.12)">
+      <div style="padding:12px 14px;font:700 13.5px Archivo,sans-serif">Store screenshots &amp; preview video</div>
+      <div style="padding:12px 10px;font:700 13px 'DM Mono',monospace">€0–4k</div>
+      <div style="padding:12px;font:400 12.5px/1.45 Archivo,sans-serif;color:#3A2F26">In a segment of identical templates, three screenshots carry the whole craft argument. You may well be able to do this yourself — but it is the last thing to do badly.</div>
+      <div style="padding:12px;font:600 12px Archivo,sans-serif;color:#FF5B2E">Before launch</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1.5fr 92px 2.3fr 118px;border-bottom:2px solid rgba(23,19,15,.12);background:#EDE4D6">
+      <div style="padding:12px 14px;font:700 13.5px Archivo,sans-serif">Import connectors</div>
+      <div style="padding:12px 10px;font:700 13px 'DM Mono',monospace">€0 or €10k</div>
+      <div style="padding:12px;font:400 12.5px/1.45 Archivo,sans-serif;color:#3A2F26">The most valuable feature in the plan. Free if you build it, roughly a month of contracted work if you don't. This is the one line where buying time might genuinely be worth it.</div>
+      <div style="padding:12px;font:600 12px Archivo,sans-serif;color:#FF5B2E">Before launch</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1.5fr 92px 2.3fr 118px;border-bottom:2px solid rgba(23,19,15,.12)">
+      <div style="padding:12px 14px;font:700 13.5px Archivo,sans-serif">Company, legal, accountant</div>
+      <div style="padding:12px 10px;font:700 13px 'DM Mono',monospace">€1–2k</div>
+      <div style="padding:12px;font:400 12.5px/1.45 Archivo,sans-serif;color:#3A2F26">Unavoidable, and it's also the key to every non-dilutive scheme in section 03 — none of them will talk to a person without a registered company.</div>
+      <div style="padding:12px;font:600 12px Archivo,sans-serif;color:#FF5B2E">Before launch</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1.5fr 92px 2.3fr 118px;border-bottom:2px solid rgba(23,19,15,.12);background:#EDE4D6">
+      <div style="padding:12px 14px;font:700 13.5px Archivo,sans-serif">Data &amp; API costs</div>
+      <div style="padding:12px 10px;font:700 13px 'DM Mono',monospace">€200–500/mo</div>
+      <div style="padding:12px;font:400 12.5px/1.45 Archivo,sans-serif;color:#3A2F26">Metered by design and passed through to the user, so this scales with revenue rather than ahead of it. The credits meter exists exactly so this line can never hurt you.</div>
+      <div style="padding:12px;font:600 12px Archivo,sans-serif;color:#8A7F70">Ongoing</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1.5fr 92px 2.3fr 118px;border-bottom:2px solid rgba(23,19,15,.12)">
+      <div style="padding:12px 14px;font:700 13.5px Archivo,sans-serif">Italian copy</div>
+      <div style="padding:12px 10px;font:700 13px 'DM Mono',monospace">€2–3k</div>
+      <div style="padding:12px;font:400 12.5px/1.45 Archivo,sans-serif;color:#3A2F26">Third market in Europe on demand, no strong localised rival. Cheap, but only after you know whether a second language pays for itself at all.</div>
+      <div style="padding:12px;font:600 12px Archivo,sans-serif;color:#8A7F70">After Germany</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1.5fr 92px 2.3fr 118px">
+      <div style="padding:12px 14px;font:700 13.5px Archivo,sans-serif">Paid acquisition test</div>
+      <div style="padding:12px 10px;font:700 13px 'DM Mono',monospace">€3–5k</div>
+      <div style="padding:12px;font:400 12.5px/1.45 Archivo,sans-serif;color:#3A2F26">Only once organic sessions prove out. Buying installs into an onboarding that doesn't convert is the single most reliable way to spend a grant on nothing.</div>
+      <div style="padding:12px;font:600 12px Archivo,sans-serif;color:#8A7F70">Conditional</div>
+    </div>
+  </div>
+
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#17130F;color:#F3ECE0;box-shadow:5px 5px 0 #17130F;padding:20px 24px;margin-top:18px">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center">
+      <div>
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#B9AC99;margin-bottom:8px">EVERYTHING, INCLUDING THE OPTIONAL LINES</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:40px;line-height:1;letter-spacing:-.03em">≈ €20k</div>
+        <div style="font:400 13px/1.5 Archivo,sans-serif;opacity:.85;margin-top:8px;text-wrap:pretty">Spread across eighteen months, and more than half of it conditional on the previous step working.</div>
+      </div>
+      <div>
+        <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#B9AC99;margin-bottom:8px">WHAT 1,000 FOUNDING UNLOCKS NET YOU</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:40px;line-height:1;letter-spacing:-.03em;color:#FFD24A">≈ €17k</div>
+        <div style="font:400 13px/1.5 Archivo,sans-serif;opacity:.85;margin-top:8px;text-wrap:pretty">€19.99 × 1,000, after Apple's 15%. The first rung of your own price ladder is the round.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="padding:46px 0 40px;border-bottom:2px solid rgba(23,19,15,.12)">
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#8A7F70;margin-bottom:12px">03 · where it comes from</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:34px;line-height:1;letter-spacing:-.03em;margin:0 0 8px">France is unusually generous<br>to exactly this situation</div>
+  <p style="max-width:800px;font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;margin:0 0 22px;text-wrap:pretty">A solo founder designing and prototyping a new product is the precise profile these schemes were written for. Ordered by effort-to-money ratio, not by headline amount. All of them require a registered company, and all of them interact — a grant received reduces the base your tax credit is calculated on, so sequence them with an accountant rather than collecting them blindly.</p>
+
+  <div style="display:flex;flex-direction:column;gap:16px">
+
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+      <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:2.5px solid #17130F;background:#EDE4D6">
+        <div style="flex:none;width:30px;height:30px;border:2.5px solid #17130F;border-radius:8px;display:flex;align-items:center;justify-content:center;font:700 13px Archivo,sans-serif;background:#FFD24A">01</div>
+        <div style="font:700 18px Archivo,sans-serif;letter-spacing:-.01em">Prêt d'honneur — Initiative France or Réseau Entreprendre</div>
+        <div style="margin-left:auto;font:500 10px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:5px 10px;background:#fff">START HERE</div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap">
+        <div style="flex:1 1 320px;min-width:300px;padding:14px 16px;border-right:2px solid rgba(23,19,15,.12)">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px">WHAT IT IS</div>
+          <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">An interest-free personal loan, no guarantee, no equity, typically in the ten-to-fifty-thousand range depending on network and region. It usually unlocks bank credit alongside it, because a bank reads it as validation.</div>
+        </div>
+        <div style="flex:1 1 260px;min-width:250px;padding:14px 16px">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px">WHY FIRST</div>
+          <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">The application is a real but human process, the acceptance rate is far friendlier than a grant, and the mentoring that comes with it is worth as much as the money to someone building alone. Lowest cost to try of anything here.</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+      <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:2.5px solid #17130F;background:#EDE4D6">
+        <div style="flex:none;width:30px;height:30px;border:2.5px solid #17130F;border-radius:8px;display:flex;align-items:center;justify-content:center;font:700 13px Archivo,sans-serif;background:#2B44D6;color:#F3ECE0">02</div>
+        <div style="font:700 18px Archivo,sans-serif;letter-spacing:-.01em">Crédit d'Impôt Innovation (CII)</div>
+        <div style="margin-left:auto;font:500 10px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:5px 10px;background:#fff">THE ENGINE</div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap">
+        <div style="flex:1 1 320px;min-width:300px;padding:14px 16px;border-right:2px solid rgba(23,19,15,.12)">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px">WHAT IT IS</div>
+          <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">A tax credit reserved for SMEs, covering the design and prototyping of a genuinely new product. The rate dropped from 30% to 20% in metropolitan France for spending from 2025, on up to €400k of eligible spend a year, and the scheme currently runs to the end of 2027. SMEs get the excess refunded immediately rather than carried forward — so it behaves like cash, not like a deduction.</div>
+        </div>
+        <div style="flex:1 1 260px;min-width:250px;padding:14px 16px">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px">WHY IT FITS YOU EXACTLY</div>
+          <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">It is written for prototyping and designing a new product, which is literally what forty-five screens and a 3D shelf interaction are. Keep the design documents — they're your technical dossier. A <em>rescrit fiscal</em> gets the tax authority to confirm eligibility in advance, and silence for three months counts as agreement.</div>
+        </div>
+      </div>
+      <div style="border-top:2.5px solid #17130F;padding:12px 16px;font:700 13.5px/1.5 Archivo,sans-serif;background:#0E6E5E;color:#F3ECE0;text-wrap:pretty">This is the one to set up properly, because it pays every year you keep designing — and it's the most audited family of schemes in France, so the dossier has to be real.</div>
+    </div>
+
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden">
+      <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:2.5px solid #17130F;background:#EDE4D6">
+        <div style="flex:none;width:30px;height:30px;border:2.5px solid #17130F;border-radius:8px;display:flex;align-items:center;justify-content:center;font:700 13px Archivo,sans-serif;background:#FF5B2E;color:#F3ECE0">03</div>
+        <div style="font:700 18px Archivo,sans-serif;letter-spacing:-.01em">Bourse French Tech — Bpifrance</div>
+        <div style="margin-left:auto;font:500 10px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:5px 10px;background:#fff">LOTTERY TICKET</div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap">
+        <div style="flex:1 1 320px;min-width:300px;padding:14px 16px;border-right:2px solid rgba(23,19,15,.12)">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px">WHAT IT IS</div>
+          <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">A grant — no equity, no repayment — covering roughly half to seventy per cent of eligible early spend. Sources quote the ceiling at anywhere between €30k and €50k with typical awards around €30k, which tells you it varies by region. Company under a year old, applications open all year through your regional Bpifrance.</div>
+        </div>
+        <div style="flex:1 1 260px;min-width:250px;padding:14px 16px">
+          <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:7px">THE HONEST CAVEAT</div>
+          <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Roughly one application in ten succeeds, and instruction takes one to four months. Apply, but never plan around it — and note the under-one-year window means the clock starts when you register the company, which is an argument for not registering too early.</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#EDE4D6;box-shadow:5px 5px 0 #17130F;padding:18px 20px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:11px">WORTH KNOWING, LOWER PRIORITY</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;font:400 13px/1.55 Archivo,sans-serif;color:#3A2F26">
+        <div><strong>Regional aid.</strong> Every Région runs its own innovation subsidies, and they are far less competitive than the national ones. Ask yours directly — this is a phone call, not a dossier.</div>
+        <div><strong>ACRE and JEI.</strong> Social-charge relief at creation, and the Jeune Entreprise Innovante status. Both matter once you pay yourself or hire; largely academic while you're solo and unpaid. ACRE's terms were reduced in mid-2026 — check what applies to your creation date.</div>
+        <div><strong>The de minimis ceiling.</strong> Public aid is capped around €300k over three rolling years, and grants are deducted from your CII base. Nowhere near a constraint at your scale, but it's why you sequence rather than stack.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div style="padding:46px 0 40px;border-bottom:2px solid rgba(23,19,15,.12)">
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#8A7F70;margin-bottom:12px">04 · the round you already designed</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:34px;line-height:1;letter-spacing:-.03em;margin:0 0 8px">Your price ladder is a fundraise<br>and you may not have noticed</div>
+  <p style="max-width:800px;font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;margin:0 0 22px;text-wrap:pretty">€19.99 for the first thousand unlocks, then €24.99, then €29.99. Read it as pricing and it's a launch promotion. Read it as financing and it's a thousand people pre-paying for a product, at a discount, in exchange for being early — with no dilution, no board, no dossier, and no interest.</p>
+
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:18px">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#0E6E5E;color:#F3ECE0;box-shadow:5px 5px 0 #17130F;padding:16px 18px">
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:26px;line-height:1.05;letter-spacing:-.02em;margin-bottom:8px">It's the cheapest capital there is</div>
+      <div style="font:400 13.5px/1.55 Archivo,sans-serif;text-wrap:pretty">The "cost" is €10 per unit of forgone price on the first thousand — about €10k of discount, in exchange for roughly €17k of cash and a founding cohort who will tell you what's wrong. No investor sells money that cheaply.</div>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;padding:16px 18px">
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:26px;line-height:1.05;letter-spacing:-.02em;margin-bottom:8px">It is also the proof any funder wants</div>
+      <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">A thousand strangers paying €19.99 for a French app with no marketing is a stronger dossier than any projection. Bpifrance, a prêt d'honneur committee and a future investor all read the same line — and you get it by shipping, not by pitching.</div>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;padding:16px 18px">
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:26px;line-height:1.05;letter-spacing:-.02em;margin-bottom:8px">So sequence the money behind it</div>
+      <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">Ship, sell the first tier, then apply for everything with real numbers in hand. Applying before launch means describing an idea; applying after means presenting a business. The second conversation is a different conversation entirely.</div>
+    </div>
+  </div>
+
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#FFD24A;box-shadow:5px 5px 0 #17130F;padding:18px 20px">
+    <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#7A6420;margin-bottom:10px">THE ONE THING THAT ISN'T FUNDABLE, AND MATTERS MOST</div>
+    <div style="font:400 14px/1.6 Archivo,sans-serif;color:#17130F;max-width:860px;text-wrap:pretty">Your scarce resource is not cash, it's your own hours. If you have a job, "funding" really means buying months of your own time — and a prêt d'honneur plus a CII refund does that better than equity ever could, because neither one obliges you to grow at a speed the product doesn't need. Work out what six focused months would cost you in lost income. That number, not the shopping list, is the real question.</div>
+  </div>
+</div>
+
+<div style="padding:46px 0 10px">
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#8A7F70;margin-bottom:12px">05 · when this advice expires</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:34px;line-height:1;letter-spacing:-.03em;margin:0 0 20px">Two things would change<br>the answer to yes</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#2B44D6;color:#F3ECE0;box-shadow:5px 5px 0 #17130F;padding:18px 20px">
+      <div style="font:700 17px Archivo,sans-serif;margin-bottom:9px">The institutions turn out to be the business</div>
+      <div style="font:400 13.5px/1.55 Archivo,sans-serif;text-wrap:pretty">If tool libraries, recycleries and clubs convert at €29/mo invoiced, that is recurring B2B revenue with no competitor anywhere on four national lists — expandable, defensible, and a genuinely fundable shape. It's also a different company with a sales function. If that line outgrows the consumer app, revisit this page from the top.</div>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;padding:18px 20px">
+      <div style="font:700 17px Archivo,sans-serif;margin-bottom:9px">The register becomes infrastructure</div>
+      <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">If the offer index gets deep enough that people search it habitually, and the introduction fee starts compounding, you'd have a network rather than an app — and networks are worth funding because capital genuinely accelerates them. You will know from the numbers, and not before.</div>
+    </div>
+  </div>
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#17130F;color:#F3ECE0;padding:20px 24px;box-shadow:5px 5px 0 #17130F">
+    <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:25px;line-height:1.14;letter-spacing:-.02em;text-wrap:pretty">Until then: register the company, apply for a prêt d'honneur, set up the CII properly, ship, and sell the first thousand unlocks. That's a funding plan, and it doesn't cost you a single share of the thing you've spent all this time getting right.</div>
+  </div>
+</div>
+
+<div style="padding:46px 0 10px;border-top:2px solid rgba(23,19,15,.12)">
+  <div style="font:500 10px 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#8A7F70;margin-bottom:12px">06 · fj labs, or a simple life</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:34px;line-height:1;letter-spacing:-.03em;margin:0 0 8px">Right kind of investor.<br>Wrong shape of company — for now.</div>
+  <p style="max-width:820px;font:400 15px/1.6 Archivo,sans-serif;color:#3A2F26;margin:0 0 22px;text-wrap:pretty">FJ Labs is a good instinct: they are the least damaging kind of fund on the board. But their strategy is unusually explicit, and read against this app it disqualifies the current design on one line and welcomes a future version on another. Worth knowing which is which before you ever write the email.</p>
+
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:4px 4px 0 #17130F;padding:16px 18px">
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:30px;line-height:1;letter-spacing:-.03em">70%</div>
+      <div style="font:400 13px/1.5 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">of their deals are marketplaces. It is the whole thesis, not a preference — hardware, AI and anything without a marketplace component is filtered out before a human reads it.</div>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:4px 4px 0 #17130F;padding:16px 18px">
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:30px;line-height:1;letter-spacing:-.03em">~3%</div>
+      <div style="font:400 13px/1.5 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">of what they evaluate gets funded — roughly 40–50 deals looked at every week. High volume, low hit rate, and they tell you no quickly and with reasons.</div>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:4px 4px 0 #17130F;padding:16px 18px">
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:30px;line-height:1;letter-spacing:-.03em">$220k</div>
+      <div style="font:400 13px/1.5 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">typical pre-seed check, $390k at seed, averaging around $400k. They never lead, never take a board seat, and size themselves next to whoever does.</div>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:4px 4px 0 #17130F;padding:16px 18px">
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:30px;line-height:1;letter-spacing:-.03em">2 calls</div>
+      <div style="font:400 13px/1.5 Archivo,sans-serif;color:#3A2F26;margin-top:8px;text-wrap:pretty">over one to two weeks, then a decision. Fabrice Grinda is French and a quarter of the portfolio is European, so nothing about your geography is an obstacle.</div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#FF5B2E;color:#F3ECE0;box-shadow:5px 5px 0 #17130F;padding:18px 20px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;margin-bottom:9px">WHY THEY'D PASS ON WHAT YOU'RE BUILDING TODAY</div>
+      <div style="font:700 17px Archivo,sans-serif;margin-bottom:9px">Their core expertise is a question your product answers with "none"</div>
+      <div style="font:400 13.5px/1.55 Archivo,sans-serif;text-wrap:pretty">The help they advertise is marketplace dynamics: start with supply or demand, should the rake be 1%, 5%, 15% or 50%, which side pays it. CLCTN is a one-time purchase with no rake, no counterparty and no liquidity to engineer. A pass here isn't a judgement on the app — it's them reading their own thesis correctly.</div>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#0E6E5E;color:#F3ECE0;box-shadow:5px 5px 0 #17130F;padding:18px 20px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;margin-bottom:9px">AND WHY EVEN A FRIENDLY FUND CHANGES THE GOAL</div>
+      <div style="font:700 17px Archivo,sans-serif;margin-bottom:9px">They make their money on exits, and they sell the winners</div>
+      <div style="font:400 13.5px/1.55 Archivo,sans-serif;text-wrap:pretty">Their returns are a power law: a few companies pay for hundreds, and they routinely sell half a position in a secondary to recycle cash. Nothing about that is hostile, but it needs an exit, and a business that quietly pays you €128k a year forever is a zero in that maths. No board seat still means one shareholder whose only path to return is you selling.</div>
+    </div>
+  </div>
+
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#EDE4D6;box-shadow:5px 5px 0 #17130F;padding:18px 20px;margin-bottom:18px">
+    <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:9px">THE VERSION OF THIS COMPANY THEY WOULD ACTUALLY WANT</div>
+    <div style="font:400 14px/1.6 Archivo,sans-serif;color:#3A2F26;max-width:900px;text-wrap:pretty">It already exists in your own documents. The offer register with an introduction fee, and the institutional tier, are the two lines that turn a catalogue into a two-sided market with a take rate — which is precisely and only what FJ Labs buys. If that line ever outgrows the app, they become one of the best first calls in Europe: a decision in two weeks, no board seat, no lead, real pattern recognition on rake design, and roughly a hundred VC deal-flow calls a year to introduce you onward. Until then there is nothing to send them, and sending it early just spends the one shot you have on a company you weren't building yet.</div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px">
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;padding:18px 20px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:9px">FUTURE A · THE MARKETPLACE</div>
+      <div style="font:700 17px Archivo,sans-serif;margin-bottom:9px">You build the register, and it works</div>
+      <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty">A second side to acquire, moderation, fraud, payouts, support — a company with employees and a sales function, growing at a speed set partly by other people. It is the only version where outside money is genuinely accretive rather than decorative. Choose it because you want that company, never because the funding is available.</div>
+    </div>
+    <div style="border:2.5px solid #17130F;border-radius:18px;background:#FFD24A;box-shadow:5px 5px 0 #17130F;padding:18px 20px">
+      <div style="font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#7A6420;margin-bottom:9px">FUTURE B · THE SIMPLE LIFE</div>
+      <div style="font:700 17px Archivo,sans-serif;margin-bottom:9px">The base case already pays for it in year two</div>
+      <div style="font:400 13.5px/1.55 Archivo,sans-serif;color:#17130F;text-wrap:pretty">At €19.99 you keep about €17 after Apple. A modest French salary plus company charges is roughly €40k of revenue a year — call it 2,400 unlocks, near enough seven a day. Your own base case crosses that between year one and year two, and year three's €128k is comfortable. The number you have to hit is small, and you already wrote it down.</div>
+    </div>
+  </div>
+
+  <div style="border:2.5px solid #17130F;border-radius:18px;background:#17130F;color:#F3ECE0;padding:20px 24px;box-shadow:5px 5px 0 #17130F">
+    <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:25px;line-height:1.14;letter-spacing:-.02em;text-wrap:pretty;max-width:960px">The two futures share their first eighteen months exactly: ship, sell the first thousand unlocks, see whether the register gets used. Nothing you'd do to please FJ Labs is different from what you'd do to pay for a quiet life — so don't decide now. Decide when the register either has traffic or doesn't.</div>
+  </div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {}
+</script>
+</body>
+</html>

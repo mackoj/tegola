@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#EAE3D6}
+a{color:#2B44D6}a:hover{color:#FF5B2E}
+.mp-page{width:1120px;margin:0 auto;padding:0 0 90px;font-family:Archivo,system-ui,sans-serif;color:#17130F}
+.mp-sec{padding:46px 0 40px;border-bottom:2px solid rgba(23,19,15,.12)}
+.mp-lab{font:500 10px 'DM Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#8A7F70;margin-bottom:12px}
+.mp-h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:34px;line-height:1;letter-spacing:-.03em;margin:0 0 18px}
+.mp-h3{font:700 15px Archivo,sans-serif;margin:28px 0 10px}
+.mp-p{max-width:730px;font:400 15px/1.65 Archivo,sans-serif;color:#3A2F26;margin:0 0 14px;text-wrap:pretty}
+.mp-note{max-width:760px;font:400 13px/1.6 Archivo,sans-serif;color:#6E6458;margin:0 0 14px;text-wrap:pretty}
+.mp-big{border:2.5px solid #17130F;border-radius:18px;padding:20px 22px;box-shadow:5px 5px 0 #17130F;max-width:840px;margin:6px 0 18px}
+.mp-bigt{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:26px;line-height:1.12;letter-spacing:-.02em;text-wrap:pretty}
+.mp-rail{display:flex;gap:0;margin:22px 0 8px;border:2.5px solid #17130F;border-radius:16px;overflow:hidden;box-shadow:5px 5px 0 #17130F;background:#fff}
+.mp-rc{flex:1;padding:13px 13px;border-right:2px solid rgba(23,19,15,.14)}
+.mp-rk{font:500 9px 'DM Mono',monospace;letter-spacing:.11em;color:#8A7F70;margin-bottom:6px}
+.mp-rn{font:700 14px Archivo,sans-serif;margin-bottom:5px;line-height:1.2}
+.mp-rv{font:400 11.5px/1.45 Archivo,sans-serif;color:#6E6458;text-wrap:pretty}
+.mp-ph{border:2.5px solid #17130F;border-radius:18px;background:#fff;box-shadow:5px 5px 0 #17130F;overflow:hidden;margin-bottom:16px}
+.mp-phd{display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:2.5px solid #17130F;background:#EDE4D6;flex-wrap:wrap}
+.mp-pb{flex:none;width:34px;height:34px;border:2.5px solid #17130F;border-radius:9px;display:flex;align-items:center;justify-content:center;font:700 12px 'DM Mono',monospace}
+.mp-pn{font:700 18px Archivo,sans-serif;letter-spacing:-.01em}
+.mp-ptag{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.mp-tag{font:500 9px 'DM Mono',monospace;letter-spacing:.1em;border:2px solid #17130F;border-radius:999px;padding:4px 8px;background:#fff;white-space:nowrap}
+.mp-pbody{display:flex;flex-wrap:wrap}
+.mp-cell{flex:1 1 290px;min-width:280px;padding:14px 16px;border-right:2px solid rgba(23,19,15,.12)}
+.mp-ck{font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#8A7F70;margin-bottom:8px}
+.mp-cv{font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;text-wrap:pretty}
+.mp-li{display:flex;gap:9px;align-items:flex-start;font:400 13px/1.5 Archivo,sans-serif;margin-bottom:8px;text-wrap:pretty}
+.mp-gl{flex:none;font:700 11px 'DM Mono',monospace;margin-top:2px}
+.mp-gate{border-top:2.5px solid #17130F;padding:13px 16px;background:#17130F;color:#F3ECE0}
+.mp-gk{font:500 9px 'DM Mono',monospace;letter-spacing:.13em;color:#FFD24A;margin-bottom:7px}
+.mp-gv{font:700 13.5px/1.45 Archivo,sans-serif;text-wrap:pretty}
+.mp-cards{display:flex;flex-wrap:wrap;gap:14px;margin:18px 0 6px}
+.mp-card{flex:1 1 320px;min-width:300px;border:2.5px solid #17130F;border-radius:16px;padding:15px 16px;background:#fff;box-shadow:4px 4px 0 #17130F}
+.mp-cn{font:700 16px Archivo,sans-serif;margin-bottom:7px}
+.mp-tbl{border:2.5px solid #17130F;border-radius:16px;overflow:hidden;margin:16px 0 8px;background:#fff;box-shadow:5px 5px 0 #17130F}
+.mp-tr{display:flex;border-bottom:2px solid rgba(23,19,15,.12)}
+.mp-th{background:#17130F;color:#F3ECE0}
+.mp-tk{font:500 9px 'DM Mono',monospace;letter-spacing:.13em}
+.mp-t1{flex:0 0 150px;padding:11px 13px;font:500 11.5px/1.4 'DM Mono',monospace;border-right:2px solid rgba(23,19,15,.1)}
+.mp-t2{flex:1 1 250px;padding:11px 13px;font:700 13px/1.4 Archivo,sans-serif;border-right:2px solid rgba(23,19,15,.1)}
+.mp-t3{flex:1 1 330px;padding:11px 13px;font:400 12.5px/1.45 Archivo,sans-serif;text-wrap:pretty}
+.mp-week{display:flex;gap:14px;align-items:flex-start;margin-bottom:14px}
+.mp-wn{flex:none;width:38px;height:38px;border:2.5px solid #17130F;border-radius:999px;background:#FFD24A;display:flex;align-items:center;justify-content:center;font:700 12px 'DM Mono',monospace}
+.mp-wb{flex:1}
+.mp-wt{font:700 15px Archivo,sans-serif;margin-bottom:4px}
+.mp-wv{font:400 13.5px/1.55 Archivo,sans-serif;color:#3A2F26;max-width:700px;text-wrap:pretty}
+</style>
+</helmet>
+
+<div class="mp-sec" style="padding-top:0;border:none">
+<div class="mp-page">
+
+<div class="mp-sec" style="padding-top:60px">
+  <div class="mp-lab">Master plan · supersedes nothing, sequences everything · August 2026</div>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:64px;line-height:.92;letter-spacing:-.04em;max-width:880px">Ship less, ask<br>first, count<br>two numbers</div>
+  <p class="mp-p" style="font-size:17px;margin-top:22px">Five documents now exist: the <a href="App Brief.dc.html">brief</a>, the <a href="Business Plan.dc.html">business plan</a>, the <a href="Growth Plan.dc.html">growth plan</a>, the <a href="Video Playbook.dc.html">video playbook</a> and the <a href="Tagging and Metrics.dc.html">tagging plan</a> — plus 53 designed screens, a <a href="Screen Index.dc.html">screen index</a>, 16 turns of design argument and 31 logged decisions. This page is the one that says <strong>in what order, and what you're allowed to skip.</strong></p>
+  <div class="mp-big" style="background:#FFD24A">
+    <div class="mp-bigt">The whole strategy in one sentence: <span style="background:#17130F;color:#F3ECE0;padding:0 6px;border-radius:6px">go deep with fifty collectors before you go wide with anyone</span> — because a collection is the unit of value, and fifty real collections tell you more than fifty thousand installs.</div>
+  </div>
+  <p class="mp-note">Everything below assumes what's true: one person, evenings and weekends, no funding, no team, and a product that is already <em>designed</em> further than most shipped apps. Your bottleneck is not ideas. It is your own hours — so this plan is mostly about which hours not to spend.</p>
+</div>
+
+<div class="mp-sec">
+  <div class="mp-lab">01 · The shape of it</div>
+  <div class="mp-h2">Fifteen months,<br>six phases, two gates</div>
+  <div class="mp-rail">
+    <div class="mp-rc" style="background:#FFD24A"><div class="mp-rk">MONTH 0–1</div><div class="mp-rn">Cut &amp; join</div><div class="mp-rv">Scope v1 to 30 screens. Join 5 communities as a person.</div></div>
+    <div class="mp-rc"><div class="mp-rk">MONTH 1–2</div><div class="mp-rn">Ask</div><div class="mp-rv">Schema posts. 20 conversations. Collect export files.</div></div>
+    <div class="mp-rc"><div class="mp-rk">MONTH 2–6</div><div class="mp-rn">Build v1</div><div class="mp-rv">Importers first, tagging pass 1, then the 30 screens.</div></div>
+    <div class="mp-rc"><div class="mp-rk">MONTH 6–8</div><div class="mp-rn">TestFlight</div><div class="mp-rv">50 Founding Cataloguers. Gate 1 lives here.</div></div>
+    <div class="mp-rc"><div class="mp-rk">MONTH 8–9</div><div class="mp-rn">Launch</div><div class="mp-rv">5 custom product pages, 2 creators, 8 clips.</div></div>
+    <div class="mp-rc" style="border-right:none;background:#17130F;color:#F3ECE0"><div class="mp-rk" style="color:#FFD24A">MONTH 9–15</div><div class="mp-rn">Read &amp; decide</div><div class="mp-rv" style="color:rgba(243,236,224,.8)">Gate 2: build v2, half of it, or neither.</div></div>
+  </div>
+  <p class="mp-note" style="margin-top:14px">Two hard gates, and they're the only two places in this plan where you're allowed to change direction. <strong>Gate 1 (month 8):</strong> do fifty invested experts reach 60 objects each? If not, launching is pouring water into a bucket with a hole. <strong>Gate 2 (month 15):</strong> latent supply ≥8% and latent demand ≥30%? That answers v2 four ways, and you cannot backfill the events that answer it — which is why tagging ships in phase 3, not phase 6.</p>
+</div>
+
+<div class="mp-sec">
+  <div class="mp-lab">02 · Phase by phase</div>
+  <div class="mp-h2">What each phase is<br>allowed to contain</div>
+
+  <div class="mp-ph">
+    <div class="mp-phd"><div class="mp-pb" style="background:#FFD24A">P0</div><div class="mp-pn">Cut v1 in half</div><div class="mp-ptag"><div class="mp-tag">2 WEEKS</div><div class="mp-tag">NO CODE</div><div class="mp-tag">HARDEST PHASE</div></div></div>
+    <div class="mp-pbody">
+      <div class="mp-cell">
+        <div class="mp-ck">v1 SHIPS WITH</div>
+        <div class="mp-li"><div class="mp-gl">+</div><div>Add by photo, barcode, hand — and <strong>import</strong>.</div></div>
+        <div class="mp-li"><div class="mp-gl">+</div><div>5 types at launch, not 14. The ones your five communities are.</div></div>
+        <div class="mp-li"><div class="mp-gl">+</div><div>Item detail with Overview / Details / History.</div></div>
+        <div class="mp-li"><div class="mp-gl">+</div><div>Lending with handshakes and due dates.</div></div>
+        <div class="mp-li"><div class="mp-gl">+</div><div>Wishlist + the sellable flag (Gate 2 evidence).</div></div>
+        <div class="mp-li"><div class="mp-gl">+</div><div>Search, share links, iCloud, export, review queue.</div></div>
+      </div>
+      <div class="mp-cell">
+        <div class="mp-ck">CUT TO v1.1 OR LATER</div>
+        <div class="mp-li"><div class="mp-gl" style="color:#FF5B2E">—</div><div>Nine of the fourteen types. Add one a month, each announced in its community — that's twelve free launch moments.</div></div>
+        <div class="mp-li"><div class="mp-gl" style="color:#FF5B2E">—</div><div>3D capture. Keep the <em>rendered</em> 3D object; cut the scanning flow. It's the most expensive feature per user who'll touch it.</div></div>
+        <div class="mp-li"><div class="mp-gl" style="color:#FF5B2E">—</div><div>Type proposals, mixed collections, no-type-fits, co-shelves, offline queue, playlists, tab-bar editing.</div></div>
+        <div class="mp-li"><div class="mp-gl" style="color:#FF5B2E">—</div><div>The onboarding detail-bar question. Ship one sensible default; the question is a v1.1 refinement.</div></div>
+      </div>
+      <div class="mp-cell" style="border-right:none">
+        <div class="mp-ck">WHY THIS IS THE HARD PART</div>
+        <div class="mp-cv">You've designed 53 screens and they're all good, which makes every cut feel like a loss. It isn't: <strong>an unshipped screen has a value of exactly zero</strong>, and each one you cut is roughly a week of evenings back. 30 screens is still more product than most apps launch with — and the cut ones are already designed, so they become your 2026 roadmap rather than deleted work.</div>
+      </div>
+    </div>
+    <div class="mp-gate"><div class="mp-gk">DONE WHEN</div><div class="mp-gv">There is a written list of what is NOT in v1, and you've stopped arguing with it. Put it at the top of decisions.md as D32 so future-you can't quietly re-add things.</div></div>
+  </div>
+
+  <div class="mp-ph">
+    <div class="mp-phd"><div class="mp-pb" style="background:#2B44D6;color:#F3ECE0">P1</div><div class="mp-pn">Ask before you build</div><div class="mp-ptag"><div class="mp-tag">WEEKS 1–8</div><div class="mp-tag">PARALLEL TO P0</div><div class="mp-tag">HIGHEST RETURN PER HOUR</div></div></div>
+    <div class="mp-pbody">
+      <div class="mp-cell">
+        <div class="mp-ck">THE WORK</div>
+        <div class="mp-li"><div class="mp-gl">1</div><div>Join five communities as a person. Answer other people's questions for two weeks. Say nothing about your app.</div></div>
+        <div class="mp-li"><div class="mp-gl">2</div><div>Message the mods, then post the schema question in each: "here are the 11 fields I think describe X — what did I get wrong?"</div></div>
+        <div class="mp-li"><div class="mp-gl">3</div><div>Reply to everyone. Note who wrote paragraphs.</div></div>
+        <div class="mp-li"><div class="mp-gl">4</div><div>Ask twenty of them two questions: what would you pay, and can I have your export file?</div></div>
+      </div>
+      <div class="mp-cell">
+        <div class="mp-ck">WHAT IT PRODUCES</div>
+        <div class="mp-cv">Five expert-validated schemas. A ranked list of importers to build, with real files to test against. A price point that isn't a guess. And 30–50 named people who have already contributed something before being asked for anything — your Founding Cataloguers, and your entire TestFlight cohort.</div>
+      </div>
+      <div class="mp-cell" style="border-right:none">
+        <div class="mp-ck">THE TRAP</div>
+        <div class="mp-cv">Skipping this because building feels more productive. It isn't: a schema corrected now costs an evening, corrected after launch it costs a migration and a bad review. This phase also can't be compressed — communities need weeks of your presence before they'll take you seriously, so it must run in parallel with P0 and P2.</div>
+      </div>
+    </div>
+    <div class="mp-gate"><div class="mp-gk">DONE WHEN</div><div class="mp-gv">You have five real export files on disk, twenty price answers, and thirty names who'd say yes to a TestFlight invite.</div></div>
+  </div>
+
+  <div class="mp-ph">
+    <div class="mp-phd"><div class="mp-pb" style="background:#0E6E5E;color:#F3ECE0">P2</div><div class="mp-pn">Build, importers first</div><div class="mp-ptag"><div class="mp-tag">MONTH 2–6</div><div class="mp-tag">~16 WEEKS OF EVENINGS</div></div></div>
+    <div class="mp-pbody">
+      <div class="mp-cell">
+        <div class="mp-ck">BUILD ORDER — NOT NEGOTIABLE</div>
+        <div class="mp-li"><div class="mp-gl">1</div><div><strong>Import + the review queue.</strong> The path from a stranger's CSV to a full shelf. This decides your north star metric more than anything else you'll write.</div></div>
+        <div class="mp-li"><div class="mp-gl">2</div><div><strong>Tagging pass 1</strong> — nine events. Before TestFlight, so TestFlight produces data and not just opinions.</div></div>
+        <div class="mp-li"><div class="mp-gl">3</div><div>The object model, 5 types, item detail, list, search.</div></div>
+        <div class="mp-li"><div class="mp-gl">4</div><div>Lending and share links.</div></div>
+        <div class="mp-li"><div class="mp-gl">5</div><div>Wishlist + sellable flag. <strong>Tagging pass 2</strong> — the Gate 2 events.</div></div>
+        <div class="mp-li"><div class="mp-gl">6</div><div>Photo and barcode add, metered. Unlock and packs.</div></div>
+      </div>
+      <div class="mp-cell">
+        <div class="mp-ck">WHILE YOU BUILD, FOR FREE</div>
+        <div class="mp-cv">Two clips a week from the <a href="Video Playbook.dc.html">video playbook</a> — one sleeve-turn loop (ten minutes) and one story clip. Ninety clips by launch, posted as you go, building an audience that already knows what this is. Filming your own build progress is the cheapest content you will ever make, and it makes the launch a continuation rather than an announcement.</div>
+      </div>
+      <div class="mp-cell" style="border-right:none">
+        <div class="mp-ck">DELIBERATELY NOT BUILT</div>
+        <div class="mp-cv">Accounts. A backend of any kind beyond the share-link server and your one analytics endpoint. A web app. Anything for institutions. Any pricing surface — no valuations, no totals, no market. Every one of these is a month you don't have and a promise you'd have to keep.</div>
+      </div>
+    </div>
+    <div class="mp-gate"><div class="mp-gk">DONE WHEN</div><div class="mp-gv">Someone else's export file becomes a browsable 300-object shelf on your phone, and the nine events land on your endpoint.</div></div>
+  </div>
+
+  <div class="mp-ph">
+    <div class="mp-phd"><div class="mp-pb" style="background:#FF5B2E;color:#F3ECE0">P3</div><div class="mp-pn">TestFlight — Gate 1</div><div class="mp-ptag"><div class="mp-tag">MONTH 6–8</div><div class="mp-tag">50 PEOPLE MAX</div><div class="mp-tag">STOP-OR-GO</div></div></div>
+    <div class="mp-pbody">
+      <div class="mp-cell">
+        <div class="mp-ck">HOW TO RUN IT</div>
+        <div class="mp-cv">Invite the thirty from P1 plus twenty from the clips. Each gets the schema they helped write, credited by name, and a lifetime unlock. Weekly build, weekly one-paragraph note on what changed and what you're unsure about. Reply to everything within a day — this is the month that turns fifty testers into fifty advocates.</div>
+      </div>
+      <div class="mp-cell">
+        <div class="mp-ck">WHAT YOU'RE MEASURING</div>
+        <div class="mp-li"><div class="mp-gl">1</div><div>Median objects per tester at day 30.</div></div>
+        <div class="mp-li"><div class="mp-gl">2</div><div>Time to first object.</div></div>
+        <div class="mp-li"><div class="mp-gl">3</div><div>Import completion rate, by format.</div></div>
+        <div class="mp-li"><div class="mp-gl">4</div><div>Sellable-flag and wishlist rates — early read on Gate 2.</div></div>
+      </div>
+      <div class="mp-cell" style="border-right:none">
+        <div class="mp-ck">NOT MEASURING</div>
+        <div class="mp-cv">Bug counts, crash-free rate, feature requests. All useful, none decisive. A cohort of invested experts is the friendliest audience this app will ever have — so their behaviour is a ceiling, not an average. Read it that way.</div>
+      </div>
+    </div>
+    <div class="mp-gate"><div class="mp-gk">GATE 1 — MONTH 8</div><div class="mp-gv">Median 60+ objects per tester → launch. Median 20–59 → the adding path is too slow; fix import and re-run for a month before launching. Under 20 with fifty hand-picked enthusiasts → stop and find out why, because no amount of marketing survives that number.</div></div>
+  </div>
+
+  <div class="mp-ph">
+    <div class="mp-phd"><div class="mp-pb" style="background:#17130F;color:#F3ECE0">P4</div><div class="mp-pn">Launch, five doors</div><div class="mp-ptag"><div class="mp-tag">MONTH 8–9</div><div class="mp-tag">NO PAID SPEND</div></div></div>
+    <div class="mp-pbody">
+      <div class="mp-cell">
+        <div class="mp-ck">THE MECHANICS</div>
+        <div class="mp-li"><div class="mp-gl">+</div><div>Free to 100 objects, €24.99 unlock, metered lookups with a generous free allowance.</div></div>
+        <div class="mp-li"><div class="mp-gl">+</div><div>Five <strong>custom product pages</strong>, one per community — their own screenshots, their own link.</div></div>
+        <div class="mp-li"><div class="mp-gl">+</div><div>Subtitle and keywords per storefront: "vinyl record collection tracker", not "collection manager".</div></div>
+        <div class="mp-li"><div class="mp-gl">+</div><div>Two mid-size creators, paid in lifetime codes. Pitch Apple editorial the same week.</div></div>
+        <div class="mp-li"><div class="mp-gl">+</div><div>Launch storefronts: profile A only (DE FR NL UK US JP Nordics). No ad surfaces compiled in.</div></div>
+      </div>
+      <div class="mp-cell">
+        <div class="mp-ck">WHO POSTS WHAT</div>
+        <div class="mp-cv">Not you, mostly. Each Founding Cataloguer announces their own type in their own community, in their own words, with their own page link. That's five posts that aren't advertising because they aren't yours. You reply in the threads; you don't start them.</div>
+      </div>
+      <div class="mp-cell" style="border-right:none">
+        <div class="mp-ck">WHAT NOT TO TOUCH FOR 60 DAYS</div>
+        <div class="mp-cv">Product page optimization. You won't have the impressions to reach confidence, and a running test would split your community and creator traffic across pages you didn't choose. Custom pages for warm traffic, PPO for organic search, never both at once.</div>
+      </div>
+    </div>
+    <div class="mp-gate"><div class="mp-gk">DONE WHEN</div><div class="mp-gv">Five doors live, two videos out, and downloads logged by country and by source page from the first hour.</div></div>
+  </div>
+
+  <div class="mp-ph">
+    <div class="mp-phd"><div class="mp-pb" style="background:#12A594;color:#F3ECE0">P5</div><div class="mp-pn">Read the numbers — Gate 2</div><div class="mp-ptag"><div class="mp-tag">MONTH 9–15</div><div class="mp-tag">SHIP MONTHLY</div></div></div>
+    <div class="mp-pbody">
+      <div class="mp-cell">
+        <div class="mp-ck">MONTHLY RHYTHM</div>
+        <div class="mp-cv">One new type per month, announced in its community. One fix to your weakest funnel stage — the one at your lowest benchmark percentile, never the one you find most interesting. Two clips a week, continuing. And from month 11, one PPO test at a time on the default page: first screenshot, one object versus a full shelf.</div>
+      </div>
+      <div class="mp-cell">
+        <div class="mp-ck">PHASE-TWO MARKETS</div>
+        <div class="mp-cv">Around month 12, if profile-A conversion is healthy, open profile B (BR IN ID MX PH TR VN NG) with local price tiers and rewarded video for lookups. This is also when v3 becomes cheap: <strong>roles + a queue + three emails</strong>, filmed at your recyclerie contact's place as clip 08.</div>
+      </div>
+      <div class="mp-cell" style="border-right:none">
+        <div class="mp-ck">THE INSURER CONVERSATION</div>
+        <div class="mp-cv">Two emails, month 10, before any v2 code exists: what would an itemised export need to contain for you to accept it, and what do you pay for an introduction? Their answer designs the v2 export screen and may be the highest revenue-per-user line in the whole business.</div>
+      </div>
+    </div>
+    <div class="mp-gate"><div class="mp-gk">GATE 2 — MONTH 15</div><div class="mp-gv">Supply ≥8% and demand ≥30% → build v2 option B with a seller subscription. Demand only → wishlist hits + affiliate, a fraction of the work. Supply only → the seller's toolkit (comps, price history, insurance export), no index at all. Neither → don't build v2; take the same code to shops, clubs and recycleries.</div></div>
+  </div>
+</div>
+
+<div class="mp-sec">
+  <div class="mp-lab">03 · The decision calendar</div>
+  <div class="mp-h2">Nine things to decide,<br>each with a date</div>
+  <p class="mp-p">Open questions are only dangerous when they're undated. These have dates, so they stop being anxiety and become appointments.</p>
+  <div class="mp-tbl">
+    <div class="mp-tr mp-th"><div class="mp-t1"><div class="mp-tk">WHEN</div></div><div class="mp-t2"><div class="mp-tk">DECISION</div></div><div class="mp-t3"><div class="mp-tk">WHAT DECIDES IT</div></div></div>
+    <div class="mp-tr"><div class="mp-t1">NOW</div><div class="mp-t2">The v1 cut list</div><div class="mp-t3">Your hours. Write it as D32 and stop negotiating with yourself.</div></div>
+    <div class="mp-tr"><div class="mp-t1">NOW</div><div class="mp-t2">Which five hobbies</div><div class="mp-t3">Where you'd enjoy the conversations for a year. Enjoyment is a real selection criterion for solo work.</div></div>
+    <div class="mp-tr"><div class="mp-t1">MONTH 2</div><div class="mp-t2">Price point of the unlock</div><div class="mp-t3">Twenty answers from P1. Not your instinct, and not a competitor's page.</div></div>
+    <div class="mp-tr"><div class="mp-t1">MONTH 2</div><div class="mp-t2">The app's name — one hobby word, or none</div><div class="mp-t3">Whether you're the vinyl app that also does coins, or the collection app. The first ranks in search; the second doesn't.</div></div>
+    <div class="mp-tr"><div class="mp-t1">MONTH 4</div><div class="mp-t2">Photos versus renders (brief Q3)</div><div class="mp-t3">Real user photos in the build. Current answer: photos where an object is <em>named</em>, renders where it's <em>counted</em>.</div></div>
+    <div class="mp-tr"><div class="mp-t1">MONTH 8</div><div class="mp-t2">Launch or extend TestFlight</div><div class="mp-t3">Gate 1. Median objects per tester.</div></div>
+    <div class="mp-tr"><div class="mp-t1">MONTH 10</div><div class="mp-t2">Whether insurance is a real revenue line</div><div class="mp-t3">Two emails and the export rate among payers.</div></div>
+    <div class="mp-tr"><div class="mp-t1">MONTH 12</div><div class="mp-t2">Open profile-B markets</div><div class="mp-t3">Profile-A conversion being healthy, and an ad partner worth signing.</div></div>
+    <div class="mp-tr" style="border-bottom:none"><div class="mp-t1">MONTH 15</div><div class="mp-t2">v2: full, half, toolkit, or none</div><div class="mp-t3">Gate 2. Latent supply and latent demand.</div></div>
+  </div>
+</div>
+
+<div class="mp-sec">
+  <div class="mp-lab">04 · Honest risks</div>
+  <div class="mp-h2">The five ways<br>this dies</div>
+  <div class="mp-cards">
+    <div class="mp-card" style="background:#17130F;color:#F3ECE0;box-shadow:4px 4px 0 #FF5B2E"><div class="mp-ck" style="color:#FFD24A">MOST LIKELY, BY FAR</div><div class="mp-cn">You run out of evenings at month four</div><div class="mp-cv" style="color:rgba(243,236,224,.87)">Sixteen weeks is a long time alone with no users. Mitigation is structural, not motivational: P1 runs in parallel so there are fifty people <em>waiting</em> for the build, and two clips a week means you're publishing something the whole time. Visible progress is the fuel; a silent four months is how solo projects actually end.</div></div>
+    <div class="mp-card"><div class="mp-ck">SECOND MOST LIKELY</div><div class="mp-cn">People catalogue 15 objects and stop</div><div class="mp-cv">The app is lovely, the work is boring, the shelf stays thin. Every mitigation is in the import path — which is why it's built first and measured hardest. If import completion is under 50% at TestFlight, nothing else you build matters.</div></div>
+    <div class="mp-card"><div class="mp-ck">REAL RISK</div><div class="mp-cn">Scope creep back to 53 screens</div><div class="mp-cv">The cut screens are designed and beautiful, and each one costs a week. D32 exists to make re-adding them a decision with a name on it rather than a Tuesday evening's whim.</div></div>
+    <div class="mp-card"><div class="mp-ck">STRUCTURAL</div><div class="mp-cn">Lookup costs outrun a one-time price</div><div class="mp-cv">A single €24.99 payment against unlimited API calls is unbounded exposure. The meter and the free allowance must exist at launch, not be retrofitted — retrofitting a limit onto a paid app is the most hated move in software.</div></div>
+    <div class="mp-card"><div class="mp-ck">QUIET ONE</div><div class="mp-cn">You build for shops because they answer their email</div><div class="mp-cv">Institutions reply, give feedback and feel like progress; consumers are silent. Following that warmth pulls the roadmap toward permissions and admin views and away from the person on the sofa. Institutions are distribution until Gate 2 says otherwise.</div></div>
+  </div>
+</div>
+
+<div class="mp-sec" style="border-bottom:none">
+  <div class="mp-lab">05 · Monday</div>
+  <div class="mp-h2">The first two weeks,<br>concretely</div>
+  <div class="mp-week"><div class="mp-wn">1</div><div class="mp-wb"><div class="mp-wt">Write the cut list. One evening.</div><div class="mp-wv">Open the <a href="Screen Index.dc.html">screen index</a>, mark each of the 53 screens v1 / v1.1 / later. Target 30 in v1. Write the not-in-v1 list into decisions.md as D32.</div></div></div>
+  <div class="mp-week"><div class="mp-wn">2</div><div class="mp-wb"><div class="mp-wt">Pick five hobbies and five communities. One evening.</div><div class="mp-wv">Where you'd happily read long arguments about grading for a year. Make the accounts. Answer three strangers' questions in each. Say nothing about the app.</div></div></div>
+  <div class="mp-week"><div class="mp-wn">3</div><div class="mp-wb"><div class="mp-wt">Film clip 03 — the sleeve turn. Ten minutes.</div><div class="mp-wv">You can shoot this today from the prototype. It costs nothing, it's the asset you'll reuse in app previews and product pages, and it proves the content pipeline works before you depend on it.</div></div></div>
+  <div class="mp-week"><div class="mp-wn">4</div><div class="mp-wb"><div class="mp-wt">Message five sets of moderators. One evening.</div><div class="mp-wv">Not a pitch — a question about where a schema discussion would belong. Some will pin it. This is also how you learn each community's tolerance before spending your one first impression.</div></div></div>
+  <div class="mp-week"><div class="mp-wn">5</div><div class="mp-wb"><div class="mp-wt">Draft the five schema posts. Two evenings.</div><div class="mp-wv">One field list per hobby, from the types you already designed, written as a genuine question. These are the highest-leverage words you will write this year — they recruit your testers, correct your data model and seed your launch, all in one post.</div></div></div>
+  <div class="mp-week"><div class="mp-wn">6</div><div class="mp-wb"><div class="mp-wt">Then, and only then, open the editor.</div><div class="mp-wv">First file: the CSV importer. Not the shelf, not the 3D object, not the tab bar. The importer.</div></div></div>
+  <div class="mp-big" style="background:#17130F;color:#F3ECE0;box-shadow:5px 5px 0 #FF5B2E;margin-top:26px">
+    <div class="mp-bigt" style="color:#F3ECE0">You have the rarest thing in this category already: a designed product with an argument behind every decision. What you don't have yet is fifty people who've put their collection into it. Everything on this page is in service of getting those fifty — and after that, the app makes its own case.</div>
+  </div>
+</div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
