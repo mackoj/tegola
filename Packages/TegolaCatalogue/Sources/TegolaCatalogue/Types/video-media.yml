@@ -44,7 +44,7 @@ fields:
   - { key: mediaCondition,  label: Tape / disc, type: scale, ladderAxis: 1 }
   - { key: caseCondition,   label: Case,        type: scale, ladderAxis: 2 }
   - { key: sleeveCondition, label: Sleeve,      type: scale, ladderAxis: 3 }
-  - { key: inserts,   label: What's inside, type: set, slotsFrom: subtype }
+  - { key: inserts,   label: What's inside, type: set, options: [case, disc, booklet, insert], slotsFrom: subtype, note: these four until the subtype names its parts }
   - { key: watchLog,  label: Watched,    type: log, entry: [date, note, cut] }
 
 subtypes:
@@ -52,44 +52,44 @@ subtypes:
     label: VHS
     presets: { regionCode: hidden, packaging: [slipcase, clamshell, big box], parts: [sleeve, shell, tape, insert], clock: mediaRot }
     adds:
-      - { key: tapeSpeed, type: choice, options: [SP, LP, EP] }
-      - { key: printMark, type: text }
+      - { key: tapeSpeed, label: Tape speed, type: choice, options: [SP, LP, EP] }
+      - { key: printMark, label: Print mark, type: text }
   - key: betamax
     label: Betamax
     presets: { regionCode: hidden, packaging: [slipcase, clamshell], parts: [sleeve, shell, tape], clock: mediaRot }
     adds:
-      - { key: tapeSpeed, type: choice, options: [βI, βII, βIII] }
-      - { key: betaHifi, type: bool }
+      - { key: tapeSpeed, label: Tape speed, type: choice, options: [βI, βII, βIII] }
+      - { key: betaHifi, label: Beta Hi-Fi, type: bool }
   - key: laserdisc
     label: LaserDisc
     presets: { standard: [NTSC, PAL], regionCode: hidden, packaging: [single jacket, gatefold, box set], parts: [jacket, discs, inner sleeves, obi, insert], clock: discRot }
     adds:
-      - { key: sides, type: int }
-      - { key: encoding, type: choice, options: [CAV, CLV, CLV-ext] }
-      - { key: obi, type: bool }
+      - { key: sides, label: Sides, type: int }
+      - { key: encoding, label: Encoding, type: choice, options: [CAV, CLV, CLV-ext] }
+      - { key: obi, label: Obi, type: bool }
   - key: ced
     label: CED
     presets: { standard: [NTSC], regionCode: hidden, packaging: [caddy], parts: [sleeve, caddy, disc], clock: mediaRot }
     adds:
-      - { key: caddyCondition, type: scale, replaces: caseCondition }
+      - { key: caddyCondition, label: Caddy, type: scale, replaces: caseCondition }
   - key: dvd
     label: DVD
     presets: { regionCode: ["0","1","2","3","4","5","6","7","8"], packaging: [keepcase, snapper, digipak, steelbook, box set], lookup: barcode, clock: discRot }
     adds:
-      - { key: layers, type: choice, options: [DVD-5, DVD-9] }
+      - { key: layers, label: Layers, type: choice, options: [DVD-5, DVD-9] }
   - key: hd-dvd
     label: HD DVD
     presets: { regionCode: hidden, packaging: [keepcase, slipcover], lookup: barcode, clock: discRot-pending }
     adds:
-      - { key: combo, type: bool }
+      - { key: combo, label: Combo disc, type: bool }
   - key: blu-ray
     label: Blu-ray
     presets: { regionCode: [A, B, C, free], packaging: [keepcase, steelbook, mediabook, digipak, box set], lookup: [barcode, spineNo], clock: discRot }
     adds:
-      - { key: limitedNo, type: text, unique: true }
+      - { key: limitedNo, label: Limited no., type: text, unique: true }
   - key: uhd
     label: 4K UHD
     presets: { regionCode: hidden, packaging: [keepcase, steelbook, mediabook], lookup: barcode, clock: discRot-pending }
     adds:
-      - { key: hdr, type: set, options: [HDR10, HDR10+, Dolby Vision] }
-      - { key: bdIncluded, type: bool }
+      - { key: hdr, label: HDR, type: set, options: [HDR10, HDR10+, Dolby Vision] }
+      - { key: bdIncluded, label: Blu-ray included, type: bool }

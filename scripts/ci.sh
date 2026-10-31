@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Full local gate on the Mac, run before a milestone merges into main: every package's tests, the app's unit
-# tests and every UI test (the journeys, docs/testing/ui-tests.md), swift-format lint, the API lint, secret scan.
+# tests and every UI test (the journeys, docs/testing/ui-tests.md), swift-format lint, the API lint, the type schema
+# check, secret scan.
 set -uo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
@@ -20,6 +21,7 @@ fi
   echo
   if xcrun swift-format lint --strict --recursive Packages/*/Sources Packages/*/Tests Tegola TegolaTests TegolaUITests 2>build/lint.log; then echo "- ✅ swift-format lint"; else STATUS=1; echo "- ❌ swift-format lint ($(wc -l < build/lint.log) findings, see build/lint.log)"; fi
   if scripts/lint-api.sh >build/lint-api.log 2>&1; then echo "- ✅ API lint"; else STATUS=1; echo "- ❌ API lint (see build/lint-api.log)"; fi
+  if scripts/validate-types.sh >build/validate-types.log 2>&1; then echo "- ✅ type schema"; else STATUS=1; echo "- ❌ type schema (see build/validate-types.log)"; fi
   if scripts/secret-scan.sh >build/secret-scan.log 2>&1; then echo "- ✅ secret scan"; else STATUS=1; echo "- ❌ secret scan (see build/secret-scan.log)"; fi
 } > build/ci-summary.md
 cat build/ci-summary.md

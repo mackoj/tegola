@@ -34,47 +34,18 @@ searchable: [title, subtitle, year, catalogNumber, tracklist, label]
 # Scanning in a shop answers "do I already own something like this?"
 related: [subtitle, label]
 
-# One type, four media. The medium decides the mark on the shelf tile, what the
-# packaging is called, which formats exist and which fields are worth showing —
-# the same move video-game makes with its media field.
-mediumRules:
-  vinyl:
-    mark: "33⅓"
-    packagingLabel: Sleeve
-    serviceLabel: Last cleaned
-    formats: ["LP", "2×LP", "7\"", "10\"", "12\"", "Box set"]
-    fields: [discColour, rpm]
-  cd:
-    mark: DDD
-    packagingLabel: Case
-    serviceLabel: Last checked for rot
-    formats: [CD, "2×CD", "3×CD", CD Single, Maxi-single, Box set]
-    fields: [discFormat, packaging, booklet, obi, matrixCode, sparsCode]
-  cassette:
-    mark: C90
-    packagingLabel: J-card
-    serviceLabel: Last respooled
-    formats: [Cassette, "2×Cassette", Single, Maxi-single, Box set, Demo]
-    fields: [tapeType, noiseReduction, shellColour, runtime]
-  other:
-    mark: REL
-    packagingLabel: Packaging
-    serviceLabel: Last serviced
-    formats: [MiniDisc, Reel-to-reel, 8-track, DAT, Other]
-    fields: []
-
 fields:
   - key: medium
     label: Medium
     type: choice
     options: [Vinyl, CD, Cassette, Other]
-    note: drives mediumRules
+    note: a subtype presets it and hides the picker
     required: true
     sample: Vinyl
   - key: format
     label: Format
     type: choice
-    note: options come from the medium
+    note: each subtype narrows it to its own formats
     options: ["LP", "2×LP", "7\"", "10\"", "12\"", "Box set", CD, "2×CD", "3×CD", CD Single,
               Maxi-single, Cassette, "2×Cassette", Single, Demo, MiniDisc, Reel-to-reel,
               8-track, DAT, Other]
@@ -107,10 +78,6 @@ fields:
     type: text
     sample: US
     auto: true
-  - key: signed
-    label: Signed
-    type: yesNo
-    sample: "No"
   - key: tracklist
     label: Tracklist
     type: list
@@ -125,80 +92,59 @@ fields:
     type: event
     sample: 3 Feb 2026
 
-  # Vinyl
-  - key: discColour
-    label: Disc colour
-    type: choice
-    options: [Black, Coke-bottle clear, Splatter, Marbled, Picture disc, Clear, Other]
-    sample: Coke-bottle clear
-  - key: rpm
-    label: Speed
-    type: choice
-    options: ["33⅓", "45", "78"]
-    sample: "33⅓"
-    auto: true
-
-  # CD
-  - key: discFormat
-    label: Disc format
-    type: choice
-    options: [CD, HDCD, SACD, Enhanced CD, CD-R, Shaped disc, Blu-spec CD, Other]
-    sample: CD
-    auto: true
-  - key: packaging
-    label: Packaging
-    type: choice
-    options: [Jewel case, Slimline case, Fatbox, Digipak, Digisleeve, Card sleeve, Longbox, None]
-    sample: Digipak
-    auto: true
-  - key: booklet
-    label: Booklet
-    type: yesNo
-    sample: "Yes"
-  # Japanese pressings live and die by the paper strip down the spine; a listing
-  # without it is a different price.
-  - key: obi
-    label: Obi strip
-    type: yesNo
-    sample: "No"
   # The runout ring names the plant that pressed it, which is what separates a
-  # first pressing from a repress when the sleeve is identical.
+  # first pressing from a repress when the sleeve is identical. Vinyl and CD
+  # both have one, so it lives here rather than in a subtype (48, Q3).
   - key: matrixCode
-    label: Matrix code
+    label: Matrix / runout
     type: text
     sample: "IFPI L553 · 7243 8 12345 2 6"
     auto: true
-  - key: sparsCode
-    label: SPARS code
-    type: choice
-    options: [AAD, ADD, DDD, Unknown]
-    sample: DDD
-    auto: true
 
-  # Cassette
-  - key: tapeType
-    label: Tape type
-    type: choice
-    options: ["Type I · Ferric", "Type II · Chrome", "Type III · FeCr", "Type IV · Metal"]
-    sample: "Type II · Chrome"
-    auto: true
-  - key: noiseReduction
-    label: Noise reduction
-    type: choice
-    options: [None, Dolby B, Dolby C, Dolby S, Dolby HX Pro, dbx]
-    sample: Dolby B
-    auto: true
-  - key: shellColour
-    label: Shell colour
-    type: choice
-    options: [Black, White, Clear, Smoke, Coloured, Chrome, Other]
-    sample: Clear
-  - key: runtime
-    label: Runtime
-    type: number
-    unit: min
-    sample: "90"
-    auto: true
+# One level below the type, keyed on format (48 Q1 and Q2; D-18). Each subtype
+# fills in the medium and hides it, narrows the formats, and adds the fields
+# only its collectors care about. These replace the old mediumRules table.
+subtypes:
+  - key: vinyl
+    label: Vinyl
+    presets:
+      medium: Vinyl
+      format: ["LP", "2×LP", "7\"", "10\"", "12\"", Box set]
+      clock: none
+    adds:
+      - { key: discColour, label: Disc colour, type: choice, options: [Black, Coke-bottle clear, Splatter, Marbled, Picture disc, Clear, Other] }
+      - { key: rpm, label: Speed, type: choice, options: ["33⅓", "45", "78"], auto: true }
+  - key: cd
+    label: CD
+    presets:
+      medium: CD
+      format: [CD, "2×CD", "3×CD", CD Single, Maxi-single, Box set]
+      clock: discRot
+    adds:
+      - { key: discFormat, label: Disc format, type: choice, options: [CD, HDCD, SACD, Enhanced CD, CD-R, Shaped disc, Blu-spec CD, Other], auto: true }
+      - { key: packaging, label: Packaging, type: choice, options: [Jewel case, Slimline case, Fatbox, Digipak, Digisleeve, Card sleeve, Longbox, None], auto: true }
+      - { key: booklet, label: Booklet, type: yesNo }
+      # Japanese pressings live and die by the paper strip down the spine; a
+      # listing without it is a different price.
+      - { key: obi, label: Obi strip, type: yesNo }
+      - { key: sparsCode, label: SPARS code, type: choice, options: [AAD, ADD, DDD, Unknown], auto: true }
+  - key: cassette
+    label: Cassette
+    presets:
+      medium: Cassette
+      format: [Cassette, "2×Cassette", Single, Maxi-single, Box set, Demo]
+      clock: mediaRot
+    adds:
+      - { key: tapeType, label: Tape type, type: choice, options: ["Type I · Ferric", "Type II · Chrome", "Type III · FeCr", "Type IV · Metal"], auto: true }
+      - { key: noiseReduction, label: Noise reduction, type: choice, options: [None, Dolby B, Dolby C, Dolby S, Dolby HX Pro, dbx], auto: true }
+      - { key: shellColour, label: Shell colour, type: choice, options: [Black, White, Clear, Smoke, Coloured, Chrome, Other] }
+      - { key: runtime, label: Runtime, type: number, unit: min, auto: true }
+  - key: other
+    label: Other
+    presets:
+      medium: Other
+      format: [MiniDisc, Reel-to-reel, 8-track, DAT, Other]
+      clock: none
 
 # The three types this one replaces. Old key -> new key; anything absent
 # survives as the collector's own field, so a merge can never lose a value.

@@ -48,6 +48,9 @@ placeLabel: Where it is
 # In a shop: "do I already own this producer, or anything from this vintage?"
 related: [producer, appellation]
 
+# The drinking window is the clock wine is bought for (PD-021).
+clocks: [drinkingWindow]
+
 fields:
   - key: producer
     label: Producer

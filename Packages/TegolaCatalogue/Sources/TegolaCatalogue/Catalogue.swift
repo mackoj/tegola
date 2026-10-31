@@ -4,13 +4,23 @@ import Yams
 /// The type files bundled with the app, decoded and validated.
 public struct Catalogue: Sendable {
   public let manifests: [TypeManifest]
+  /// The fields every type inherits (page 48).
+  public let item: ItemLevel
 
   /// The types a collector can choose in v1 (PLAN §3.3, D-23). Every other file ships as data for the release train
   /// (PD-111): enabling one is adding its id here.
   public static let enabledInV1: [TypeManifest.ID] = ["music", "video-game", "board-games", "thing"]
 
-  public init(manifests: [TypeManifest]) {
+  public init(manifests: [TypeManifest], item: ItemLevel = .none) {
     self.manifests = manifests
+    self.item = item
+  }
+
+  /// The one function every screen and the import read a type through (PLAN §3.3): the type, its subtype's presets
+  /// and additions, and the item level.
+  public func resolve(_ type: TypeManifest.ID, subtype: String?) throws(ResolveError) -> EffectiveType {
+    guard let manifest = manifest(type) else { throw .unknownType(type) }
+    return try manifest.resolve(subtype: subtype, item: item)
   }
 
   public func manifest(_ id: TypeManifest.ID) -> TypeManifest? {
@@ -36,7 +46,16 @@ public struct Catalogue: Sendable {
       }
       return manifest
     }
-    return Catalogue(manifests: manifests.sorted { $0.id.rawValue < $1.id.rawValue })
+    guard let itemFile = Bundle.module.url(forResource: "item", withExtension: "yml", subdirectory: "Item") else {
+      throw CatalogueError.missingTypesFolder
+    }
+    let item: ItemLevel
+    do {
+      item = try YAMLDecoder().decode(ItemLevel.self, from: Data(contentsOf: itemFile))
+    } catch {
+      throw CatalogueError.undecodable(file: "item.yml", reason: String(describing: error))
+    }
+    return Catalogue(manifests: manifests.sorted { $0.id.rawValue < $1.id.rawValue }, item: item)
   }
 
   static func decode(_ data: Data, file: String) throws -> TypeManifest {

@@ -12,6 +12,8 @@ struct TegolaApp: App {
     TegolaFonts.register()
     #if DEBUG
       LaunchArguments(ProcessInfo.processInfo.arguments).apply()
+    #else
+      AppBootstrap.prepare()
     #endif
   }
 

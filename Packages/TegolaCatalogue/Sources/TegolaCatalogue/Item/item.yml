@@ -1,0 +1,28 @@
+# The item level: fields every type inherits, whatever it is (48, section 00).
+# A field goes here only if it means the same thing for every type. Signed
+# passes that test; condition doesn't, because grading a wine and grading a
+# cart are different scales.
+#
+# Title, acquired, price, place and story are the item level too, but they are
+# the spine and the object's slots, which every screen already has. These are
+# the fields that stay hidden until the object has a value, each added with
+# "+ Add" on the object screen.
+fields:
+  # Who signed it is what collectors talk about and buyers ask. A dedication to
+  # a named person lowers resale value; proof raises it. A list, because a band
+  # signs once each. A signed object is never treated as a duplicate.
+  - key: signed
+    label: Signed
+    type: list
+    entry: [by, dedication, date, proof]
+  # The works inside one object. Empty is a single thing; two or more is a
+  # bundle (Doom + Doom 2, a six-bottle case, a box set). The bundle is derived
+  # from the count, never stored as a flag, and series sets count every work.
+  - key: contains
+    label: Bundle of
+    type: list
+    entry: [work]
+  - key: bundleSealed
+    label: Still sealed
+    type: yesNo
+    note: only shown on a bundle

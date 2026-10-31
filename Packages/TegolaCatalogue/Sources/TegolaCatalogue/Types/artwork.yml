@@ -82,9 +82,10 @@ fields:
     type: date
     note: vintage vs later print — often most of the value
     sample: "1974"
-  - key: signed
+  - key: signaturePosition
     label: Signature
     type: choice
+    note: where it is; who signed it is the item level's Signed
     options: [Recto, Verso, Stamped, None]
     sample: Recto
   - key: attribution

@@ -127,7 +127,7 @@ reused; a replaced decision stays, marked **superseded by D-n**.
 
 ### D-30 · Field kinds the type files spell differently
 
-**Decision.** `int` reads as number and `bool` as yes/no, declared in one alias table (`FieldKind.aliases`). Any other unknown kind is a decoding error, not a silent fallback to text as in clctn, which hid typos.
+**Decision.** `int` reads as number, `bool` as yes/no and `enum` (page 48's spelling) as choice, declared in one alias table (`FieldKind.aliases`). Any other unknown kind is a decoding error, not a silent fallback to text as in clctn, which hid typos.
 
 ### D-31 · Packages that would be empty in M1
 
@@ -135,8 +135,67 @@ reused; a replaced decision stays, marked **superseded by D-n**.
 
 ### D-32 · Where the pure core is tested
 
-**Decision.** On Linux with Swift 6.4.2, in CI (`linux-core`, every push) and in cloud sessions, which have no Xcode: `TegolaCatalogue`, `TegolaModel`, `TegolaInterchange`, `TegolaLookupAPI`, `TegolaTestSupport` and `TegolaDesignSystem`'s `TegolaDesignTokens`. TCA doesn't build on Linux (its dependency swift-navigation fails there with Swift 6.4), so `TegolaFeatures` and the app are verified on the Mac only, and say so in each report.
+**Decision.** On Linux with Swift 6.4.2, in CI (`linux-core`, every push) and in cloud sessions, which have no Xcode: `TegolaCatalogue`, `TegolaModel`, `TegolaStorage` (from M2, with `libsqlite3-dev`), `TegolaInterchange`, `TegolaLookupAPI`, `TegolaTestSupport` and `TegolaDesignSystem`'s `TegolaDesignTokens`. TCA doesn't build on Linux (its dependency swift-navigation fails there with Swift 6.4), so `TegolaFeatures` and the app are verified on the Mac only, and say so in each report.
 
 ### D-33 · The lookup contract's search request
 
 **Decision.** `SearchRequest` needs one of `title`, `text` or `catalogueNumber`. That rule is in the description, and the server answers `400`, rather than as a schema `anyOf` of required lists, which swift-openapi-generator turns into three empty payload types (it warns, and the client gets worse).
+
+### D-34 · What a subtype's preset means
+
+**Decision.** Page 48 writes presets three ways, and each has one meaning. The word `hidden` hides the field. One value fills the field and hides it (Saturn → media: disc, "the media picker is hidden"). A list narrows a choice to those options (DVD's region codes). `parts`, `clock` and `lookup` aren't parent fields: they are the subtype's set-signature parts, its clocks from the library (`none` for none) and the identifiers its capture reads. Every added field has a label, like a type's own fields, so `video-media.yml`'s additions got theirs.
+
+
+### D-35 · What the medium tables become
+
+**Decision.** Video games' `mediaRules`, music's `mediumRules` and vehicles' `kindRules` become subtypes, and the tables are gone from the schema (D-18).
+- **Video games:** page 48's five platforms (Saturn, N64, Neo Geo, Game Boy, PlayStation). Each fills in the platform and media, and names its parts, lookup and clock. A platform without a subtype works with the parent's fields, and its set signature counts the parent's two generic slots (manual, insert). The floppy, card and code rows of 43 have no platform subtype yet, so `mediaRot` and `codeExpiry` aren't used by any video game until one is written. PlayStation's reprint label is `printLabel`, so that no field is called `label`.
+- **Music:** vinyl, CD, cassette and other. Each narrows the formats and adds its own fields. The matrix code is needed by vinyl and CD, so it stays on the parent (48, Q3).
+- **Dropped:** the per-medium marks and the per-medium names for the packaging and service fields (Sleeve, Case, J-card; Last cleaned, Last respooled). A subtype can't rename a parent field (48), so the parent's labels stand. If collectors miss them, that's a schema change for the owner.
+
+### D-36 · A subtype's replacement field, and sets with no slots
+
+**Decision.** CED's caddy `replaces` the case (`video-media.yml`), which sits against page 48's "can't remove or rename a parent field". The reading: the addition takes the parent field's place in the form and on the ladder, and the parent field is hidden for that subtype, keeping its own key and any value. Nothing is renamed, so a CED that later changes subtype loses nothing. The replacement must be of the same kind. A set field whose slots come from the subtype (`slotsFrom: subtype`) needs slots of its own unless every subtype names parts, the same rule D-29 makes for choices. Video Media's DVD, HD DVD, Blu-ray and 4K UHD name no parts on page 51, so its `inserts` has four generic slots (case, disc, booklet, insert).
+
+### D-37 · The item level, and the clock and signature libraries
+
+**Decision.**
+- **Item level.** `item.yml` (in `TegolaCatalogue/Item`, not with the type files) holds the fields that mean the same on every type and are hidden until set (48, section 00):
+  - `signed`: a list of by, dedication, date and proof, because a band signs once each;
+  - `contains` (Bundle of): the works inside the object;
+  - `bundleSealed`.
+  
+  Title, acquired, price, place and story are the item level too, but they're the spine and the slots. No type field may take an item-level key, so music's and books' yes/no `signed` go. Artwork's `signed` records where the signature sits (recto, verso, stamped), so it's renamed `signaturePosition` rather than dropped. Action figures' and Lego's `sealed` means "unopened", so the item level's is `bundleSealed`.
+- **Clocks.** The library is `saveBattery`, `discRot`, `mediaRot`, `codeExpiry`, `drinkingWindow` and `serviceRisk`, each with what it reads and its default parameters. The functions arrive with signals in M4. A type names clocks at the top level (`clocks:`) or per subtype, and the subtype's come after the type's. `-pending` (page 51's `discRot-pending`) is the same clock held back until there's evidence, not a clock of its own. Wine names `drinkingWindow`.
+- **Signatures.** The kit is ladder, set, gauge, panel, map and case (48's "existing case signature" for bundles).
+
+### D-38 · How `plan` reads the rules it isn't told
+
+**Decision.**
+- **Origin and source.** An origin must come from its source: typed and first piece from the collector, a capture from the camera, an import from the importer. Without that, a lookup could add an object "typed" and confirmed (review of M2, finding 6).
+- **Identity on add.** An object typed by the collector, their first piece and an imported row are confirmed. The import is the collector's own list, mapped by them. A capture is unconfirmed, or needs details when nothing was identified, until the collector confirms it (PD-042). M6 can make imported rows unconfirmed if the review queue needs them to be.
+- **Titles.** Every object needs a title, except a capture with nothing identified. Confirming one still needs a title.
+- **A lookup** fills a key only when it's empty, or when the lookup filled it before and the collector hasn't touched it since. Its values are AUTO until then (PD-042, PD-045). Editing a key makes it the collector's, and so does clearing one: an object keeps the set of keys the collector typed or cleared, and a lookup never fills those. A lookup never writes `acquired`, money, the condition or a ladder axis, and never an empty title.
+- **Grades.** A scale field is set only through its ladder axis (`.axis`), never as a plain field, so the rule that a wanted object has no condition sees every grade.
+- **Borrowing.** Only an object added as borrowed can be marked borrowed from someone. Marking one of the collector's own would silently drop it from the counts.
+- **When a wanted object arrives,** its priority and price cap are cleared.
+- **Places.** Typing a path reuses a place with the same name (ignoring case) under the same parent, and makes the rest. Duplicates made on two devices are merged by the collector, never by `plan` (§3.2).
+- **Counts.** Promoting takes one copy off a count, down to zero. A typed collection only takes its own type; a mixed collection takes any.
+- **Loans.** Only the collector closes a loan (D-2). Giving back a borrowed object closes the loan and leaves the object marked borrowed, so it still never counts.
+
+### D-39 · The first storage migration
+
+**Decision.**
+- **Tables.** The first migration creates the tables M2's commands write: `events`, `collections`, `objects`, `works`, `places`, `persons` and `loans`. They follow `SyncEngine`'s rules: a `TEXT` UUID key `NOT NULL ON CONFLICT REPLACE DEFAULT (uuid())`, a `deletedAt` column, and no unique constraint beyond the key. The rest of PLAN §3.2 (`photos`, `objectEntries`, `ownFields`, `importBatches`, `lookupQueue`, `settings`, `objects_fts`) arrives with the milestone that writes it, each as a new, additive migration, which `SyncEngine` allows. A migration that has shipped is never edited.
+- **Rows.** Each projection row keeps its model value as JSON in `data`, and that's what's read back. The other columns (title, ownership, collection, place, dates) are copies for queries and indexes, written from the same value in the same statement. Reading `data` is exact, where SQLite's text dates round to the millisecond.
+- **Exactness.** `data` holds JSON written by Foundation's coders, which keep a date's every digit. SQLite's text dates and StructuredQueries' JSON coders keep milliseconds, which made a rebuilt projection drift from the live one on a real clock (review of M2, finding 1). Events keep their whole value in `data` too.
+- **Order.** The log replays by `seq`, the order commands ran on this device, whatever the clock did (finding 2). Merging logs from several devices by `at` waits for sync and a device column.
+- **Append-only, enforced.** Triggers make SQLite refuse any `UPDATE` or `DELETE` on `events`.
+- **`uuid()`** is registered on every connection (`ShelfStore.configuration`), backed by the `uuid` dependency. Apple's SQLite has a `uuid()` of its own, which hid the gap; Linux's doesn't.
+- **Writing.** `perform` loads the projection, plans, appends the events, and upserts every row that changed, all in one write transaction. Nothing is ever deleted except by `rebuildProjection`, which empties the projection tables and replays the log. Loading the whole projection per command is fine for v1's shelves; an import batch is one command.
+- **Linux.** sqlite-data and GRDB build and pass on Linux once `libsqlite3-dev` is installed, so `TegolaStorage` is part of `linux-core` and `test-linux.sh` (D-32).
+
+### D-40 · What `plan` doesn't check yet
+
+**Decision.** `plan` checks that a key belongs to the object's type, subtype and item level, but not that its value fits the field. It doesn't check the kind (a yes/no in a choice field), a narrowed choice's options, or whether the field is hidden or preset (an edit could set `platform` on a Saturn game). M3's edit form renders `EffectiveType` and only offers valid values, and M3 adds the value checks to `plan`, so an import (M6) can't bypass them either. The review of M2 raised it (finding 11).
+

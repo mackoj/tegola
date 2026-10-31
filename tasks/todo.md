@@ -15,9 +15,18 @@ Plan: `tasks/plan.md`, M1. Report: `docs/milestones/M1.md`.
     (font registration), `scripts/ci.sh`: green on 2026-10-31, Xcode 27.1 (`docs/milestones/M1.md`)
 - [x] T1.8 Docs: DECISIONS, GLOSSARY, ui-tests, HANDOFF, briefs, M1 report
 
-## M2 · catalogue + model + storage
+## M2 · catalogue + model + storage (branch `m2-catalogue-model-storage`)
 
-Broken down at the start of M2 (`tasks/plan.md`).
+Plan: `tasks/plan.md`, M2. Report: `docs/milestones/M2.md`.
+
+- [x] T2.1 Type schema v1 and its JSON Schema
+- [x] T2.2 Type files move to subtypes (video games, music)
+- [x] T2.3 Resolver and the subtype rules (exit test: 13 subtypes)
+- [x] T2.4 Item level, clock library, signature kit
+- [x] T2.5 Domain values and `ShelfCommand`
+- [x] T2.6 `plan` and `apply`, with the promise property tests
+- [x] T2.7 `TegolaStorage`: schema, `perform`, projection, replay test
+- [x] T2.8 `ShelfClient`, seed shelf, docs, review
 
 ## Open follow-ups
 

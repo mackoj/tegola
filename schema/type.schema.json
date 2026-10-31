@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tegola.macko.fr/schema/type/v1.json",
+  "title": "Tegola type file, schema v1",
+  "description": "One kind of collectible: the hobby's nouns. The app owns the verbs (PLAN §3.3). TegolaCatalogue's decoder reads the same shape and rejects the same unknown keys; scripts/validate-types.sh checks every bundled file against this schema.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "name", "mark", "icon", "duplicates", "spine", "conditions", "fields"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+    "version": { "type": "integer", "minimum": 1 },
+    "name": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["singular", "plural", "collection"],
+      "properties": {
+        "hobby": { "type": "string" },
+        "singular": { "type": "string" },
+        "plural": { "type": "string" },
+        "collection": { "type": "string" }
+      }
+    },
+    "mark": { "type": ["string", "number"] },
+    "icon": { "type": "string" },
+    "gradient": { "type": "array", "items": { "type": "string" }, "minItems": 2, "maxItems": 2 },
+    "duplicates": { "enum": ["rows", "quantity", "ask"] },
+    "consumable": { "type": "boolean" },
+    "composite": { "type": "boolean" },
+    "spine": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["title"],
+      "properties": {
+        "title": { "type": "string" },
+        "subtitle": { "type": "string" },
+        "year": { "type": "string" },
+        "acquired": { "type": "string" },
+        "paid": { "type": "string" },
+        "value": { "type": "string" }
+      }
+    },
+    "conditions": { "type": "array", "items": { "type": ["string", "number"] }, "minItems": 2, "uniqueItems": true },
+    "allowMissing": { "type": "boolean" },
+    "workingState": { "$ref": "#/$defs/strings" },
+    "attribution": { "$ref": "#/$defs/strings" },
+    "lookup": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "identifier": { "type": "string" },
+        "identifierPattern": { "type": "string" },
+        "symbologies": { "$ref": "#/$defs/strings" },
+        "providers": { "$ref": "#/$defs/strings" },
+        "localCorpus": { "type": "string" },
+        "ocrFields": { "$ref": "#/$defs/strings" }
+      }
+    },
+    "searchable": { "$ref": "#/$defs/strings" },
+    "related": { "$ref": "#/$defs/strings" },
+    "placeLabel": { "type": "string" },
+    "fields": { "type": "array", "items": { "$ref": "#/$defs/field" } },
+    "requiredFields": { "$ref": "#/$defs/strings" },
+    "customFields": { "type": "boolean" },
+    "signatures": {
+      "type": "array",
+      "maxItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["renderer"],
+        "properties": {
+          "renderer": { "enum": ["ladder", "set", "gauge", "panel", "map", "case"], "description": "TegolaCatalogue's SignatureRenderer." },
+          "axes": { "$ref": "#/$defs/strings" },
+          "binds": { "type": "string" },
+          "entryKind": { "type": "string" }
+        }
+      }
+    },
+    "clocks": {
+      "description": "Clocks from the app's library (TegolaCatalogue's ClockLibrary). A -pending suffix holds one back until there's evidence.",
+      "type": "array",
+      "items": { "type": "string", "pattern": "^(saveBattery|discRot|mediaRot|codeExpiry|drinkingWindow|serviceRisk)(-pending)?$" }
+    },
+    "subtypes": { "type": "array", "items": { "$ref": "#/$defs/subtype" } },
+    "supersedes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type"],
+        "properties": {
+          "type": { "type": "string", "pattern": "^[a-z]+/[a-z0-9-]+@[0-9]+$" },
+          "sets": { "type": "object", "additionalProperties": { "type": ["string", "number", "boolean"] } },
+          "fields": { "type": "object", "additionalProperties": { "type": "string" } }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "strings": { "type": "array", "items": { "type": "string" } },
+    "scalar": { "type": ["string", "number", "boolean"] },
+    "field": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["key", "label", "type"],
+      "properties": {
+        "key": { "type": "string", "pattern": "^[a-z][A-Za-z0-9]*$" },
+        "label": { "type": "string" },
+        "type": {
+          "description": "The closed set of kinds (PD-010). int, bool and enum are aliases (D-30).",
+          "enum": [
+            "text", "number", "choice", "yesNo", "date", "year", "yearRange", "event", "list", "log", "photo",
+            "scale", "set", "composite", "dims", "money", "files", "int", "bool", "enum"
+          ]
+        },
+        "options": { "type": "array", "items": { "$ref": "#/$defs/scalar" } },
+        "unit": { "$ref": "#/$defs/scalar" },
+        "auto": { "type": "boolean" },
+        "required": { "type": "boolean" },
+        "default": { "$ref": "#/$defs/scalar" },
+        "entry": { "$ref": "#/$defs/strings" },
+        "ladderAxis": { "type": "integer", "minimum": 1, "maximum": 3 },
+        "slotsFrom": { "type": "string" },
+        "unlocks": { "$ref": "#/$defs/strings" },
+        "showIf": { "type": "string" },
+        "multiline": { "type": "boolean" },
+        "replaces": { "type": "string" },
+        "note": { "type": "string" },
+        "sample": { "$ref": "#/$defs/scalar" },
+        "precision": { "type": "string" },
+        "depth": { "type": "integer" },
+        "allowNV": { "type": "boolean" },
+        "peak": { "type": "boolean" },
+        "unique": { "type": "boolean" }
+      }
+    },
+    "subtype": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["key", "label"],
+      "properties": {
+        "key": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+        "label": { "type": "string" },
+        "presets": {
+          "description": "By parent field key: \"hidden\", one value (fill and hide), or a list (narrow a choice). parts, clock and lookup are the subtype's own.",
+          "type": "object",
+          "additionalProperties": {
+            "oneOf": [{ "$ref": "#/$defs/scalar" }, { "type": "array", "items": { "$ref": "#/$defs/scalar" } }]
+          }
+        },
+        "adds": { "type": "array", "items": { "$ref": "#/$defs/field" } }
+      }
+    }
+  }
+}

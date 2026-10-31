@@ -51,31 +51,7 @@ signatures:
   - renderer: ladder
     axes: [mediaCondition, boxCondition, manualCondition]
   - renderer: set
-    binds: inserts             # slots come from mediaRules, below
-
-# The era is a consequence of the medium, never a boundary. This table is
-# what lets one type cover 1977 to now without a second type.
-mediaRules:
-  cartridge:
-    identifier: catalogueNumber
-    inserts: [manual, map, insert, regCard, dustSleeve, spineCard]
-    clock: saveBattery         # lithium cell, ~25-35 yrs
-  optical:
-    identifier: barcode
-    inserts: [manual, inlay, regCard, demoDisc, obi]
-    clock: discRot             # pressing-plant dependent — held pending evidence
-  floppy:
-    identifier: catalogueNumber
-    inserts: [manual, codeWheel, feelies, map, disks]
-    clock: mediaRot
-  card:
-    identifier: barcode
-    inserts: [manual, insert]
-    clock: none
-  code:
-    identifier: none           # a licence is not an object; the card is
-    inserts: [codeCard, sleeve]
-    clock: codeExpiry          # the only clock that can reach zero
+    binds: inserts             # slots come from the subtype's parts
 
 lookup:
   symbologies: [ean13, upc-a, jan]
@@ -117,7 +93,7 @@ fields:
     label: Media
     type: choice
     options: [Cartridge, Optical disc, Floppy, Card, Download code]
-    note: drives mediaRules
+    note: a subtype presets it and hides the picker
     required: true
     sample: Cartridge
   - key: edition
@@ -148,7 +124,8 @@ fields:
   - key: inserts
     label: What's inside
     type: set
-    slotsFrom: mediaRules
+    options: [manual, insert]
+    slotsFrom: subtype           # these two until the platform has a subtype
     sample: 4 of 6
   - key: slab
     label: Sealed / graded
@@ -160,8 +137,75 @@ fields:
     type: date
     note: feeds the clock; original unless replaced
     sample: Original · 1995
+  - key: playStatus
+    label: Play status
+    type: choice
+    options: [Not started, Playing, Finished, Abandoned]
+    note: replaces playLog's finished flag (D-20)
+    sample: Finished
   - key: playLog
     label: Played
     type: log
-    entry: [date, note, finished]
+    entry: [date, note]
     sample: 3 entries
+
+# One level below the type, keyed on platform (48). The platform field is the
+# subtype: each one fills it in and hides it. A platform without a subtype
+# works with the parent's fields alone. These five replace 43's mediaRules
+# (D-18); the other platforms get theirs as collectors validate them.
+subtypes:
+  - key: saturn
+    label: Sega Saturn
+    presets:
+      platform: Sega Saturn
+      media: Optical disc
+      region: [NTSC-J, NTSC-U, PAL]
+      parts: [case, manual, disc, spine card]
+      lookup: catalogueNumber    # the product code on the spine, T-xxxxG
+      clock: discRot
+    adds:
+      - { key: spineCard, label: Spine card, type: yesNo, note: "Japanese releases ship with one; without it a CIB game is incomplete" }
+      - { key: ramCart, label: Needs RAM cart, type: choice, options: [No, 1MB, 4MB] }
+      - { key: satakore, label: Satakore ID, type: text }
+  - key: n64
+    label: Nintendo 64
+    presets:
+      platform: Nintendo 64
+      media: Cartridge
+      parts: [box, manual, cart, dust cover, insert]
+      lookup: catalogueNumber
+      clock: saveBattery
+    adds:
+      - { key: expansionPak, label: Expansion Pak, type: choice, options: [No, Enhanced, Required] }
+      - { key: pakSupport, label: Rumble / Controller Pak, type: set, options: [Rumble Pak, Controller Pak] }
+  - key: neo-geo
+    label: Neo Geo
+    presets:
+      platform: Neo Geo
+      media: Cartridge
+      parts: [box, manual, cart, marquee]
+      lookup: catalogueNumber
+      clock: none                # the save battery is on MVS motherboards, not carts
+    adds:
+      - { key: board, label: Board, type: choice, options: [AES, MVS], required: true }
+      - { key: conversion, label: Conversion, type: yesNo, note: an MVS board rehoused as AES; never passes for an original }
+  - key: game-boy
+    label: Game Boy
+    presets:
+      platform: Game Boy
+      media: Cartridge
+      parts: [box, manual, cart, inner tray]
+      lookup: catalogueNumber
+      clock: saveBattery
+    adds:
+      - { key: sgb, label: Super Game Boy, type: yesNo }
+  - key: ps1
+    label: PlayStation
+    presets:
+      platform: PlayStation
+      media: Optical disc
+      parts: [case, manual, disc, spine card]
+      lookup: [catalogueNumber, barcode]   # SCES / SLUS / SLPS serial first
+      clock: discRot
+    adds:
+      - { key: printLabel, label: Label, type: choice, options: [Black label, Platinum, Greatest Hits, The Best] }
