@@ -199,3 +199,14 @@ reused; a replaced decision stays, marked **superseded by D-n**.
 
 **Decision.** `plan` checks that a key belongs to the object's type, subtype and item level, but not that its value fits the field. It doesn't check the kind (a yes/no in a choice field), a narrowed choice's options, or whether the field is hidden or preset (an edit could set `platform` on a Saturn game). M3's edit form renders `EffectiveType` and only offers valid values, and M3 adds the value checks to `plan`, so an import (M6) can't bypass them either. The review of M2 raised it (finding 11).
 
+### D-41 · tegola-server is ours to change
+
+> Owner: "add in tegola, like in mackoj/telaio, information for the LLM to know that it can work on this webservice if needed when working on tegola".
+
+**Decision.** `mackoj/tegola-server` (Hummingbird 2, generated from `api/tegola-lookup.openapi.yaml`) is the owner's, like the app. A task here that needs the server to change (a new operation, a field, a bug in an answer, a limit) changes it there too, on its own branch and PR, following that repo's `CLAUDE.md` and `tasks/HANDOFF.md`, in the same session when it has access. The contract stays here: change it in this repo first (`scripts/lint-api.sh`), then the server copies it with its `scripts/sync-contract.sh`, and its CI fails while the copies differ. `CLAUDE.md` says so under "Companion repo".
+
+### D-42 · The bytes an App Attest assertion and attestation cover
+
+**Gap.** The contract said `SHA-256(body)` inside the signed string without saying how the digest is written, `path-with-query` without saying whether the base path counts, and `SHA-256(challenge)` without saying which bytes of the challenge (found while writing tegola-server's verifier, its D-5 and D-6).
+
+**Decision.** The signed string uses the method in upper case, the request target exactly as sent with `/v1` included, the timestamp header's text, and the body digest as 64 lower-case hex digits (an absent body hashes as empty). The attestation's client data is `SHA-256` of the challenge string's UTF-8 bytes, exactly as `GET /app-attest/challenge` returned it. Both are now in the contract's text; `AppAttestMiddleware` (M6) builds these bytes.

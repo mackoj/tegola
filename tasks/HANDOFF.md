@@ -7,7 +7,7 @@ it short and current.
 
 ## Where things stand
 
-- **Spec:** approved (`docs/PLAN.md`, answers in §10). Decisions: `docs/DECISIONS.md`, D-1 to D-40.
+- **Spec:** approved (`docs/PLAN.md`, answers in §10). Decisions: `docs/DECISIONS.md`, D-1 to D-42.
 - **M1 (foundation):** merged (PR #5), green on the Mac (`docs/milestones/M1.md`).
 - **M2 (catalogue, model, storage):** done on `m2-catalogue-model-storage` (`docs/milestones/M2.md`). Exit test
   green: the 13 subtypes resolve to their written-out field lists. `scripts/ci.sh` is green on Xcode 27.1, and
@@ -20,6 +20,7 @@ it short and current.
   - `ShelfClient` and the seed shelf;
   - the app opens its database at launch.
 - **No screens yet** beyond M1's placeholder. They start in M3.
+- **tegola-server** (`mackoj/tegola-server`, D-41): its M1 is done (see What's next).
 
 ## Run it locally (Mac)
 
@@ -61,8 +62,11 @@ scripts/ci.sh                        # the full gate → build/ci-summary.md
 
    Add `plan`'s value checks (D-40) with the edit form. Every write is a `ShelfCommand` through `ShelfClient`; screens read through queries on the projection's columns,
    and decode `data` for the full value.
-3. **In parallel, tegola-server:** the contract it implements is `api/tegola-lookup.openapi.yaml`, including App Attest.
-   The app's client only needs the server from M6 on, so there's no rush.
+3. **In parallel, tegola-server** (`mackoj/tegola-server`, D-41): its M1 is done. It serves the contract with
+   Hummingbird 2, verifies App Attest end to end, and has every security control, but no lookup source yet (lookups
+   answer "no match"). Its `tasks/HANDOFF.md` lists the owner questions (sources, hosting, persistence, Team ID). The
+   app's client only needs it from M6 on. When M6 writes `AppAttestMiddleware`, build the signed bytes exactly as the
+   contract now says (D-42).
 
 ## How the work is run
 
@@ -84,7 +88,8 @@ scripts/ci.sh                        # the full gate → build/ci-summary.md
     GRDB), and `swift format lint --strict` works too.
 - **The Xcode project** is generated: change `scripts/generate-xcodeproj.py`, run it, commit both.
 - **The lookup contract** is `api/tegola-lookup.openapi.yaml`. Run `scripts/lint-api.sh` before committing a change
-  to it, and the generated client's contract tests run with `TegolaLookupAPI`.
+  to it, and the generated client's contract tests run with `TegolaLookupAPI`. Then sync it into tegola-server
+  (`scripts/sync-contract.sh` there) and keep the server building (D-41).
 - **Reviews:** before a milestone is marked ready, a separate review agent reads it against the plan. It's worth the
   most on code that couldn't be compiled where it was written.
 - **Attribution:** commits and PRs carry no AI-assistant trailers or footers.

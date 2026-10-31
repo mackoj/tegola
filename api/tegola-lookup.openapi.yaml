@@ -33,7 +33,9 @@ info:
     2. Every other call carries `X-Tegola-Key-ID` and `X-Tegola-Assertion`: an assertion over
        `SHA-256(method + "\n" + path-with-query + "\n" + X-Tegola-Timestamp + "\n" + SHA-256(body))`. The server
        checks the signature, that the counter increased, and that the timestamp is within 5 minutes, which stops
-       replays.
+       replays. In those bytes, `method` is upper case, `path-with-query` is the request target exactly as sent
+       (base path included: `/v1/types/music/barcodes/0602547817327?symbology=ean13`), the timestamp is the header's
+       text, and `SHA-256(body)` is written as 64 lower-case hex digits (an absent body hashes as empty).
     3. Simulators and CI can't attest. Debug builds send `X-Tegola-Debug-Token` instead; **the production server
        rejects it outright**, and only a development server accepts it.
 
@@ -741,7 +743,7 @@ components:
           type: string
           maxLength: 128
         attestation:
-          description: Base64 attestation object from `DCAppAttestService.attestKey`, with `SHA-256(challenge)` as client data.
+          description: Base64 attestation object from `DCAppAttestService.attestKey`, with `SHA-256(challenge)` as client data, where `challenge` is the UTF-8 bytes of the challenge string exactly as `GET /app-attest/challenge` returned it.
           type: string
           maxLength: 16384
         challenge:
