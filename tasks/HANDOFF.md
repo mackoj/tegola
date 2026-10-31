@@ -3,13 +3,13 @@
 The state of the work for whoever picks it up next: a new session, another agent, or the owner. Read this first, keep
 it short and current.
 
-**Updated:** 2026-10-31, M2 done on `m2-catalogue-model-storage`, open as a PR into `main`. M3 is next.
+**Updated:** 2026-10-31, M2 merged into `main` (PR #8). M3 is in progress on `m3-core-loop`.
 
 ## Where things stand
 
 - **Spec:** approved (`docs/PLAN.md`, answers in §10). Decisions: `docs/DECISIONS.md`, D-1 to D-42.
 - **M1 (foundation):** merged (PR #5), green on the Mac (`docs/milestones/M1.md`).
-- **M2 (catalogue, model, storage):** done on `m2-catalogue-model-storage` (`docs/milestones/M2.md`). Exit test
+- **M2 (catalogue, model, storage):** merged (PR #8, `docs/milestones/M2.md`). Exit test
   green: the 13 subtypes resolve to their written-out field lists. `scripts/ci.sh` is green on Xcode 27.1, and
   `linux-core` is green.
 - **What exists now:**
@@ -50,9 +50,8 @@ scripts/ci.sh                        # the full gate → build/ci-summary.md
 
 ## What's next
 
-1. **Merge M2.** The review's findings are fixed or deferred with a reason (`docs/milestones/M2.md`, "Review").
-2. **M3, the core loop** (exit test: 30 objects added across Video games and Thing in one sitting without asking how).
-   Break it down in `tasks/plan.md` first. Roughly:
+1. **M3, the core loop**, on `m3-core-loop`: twelve tasks in `tasks/plan.md`, ticked in `tasks/todo.md` (exit test: 30 objects added across Video games and Thing in one sitting without asking how).
+   Roughly:
    - the design-system components and their catalog snapshots;
    - Shelf home with `ShelfSummary`, and promises 4 and 5 as properties over screen state;
    - Collection, Object (seven slots), and the edit form, rendering `EffectiveType.visibleFields` with "+ Add" for

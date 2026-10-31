@@ -28,6 +28,23 @@ Plan: `tasks/plan.md`, M2. Report: `docs/milestones/M2.md`.
 - [x] T2.7 `TegolaStorage`: schema, `perform`, projection, replay test
 - [x] T2.8 `ShelfClient`, seed shelf, docs, review
 
+## M3 · core loop (branch `m3-core-loop`)
+
+Plan: `tasks/plan.md`, M3. Report: `docs/milestones/M3.md`.
+
+- [ ] T3.1 Snapshot harness and the first components
+- [ ] T3.2 Read side: Route, ShelfSummary, TodayStrip, ObjectSlots, the money switch, promises 4 and 5
+- [ ] T3.3 Navigation: tab bar, stacks, Path, routes, `--screen`
+- [ ] T3.4 Shelf home and the empty shelf
+- [ ] T3.5 Collection
+- [ ] T3.6 Object: seven slots, ladder and set, history
+- [ ] T3.7 Edit form, and `plan`'s value checks
+- [ ] T3.8 Add by hand
+- [ ] T3.9 Photos
+- [ ] T3.10 Find and saved views
+- [ ] T3.11 Places
+- [ ] T3.12 Journeys, seed, docs, review
+
 ## Open follow-ups
 
 - Generate App Attest's `appattest-environment` entitlement with M6, when the lookup client first runs on a device.
