@@ -299,3 +299,17 @@ reused; a replaced decision stays, marked **superseded by D-n**.
 - **Money on, nothing valued.** The Shelf home shows the count rather than an empty figure.
 - **Search for the owner.** Pure Swift search instead of T3.10's `objects_fts` (D-51) changes that task's acceptance. That's the owner's call, and M9's performance target is where it's measured.
 
+
+### D-54 · The owner's answers to M2 and M3's readings, and clctn's schema as the reference
+
+> Owner (2026-11-01): "I agree with your decisions and keep in mind that the previous implementations have already fixed a lot of issues and answered a lot of questions regarding the data model, for example mackoj/clctn, which was pretty well advanced on the SQLite database modelling, and fast and accurate too."
+
+**Decision.**
+- **Approved.** D-35 (music's per-medium names), D-38 (imported rows confirmed), D-45 (type tints), D-50 (Thing by hand is one copy) and D-51 (pure Swift search for now) stand.
+- **clctn's schema first.** Before any storage or query work, read clctn's modelling and port what it already settled, rather than deriving it again. That covers new tables, indexes, search, migrations, import and performance:
+  - `docs/architecture/schema.sql`: spine columns plus JSONB fields, `objectEntries`, the FTS5 `objectSearch`, places with a normalised key, `historyEvents`, `typeMigrations`, `importBatches`, `counters`, and the indexes;
+  - its ADRs, 0006 to 0008;
+  - `docs/engineering/pointfree.md`;
+  - `Tests/DatabaseTests/SchemaTests.swift`.
+
+  A choice that departs from it gets a D-entry saying why. D-39's JSON `data` columns and D-51's search are the two departures so far. When M9 measures search, or earlier if a screen needs it, the starting point is clctn's `objectSearch`.

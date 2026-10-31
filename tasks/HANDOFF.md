@@ -7,7 +7,7 @@ it short and current.
 
 ## Where things stand
 
-- **Spec:** approved (`docs/PLAN.md`, answers in §10). Decisions: `docs/DECISIONS.md`, D-1 to D-53.
+- **Spec:** approved (`docs/PLAN.md`, answers in §10). Decisions: `docs/DECISIONS.md`, D-1 to D-54.
 - **M1 (foundation):** merged (PR #5, `docs/milestones/M1.md`).
 - **M2 (catalogue, model, storage):** merged (PR #8, `docs/milestones/M2.md`). The type files are on schema v1 with
   subtypes. The pure `plan`/`apply` sit over an event log and its projection (`TegolaStorage`, sqlite-data).
@@ -63,6 +63,12 @@ scripts/ci.sh                          # the full gate → build/ci-summary.md (
 ## How the work is run
 
 - **Branch:** one milestone branch from `main`, one commit per task, one PR per milestone. The owner merges.
+- **Data model: clctn first** (D-54). The owner's earlier app, `mackoj/clctn` (cloned at `../clctn`), already
+  solved most storage questions, and its database was fast and accurate. Before any new table, index, migration,
+  query, search or import work, read its `docs/architecture/schema.sql`, `docs/adr/0006`–`0008`,
+  `docs/engineering/pointfree.md` and `Tests/DatabaseTests/SchemaTests.swift`, and port what fits. A departure gets a
+  D-entry. The known departures are D-39 (JSON `data` columns) and D-51 (pure Swift search; clctn's FTS5
+  `objectSearch` is the way back).
 - **Architecture:**
   - Every shelf write is a `ShelfCommand` through `ShelfClient.perform`. `plan` checks the rules and the values (D-40,
     D-49). Settings are not commands: they go through `SettingsClient`.
@@ -110,9 +116,4 @@ scripts/ci.sh                          # the full gate → build/ci-summary.md (
 
 ## Owner questions
 
-None blocking. Readings worth a look:
-- **D-35:** music lost its per-medium field names (Sleeve, Case, J-card).
-- **D-38:** imported rows are confirmed.
-- **D-45:** six type colours with no hex in the archive are mapped to the nearest palette colour.
-- **D-50:** a Thing added by hand is one copy until the first-piece flow asks.
-- **D-51:** pure Swift search instead of T3.10's FTS5.
+None open. The owner approved M2 and M3's readings (D-35, D-38, D-45, D-50, D-51; D-54).
