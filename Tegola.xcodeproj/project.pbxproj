@@ -1,0 +1,521 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0F0774FD6A652F61759AC4E4 /* AppFeature in Frameworks */ = {isa = PBXBuildFile; productRef = D675B2E30617C7ECBA0B6477 /* AppFeature */; };
+		DAC23AEFA7FAD40020773E6A /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 88BDE079503A581C589EDD99 /* ComposableArchitecture */; };
+		4BC242CA25ED2AADC5BE1AD9 /* TegolaDesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 95E83F1FCDF2869EBA3C1DEF /* TegolaDesignSystem */; };
+		ADA7B163BDABB34353176A9F /* TegolaDesignTokens in Frameworks */ = {isa = PBXBuildFile; productRef = 291F29852EE2C258574D42A1 /* TegolaDesignTokens */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D4B0829D930648ADEF8A6F19 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8492DA891D55888E65F0371C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CCDA50D32D435BEEF0F6D9B4;
+			remoteInfo = Tegola;
+		};
+		EA06807E50AAC133FA8F8094 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8492DA891D55888E65F0371C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CCDA50D32D435BEEF0F6D9B4;
+			remoteInfo = Tegola;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0D0C152A5D7C595CE216400B /* Tegola.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tegola.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		083E02E512B9F070E14B01C5 /* TegolaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TegolaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		46DC8096D81B0E33946ADCD9 /* TegolaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TegolaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		391FEE84BB13446525516064 /* Tegola */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Tegola;
+			sourceTree = "<group>";
+		};
+		B15159C5232831E83202745A /* TegolaTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = TegolaTests;
+			sourceTree = "<group>";
+		};
+		C91DA669F53AD273650E3B97 /* TegolaUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = TegolaUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		21186B54450B1C5A22CCE67A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0F0774FD6A652F61759AC4E4 /* AppFeature in Frameworks */,
+				DAC23AEFA7FAD40020773E6A /* ComposableArchitecture in Frameworks */,
+				4BC242CA25ED2AADC5BE1AD9 /* TegolaDesignSystem in Frameworks */,
+				ADA7B163BDABB34353176A9F /* TegolaDesignTokens in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4487881ACF7D2446AC1FB7D0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		203F493D3F7F0F186158A61F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		AF702455892EC7C49627EDFB = {
+			isa = PBXGroup;
+			children = (
+				391FEE84BB13446525516064 /* Tegola */,
+				B15159C5232831E83202745A /* TegolaTests */,
+				C91DA669F53AD273650E3B97 /* TegolaUITests */,
+				34F4B6F488380E43E2D85C09 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		34F4B6F488380E43E2D85C09 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0D0C152A5D7C595CE216400B /* Tegola.app */,
+				083E02E512B9F070E14B01C5 /* TegolaTests.xctest */,
+				46DC8096D81B0E33946ADCD9 /* TegolaUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CCDA50D32D435BEEF0F6D9B4 /* Tegola */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B988E214958C9E3134B805B4;
+			buildPhases = (
+				289E3C4F031824D21605FD31,
+				21186B54450B1C5A22CCE67A,
+				2A0CF659C48ABA8E53A9FCB8,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				391FEE84BB13446525516064 /* Tegola */,
+			);
+			name = Tegola;
+			packageProductDependencies = (
+				D675B2E30617C7ECBA0B6477 /* AppFeature */,
+				88BDE079503A581C589EDD99 /* ComposableArchitecture */,
+				95E83F1FCDF2869EBA3C1DEF /* TegolaDesignSystem */,
+				291F29852EE2C258574D42A1 /* TegolaDesignTokens */,
+			);
+			productName = Tegola;
+			productReference = 0D0C152A5D7C595CE216400B /* Tegola.app */;
+			productType = "com.apple.product-type.application";
+		};
+		1BD9323465EF0BA25AE81D66 /* TegolaTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D565556291BCCEE904BDC9BE;
+			buildPhases = (
+				AF71CF15C781CD01FF1FA435,
+				4487881ACF7D2446AC1FB7D0,
+				B3D623E617F20ED18DB11683,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C07E18A78659B0142B9F6400 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				B15159C5232831E83202745A /* TegolaTests */,
+			);
+			name = TegolaTests;
+			packageProductDependencies = (
+			);
+			productName = TegolaTests;
+			productReference = 083E02E512B9F070E14B01C5 /* TegolaTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		F02560B54038F2D4E02F3B68 /* TegolaUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A1BB45C5E6B5EF3529007357;
+			buildPhases = (
+				76F52D9E3C569C1B1D0F9455,
+				203F493D3F7F0F186158A61F,
+				C2D584B996BB4170BD805D6E,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C0E0A31510EEEAA1405689DF /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				C91DA669F53AD273650E3B97 /* TegolaUITests */,
+			);
+			name = TegolaUITests;
+			packageProductDependencies = (
+			);
+			productName = TegolaUITests;
+			productReference = 46DC8096D81B0E33946ADCD9 /* TegolaUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8492DA891D55888E65F0371C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2700;
+				LastUpgradeCheck = 2700;
+				TargetAttributes = {
+					CCDA50D32D435BEEF0F6D9B4 = {
+						CreatedOnToolsVersion = 27.1;
+					};
+					1BD9323465EF0BA25AE81D66 = {
+						CreatedOnToolsVersion = 27.1;
+						TestTargetID = CCDA50D32D435BEEF0F6D9B4;
+					};
+					F02560B54038F2D4E02F3B68 = {
+						CreatedOnToolsVersion = 27.1;
+						TestTargetID = CCDA50D32D435BEEF0F6D9B4;
+					};
+				};
+			};
+			buildConfigurationList = 1D06A490BFF3FFA53D1257B0 /* Build configuration list for PBXProject "Tegola" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+				fr,
+			);
+			mainGroup = AF702455892EC7C49627EDFB;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				41A460E9B4C91931E1007E4B /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
+				18C9872A7BB73B1BEB327C27 /* XCLocalSwiftPackageReference "Packages/TegolaFeatures" */,
+				35BC573EEC7D9685D72430ED /* XCLocalSwiftPackageReference "Packages/TegolaDesignSystem" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 34F4B6F488380E43E2D85C09 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CCDA50D32D435BEEF0F6D9B4 /* Tegola */,
+				1BD9323465EF0BA25AE81D66 /* TegolaTests */,
+				F02560B54038F2D4E02F3B68 /* TegolaUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		2A0CF659C48ABA8E53A9FCB8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B3D623E617F20ED18DB11683 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C2D584B996BB4170BD805D6E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		289E3C4F031824D21605FD31 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AF71CF15C781CD01FF1FA435 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		76F52D9E3C569C1B1D0F9455 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C07E18A78659B0142B9F6400 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CCDA50D32D435BEEF0F6D9B4 /* Tegola */;
+			targetProxy = D4B0829D930648ADEF8A6F19 /* PBXContainerItemProxy */;
+		};
+		C0E0A31510EEEAA1405689DF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CCDA50D32D435BEEF0F6D9B4 /* Tegola */;
+			targetProxy = EA06807E50AAC133FA8F8094 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		A0CBC46AB2879455D489B489 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ENABLE_MODULES = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_UPCOMING_FEATURE_EXISTENTIAL_ANY = YES;
+				SWIFT_UPCOMING_FEATURE_INTERNAL_IMPORTS_BY_DEFAULT = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		3EC33E169CBDF731BBDA1C10 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ENABLE_MODULES = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_UPCOMING_FEATURE_EXISTENTIAL_ANY = YES;
+				SWIFT_UPCOMING_FEATURE_INTERNAL_IMPORTS_BY_DEFAULT = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		173DD94079EE2CF4F8CCF3DF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Tegola;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Tegola uses the camera to read barcodes and labels and to photograph your objects. Photos stay on your iPhone.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Tegola adds the photos you choose to your objects. They stay on your iPhone.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = fr.macko.tegola;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+			};
+			name = Debug;
+		};
+		B94A7B0A1689A31625241E51 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Tegola;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Tegola uses the camera to read barcodes and labels and to photograph your objects. Photos stay on your iPhone.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Tegola adds the photos you choose to your objects. They stay on your iPhone.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = fr.macko.tegola;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+			};
+			name = Release;
+		};
+		8C78ADBC61F522C199F817AC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = fr.macko.tegola.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tegola.app/Tegola";
+			};
+			name = Debug;
+		};
+		7EAB0ED2FC77D2BADDAC4A37 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = fr.macko.tegola.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tegola.app/Tegola";
+			};
+			name = Release;
+		};
+		B4323FFCD2DA4DD282A67338 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = fr.macko.tegola.uitests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = Tegola;
+			};
+			name = Debug;
+		};
+		138303FC44E048A5770D2C2F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = fr.macko.tegola.uitests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = Tegola;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1D06A490BFF3FFA53D1257B0 /* Build configuration list for PBXProject "Tegola" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A0CBC46AB2879455D489B489 /* Debug */,
+				3EC33E169CBDF731BBDA1C10 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B988E214958C9E3134B805B4 /* Build configuration list for PBXNativeTarget "Tegola" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				173DD94079EE2CF4F8CCF3DF /* Debug */,
+				B94A7B0A1689A31625241E51 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D565556291BCCEE904BDC9BE /* Build configuration list for PBXNativeTarget "TegolaTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8C78ADBC61F522C199F817AC /* Debug */,
+				7EAB0ED2FC77D2BADDAC4A37 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A1BB45C5E6B5EF3529007357 /* Build configuration list for PBXNativeTarget "TegolaUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B4323FFCD2DA4DD282A67338 /* Debug */,
+				138303FC44E048A5770D2C2F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		18C9872A7BB73B1BEB327C27 /* XCLocalSwiftPackageReference "Packages/TegolaFeatures" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/TegolaFeatures;
+		};
+		35BC573EEC7D9685D72430ED /* XCLocalSwiftPackageReference "Packages/TegolaDesignSystem" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/TegolaDesignSystem;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		41A460E9B4C91931E1007E4B /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.26.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D675B2E30617C7ECBA0B6477 /* AppFeature */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AppFeature;
+		};
+		88BDE079503A581C589EDD99 /* ComposableArchitecture */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 41A460E9B4C91931E1007E4B /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
+			productName = ComposableArchitecture;
+		};
+		95E83F1FCDF2869EBA3C1DEF /* TegolaDesignSystem */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = TegolaDesignSystem;
+		};
+		291F29852EE2C258574D42A1 /* TegolaDesignTokens */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = TegolaDesignTokens;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 8492DA891D55888E65F0371C /* Project object */;
+}
