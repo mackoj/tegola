@@ -168,3 +168,13 @@ reused; a replaced decision stays, marked **superseded by D-n**.
   Title, acquired, price, place and story are the item level too, but they're the spine and the slots. No type field may take an item-level key, so music's and books' yes/no `signed` go. Artwork's `signed` records where the signature sits (recto, verso, stamped), so it's renamed `signaturePosition` rather than dropped. Action figures' and Lego's `sealed` means "unopened", so the item level's is `bundleSealed`.
 - **Clocks.** The library is `saveBattery`, `discRot`, `mediaRot`, `codeExpiry`, `drinkingWindow` and `serviceRisk`, each with what it reads and its default parameters. The functions arrive with signals in M4. A type names clocks at the top level (`clocks:`) or per subtype, and the subtype's come after the type's. `-pending` (page 51's `discRot-pending`) is the same clock held back until there's evidence, not a clock of its own. Wine names `drinkingWindow`.
 - **Signatures.** The kit is ladder, set, gauge, panel, map and case (48's "existing case signature" for bundles).
+
+### D-38 · How `plan` reads the rules it isn't told
+
+**Decision.**
+- **Identity on add.** An object typed by the collector, their first piece and an imported row are confirmed. The import is the collector's own list, mapped by them. A capture is unconfirmed, or needs details when nothing was identified, until the collector confirms it (PD-042). M6 can make imported rows unconfirmed if the review queue needs them to be.
+- **Titles.** Every object needs a title, except a capture with nothing identified. Confirming one still needs a title.
+- **A lookup** fills a key only when it's empty, or when the lookup filled it before and the collector hasn't touched it since. Its values are AUTO until then (PD-042, PD-045). Editing a key makes it the collector's.
+- **Places.** Typing a path reuses a place with the same name (ignoring case) under the same parent, and makes the rest. Duplicates made on two devices are merged by the collector, never by `plan` (§3.2).
+- **Counts.** Promoting takes one copy off a count, down to zero. A typed collection only takes its own type; a mixed collection takes any.
+- **Loans.** Only the collector closes a loan (D-2). Giving back a borrowed object closes the loan and leaves the object marked borrowed, so it still never counts.
