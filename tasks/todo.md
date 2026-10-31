@@ -25,7 +25,7 @@ Plan: `tasks/plan.md`, M2. Report: `docs/milestones/M2.md`.
 - [x] T2.4 Item level, clock library, signature kit
 - [x] T2.5 Domain values and `ShelfCommand`
 - [x] T2.6 `plan` and `apply`, with the promise property tests
-- [ ] T2.7 `TegolaStorage`: schema, `perform`, projection, replay test
+- [x] T2.7 `TegolaStorage`: schema, `perform`, projection, replay test
 - [ ] T2.8 `ShelfClient`, seed shelf, docs, review
 
 ## Open follow-ups

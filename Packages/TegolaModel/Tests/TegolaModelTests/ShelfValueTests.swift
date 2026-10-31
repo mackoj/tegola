@@ -48,6 +48,17 @@ import Testing
     }
   }
 
+  @Test func aValueMapIsStoredAsAnObjectKeyedByDescription() throws {
+    let values: [FieldKey: FieldValue] = [
+      .title: .text("Kid A"), .field("rpm"): .text("33⅓"), .axis("box"): .text("VG"),
+    ]
+    let json = try #require(String(data: JSONEncoder().encode(values), encoding: .utf8))
+    #expect(json.hasPrefix("{"))
+    #expect(json.contains("\"field.rpm\""))
+    #expect(try JSONDecoder().decode([FieldKey: FieldValue].self, from: Data(json.utf8)) == values)
+    #expect(FieldKey(description: "colour") == nil)
+  }
+
   @Test func onlyOwnedObjectsThatStayCount() {
     #expect(ShelfObject.Ownership.allCases.filter { $0 == .owned }.count == 1)
   }

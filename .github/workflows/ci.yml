@@ -25,6 +25,10 @@ jobs:
         run: scripts/lint-api.sh
       - name: Type files against the schema
         run: scripts/validate-types.sh
+      # Whether sqlite-data and GRDB build on Linux is open (D-39). Until this is green, storage is verified on the Mac.
+      - name: TegolaStorage on Linux (probe)
+        continue-on-error: true
+        run: scripts/test-linux.sh TegolaStorage
       - name: Secret scan
         run: git config --global --add safe.directory "$GITHUB_WORKSPACE" && scripts/secret-scan.sh
       - uses: actions/upload-artifact@v4

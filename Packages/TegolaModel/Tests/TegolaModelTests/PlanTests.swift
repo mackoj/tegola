@@ -1,22 +1,9 @@
 import Foundation
-import Synchronization
 import TegolaCatalogue
+import TegolaModelTesting
 import Testing
 
 @testable import TegolaModel
-
-/// Ids from a counter, so a plan is the same on every run.
-final class Counter: Sendable {
-  private let value = Mutex(0)
-
-  func next() -> UUID {
-    let n = value.withLock { value in
-      value += 1
-      return value
-    }
-    return UUID(uuidString: String(format: "00000000-0000-0000-0000-%012d", n))!
-  }
-}
 
 /// A shelf with a log, driven the way `ShelfClient.perform` drives it: plan, then apply.
 struct Harness {

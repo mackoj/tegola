@@ -12,7 +12,8 @@ let package = Package(
   name: "TegolaModel",
   platforms: [.iOS(.v26), .macOS(.v26)],
   products: [
-    .library(name: "TegolaModel", targets: ["TegolaModel"])
+    .library(name: "TegolaModel", targets: ["TegolaModel"]),
+    .library(name: "TegolaModelTesting", targets: ["TegolaModelTesting"]),
   ],
   dependencies: [
     .package(path: "../TegolaCatalogue")
@@ -25,9 +26,17 @@ let package = Package(
       dependencies: [.product(name: "TegolaCatalogue", package: "TegolaCatalogue")],
       swiftSettings: swiftSettings
     ),
+    // What the model's tests and the storage tests share: deterministic ids, and random command sequences.
+    .target(
+      name: "TegolaModelTesting",
+      dependencies: ["TegolaModel", .product(name: "TegolaCatalogue", package: "TegolaCatalogue")],
+      swiftSettings: swiftSettings
+    ),
     .testTarget(
       name: "TegolaModelTests",
-      dependencies: ["TegolaModel", .product(name: "TegolaCatalogue", package: "TegolaCatalogue")],
+      dependencies: [
+        "TegolaModel", "TegolaModelTesting", .product(name: "TegolaCatalogue", package: "TegolaCatalogue"),
+      ],
       swiftSettings: swiftSettings
     ),
   ]

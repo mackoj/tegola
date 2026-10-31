@@ -18,6 +18,15 @@ public struct ShelfEvent: Hashable, Sendable, Codable, Identifiable {
   public let batchID: BatchID?
   public let kind: Kind
 
+  public init(id: EventID, seq: Int, at: Date, source: Source, batchID: BatchID?, kind: Kind) {
+    self.id = id
+    self.seq = seq
+    self.at = at
+    self.source = source
+    self.batchID = batchID
+    self.kind = kind
+  }
+
   /// The object the event is about, for the History slot and the log's index.
   public var objectID: ObjectID? { kind.objectID }
 
@@ -51,6 +60,35 @@ public struct ShelfEvent: Hashable, Sendable, Codable, Identifiable {
     /// One copy leaves a quantity object as an object of its own (PD-020).
     case promoted(from: ObjectID, copy: ShelfObject)
     case quantityAdjusted(ObjectID, by: Int)
+
+    /// The kind's name, as the log's `kind` column stores it. The History slot filters on it (PLAN §3.2).
+    public var name: String {
+      switch self {
+      case .collectionCreated: "collectionCreated"
+      case .collectionRenamed: "collectionRenamed"
+      case .placeCreated: "placeCreated"
+      case .personCreated: "personCreated"
+      case .workCreated: "workCreated"
+      case .added: "added"
+      case .edited: "edited"
+      case .enriched: "enriched"
+      case .confirmed: "confirmed"
+      case .placed: "placed"
+      case .moved: "moved"
+      case .lent: "lent"
+      case .borrowed: "borrowed"
+      case .returned: "returned"
+      case .gaveBack: "gaveBack"
+      case .logged: "logged"
+      case .ownershipChanged: "owned"
+      case .wanted: "wanted"
+      case .grailChanged: "grail"
+      case .mightLetGoChanged: "mightLetGo"
+      case .letGo: "letGo"
+      case .promoted: "promoted"
+      case .quantityAdjusted: "quantityAdjusted"
+      }
+    }
 
     public var objectID: ObjectID? {
       switch self {

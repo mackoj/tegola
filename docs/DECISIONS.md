@@ -178,3 +178,11 @@ reused; a replaced decision stays, marked **superseded by D-n**.
 - **Places.** Typing a path reuses a place with the same name (ignoring case) under the same parent, and makes the rest. Duplicates made on two devices are merged by the collector, never by `plan` (§3.2).
 - **Counts.** Promoting takes one copy off a count, down to zero. A typed collection only takes its own type; a mixed collection takes any.
 - **Loans.** Only the collector closes a loan (D-2). Giving back a borrowed object closes the loan and leaves the object marked borrowed, so it still never counts.
+
+### D-39 · The first storage migration
+
+**Decision.**
+- **Tables.** The first migration creates the tables M2's commands write: `events`, `collections`, `objects`, `works`, `places`, `persons` and `loans`. They follow `SyncEngine`'s rules: a `TEXT` UUID key `NOT NULL ON CONFLICT REPLACE DEFAULT (uuid())`, a `deletedAt` column, and no unique constraint beyond the key. The rest of PLAN §3.2 (`photos`, `objectEntries`, `ownFields`, `importBatches`, `lookupQueue`, `settings`, `objects_fts`) arrives with the milestone that writes it, each as a new, additive migration, which `SyncEngine` allows. A migration that has shipped is never edited.
+- **Rows.** Each projection row keeps its model value as JSON in `data`, and that's what's read back. The other columns (title, ownership, collection, place, dates) are copies for queries and indexes, written from the same value in the same statement. Reading `data` is exact, where SQLite's text dates round to the millisecond.
+- **Writing.** `perform` loads the projection, plans, appends the events, and upserts every row that changed, all in one write transaction. Nothing is ever deleted except by `rebuildProjection`, which empties the projection tables and replays the log. Loading the whole projection per command is fine for v1's shelves; an import batch is one command.
+- **Linux.** Whether sqlite-data and GRDB build on Linux is checked by a non-blocking `linux-core` step. Until it's green, storage is verified on the Mac only.
