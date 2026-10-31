@@ -22,3 +22,28 @@ public struct ShelfRequest: FetchKeyRequest {
     return ShelfSnapshot(shelf: try ShelfStore.loadShelf(db), money: money ?? .off)
   }
 }
+
+/// What the object screen reads: the shelf, the money setting and one object's history, oldest first.
+public struct ObjectSnapshot: Hashable, Sendable {
+  public var shelf: ShelfSnapshot
+  public var history: [ShelfEvent]
+
+  public init(shelf: ShelfSnapshot = ShelfSnapshot(), history: [ShelfEvent] = []) {
+    self.shelf = shelf
+    self.history = history
+  }
+}
+
+public struct ObjectRequest: FetchKeyRequest {
+  public let id: ObjectID
+
+  public init(id: ObjectID) {
+    self.id = id
+  }
+
+  public func fetch(_ db: Database) throws -> ObjectSnapshot {
+    let events = try EventRow.where { $0.objectID.eq(id.rawValue) }.order(by: \.seq).fetchAll(db)
+      .map { try StoredJSON.decode(ShelfEvent.self, from: $0.data) }
+    return ObjectSnapshot(shelf: try ShelfRequest().fetch(db), history: events)
+  }
+}

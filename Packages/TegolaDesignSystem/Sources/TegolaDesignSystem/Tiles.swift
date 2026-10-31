@@ -8,12 +8,20 @@
     let gradient: [String]
     let mark: String
     let markStyle: TegolaTextStyle
+    /// Space kept clear under the mark, for a panel that overlaps the hero's foot (the object screen).
+    let bottomInset: Double
     @Environment(\.tegolaTheme) private var theme
 
-    public init(gradient: [String], mark: String, markStyle: TegolaTextStyle = TegolaType.typeMark) {
+    public init(
+      gradient: [String],
+      mark: String,
+      markStyle: TegolaTextStyle = TegolaType.typeMark,
+      bottomInset: Double = 0
+    ) {
       self.gradient = gradient
       self.mark = mark
       self.markStyle = markStyle
+      self.bottomInset = bottomInset
     }
 
     public var body: some View {
@@ -32,7 +40,7 @@
           .lineLimit(1)
           .minimumScaleFactor(0.5)
           .padding(.horizontal, markStyle.size * 0.35)
-          .padding(.bottom, markStyle.size * 0.2)
+          .padding(.bottom, markStyle.size * 0.2 + bottomInset)
           .accessibilityHidden(true)
       }
     }

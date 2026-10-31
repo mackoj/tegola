@@ -1,5 +1,6 @@
 #if canImport(SwiftUI)
   import CollectionFeature
+  import ObjectFeature
   public import ComposableArchitecture
   import ShelfFeature
   public import SwiftUI
@@ -51,6 +52,8 @@
         switch path.case {
         case .collection(let store):
           CollectionView(store: store)
+        case .object(let store):
+          ObjectView(store: store)
         }
       }
     }

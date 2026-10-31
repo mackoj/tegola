@@ -1,5 +1,6 @@
 public import CollectionFeature
 public import ComposableArchitecture
+public import ObjectFeature
 public import ShelfFeature
 public import TegolaModel
 
@@ -7,6 +8,7 @@ public import TegolaModel
 @Reducer
 public enum AppPath {
   case collection(CollectionFeature)
+  case object(ObjectFeature)
 }
 
 extension AppPath.State: Equatable {}
@@ -81,7 +83,9 @@ public struct AppFeature {
     switch route {
     case .collection(let id):
       path.append(.collection(CollectionFeature.State(id: id)))
-    case .object, .places, .place, .wishlist:
+    case .object(let id):
+      path.append(.object(ObjectFeature.State(id: id)))
+    case .places, .place, .wishlist:
       break
     }
   }

@@ -236,3 +236,14 @@ reused; a replaced decision stays, marked **superseded by D-n**.
 - **Collection screen.** It filters by place, including the places inside it. Status filters wait for statuses (M4). A let-go object leaves the collection's list for the archive.
 - **Navigation.** The Shelf tab's stack is the first one, with `AppPath` holding the screens built so far. A route whose screen comes later in M3 does nothing yet. Tapping the Shelf tab while on it returns to its root.
 - **State equality.** A feature's `@Fetch` snapshot is the database's state, kept current outside any action, so it's left out of the state's `==`. Tests assert on it directly.
+
+### D-48 · The object screen in M3
+
+**Decision.** The seven slots follow board 04 under PD-013:
+- **Hero.** A dark stage with the type's flat hero; the photo joins with T3.9.
+- **Spine.** Chips for the subtype, year and grail, the title, the subtitle, then the type's labelled spine lines (paid and value only with money on).
+- **Status.** One chip. Clocks and their statuses arrive in M4, so in M3 the slot shows only what the collector should know now: lent to someone, unconfirmed, needs details, wanted, borrowed, let go. Otherwise it's empty.
+- **Signature.** The ladder (each part's grade as a bar on the type's scale, better grades longer) and the set (present parts filled, missing ones dashed). Gauge, panel, map and case render with the types that use them, none of which is a v1 type.
+- **Fields.** Each field with a value, labelled by the type, AUTO until touched.
+- **Actions.** Edit, Photo, and Might let go on what's owned and kept. Lend, Return and Let go join with their sheets (M7, M8).
+- **History.** Newest first, only the kinds a person reads (`ShelfEvent.Kind.readsAsHistory`).

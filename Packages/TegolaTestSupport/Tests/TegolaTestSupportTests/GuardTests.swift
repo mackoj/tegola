@@ -141,12 +141,13 @@ import Testing
 
   /// A key's literal may interpolate (`"\\(count) objects"`): the catalog stores those as format specifiers.
   static let keyPatterns = [
-    #"String\(localized:\s*"((?:[^"\\]|\\\([^"]*?\))+)""#, #"Text\(\s*"((?:[^"\\]|\\\([^"]*?\))+)",\s*bundle:"#,
+    #"String\(localized:\s*"((?:[^"\\]|\\\((?:[^()"]|\([^()"]*\))*\))+)""#, #"Text\(\s*"((?:[^"\\]|\\\((?:[^()"]|\([^()"]*\))*\))+)",\s*bundle:"#,
   ]
 
-  /// One spelling for a source key and its catalog key: each interpolation and each format specifier becomes `%_`.
+  /// One spelling for a source key and its catalog key: each interpolation (one level of nested calls allowed) and
+  /// each format specifier becomes `%_`.
   static func normalized(_ key: String) -> String {
-    key.replacing(/\\\([^"]*?\)/, with: "%_").replacing(/%(\d+\$)?(lld|ld|d|@|f|lf)/, with: "%_")
+    key.replacing(/\\\((?:[^()"]|\([^()"]*\))*\)/, with: "%_").replacing(/%(\d+\$)?(lld|ld|d|@|f|lf)/, with: "%_")
   }
 
   @Test func everyKeyIsInItsCatalogWithFrenchAndNoneIsStale() throws {

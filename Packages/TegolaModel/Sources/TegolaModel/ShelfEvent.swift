@@ -90,6 +90,19 @@ public struct ShelfEvent: Hashable, Sendable, Codable, Identifiable {
       }
     }
 
+    /// Whether the History slot shows it: the kinds a person reads (PLAN §3.2). Flags that only steer screens
+    /// (grail, might let go, a wishlist priority, a count's adjustment) aren't history.
+    public var readsAsHistory: Bool {
+      switch self {
+      case .added, .edited, .enriched, .confirmed, .placed, .moved, .lent, .borrowed, .returned, .gaveBack, .logged,
+        .ownershipChanged, .letGo, .promoted:
+        true
+      case .collectionCreated, .collectionRenamed, .placeCreated, .personCreated, .workCreated, .wanted, .grailChanged,
+        .mightLetGoChanged, .quantityAdjusted:
+        false
+      }
+    }
+
     public var objectID: ObjectID? {
       switch self {
       case .collectionCreated, .collectionRenamed, .placeCreated, .personCreated, .workCreated: nil
