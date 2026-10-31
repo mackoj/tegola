@@ -20,8 +20,16 @@
       #expect(family.hasPrefix(style.family.familyName), "\(name) resolved to \(family)")
       let face = style.family.face(weight: style.weight, size: style.size)
       if let wanted = face.axes[.weight] {
+        // CoreText leaves an axis out of the variation when it's at the face's default (Bricolage's 96pt ExtraBold
+        // instance at 800, Archivo-SemiBold at 600), so a missing axis reads as that default.
+        let axis = NSNumber(value: TegolaFontFace.Axis.weight.rawValue)
         let variation = CTFontCopyVariation(font) as? [NSNumber: NSNumber]
-        let weight = variation?[NSNumber(value: TegolaFontFace.Axis.weight.rawValue)]?.doubleValue
+        let axes = CTFontCopyVariationAxes(font) as? [[String: Any]] ?? []
+        let fallback =
+          axes.first { $0[kCTFontVariationAxisIdentifierKey as String] as? NSNumber == axis }?[
+            kCTFontVariationAxisDefaultValueKey as String
+          ] as? NSNumber
+        let weight = (variation?[axis] ?? fallback)?.doubleValue
         #expect(weight == wanted, "\(name): wght \(String(describing: weight)), wanted \(wanted)")
       }
     }

@@ -3,18 +3,16 @@
 The state of the work for whoever picks it up next: a new session, another agent, or the owner. Read this first, keep
 it short and current.
 
-**Updated:** 2026-10-31, M1 done on the branch, waiting for its first Mac run.
+**Updated:** 2026-10-31, M1 merged into `main` and green on the Mac. M2 is next.
 
 ## Where things stand
 
 - **Spec:** approved (`docs/PLAN.md`, answers in §10). Decisions: `docs/DECISIONS.md`, D-1 to D-33.
-- **M1 (foundation):** done on `claude/tegola-rearchitecture-jcq29f`, open as PR #5. A separate review found 14
-  problems, all fixed (`docs/milestones/M1.md`, "Review").
-- **Verified on Linux** (Swift 6.4.2): 68 tests in the six pure packages, zero warnings, zero swift-format findings,
-  API lint clean, secret scan clean.
-- **Never compiled:** `TegolaFeatures` (`AppFeature`), the SwiftUI half of `TegolaDesignSystem`, the app target and
-  `Tegola.xcodeproj`. No Xcode in the cloud, and TCA doesn't build on Linux (D-32). **PR #5 merges only after the Mac
-  gate below is green.**
+- **M1 (foundation):** merged into `main` (PR #5). A separate review found 14 problems, all fixed
+  (`docs/milestones/M1.md`, "Review").
+- **Verified:** on Linux (Swift 6.4.2), the six pure packages. On the Mac (Xcode 27.1), the full gate,
+  `scripts/ci.sh`: every package, the app's unit and UI tests, the lints and the secret scan
+  (`docs/milestones/M1.md`).
 
 ## Run it locally (Mac)
 
@@ -22,7 +20,6 @@ Needs Xcode 27.1 (Swift 6.4) with an iOS 26 or 27 simulator runtime. Node is opt
 
 ```sh
 git clone https://github.com/mackoj/tegola.git && cd tegola
-git checkout claude/tegola-rearchitecture-jcq29f
 
 scripts/test.sh TegolaDesignSystem   # tokens + the font tests that only run on Apple platforms
 scripts/test.sh TegolaFeatures       # AppFeature's TestStore tests (first run resolves TCA: a few minutes)
@@ -40,17 +37,11 @@ scripts/ci.sh                        # the full gate → build/ci-summary.md
   labels. Tapping one changes the title; Scan opens a dark sheet. That's the whole of M1's UI. The real tab bar and
   screens arrive in M3.
 
-**If anything fails:** paste `build/ci-summary.md`, and the failing log it names, into a session. Then:
-
-- fix the problem on the branch;
-- add the result to `docs/milestones/M1.md` as "Tests (`scripts/ci.sh`, date, Xcode 27.1)";
-- tick the line in `tasks/todo.md`;
-- merge PR #5.
+**If anything fails:** paste `build/ci-summary.md`, and the failing log it names, into a session.
 
 ## What's next
 
-1. **Owner:** run the Mac gate above. If it's green, merge PR #5.
-2. **M2, catalogue + model + storage** (page 52 P0; exit test: the 13 subtypes of `video-game.yml` and
+1. **M2, catalogue + model + storage** (page 52 P0; exit test: the 13 subtypes of `video-game.yml` and
    `video-media.yml` resolve to the right field lists). Break it down in `tasks/plan.md` first. Roughly:
    1. The type schema in full, plus a JSON Schema that CI validates every type file against.
    2. Subtypes and the resolver. Write page 48's five video-game subtypes into `video-game.yml`, and turn music's
@@ -66,13 +57,15 @@ scripts/ci.sh                        # the full gate → build/ci-summary.md
 
    Items 1 to 4 build and test on Linux. Whether sqlite-data and GRDB build on Linux is the first thing to check in
    item 5. If they don't, storage tests are Mac-only, like the features.
-3. **In parallel, tegola-server:** the contract it implements is `api/tegola-lookup.openapi.yaml`, including App Attest.
+2. **In parallel, tegola-server:** the contract it implements is `api/tegola-lookup.openapi.yaml`, including App Attest.
    The app's client only needs the server from M6 on, so there's no rush.
 
 ## How the work is run
 
-- **Branch:** a cloud session pushes to `claude/tegola-rearchitecture-jcq29f`, one commit per task, one PR per
-  milestone into `main` (PLAN §10, answer 7). After a milestone PR merges, restart the branch from `main`.
+- **Branch:** one milestone branch, started from `main`, with one commit per task and one PR per milestone into `main`
+  (PLAN §10, answer 7).
+- **Package.resolved:** resolving on a Mac drops OpenCombine, which TCA needs only on Linux. Don't commit that
+  change.
 - **Toolchain in a cloud session:** there's no Xcode and no Swift by default.
   - download.swift.org and GitHub release downloads are blocked, and Docker Hub and AWS ECR rate-limit the shared
     address.
