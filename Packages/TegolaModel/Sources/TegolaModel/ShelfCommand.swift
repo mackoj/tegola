@@ -14,6 +14,9 @@ public enum ShelfCommand: Hashable, Sendable {
   case edit(ObjectID, values: [FieldKey: FieldValue?])
   /// A lookup's result: fills empty keys and keys it filled before, never a typed one (PD-042, PD-045).
   case applyLookup(ObjectID, values: [FieldKey: FieldValue])
+  /// A photo the photo store has saved (PD-053's sibling: the object's own picture). The file is written first;
+  /// the command records it.
+  case attachPhoto(ObjectID, fileName: String, takenAt: Date)
   /// PD-053: typing a place creates the nested places it names.
   case setPlace([ObjectID], PlacePath?)
   /// Story 54.
@@ -38,7 +41,9 @@ public enum ShelfCommand: Hashable, Sendable {
   /// Stories 83, 109.
   case renameCollection(CollectionID, name: String)
   case moveObjects([ObjectID], to: CollectionID)
-  // Not yet: attachPhoto (M3, with the photos table), openBottle (wine isn't a v1 type), mergePlaces (M8),
+  /// Story 109: a near-duplicate place folds into the one the collector keeps.
+  case mergePlaces(PlaceID, into: PlaceID)
+  // Not yet: openBottle (wine isn't a v1 type),
   // importBatch and undoBatch (M6). `plan` doesn't know them, so a screen can't send them.
 }
 

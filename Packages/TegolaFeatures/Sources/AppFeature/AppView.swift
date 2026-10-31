@@ -1,15 +1,22 @@
 #if canImport(SwiftUI)
+  import AddByHandFeature
+  import CollectionFeature
+  import FindFeature
+  import ObjectFeature
+  import PlacesFeature
   public import ComposableArchitecture
+  import ShelfFeature
   public import SwiftUI
   import TegolaDesignSystem
   import TegolaDesignTokens
   import TegolaModel
+  import TegolaStorage
 
-  /// The app shell for M1: the five tabs and an empty screen behind each. The real tab bar (the raised scan button,
-  /// board `chrome`) is a design-system component in M3; the screens arrive with their features.
+  /// The root view: each tab's stack above the tab bar (board 29, state 5). Find, Activity and You get their screens
+  /// later in M3 and in M7–M8; until then they show their title.
   @ViewAction(for: AppFeature.self)
   public struct AppView: View {
-    public let store: StoreOf<AppFeature>
+    @Bindable public var store: StoreOf<AppFeature>
     @Environment(\.tegolaTheme) private var theme
 
     public init(store: StoreOf<AppFeature>) {
@@ -18,31 +25,79 @@
 
     public var body: some View {
       VStack(spacing: 0) {
-        Text(store.selectedTab.title)
-          .tegolaTextStyle(TegolaType.displayTitle)
-          .foregroundStyle(.text)
-          .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-          .padding(.horizontal, TegolaSpace.gutter)
-          .padding(.top, TegolaSpace.l)
-        HStack {
-          ForEach(store.tabs.order, id: \.self) { tab in
-            Button(tab.title) { send(.tabTapped(tab)) }
-              .tegolaTextStyle(TegolaType.metaSmall)
-              .foregroundStyle(tab == store.selectedTab ? .text : .textMeta)
-              .frame(maxWidth: .infinity, minHeight: TegolaMetrics.minimumHitTarget)
-              .accessibilityIdentifier("tab.\(tab.rawValue)")
+        Group {
+          switch store.selectedTab {
+          case .shelf: shelfStack
+          case .find: findStack
+          default: placeholder(store.selectedTab)
           }
         }
-        .padding(.horizontal, TegolaSpace.s)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        tabBar
       }
       .background(theme[.surface].color)
-      .sheet(isPresented: Binding(get: { store.isCapturePresented }, set: { if !$0 { send(.captureDismissed) } })) {
-        Text(String(localized: "Scan", bundle: .module))
-          .tegolaTextStyle(TegolaType.displayTitle)
-          .foregroundStyle(.textOnStage)
-          .frame(maxWidth: .infinity, maxHeight: .infinity)
-          .background(theme[.surfaceCamera].color)
+      .ignoresSafeArea(.container, edges: .bottom)
+      .sheet(item: $store.scope(state: \.addByHand, action: \.addByHand)) { add in
+        AddByHandView(store: add)
       }
+    }
+
+    var shelfStack: some View {
+      NavigationStack(path: $store.scope(state: \.shelfPath, action: \.shelfPath)) {
+        ShelfView(store: store.scope(state: \.shelf, action: \.shelf))
+          #if os(iOS)
+            .toolbar(.hidden, for: .navigationBar)
+          #endif
+      } destination: { path in
+        switch path.case {
+        case .collection(let store):
+          CollectionView(store: store)
+        case .object(let store):
+          ObjectView(store: store)
+        case .place(let store):
+          PlaceView(store: store)
+        case .places(let store):
+          PlacesView(store: store)
+        }
+      }
+    }
+
+    var findStack: some View {
+      NavigationStack(path: $store.scope(state: \.findPath, action: \.findPath)) {
+        FindView(store: store.scope(state: \.find, action: \.find))
+          #if os(iOS)
+            .toolbar(.hidden, for: .navigationBar)
+          #endif
+      } destination: { path in
+        switch path.case {
+        case .collection(let store): CollectionView(store: store)
+        case .object(let store): ObjectView(store: store)
+        case .place(let store): PlaceView(store: store)
+        case .places(let store): PlacesView(store: store)
+        }
+      }
+    }
+
+    func placeholder(_ tab: AppTab) -> some View {
+      Text(tab.title)
+        .tegolaTextStyle(TegolaType.displayTitle)
+        .foregroundStyle(.text)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .padding(.horizontal, TegolaSpace.gutter)
+        .padding(.top, TegolaSpace.l)
+    }
+
+    var tabBar: some View {
+      let order = store.tabs.order.filter { !$0.presents }
+      let items = order.map { TabBarItem(id: $0.rawValue, label: Text($0.title)) }
+      return TegolaTabBar(
+        leading: Array(items.prefix(2)),
+        trailing: Array(items.dropFirst(2)),
+        selected: store.selectedTab.rawValue,
+        scanLabel: Text(AppTab.scan.title),
+        select: { id in if let tab = AppTab(rawValue: id) { send(.tabTapped(tab)) } },
+        scan: { send(.tabTapped(.scan)) }
+      )
     }
   }
 
@@ -58,13 +113,8 @@
     }
   }
 
-  #Preview("Shelf selected") {
+  #Preview("Seeded") {
+    let _ = prepareDependencies { try! $0.bootstrapDatabase(seed: true) }
     AppView(store: Store(initialState: AppFeature.State()) { AppFeature() })
-  }
-
-  #Preview("Scan presented") {
-    var state = AppFeature.State()
-    state.isCapturePresented = true
-    return AppView(store: Store(initialState: state) { AppFeature() })
   }
 #endif

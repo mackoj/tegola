@@ -1,6 +1,6 @@
 import XCTest
 
-/// The shell reaches every tab, and Scan presents rather than selects (PD-117). The journeys (PLAN §4.4) join as
+/// The shell reaches every tab, and Scan presents the add sheet rather than selecting (PD-117). The journeys (PLAN §4.4) join as
 /// their screens are built.
 final class AppShellUITests: XCTestCase {
   @MainActor
@@ -13,6 +13,6 @@ final class AppShellUITests: XCTestCase {
       app.buttons["tab.\(tab)"].tap()
     }
     app.buttons["tab.scan"].tap()
-    XCTAssertTrue(app.staticTexts["Scan"].waitForExistence(timeout: 2))
+    XCTAssertTrue(app.buttons["add.type.music"].waitForExistence(timeout: 2))
   }
 }

@@ -14,6 +14,8 @@ public struct EffectiveType: Hashable, Sendable {
   /// The identifiers a capture reads, in order of preference.
   public let lookup: [String]
   public let conditions: [String]
+  /// Whether "Missing" is a step on every ladder part (43): completeness and condition asked once.
+  public let allowMissing: Bool
 
   /// The fields a collector sees and edits on an object with no item-level values.
   public var visibleFields: [EffectiveField] { fields.filter { !$0.isHidden && !$0.revealsOnAdd } }
@@ -22,6 +24,9 @@ public struct EffectiveType: Hashable, Sendable {
   public var addableFields: [EffectiveField] { fields.filter(\.revealsOnAdd) }
 
   public func field(_ key: String) -> EffectiveField? { fields.first { $0.key == key } }
+
+  /// The steps a ladder part can take: the scale, then Missing where the type allows it.
+  public var ladderSteps: [String] { allowMissing ? conditions + ["Missing"] : conditions }
 }
 
 /// One field of an `EffectiveType`.
@@ -64,7 +69,8 @@ extension TypeManifest {
         signatures: signatures,
         clocks: clocks.map(ClockReference.init),
         lookup: lookup?.identifier.map { [$0] } ?? [],
-        conditions: conditions
+        conditions: conditions,
+        allowMissing: allowMissing
       )
     }
     guard let subtype = subtypes.first(where: { $0.key == key }) else {
@@ -110,7 +116,8 @@ extension TypeManifest {
       signatures: signatures.map { $0.replacingAxes(replaced) },
       clocks: clockNames.map(ClockReference.init),
       lookup: identifiers,
-      conditions: conditions
+      conditions: conditions,
+      allowMissing: allowMissing
     )
   }
 }

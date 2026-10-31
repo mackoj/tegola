@@ -57,9 +57,16 @@ public enum ShelfRuleViolation: Error, Hashable, Sendable {
   case alreadyLetGo
   case alreadyOnLoan
   case notOnLoan
+  /// A value that doesn't fit its field: the wrong kind, or not one of its options or steps (D-40).
+  case invalidValue(FieldKey)
+  /// A field the subtype hides or presets: nobody sets it by hand (D-34).
+  case hiddenField(FieldKey)
   /// An origin from the wrong source: only the collector types, only a capture captures, only an import imports.
   case originMismatch
   case notBorrowed
+  case unknownPlace(PlaceID)
+  /// A place can't merge into itself, or into a place inside it.
+  case mergeIntoItself
 }
 
 /// Turns a command into the events that carry it out, or refuses it. Pure: the same command on the same shelf with
@@ -127,14 +134,24 @@ struct Planner {
     case .applyLookup(let id, let values):
       let object = try object(id)
       try checkKeys(values.keys, on: object)
+      let type = try effectiveType(object.typeID, object.subtype)
+      // A lookup's answer is a guess: a value that doesn't fit its field is dropped, not the whole answer (D-53).
+      let values = values.filter { key, value in (try? checkValues([key: value], type: type)) != nil }
       // Promise 1: a lookup fills empty keys and keys it filled itself, never one the collector typed or cleared
       // (PD-045). It never writes `acquired` (promise 7), money, or a grade: those are the collector's.
       let changes = values.filter { key, value in
-        !Self.collectorOnlyKeys(key) && !object.typed.contains(key)
+        !Self.collectorOnlyKeys(key) && !object.typed.contains(key) && !Self.isHidden(key, in: type)
           && (object.values[key] == nil || object.auto.contains(key)) && object.values[key] != value
           && !(key == .title && !Self.isNonEmptyText(value))
       }
       if !changes.isEmpty { emit(.enriched(id, changes: changes)) }
+    case .attachPhoto(let id, let fileName, let takenAt):
+      _ = try object(id)
+      guard !fileName.isEmpty else { throw .emptyName }
+      let position = shelf.photos(of: id).count
+      emit(
+        .photoAttached(Photo(id: context.id(), objectID: id, position: position, fileName: fileName, takenAt: takenAt))
+      )
     case .setPlace(let ids, let path):
       let placeID = path.map { place(at: $0) }
       for id in ids where try object(id).placeID != placeID {
@@ -194,6 +211,15 @@ struct Planner {
       let name = name.trimmingCharacters(in: .whitespacesAndNewlines)
       guard !name.isEmpty else { throw .emptyName }
       emit(.collectionRenamed(id, name: name))
+    case .mergePlaces(let from, let into):
+      guard let source = shelf.places[from], source.mergedInto == nil else { throw .unknownPlace(from) }
+      guard let target = shelf.places[into], target.mergedInto == nil else { throw .unknownPlace(into) }
+      guard !shelf.placeAndInside(from).contains(target.id) else { throw .mergeIntoItself }
+      // Each object moves with a history line of its own; then the place folds, its children with it.
+      for object in shelf.objects.values.filter({ $0.placeID == from }).sorted(by: { $0.id < $1.id }) {
+        emit(.placed(object.id, into))
+      }
+      emit(.placesMerged(from: from, into: into))
     case .moveObjects(let ids, let collectionID):
       guard let collection = shelf.collections[collectionID] else { throw .unknownCollection(collectionID) }
       for id in ids {
@@ -246,6 +272,46 @@ struct Planner {
     }
   }
 
+  /// Every value must fit its field: the kind's shape, a choice's or set's options, a scale's steps (D-40). Item-level
+  /// and own fields with no options take any value of their kind.
+  func checkValues(_ values: [FieldKey: FieldValue], type: EffectiveType) throws(ShelfRuleViolation) {
+    for (key, value) in values {
+      let fits: Bool
+      switch (key, value) {
+      case (.title, .text), (.subtitle, .text), (.notes, .text), (.year, .year), (.acquired, .date),
+        (.paid, .money), (.value, .money):
+        fits = true
+      case (.condition, .text(let step)):
+        fits = type.conditions.contains(step)
+      case (.axis, .text(let step)):
+        fits = type.ladderSteps.contains(step)
+      case (.field(let name), _):
+        guard let field = type.field(name)?.field else { throw .unknownField(key) }
+        fits = Self.fits(value, field)
+      default:
+        fits = false
+      }
+      guard fits else { throw .invalidValue(key) }
+    }
+  }
+
+  static func fits(_ value: FieldValue, _ field: TypeManifest.Field) -> Bool {
+    switch (field.kind, value) {
+    case (.text, .text), (.number, .number), (.yesNo, .flag), (.date, .date), (.event, .date), (.year, .year),
+      (.yearRange, .yearRange), (.list, .entries), (.log, .entries), (.photo, .photo), (.money, .money),
+      (.dims, .text), (.composite, .entries), (.files, .entries):
+      return true
+    case (.choice, .text(let option)):
+      return field.options.isEmpty || field.options.contains(option)
+    case (.set, .options(let options)):
+      return field.options.isEmpty || Set(options).isSubset(of: field.options)
+    case (.scale, .text):
+      return true
+    default:
+      return false
+    }
+  }
+
   func checkKeys(_ keys: some Sequence<FieldKey>, on object: ShelfObject) throws(ShelfRuleViolation) {
     try checkKeys(keys, type: try effectiveType(object.typeID, object.subtype))
   }
@@ -262,6 +328,10 @@ struct Planner {
     if case .text(let text) = value { !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty } else { false }
   }
 
+  static func isHidden(_ key: FieldKey, in type: EffectiveType) -> Bool {
+    if case .field(let name) = key { type.field(name)?.isHidden == true } else { false }
+  }
+
   static func hasCondition(_ keys: some Sequence<FieldKey>) -> Bool {
     keys.contains { key in
       if case .axis = key { return true }
@@ -270,8 +340,12 @@ struct Planner {
   }
 
   mutating func add(_ draft: ObjectDraft, to choice: CollectionChoice, origin: AddOrigin) throws(ShelfRuleViolation) {
+    var draft = draft
+    draft.values = draft.values.compactMapValues(\.normalized)
     let type = try effectiveType(draft.type, draft.subtype)
     try checkKeys(draft.values.keys, type: type)
+    try checkValues(draft.values, type: type)
+    if let hidden = draft.values.keys.first(where: { Self.isHidden($0, in: type) }) { throw .hiddenField(hidden) }
     guard let manifest = context.catalogue.manifest(draft.type) else { throw .unknownType(draft.type) }
     if draft.ownership == .wanted && Self.hasCondition(draft.values.keys) { throw .wantedHasNoCondition }
     let hasTitle: Bool
@@ -314,14 +388,19 @@ struct Planner {
       case .typed, .firstPiece, .imported: .confirmed
       case .captured: needsDetails ? .needsDetails : .unconfirmed
       }
-    // Promise 7: the values are the draft's. The app never fills `acquired` (PD-165).
+    // Promise 7: the values are the draft's, plus what the subtype presets (Saturn → media: Optical disc). The app
+    // never fills `acquired` (PD-165).
+    var values = draft.values
+    for field in type.fields where field.isHidden {
+      if let preset = field.presetValue { values[.field(field.key)] = .text(preset) }
+    }
     let object = ShelfObject(
       id: context.id(),
       collectionID: collectionID,
       typeID: draft.type,
       subtype: draft.subtype,
       workID: nil,
-      values: draft.values,
+      values: values,
       auto: [],
       typed: origin == .captured ? [] : Set(draft.values.keys),
       placeID: nil,
@@ -343,9 +422,13 @@ struct Planner {
 
   mutating func edit(_ id: ObjectID, values: [FieldKey: FieldValue?]) throws(ShelfRuleViolation) {
     try requireCollector()
+    let values = values.mapValues { $0?.normalized }
     let object = try object(id)
     try checkKeys(values.keys, on: object)
+    let type = try effectiveType(object.typeID, object.subtype)
+    try checkValues(values.compactMapValues { $0 }, type: type)
     let changes = values.filter { key, value in object.values[key] != value }
+    if let hidden = changes.keys.first(where: { Self.isHidden($0, in: type) }) { throw .hiddenField(hidden) }
     if object.ownership == .wanted && Self.hasCondition(changes.compactMap { $0.value == nil ? nil : $0.key }) {
       throw .wantedHasNoCondition
     }
@@ -433,7 +516,7 @@ struct Planner {
   mutating func place(at path: PlacePath) -> PlaceID {
     var parent: PlaceID?
     for name in path.components {
-      let existing = shelf.places.values
+      let existing = shelf.livePlaces
         .filter { $0.parentID == parent && $0.name.localizedCaseInsensitiveCompare(name) == .orderedSame }
         .min { $0.createdAt == $1.createdAt ? $0.id < $1.id : $0.createdAt < $1.createdAt }
       if let existing {
@@ -484,6 +567,12 @@ extension Shelf {
       }
     case .confirmed(let id): touch(id) { $0.identity = .confirmed }
     case .placed(let id, let place): touch(id) { $0.placeID = place }
+    case .placesMerged(let from, let into):
+      places[from]?.mergedInto = into
+      for child in places.values where child.parentID == from { places[child.id]?.parentID = into }
+    case .photoAttached(let photo):
+      photos[photo.id] = photo
+      touch(photo.objectID) { _ in }
     case .moved(let id, let collection): touch(id) { $0.collectionID = collection }
     case .lent(let loan):
       loans[loan.id] = loan

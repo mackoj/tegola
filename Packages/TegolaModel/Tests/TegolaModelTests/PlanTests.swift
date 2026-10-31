@@ -236,6 +236,39 @@ struct Harness {
     #expect(harness.shelf.objects[first]?.placeID == nil)
   }
 
+  /// Story 109: near-duplicate places are offered for merging, and a merge keeps everything.
+  @Test func nearDuplicatePlacesMergeIntoTheOneKept() throws {
+    var harness = Harness()
+    let first = try harness.add()
+    let second = try harness.add("video-game", "Guardian Heroes")
+    try harness.perform(.setPlace([first], PlacePath(typed: "Living room › Shelf 1")))
+    try harness.perform(.setPlace([second], PlacePath(typed: "Livng room")))
+    let pairs = harness.shelf.nearDuplicatePlaces()
+    #expect(pairs.map { [$0.0.name, $0.1.name] } == [["Living room", "Livng room"]])
+    let (kept, typo) = (pairs[0].0, pairs[0].1)
+    let events = try harness.perform(.mergePlaces(typo.id, into: kept.id))
+    #expect(events.map(\.kind.name) == ["placed", "placesMerged"])
+    #expect(harness.shelf.objects[second]?.placeID == kept.id)
+    #expect(harness.shelf.places[typo.id]?.mergedInto == kept.id)
+    #expect(harness.shelf.livePlaces.count == 2)
+    #expect(harness.shelf.nearDuplicatePlaces().isEmpty)
+    // Typing the typo again makes a new place: merged places are out of every list.
+    try harness.perform(.setPlace([second], PlacePath(typed: "Livng room")))
+    #expect(harness.shelf.livePlaces.count == 3)
+  }
+
+  @Test func aPlaceCantMergeIntoItselfOrWhatsInsideIt() throws {
+    var harness = Harness()
+    let id = try harness.add()
+    try harness.perform(.setPlace([id], PlacePath(typed: "Office › Shelf 2")))
+    let office = try #require(harness.shelf.places.values.first { $0.name == "Office" })
+    let shelf = try #require(harness.shelf.places.values.first { $0.name == "Shelf 2" })
+    #expect(throws: ShelfRuleViolation.mergeIntoItself) { try harness.perform(.mergePlaces(office.id, into: shelf.id)) }
+    #expect(throws: ShelfRuleViolation.mergeIntoItself) {
+      try harness.perform(.mergePlaces(office.id, into: office.id))
+    }
+  }
+
   @Test func aTypedCollectionTakesOnlyItsType() throws {
     var harness = Harness()
     let game = try harness.add()
@@ -318,6 +351,71 @@ struct Harness {
     try harness.perform(.setOwned(id))
     #expect(harness.shelf.objects[id]?.priority == nil)
     #expect(harness.shelf.objects[id]?.counts == true)
+  }
+
+  /// D-40: a value must fit its field.
+  @Test func valuesMustFitTheirField() throws {
+    var harness = Harness()
+    #expect(throws: ShelfRuleViolation.invalidValue(.field("region"))) {
+      try harness.add(values: [.field("region"): .text("Mars")])
+    }
+    #expect(throws: ShelfRuleViolation.invalidValue(.field("region"))) {
+      try harness.add(values: [.field("region"): .flag(true)])
+    }
+    #expect(throws: ShelfRuleViolation.invalidValue(.year)) { try harness.add(values: [.year: .text("1998")]) }
+    #expect(throws: ShelfRuleViolation.invalidValue(.axis("boxCondition"))) {
+      try harness.add(values: [.axis("boxCondition"): .text("Shiny")])
+    }
+    // Saturn narrows the region to three: PAL fits, Region-free doesn't.
+    _ = try harness.add(subtype: "saturn", values: [.field("region"): .text("PAL")])
+    #expect(throws: ShelfRuleViolation.invalidValue(.field("region"))) {
+      try harness.add(subtype: "saturn", values: [.field("region"): .text("Region-free")])
+    }
+    let id = try harness.add()
+    #expect(throws: ShelfRuleViolation.invalidValue(.field("inserts"))) {
+      try harness.perform(.edit(id, values: [.field("inserts"): .options(["map"])]))
+    }
+  }
+
+  /// Review of M3, finding 2: Missing is a ladder step only where the type allows it.
+  @Test func missingIsAStepOnlyWhereTheTypeAllowsIt() throws {
+    var harness = Harness()
+    _ = try harness.add(values: [.axis("boxCondition"): .text("Missing")])
+    let board = try Harness.catalogue.resolve("board-games", subtype: nil)
+    #expect(!board.allowMissing)
+    #expect(board.ladderSteps == board.conditions)
+  }
+
+  /// Review of M3, findings 5 and 14: an empty entry records nothing, and a lookup drops a value that doesn't fit.
+  @Test func emptyEntriesAreNoValueAndALookupDropsWhatDoesntFit() throws {
+    var harness = Harness()
+    let id = try harness.add(values: [.field("signed"): .entries([[:], ["by": "  "]])])
+    #expect(harness.shelf.objects[id]?.values[.field("signed")] == nil)
+    try harness.perform(.edit(id, values: [.field("signed"): .entries([[:]])]))
+    #expect(harness.shelf.objects[id]?.values[.field("signed")] == nil)
+    let events = try harness.perform(
+      .applyLookup(id, values: [.field("region"): .text("Mars"), .field("publisher"): .text("Treasure")]),
+      as: .lookup
+    )
+    #expect(events.count == 1)
+    #expect(harness.shelf.objects[id]?.values[.field("publisher")] == .text("Treasure"))
+  }
+
+  /// D-34: a subtype's preset fills its field on add, and nobody sets a hidden field by hand.
+  @Test func presetsFillOnAddAndHiddenFieldsStayHidden() throws {
+    var harness = Harness()
+    let id = try harness.add(subtype: "saturn")
+    #expect(harness.shelf.objects[id]?.values[.field("media")] == .text("Optical disc"))
+    #expect(harness.shelf.objects[id]?.values[.field("platform")] == .text("Sega Saturn"))
+    #expect(throws: ShelfRuleViolation.hiddenField(.field("media"))) {
+      try harness.perform(.edit(id, values: [.field("media"): .text("Cartridge")]))
+    }
+    #expect(throws: ShelfRuleViolation.hiddenField(.field("platform"))) {
+      try harness.add(subtype: "saturn", values: [.field("platform"): .text("Dreamcast")])
+    }
+    #expect(
+      try harness.perform(.applyLookup(id, values: [.field("platform"): .text("Dreamcast")]), as: .lookup).isEmpty
+    )
   }
 
   @Test func theSameCommandOnTheSameShelfPlansTheSameEvents() throws {

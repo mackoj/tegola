@@ -3,13 +3,13 @@
 The state of the work for whoever picks it up next: a new session, another agent, or the owner. Read this first, keep
 it short and current.
 
-**Updated:** 2026-10-31, M2 done on `m2-catalogue-model-storage`, open as a PR into `main`. M3 is next.
+**Updated:** 2026-11-01, M3 done on `m3-core-loop`, open as a PR into `main`. M4 is next.
 
 ## Where things stand
 
 - **Spec:** approved (`docs/PLAN.md`, answers in §10). Decisions: `docs/DECISIONS.md`, D-1 to D-42.
 - **M1 (foundation):** merged (PR #5), green on the Mac (`docs/milestones/M1.md`).
-- **M2 (catalogue, model, storage):** done on `m2-catalogue-model-storage` (`docs/milestones/M2.md`). Exit test
+- **M2 (catalogue, model, storage):** merged (PR #8, `docs/milestones/M2.md`). Exit test
   green: the 13 subtypes resolve to their written-out field lists. `scripts/ci.sh` is green on Xcode 27.1, and
   `linux-core` is green.
 - **What exists now:**
@@ -19,7 +19,9 @@ it short and current.
   - `TegolaStorage` (event log and projection in one transaction, with a replay test);
   - `ShelfClient` and the seed shelf;
   - the app opens its database at launch.
-- **No screens yet** beyond M1's placeholder. They start in M3.
+- **M3 (core loop):** done on `m3-core-loop` (`docs/milestones/M3.md`): Shelf home, Collection, Object, the edit
+  form, Add by hand, photos, Find, Places. Two UI journeys pass, including 30 objects in one sitting. The screenshots
+  are `docs/snapshots/`.
 - **tegola-server** (`mackoj/tegola-server`, D-41): its M1 is done (see What's next).
 
 ## Run it locally (Mac)
@@ -50,23 +52,18 @@ scripts/ci.sh                        # the full gate → build/ci-summary.md
 
 ## What's next
 
-1. **Merge M2.** The review's findings are fixed or deferred with a reason (`docs/milestones/M2.md`, "Review").
-2. **M3, the core loop** (exit test: 30 objects added across Video games and Thing in one sitting without asking how).
-   Break it down in `tasks/plan.md` first. Roughly:
-   - the design-system components and their catalog snapshots;
-   - Shelf home with `ShelfSummary`, and promises 4 and 5 as properties over screen state;
-   - Collection, Object (seven slots), and the edit form, rendering `EffectiveType.visibleFields` with "+ Add" for
-     `addableFields`;
-   - Add by hand, and Find and search (`objects_fts` arrives here);
-   - photos (the `photos` table and `attachPhoto`).
-
-   Add `plan`'s value checks (D-40) with the edit form. Every write is a `ShelfCommand` through `ShelfClient`; screens read through queries on the projection's columns,
-   and decode `data` for the full value.
-3. **In parallel, tegola-server** (`mackoj/tegola-server`, D-41): its M1 is done. It serves the contract with
-   Hummingbird 2, verifies App Attest end to end, and has every security control, but no lookup source yet (lookups
-   answer "no match"). Its `tasks/HANDOFF.md` lists the owner questions (sources, hosting, persistence, Team ID). The
-   app's client only needs it from M6 on. When M6 writes `AppAttestMiddleware`, build the signed bytes exactly as the
-   contract now says (D-42).
+1. **Merge M3** (PR into `main`), then the owner's test with people: 30 objects across Video games and Thing in one
+   sitting, without asking how.
+2. **M4, signals** (exit test: a 200-object shelf gives a signal list a collector agrees with on 8 of 10). Break it
+   down in `tasks/plan.md` first:
+   - the clocks' functions over events and fields (`ClockLibrary` names them);
+   - status derivation, filling the object's status slot, the Today strip's "need attention", and status filters;
+   - dismissals, logged (R2);
+   - local notifications;
+   - the seed shelf grown toward 120 objects;
+   - journey 5.
+3. **In parallel, tegola-server** (`mackoj/tegola-server`, D-41): see its `tasks/HANDOFF.md`. The app needs it from
+   M6 on, and `AppAttestMiddleware` must build the signed bytes as D-42 says.
 
 ## How the work is run
 
@@ -74,6 +71,9 @@ scripts/ci.sh                        # the full gate → build/ci-summary.md
   (PLAN §10, answer 7).
 - **Package.resolved:** resolving on a Mac drops OpenCombine, which TCA needs only on Linux. Commit new pins, but
   put OpenCombine's pin back (M2 did this for `TegolaFeatures` and the Xcode project).
+- **Snapshots:** `scripts/test.sh ios:<Package>` runs a package's tests on the iPhone simulator; `assertScreenSnapshot`
+  (`TegolaSnapshotTesting`) writes references to `docs/snapshots/<suite>/`, outside the packages (xcodebuild hangs
+  when a package changes mid-run). Re-record with `SNAPSHOTS=record scripts/test.sh ios:<Package>`.
 - **Type files:** `scripts/validate-types.sh` checks them against `schema/type.schema.json`; the decoder and
   `Catalogue.problems` check the rest. A new key goes in both the decoder and the schema.
 - **Toolchain in a cloud session:** there's no Xcode and no Swift by default.
@@ -98,8 +98,6 @@ scripts/ci.sh                        # the full gate → build/ci-summary.md
 
 - TCA doesn't build on Linux with Swift 6.4 (swift-navigation's `TextState`), so feature tests only run on the Mac
   (D-32).
-- SwiftUI can't set line spacing below a font's natural leading, so the 0.96 line height of the two-line display
-  titles needs the DisplayTitle component (M3). Until then, display titles render with default leading.
 
 ## Owner questions
 

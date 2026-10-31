@@ -97,3 +97,20 @@ struct StringKey: CodingKey {
   var intValue: Int? { nil }
   init?(intValue: Int) { nil }
 }
+
+extension FieldValue {
+  /// The value as stored: a list or log keeps only entries with something in them, and an empty one is no value at
+  /// all, so tapping "+ Add entry" and saving records nothing.
+  public var normalized: FieldValue? {
+    switch self {
+    case .entries(let entries):
+      let kept = entries.map { $0.filter { !$0.value.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty } }
+        .filter { !$0.isEmpty }
+      return kept.isEmpty ? nil : .entries(kept)
+    case .options(let options):
+      return options.isEmpty ? nil : self
+    default:
+      return self
+    }
+  }
+}

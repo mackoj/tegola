@@ -5,8 +5,8 @@ import Testing
 
 @testable import TegolaModel
 
-/// The product's promises, as properties over random command sequences, once per v1 type (PLAN §3.4). Promises 4 and
-/// 5 are about counts and screen state, which arrive with the Shelf summary in M3.
+/// The product's promises, as properties over random command sequences, once per v1 type (PLAN §3.4). Promises 4 and 5
+/// are checked on the read models screens draw from (`ShelfSummary`, `ObjectSlots`).
 @Suite struct PromiseTests {
   static let sequences = 40
   static let steps = 60
@@ -58,6 +58,23 @@ import Testing
           if let acquired = object.acquiredAt {
             #expect(generator.suppliedAcquired.contains(acquired), "acquired invented: \(context)")
           }
+        }
+        // 4. Wanted, borrowed and let-go objects never count (PD-061, PD-070): adding one leaves the count alone, and
+        // the count is the copies of what's owned and kept.
+        let summary = ShelfSummary(shelf: after, money: .off, now: harness.clock)
+        let owned = after.objects.values.filter { $0.ownership == .owned && $0.letGo == nil }
+        #expect(summary.count == owned.reduce(0) { $0 + $1.quantity }, "count: \(context)")
+        if case .add(let draft, _, _) = command, draft.ownership != .owned {
+          #expect(summary.count == ShelfSummary(shelf: before, money: .off, now: harness.clock).count, "\(context)")
+        }
+        #expect(summary.collections.reduce(0) { $0 + $1.count } == summary.count, "collections: \(context)")
+        // 5. With money off, no read model carries a value or a paid figure (PD-080, PD-063).
+        #expect(summary.value == nil, "value with money off: \(context)")
+        for object in after.objects.values {
+          let manifest = Harness.catalogue.manifest(object.typeID)!
+          let effective = try Harness.catalogue.resolve(object.typeID, subtype: object.subtype)
+          let slots = ObjectSlots(object: object, type: effective, manifest: manifest, shelf: after, money: .off)
+          #expect(!slots.spine.contains { $0.key.isMoney }, "money on the object screen: \(context)")
         }
         // 8. Nothing is confirmed without a collector action (PD-042).
         for (id, object) in after.objects where object.identity == .confirmed {
