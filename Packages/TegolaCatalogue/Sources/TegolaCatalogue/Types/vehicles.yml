@@ -38,25 +38,12 @@ searchable: [title, subtitle, year, vin, plate]
 # In a shop, holding a part: "what else do I own by this make?"
 related: [subtitle]
 
-# One type, two kinds of vehicle. The kind decides the mark on the shelf tile,
-# what the identifier is called, and which fields are worth showing — the same
-# move music makes with its medium and video-game with its media.
-kindRules:
-  car:
-    mark: VIN
-    identifierLabel: VIN
-    fields: [engine, transmission, fuel, doors]
-  motorbike:
-    mark: CC
-    identifierLabel: Frame number
-    fields: [style, strokes]
-
 fields:
   - key: kind
     label: Kind
     type: choice
     options: [Car, Motorbike]
-    note: drives kindRules
+    note: a subtype presets it and hides the picker
     required: true
     sample: Car
   - key: vin
@@ -114,40 +101,25 @@ fields:
     entry: [date, what, cost]
     sample: 6 entries
 
-  # Car
-  - key: engine
-    label: Engine
-    type: text
-    sample: 3.6 flat-six
-    auto: true
-  - key: transmission
-    label: Transmission
-    type: choice
-    options: [Manual, Automatic, Semi-automatic, Sequential]
-    sample: Manual
-  - key: fuel
-    label: Fuel
-    type: choice
-    options: [Petrol, Diesel, Electric, Hybrid, LPG]
-    sample: Petrol
-    auto: true
-  - key: doors
-    label: Doors
-    type: number
-    sample: "2"
-
-  # Motorbike
-  - key: style
-    label: Style
-    type: choice
-    options: [Roadster, Sport, Trail, Custom, Café racer, Scrambler, Touring, Enduro, Classic]
-    sample: Roadster
-  - key: strokes
-    label: Engine
-    type: choice
-    options: [Two-stroke, Four-stroke, Electric]
-    sample: Four-stroke
-    auto: true
+# One level below the type, keyed on the kind of vehicle (48; D-18). These
+# replace the old kindRules table.
+subtypes:
+  - key: car
+    label: Car
+    presets:
+      kind: Car
+    adds:
+      - { key: engine, label: Engine, type: text, auto: true }
+      - { key: transmission, label: Transmission, type: choice, options: [Manual, Automatic, Semi-automatic, Sequential] }
+      - { key: fuel, label: Fuel, type: choice, options: [Petrol, Diesel, Electric, Hybrid, LPG], auto: true }
+      - { key: doors, label: Doors, type: number }
+  - key: motorbike
+    label: Motorbike
+    presets:
+      kind: Motorbike
+    adds:
+      - { key: style, label: Style, type: choice, options: [Roadster, Sport, Trail, Custom, Café racer, Scrambler, Touring, Enduro, Classic] }
+      - { key: strokes, label: Engine, type: choice, options: [Two-stroke, Four-stroke, Electric], auto: true }
 
 # The two types this one replaces. Old key -> new key; anything absent survives
 # as the collector's own field, so a merge can never lose a value. "sets" fills

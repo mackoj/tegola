@@ -157,12 +157,8 @@ public struct TypeManifest: Decodable, Hashable, Sendable, Identifiable {
       signatures, subtypes, supersedes
   }
 
-  /// Keys the decoder accepts but doesn't read: the per-medium tables that subtypes replace (D-18). They go when the
-  /// files that use them move to subtypes (T2.2).
-  static let legacyKeys: Set<String> = ["mediumRules", "mediaRules", "kindRules"]
-
   public init(from decoder: any Decoder) throws {
-    try rejectUnknownKeys(in: decoder, known: Set(CodingKeys.allNames).union(Self.legacyKeys))
+    try rejectUnknownKeys(in: decoder, known: Set(CodingKeys.allNames))
     let container = try decoder.container(keyedBy: CodingKeys.self)
     id = try container.decode(ID.self, forKey: .id)
     version = try container.decodeIfPresent(Int.self, forKey: .version) ?? 1
@@ -285,7 +281,7 @@ extension TypeManifest {
     /// A condition on the field's own value for showing it ("> 1": Thing's quantity).
     public let showIf: String?
     public let isMultiline: Bool
-    /// On a subtype's addition: the parent field it stands in for (CED's caddy for the case). See D-35.
+    /// On a subtype's addition: the parent field it stands in for (CED's caddy for the case). See D-36.
     public let replaces: String?
 
     enum CodingKeys: String, CodingKey {

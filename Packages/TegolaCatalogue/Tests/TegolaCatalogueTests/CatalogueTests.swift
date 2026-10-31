@@ -32,7 +32,23 @@ import Testing
     #expect(music.spine.title == "Album")
     #expect(music.spine.subtitle == "Artist")
     #expect(music.conditions.first == "Mint")
-    #expect(music.fields.first { $0.key == "rpm" }?.options == ["33⅓", "45", "78"])
+    let vinyl = try #require(music.subtypes.first { $0.key == "vinyl" })
+    #expect(vinyl.adds.first { $0.key == "rpm" }?.options == ["33⅓", "45", "78"])
+  }
+
+  /// D-18: subtypes replace the per-medium tables, so no file has one and every file with a medium has subtypes.
+  @Test func mediumTablesBecameSubtypes() throws {
+    let catalogue = try Catalogue.bundled()
+    #expect(catalogue.manifest("video-game")?.subtypes.map(\.key) == ["saturn", "n64", "neo-geo", "game-boy", "ps1"])
+    #expect(catalogue.manifest("music")?.subtypes.map(\.key) == ["vinyl", "cd", "cassette", "other"])
+    #expect(catalogue.manifest("vehicles")?.subtypes.map(\.key) == ["car", "motorbike"])
+    let games = try #require(catalogue.manifest("video-game"))
+    #expect(games.fields.contains { $0.key == "playStatus" })
+    let saturn = try #require(games.subtypes.first)
+    #expect(saturn.presets["media"] == .value("Optical disc"))
+    #expect(saturn.presets["region"] == .options(["NTSC-J", "NTSC-U", "PAL"]))
+    #expect(saturn.parts == ["case", "manual", "disc", "spine card"])
+    #expect(saturn.clocks == ["discRot"])
   }
 
   @Test func videoMediaHasItsEightSubtypes() throws {

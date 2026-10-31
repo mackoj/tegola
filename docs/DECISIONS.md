@@ -145,3 +145,10 @@ reused; a replaced decision stays, marked **superseded by D-n**.
 
 **Decision.** Page 48 writes presets three ways, and each has one meaning. The word `hidden` hides the field. One value fills the field and hides it (Saturn → media: disc, "the media picker is hidden"). A list narrows a choice to those options (DVD's region codes). `parts`, `clock` and `lookup` aren't parent fields: they are the subtype's set-signature parts, its clocks from the library (`none` for none) and the identifiers its capture reads. Every added field has a label, like a type's own fields, so `video-media.yml`'s additions got theirs.
 
+
+### D-35 · What the medium tables become
+
+**Decision.** Video games' `mediaRules`, music's `mediumRules` and vehicles' `kindRules` become subtypes, and the tables are gone from the schema (D-18).
+- **Video games:** page 48's five platforms (Saturn, N64, Neo Geo, Game Boy, PlayStation). Each fills in the platform and media, and names its parts, lookup and clock. A platform without a subtype works with the parent's fields, and its set signature counts the parent's two generic slots (manual, insert). The floppy, card and code rows of 43 have no platform subtype yet, so `mediaRot` and `codeExpiry` aren't used by any video game until one is written. PlayStation's reprint label is `printLabel`, so that no field is called `label`.
+- **Music:** vinyl, CD, cassette and other. Each narrows the formats and adds its own fields. The matrix code is needed by vinyl and CD, so it stays on the parent (48, Q3).
+- **Dropped:** the per-medium marks and the per-medium names for the packaging and service fields (Sleeve, Case, J-card; Last cleaned, Last respooled). A subtype can't rename a parent field (48), so the parent's labels stand. If collectors miss them, that's a schema change for the owner.

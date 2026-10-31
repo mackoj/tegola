@@ -89,10 +89,7 @@
           "fields": { "type": "object", "additionalProperties": { "type": "string" } }
         }
       }
-    },
-    "mediumRules": { "type": "object", "description": "Legacy: replaced by subtypes (D-18)." },
-    "mediaRules": { "type": "object", "description": "Legacy: replaced by subtypes (D-18)." },
-    "kindRules": { "type": "object", "description": "Legacy: replaced by subtypes (D-18)." }
+    }
   },
   "$defs": {
     "strings": { "type": "array", "items": { "type": "string" } },
