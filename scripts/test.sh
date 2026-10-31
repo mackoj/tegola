@@ -74,12 +74,20 @@ acquire_app_lock() {
   trap 'rm -rf "$LOCK_DIR"' EXIT
 }
 
+# The newest available iPhone simulator, unless DESTINATION says otherwise: simulator names change with each Xcode, so
+# none is hard-coded.
+default_destination() {
+  local id
+  id=$(xcrun simctl list devices available -j 2>/dev/null | python3 -c "import json,sys; d=json.load(sys.stdin)['devices']; print(next(x['udid'] for r in sorted(d, reverse=True) if 'iOS' in r for x in d[r] if x['name'].startswith('iPhone')))" 2>/dev/null)
+  if [[ -n "$id" ]]; then echo "platform=iOS Simulator,id=$id"; else echo "platform=iOS Simulator,name=iPhone 17"; fi
+}
+
 run_app() {
   acquire_app_lock
   echo "▶ app (xcodebuild test${ONLY_TESTING:+, only $ONLY_TESTING})"
   local log=build/test-app.log result="build/Tegola-$(date +%s).xcresult"
   # -testLanguage en: the app has a French localization; its tests read English on a Mac set to French.
-  xcodebuild test -project Tegola.xcodeproj -scheme Tegola -destination "${DESTINATION:-platform=iOS Simulator,name=iPhone 17}" -testLanguage en \
+  xcodebuild test -project Tegola.xcodeproj -scheme Tegola -destination "${DESTINATION:-$(default_destination)}" -testLanguage en \
     -derivedDataPath build/DerivedData -resultBundlePath "$result" \
     ${ONLY_TESTING:+-only-testing:"$ONLY_TESTING"} >"$log" 2>&1
   local code=$?
