@@ -313,6 +313,7 @@ reused; a replaced decision stays, marked **superseded by D-n**.
   - `Tests/DatabaseTests/SchemaTests.swift`.
 
   A choice that departs from it gets a D-entry saying why. D-39's JSON `data` columns and D-51's search are the two departures so far. When M9 measures search, or earlier if a screen needs it, the starting point is clctn's `objectSearch`.
+
 ### D-55 · A revoked App Attest key stays revoked
 
 **Gap.** The contract told the app to register again on `unknown-key` "if the key was revoked or the server lost it", while its `Forbidden` response, tegola-server's D-7 and its stores answer a revoked key with `403` on every call and refuse to register it again (found by tegola-server's M2 review).
