@@ -47,7 +47,13 @@ public struct ShelfSummary: Hashable, Sendable {
   /// The Places line shows once two places exist (F10).
   public let showsPlaces: Bool
 
-  public init(shelf: Shelf, money: MoneyVisibility, now: Date, statuses: [ObjectID: ObjectStatus] = [:]) {
+  public init(
+    shelf: Shelf,
+    money: MoneyVisibility,
+    now: Date,
+    statuses: [ObjectID: ObjectStatus] = [:],
+    signalled: Set<ObjectID> = []
+  ) {
     let objects = Array(shelf.objects.values)
     count = TegolaModel.count(objects)
     let totals = Money.totals(
@@ -55,7 +61,7 @@ public struct ShelfSummary: Hashable, Sendable {
     )
     // With money on but nothing valued yet, there's no figure to show: the count stands instead.
     value = money == .on && !totals.isEmpty ? totals : nil
-    today = TodayStrip(shelf: shelf, now: now, statuses: statuses)
+    today = TodayStrip(shelf: shelf, now: now, statuses: statuses, signalled: signalled)
     let lentOut = Set(shelf.loans.values.filter { $0.isOpen && $0.direction == .out }.map(\.objectID))
     collections = shelf.collections.values
       .map { collection in
@@ -80,7 +86,8 @@ public struct TodayStrip: Hashable, Sendable {
   public enum Line: Hashable, Sendable {
     /// Objects waiting to be confirmed or given details.
     case toTidy(Int)
-    /// Objects whose status is watch or act, less the overdue ones: they have their own line (D-59).
+    /// Objects whose status is watch or act. One that's only overdue is on the overdue line instead; one with a clock
+    /// signal too is here as well, so the count matches the feed it opens (D-59).
     case needAttention(Int)
     /// Loans past their due date.
     case overdue(Int)
@@ -88,11 +95,20 @@ public struct TodayStrip: Hashable, Sendable {
 
   public let lines: [Line]
 
-  public init(shelf: Shelf, now: Date, statuses: [ObjectID: ObjectStatus]) {
+  /// `signalled` are the objects with a clock signal that needs attention (`ShelfSignals.feed`).
+  public init(
+    shelf: Shelf,
+    now: Date,
+    statuses: [ObjectID: ObjectStatus],
+    signalled: Set<ObjectID> = []
+  ) {
     let live = shelf.objects.values.filter { $0.letGo == nil }
     let tidy = live.filter { $0.identity != .confirmed }.count
     let overdueObjects = Set(shelf.loans.values.filter { $0.isOverdue(at: now) }.map(\.objectID))
-    let attention = live.filter { statuses[$0.id]?.needsAttention == true && !overdueObjects.contains($0.id) }.count
+    let attention = live.filter {
+      signalled.contains($0.id) || (statuses[$0.id]?.needsAttention == true && !overdueObjects.contains($0.id))
+    }
+    .count
     let overdue = shelf.loans.values.filter { $0.isOverdue(at: now) }.count
     lines = [.toTidy(tidy), .needAttention(attention), .overdue(overdue)].filter { line in
       switch line {

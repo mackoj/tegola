@@ -53,7 +53,10 @@ public struct CollectionFeature {
     public var statusChoices: [ObjectStatus] {
       @Dependency(\.date.now) var now
       let members = Set(snapshot.shelf.objects.values.filter { $0.collectionID == id && $0.letGo == nil }.map(\.id))
-      return snapshot.statusChoices(at: now, among: members)
+      // The chosen one stays, even once nothing has it any more, so the filter can always be cleared.
+      let choices = snapshot.statusChoices(at: now, among: members)
+      guard let status = status, !choices.contains(status) else { return choices }
+      return (choices + [status]).sorted()
     }
 
     /// The reducer's own state. The snapshot is the database's, kept current outside any action, so tests assert on

@@ -58,6 +58,11 @@ public struct ShelfSignals: Hashable, Sendable {
     self.statuses = statuses
   }
 
+  /// The objects with a signal that needs attention: what the Today strip's line counts.
+  public var signalled: Set<ObjectID> {
+    Set(signals.filter { $0.value.contains(where: \.status.needsAttention) }.keys)
+  }
+
   /// The signal feed: every signal that needs attention, most urgent first, then soonest to change.
   public var feed: [(object: ObjectID, signal: Signal)] {
     signals.flatMap { id, list in list.filter(\.status.needsAttention).map { (object: id, signal: $0) } }

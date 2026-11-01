@@ -9,18 +9,22 @@ public struct PlanContext: Sendable {
   public var batchID: BatchID?
   public var catalogue: Catalogue
   public var makeID: @Sendable () -> UUID
+  /// The calendar the clocks read years in, to check a dismissal against the reading at `at` (D-60).
+  public var calendar: Calendar
 
   public init(
     at: Date,
     source: ShelfEvent.Source = .collector,
     batchID: BatchID? = nil,
     catalogue: Catalogue,
+    calendar: Calendar = .gregorianUTC,
     makeID: @escaping @Sendable () -> UUID
   ) {
     self.at = at
     self.source = source
     self.batchID = batchID
     self.catalogue = catalogue
+    self.calendar = calendar
     self.makeID = makeID
   }
 
@@ -174,8 +178,20 @@ struct Planner {
       guard let clock = type.clocks.first(where: { $0.name == signal.clock && !$0.isPending })?.definition else {
         throw .notDismissable
       }
+      // The reading itself, not the caller's copy: it must be showing now, with the status it was shown with. An
+      // opt-in clock counts as on, since its signal can only have been seen if it was (D-60).
+      let showing = signals(
+        for: object,
+        type: type,
+        now: context.at,
+        calendar: context.calendar,
+        optedIn: [clock.name]
+      )
+      guard let reading = showing.first(where: { $0.clock == clock.name }), reading.status == signal.status else {
+        throw .notDismissable
+      }
       emit(
-        .signalDismissed(id, SignalDismissal(clock: clock.name, status: signal.status, parameters: clock.parameters))
+        .signalDismissed(id, SignalDismissal(clock: clock.name, status: reading.status, parameters: clock.parameters))
       )
     case .lend(let id, let choice, let due, let note):
       try lend(id, to: choice, due: due, note: note)
@@ -617,12 +633,12 @@ extension Shelf {
         case ShelfEvent.Kind.servicedKind:
           object.signalState = object.signalState.or().with {
             $0.lastServiced = at
-            $0.dismissed = [:]
+            $0.lapseDismissals(afterEvent: kind)
           }
         case ShelfEvent.Kind.backedUpKind:
           object.signalState = object.signalState.or().with {
             $0.lastBackedUp = at
-            $0.dismissed = [:]
+            $0.lapseDismissals(afterEvent: kind)
           }
         default: break
         }

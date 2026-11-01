@@ -32,23 +32,21 @@
           ? Text("Battery swapped in \(year), usually lasts \(low)–\(high) years", bundle: .module)
           : Text("Battery from \(year), usually lasts \(low)–\(high) years", bundle: .module)
       case .codeExpires(let date):
-        let day = date.formatted(.dateTime.day().month(.abbreviated).year())
-        return Text("The code expires on \(day)", bundle: .module)
+        return Text("The code expires on \(date, format: .dateTime.day().month(.abbreviated).year())", bundle: .module)
       case .drinkingWindow(let window):
         let from = String(window.lowerBound)
         let to = String(window.upperBound)
         return Text("Best drunk \(from)–\(to)", bundle: .module)
       case .serviced(let last, let months):
-        let day = last.formatted(.dateTime.month(.abbreviated).year())
-        return Text("Last serviced \(day), due every \(months) months", bundle: .module)
-      case .checked(let since, let wasChecked, let years):
+        return Text(
+          "Last serviced \(last, format: .dateTime.month(.abbreviated).year()), due every \(months) months",
+          bundle: .module
+        )
+      case .checked(let since, _, let years):
         let year = String(since)
-        return wasChecked
-          ? Text("Last checked in \(year), worth a look every \(years) years", bundle: .module)
-          : Text("Made in \(year), worth a look every \(years) years", bundle: .module)
+        return Text("Last checked in \(year), worth a look every \(years) years", bundle: .module)
       case .unfinished(let since):
-        let day = since.formatted(.dateTime.month(.abbreviated).year())
-        return Text("Started \(day), never finished", bundle: .module)
+        return Text("Started \(since, format: .dateTime.month(.abbreviated).year()), never finished", bundle: .module)
       }
     }
   }

@@ -182,6 +182,8 @@
                 Spacer()
                 Text(verbatim: "→").tegolaTextStyle(TegolaType.heading).foregroundStyle(TegolaRole.textMuted)
               }
+              // The whole line is the button, not just the words and the arrow.
+              .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
             .accessibilityIdentifier("today.needAttention")
@@ -193,7 +195,8 @@
       .padding(TegolaSpace.l)
       .frame(maxWidth: .infinity, alignment: .leading)
       .printed(fill: .accentHighlight, radius: TegolaRadius.card)
-      .accessibilityElement(children: .combine)
+      // Contain, not combine: "need attention" is a button of its own, and combining would swallow its tap.
+      .accessibilityElement(children: .contain)
     }
 
     func text(_ line: TodayStrip.Line) -> Text {

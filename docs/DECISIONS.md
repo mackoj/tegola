@@ -361,7 +361,8 @@ A clock with nothing to read gives no signal: no year, no date, no known service
 
 **Decision.**
 - **The rule** (`ObjectStatus.derive`): let go is *gone*. Wanted and borrowed objects have no signals and are *fine*: they aren't the collector's to look after. An owned object takes the most urgent of its showing signals; a loan out past its due date raises it to *act*; with no signal it's *fine*. To tidy, needs details and lent keep their M3 labels in the slot (D-48) and don't change the swatch.
-- **Counted once.** The Today strip's *need attention* leaves out objects that are overdue, which have their own line.
+- **Counted once.** An object that's only overdue is on the Today strip's overdue line, not *need attention*. One that also has a clock signal needing attention is on both, so the count matches the feed it opens. The strip counts objects; the feed lists signals, so an object with two shows as two rows.
+- **The Lent chip** keeps M3's *watch* swatch as a label of the collector's state (*act* once overdue). The status filters read the derived status, which for a lent object with no signal is *fine*.
 - **What the clocks read** is kept on the object as `signalState` (last service, last backup, playing since), written by `apply` from `logged` and value events. Objects are stored as JSON (D-39), so it needs no migration, and a replay rebuilds it. A whole shelf's signals (`ShelfSignals`) then need no history.
 - **The calendar** is a dependency, like the date: a clock's year boundary comes from `\.calendar`, never `Calendar.current`.
 
@@ -370,9 +371,9 @@ A clock with nothing to read gives no signal: no year, no date, no known service
 **Gap.** F15 and risk R2 say every signal can be dismissed and the dismissal is logged, so the clocks' parameters can be tuned. Nothing says how long a dismissal lasts, or what it records.
 
 **Decision.**
-- **The command** is `dismissSignal(object, signal)`. `plan` takes it only for an owned, kept object, a signal that needs attention, and a clock the object's type runs and doesn't hold back.
+- **The command** is `dismissSignal(object, signal)`. `plan` takes it only for an owned, kept object and a clock the type runs and doesn't hold back. It re-reads that clock at the command's moment (`PlanContext.calendar`) and refuses unless the reading is showing, needs attention and has the status the collector saw. It records that reading, not the caller's copy. An opt-in clock counts as on here, since its signal was only seen if it was.
 - **The event**, `signalDismissed`, records the clock, the status it read and the library's parameters in force: shape, never the object's content. It steers screens, so it isn't in History's main kinds; where History does show it, it reads "Estimate dismissed".
-- **How long.** A dismissal hides that clock's signal until the reading gets more urgent (*watch* to *act*) or there's new evidence: a service, a backup, or a change to a value the clocks read (year, save battery, code expiry, drinking window, last serviced, play status).
+- **How long.** A dismissal hides that clock's signal until the reading gets more urgent (*watch* to *act*) or there's new evidence for that clock: an event it reads (a service, a backup) or a change to a value it reads. Each clock lapses alone, so a battery swap doesn't bring back a dismissed code expiry.
 - **Storage.** The dismissed clocks live in the object's `signalState` (D-59), so there's no new table. clctn's schema has no equivalent to port, and a table would be one more thing for CloudKit sync to carry. The event log keeps every dismissal for tuning.
 
 ### D-61 · Clock notifications
@@ -380,7 +381,7 @@ A clock with nothing to read gives no signal: no year, no date, no known service
 **Gap.** F15 says notifications are "offered once, in plain words, when the first clocked object arrives", and PLAN §5 names `NotificationsClient`. Nothing says where the offer appears, when notifications fire, or how they follow the signals.
 
 **Decision.**
-- **The offer** is a card on the Shelf home, not a system prompt out of nowhere. It appears once an owned object runs a clock that isn't held back or opt-in, and it stays until the collector answers. **Yes, tell me** asks the system for permission; **No thanks** puts it away. The answer is a setting (`notificationsOffer`), so it's asked once.
-- **What's scheduled:** one notification per signal's next change (`changesAt`): the day it turns *watch* or *act*, at 10:00 in the collector's calendar. It's titled with the object and says an estimate thinks it's due, nothing more. At most 50, the soonest, because iOS keeps 64 pending.
+- **The offer** is a card on the Shelf home, not a system prompt out of nowhere. It appears once an owned object has a signal, any status, so a clock with something to read. Every game names `codeExpiry`, but a game with no code date isn't clocked. It stays until the collector answers. **Yes, tell me** asks the system for permission; **No thanks** puts it away. The answer is a setting (`notificationsOffer`), so it's asked once.
+- **What's scheduled:** one notification per signal's next change (`changesAt`): the day it turns *watch* or *act*, at 10:00 in the collector's calendar, or a minute later if that's today and 10:00 has passed. A dismissed signal is scheduled for the day it would get more urgent than when it was dismissed, the day it shows again. It's titled with the object and says an estimate thinks it's due, nothing more. At most 50, the soonest, because iOS keeps 64 pending.
 - **Following the signals.** With the offer accepted, each time the Shelf home appears the clock notifications are replaced from the signals then. A swap, a backup, a dismissal or an edit since the last time moves or removes them. Other kinds (loan due, M7; the weekly nudge, M8) use their own id prefix and aren't touched.
 - **Opt-in clocks** are a setting too (`optedInClocks`), read with the shelf. Its toggle waits for You (M8).

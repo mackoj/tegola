@@ -1,8 +1,8 @@
 public import ComposableArchitecture
 public import Foundation
 public import SQLiteData
-public import TegolaClients
 import TegolaCatalogue
+public import TegolaClients
 public import TegolaModel
 public import TegolaStorage
 
@@ -23,11 +23,13 @@ public struct ShelfFeature {
     }
 
     public var summary: ShelfSummary {
-      ShelfSummary(
+      let signals = snapshot.signals(at: now)
+      return ShelfSummary(
         shelf: snapshot.shelf,
         money: snapshot.money,
         now: now,
-        statuses: snapshot.signals(at: now).statuses
+        statuses: signals.statuses,
+        signalled: signals.signalled
       )
     }
 
@@ -37,13 +39,9 @@ public struct ShelfFeature {
     /// The clock notification offer (F15): once, in plain words, from when the first clocked object arrives until the
     /// collector answers.
     public var offersNotifications: Bool {
-      @Dependency(\.catalogue) var catalogue
-      guard snapshot.notificationsOffer == nil else { return false }
-      return snapshot.shelf.objects.values.contains { object in
-        object.counts
-          && ((try? catalogue.resolve(object.typeID, subtype: object.subtype))?.clocks
-            .contains { !$0.isPending && $0.definition?.isOptIn == false } ?? false)
-      }
+      @Dependency(\.date.now) var now
+      // A clock with something to read: every game names codeExpiry, but a game with no code date isn't clocked.
+      return snapshot.notificationsOffer == nil && !snapshot.signals(at: now).signals.isEmpty
     }
 
     /// The clock notifications to schedule now: one for each signal's next change, soonest first, at most 50 (the
@@ -51,7 +49,7 @@ public struct ShelfFeature {
     public func clockNotifications(at now: Date) -> [LocalNotification] {
       let shelf = snapshot.shelf
       let body = String(localized: "Worth a look: an estimate says it's due.", bundle: .module)
-      return snapshot.signals(at: now).signals
+      return snapshot.upcomingChanges(at: now)
         .flatMap { id, signals in
           signals.compactMap { signal -> LocalNotification? in
             guard let at = signal.changesAt, at > now, let object = shelf.objects[id] else { return nil }

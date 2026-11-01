@@ -206,6 +206,31 @@ struct StoreHarness {
   }
 }
 
+@Suite struct SignalStorageTests {
+  /// T4.4: a dismissal and a swap go through the store, and the rebuilt projection keeps what the clocks read.
+  @Test func aDismissalSurvivesRebuildingTheProjection() throws {
+    let harness = try StoreHarness()
+    let ids = harness.ids
+    let context = { PlanContext(at: harness.clock, catalogue: harness.store.catalogue, makeID: { ids.next() }) }
+    let draft = ObjectDraft(
+      type: "video-game",
+      subtype: "game-boy",
+      values: [.title: .text("Tetris"), .year: .year(1994), .field("region"): .text("PAL")]
+    )
+    let id = try harness.store.perform(.add(draft, to: .new(name: "Games"), origin: .typed), context: context())
+      .createdObjects[0]
+    let shelf = try harness.store.shelf()
+    let object = try #require(shelf.objects[id])
+    let type = try harness.store.catalogue.resolve(object.typeID, subtype: object.subtype)
+    let signal = try #require(signals(for: object, type: type, now: harness.clock, calendar: .gregorianUTC).first)
+    _ = try harness.store.perform(.dismissSignal(id, signal), context: context())
+    let live = try harness.store.shelf()
+    #expect(live.objects[id]?.signalState?.dismissed == ["saveBattery": .watch])
+    try harness.store.rebuildProjection()
+    #expect(try harness.store.shelf() == live)
+  }
+}
+
 @Suite struct SettingsTests {
   @Test func moneyIsOffUntilTheCollectorTurnsItOn() throws {
     let harness = try StoreHarness()

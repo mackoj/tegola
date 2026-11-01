@@ -98,6 +98,28 @@ public struct SignalState: Hashable, Sendable, Codable {
     dismissed = try container.decodeIfPresent([String: ObjectStatus].self, forKey: .dismissed) ?? [:]
   }
 
+  /// What each clock reads: a change to one of its values, or one of its events, is new evidence for that clock
+  /// alone, so only its dismissal lapses (D-60).
+  static func inputs(of clock: String) -> (keys: Set<FieldKey>, events: Set<String>) {
+    switch clock {
+    case "saveBattery": ([.year, .field("saveBattery")], [ShelfEvent.Kind.servicedKind])
+    case "codeExpiry": ([.field("codeExpires")], [])
+    case "drinkingWindow": ([.field("drinkingWindow")], [])
+    case "serviceRisk": ([.field("lastServiced")], [ShelfEvent.Kind.servicedKind])
+    case "mediaRot", "discRot": ([], [ShelfEvent.Kind.servicedKind, ShelfEvent.Kind.backedUpKind])
+    case "unfinished": ([.field("playStatus")], [])
+    default: ([], [])
+    }
+  }
+
+  mutating func lapseDismissals(afterChanging keys: Set<FieldKey>) {
+    dismissed = dismissed.filter { clock, _ in Self.inputs(of: clock).keys.isDisjoint(with: keys) }
+  }
+
+  mutating func lapseDismissals(afterEvent kind: String) {
+    dismissed = dismissed.filter { clock, _ in !Self.inputs(of: clock).events.contains(kind) }
+  }
+
   /// A dismissed clock shows again once its reading is more urgent than when it was dismissed.
   func hides(_ signal: Signal) -> Bool {
     guard let status = dismissed[signal.clock] else { return false }
@@ -134,18 +156,12 @@ extension ShelfObject {
   static let playStatus = FieldKey.field("playStatus")
   static let playing = FieldValue.text("Playing")
 
-  /// The keys the clocks read: a change to any of them is new evidence, so dismissals lapse (D-60).
-  static let clockInputs: [FieldKey] = [
-    .year, .field("saveBattery"), .field("codeExpires"), .field("drinkingWindow"), .field("lastServiced"), playStatus,
-  ]
-
-  /// After a change to its values: dismissals lapse if what the clocks read changed; note when it started Playing,
-  /// and forget it once it's anything else.
+  /// After a change to its values: a dismissal lapses when what its clock reads changed (D-60); note when it started
+  /// Playing, and forget it once it's anything else.
   mutating func noteValues(before: [FieldKey: FieldValue], at: Date) {
-    if let state = signalState, !state.dismissed.isEmpty,
-      Self.clockInputs.contains(where: { values[$0] != before[$0] })
-    {
-      signalState = state.with { $0.dismissed = [:] }
+    if let state = signalState, !state.dismissed.isEmpty {
+      let changed = Set(values.keys).union(before.keys).filter { values[$0] != before[$0] }
+      signalState = state.with { $0.lapseDismissals(afterChanging: changed) }
     }
     let now = values[Self.playStatus]
     guard now != before[Self.playStatus] else { return }
@@ -155,6 +171,15 @@ extension ShelfObject {
       signalState = signalState.or().with { $0.playingSince = nil }
     }
   }
+}
+
+extension Calendar {
+  /// Gregorian in UTC: the default for a context with no calendar of its own (a test, the seed).
+  public static let gregorianUTC: Calendar = {
+    var calendar = Calendar(identifier: .gregorian)
+    calendar.timeZone = TimeZone(identifier: "UTC")!
+    return calendar
+  }()
 }
 
 extension ShelfEvent.Kind {
@@ -181,6 +206,26 @@ public func signals(
       let signal = reading.signal(definition), object.signalState?.hides(signal) != true
     else { return nil }
     return signal
+  }
+}
+
+/// The readings worth a notification on the day they change (D-61): every showing signal with a next change, and a
+/// dismissed one whose next change makes it more urgent than when it was dismissed, the day it shows again (D-60).
+public func upcomingChanges(
+  for object: ShelfObject,
+  type: EffectiveType,
+  now: Date,
+  calendar: Calendar,
+  optedIn: Set<String> = []
+) -> [Signal] {
+  var raw = object
+  raw.signalState?.dismissed = [:]
+  let dismissed = object.signalState?.dismissed ?? [:]
+  return signals(for: raw, type: type, now: now, calendar: calendar, optedIn: optedIn).filter { signal in
+    guard signal.changesAt != nil else { return false }
+    guard let status = dismissed[signal.clock] else { return true }
+    let next: ObjectStatus = signal.status == .good ? .watch : .act
+    return next < status
   }
 }
 

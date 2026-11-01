@@ -461,22 +461,6 @@
         }
       }
     },
-    "Made in %@, worth a look every %lld years" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Made in %1$@, worth a look every %2$lld years"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fabriqué en %@, à revoir tous les %lld ans"
-          }
-        }
-      }
-    },
     "Make a backup" : {
       "localizations" : {
         "fr" : {

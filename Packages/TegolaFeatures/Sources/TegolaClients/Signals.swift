@@ -21,6 +21,25 @@ extension ShelfSnapshot {
     return ObjectStatus.allCases.filter { $0 != .fine && $0 != .gone && present.contains($0) }.sorted()
   }
 
+  /// The readings to notify about, by object: each one's next change, dismissed ones included once they'd get worse.
+  public func upcomingChanges(at now: Date) -> [ObjectID: [Signal]] {
+    @Dependency(\.catalogue) var catalogue
+    @Dependency(\.calendar) var calendar
+    var upcoming: [ObjectID: [Signal]] = [:]
+    for object in shelf.objects.values where object.counts {
+      guard let type = try? catalogue.resolve(object.typeID, subtype: object.subtype) else { continue }
+      let changes = TegolaModel.upcomingChanges(
+        for: object,
+        type: type,
+        now: now,
+        calendar: calendar,
+        optedIn: optedInClocks
+      )
+      if !changes.isEmpty { upcoming[object.id] = changes }
+    }
+    return upcoming
+  }
+
   /// One object's showing signals at `now`, without reading the rest of the shelf.
   public func signals(for id: ObjectID, at now: Date) -> [Signal] {
     @Dependency(\.catalogue) var catalogue

@@ -1,7 +1,7 @@
 /// The clocks the app owns (page 52, P2; PLAN §3.3). A type names the ones it uses and can't define its own. Each is a
 /// named, parameterised estimate over an object's fields and events, always labelled **Estimate**. This is the
 /// library's catalogue: names, what each reads and its parameters. The functions that compute a signal are in
-/// `TegolaModel` (`signals(for:type:events:now:calendar:)`), which reads the parameters from here.
+/// `TegolaModel` (`signals(for:type:now:calendar:optedIn:)`), which reads the parameters from here.
 public struct ClockDefinition: Hashable, Sendable {
   public let name: String
   /// What the collector reads, in a few words.

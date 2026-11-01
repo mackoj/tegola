@@ -26,7 +26,14 @@ extension ShelfClient {
     ShelfClient { command, source in
       @Dependency(\.date.now) var now
       @Dependency(\.uuid) var uuid
-      let context = PlanContext(at: now, source: source, catalogue: store.catalogue, makeID: { uuid() })
+      @Dependency(\.calendar) var calendar
+      let context = PlanContext(
+        at: now,
+        source: source,
+        catalogue: store.catalogue,
+        calendar: calendar,
+        makeID: { uuid() }
+      )
       return try store.perform(command, context: context)
     }
   }

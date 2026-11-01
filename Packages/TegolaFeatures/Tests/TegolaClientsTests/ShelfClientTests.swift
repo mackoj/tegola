@@ -12,6 +12,7 @@ import Testing
   .dependencies {
     $0.date.now = Date(timeIntervalSince1970: 1_800_000_000)
     $0.uuid = .incrementing
+    $0.calendar = .gregorianUTC
     try $0.bootstrapDatabase()
     $0.shelf = .store(ShelfStore(migrated: $0.defaultDatabase, catalogue: try Catalogue.bundled()))
   }

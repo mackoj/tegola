@@ -53,15 +53,32 @@ import Testing
     #expect(shelf.signals.isEmpty)
   }
 
-  /// An overdue loan is *act* on its object, but the Today strip counts it once, on its own line.
+  /// An overdue loan with no clock signal is *act* on its object, and the Today strip counts it once, on its own line.
   @Test func anOverdueLoanIsActAndCountedOnce() throws {
     var harness = Harness()
-    let id = try SaveBatteryClockTests.cartridge(&harness, year: 1994)
+    let id = try SaveBatteryClockTests.cartridge(&harness, year: nil)
     try harness.perform(.lend(id, to: .new(name: "Dara"), due: harness.clock + 60, note: ""))
     harness.clock += 3_600
     let shelf = Self.signals(harness)
     #expect(shelf.statuses[id] == .act)
     #expect(TodayStrip(shelf: harness.shelf, now: harness.clock, statuses: shelf.statuses).lines == [.overdue(1)])
+  }
+
+  /// Review of M4, finding 3: an overdue object with its own clock signal counts on both lines, matching the feed.
+  @Test func anOverdueObjectWithASignalCountsAsNeedingAttentionToo() throws {
+    var harness = Harness()
+    let id = try SaveBatteryClockTests.cartridge(&harness, year: 1994)
+    try harness.perform(.lend(id, to: .new(name: "Dara"), due: harness.clock + 60, note: ""))
+    harness.clock += 3_600
+    let shelf = Self.signals(harness)
+    let today = TodayStrip(
+      shelf: harness.shelf,
+      now: harness.clock,
+      statuses: shelf.statuses,
+      signalled: shelf.signalled
+    )
+    #expect(today.lines == [.needAttention(1), .overdue(1)])
+    #expect(shelf.feed.map(\.object) == [id])
   }
 
   /// The state the clocks read is kept by `apply`, so a replayed log reads the same.

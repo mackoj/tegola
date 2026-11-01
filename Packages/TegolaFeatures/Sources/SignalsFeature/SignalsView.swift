@@ -32,6 +32,7 @@
               send(.objectTapped(entry.object.id))
             } label: {
               SignalRow(title: entry.object.title, signal: entry.signal)
+                .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
             .accessibilityIdentifier("signals.row.\(entry.object.title)")

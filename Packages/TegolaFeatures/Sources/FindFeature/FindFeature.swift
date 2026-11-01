@@ -28,7 +28,10 @@ public struct FindFeature {
     /// The status chips: the statuses some object has now.
     public var statusChoices: [ObjectStatus] {
       @Dependency(\.date.now) var now
-      return snapshot.statusChoices(at: now)
+      // The chosen one stays, even once nothing has it any more, so the filter can always be cleared.
+      let choices = snapshot.statusChoices(at: now)
+      guard let status = query.status, !choices.contains(status) else { return choices }
+      return (choices + [status]).sorted()
     }
 
     /// The reducer's own state; the snapshot is the database's (D-47).

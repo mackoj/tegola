@@ -70,10 +70,16 @@ struct ShelfFeatureTests {
     let link = try #require(scheduled.first { $0.id.contains(due.description) })
     #expect(link.title == "Link's Awakening")
     #expect(link.at == Calendar.testUTC.date(from: DateComponents(year: 2029, month: 1, day: 1)))
-    // From then on, each time the shelf appears, the schedule follows the signals.
+    // From then on, each time the shelf appears, the schedule follows the signals: a swap moves it 25 years on.
+    @Dependency(\.shelf) var shelf
+    _ = try shelf.perform(.logEvent(due, kind: ShelfEvent.Kind.servicedKind, note: ""))
+    try await store.state.$snapshot.load()
     await store.send(.view(.onAppear)) { $0.now = testNow }
     await store.finish()
     #expect(log.replacements.count == 2)
+    let moved = try #require(log.replacements.last?.first { $0.id.contains(due.description) })
+    let day = Calendar.testUTC.dateComponents([.year, .month, .day], from: moved.at)
+    #expect([day.year, day.month, day.day] == [2052, 1, 15])
   }
 
   @Test func decliningPutsTheOfferAwayAndSchedulesNothing() async throws {

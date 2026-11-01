@@ -42,6 +42,7 @@ extension NotificationsClient: DependencyKey {
   public static var liveValue: NotificationsClient {
     #if canImport(UserNotifications)
       @Dependency(\.calendar) var calendar
+      @Dependency(\.date) var date
       return NotificationsClient(
         requestAuthorization: {
           try await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound])
@@ -56,7 +57,13 @@ extension NotificationsClient: DependencyKey {
             content.body = notification.body
             var day = calendar.dateComponents([.year, .month, .day], from: notification.at)
             day.hour = morning
-            let trigger = UNCalendarNotificationTrigger(dateMatching: day, repeats: false)
+            // A change due today, after the morning has passed: a minute from now rather than never.
+            let trigger: UNNotificationTrigger =
+              if let fire = calendar.date(from: day), fire > date.now {
+                UNCalendarNotificationTrigger(dateMatching: day, repeats: false)
+              } else {
+                UNTimeIntervalNotificationTrigger(timeInterval: 60, repeats: false)
+              }
             try await center.add(UNNotificationRequest(identifier: notification.id, content: content, trigger: trigger))
           }
         }
