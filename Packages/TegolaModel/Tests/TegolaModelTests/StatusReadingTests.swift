@@ -104,3 +104,52 @@ import Testing
     }
   }
 }
+
+@Suite struct DismissSignalTests {
+  @Test func dismissingHidesTheSignalUntilItGetsWorse() throws {
+    var harness = Harness()
+    let game = try harness.add(subtype: "game-boy", values: [.year: .year(2003)])
+    let events = try harness.perform(.dismissSignal(game, clock: "saveBattery", status: .watch))
+    #expect(events.map(\.kind) == [.signalDismissed(game, clock: "saveBattery", status: .watch)])
+    #expect(harness.shelf.objects[game]?.dismissed == ["saveBattery": .watch])
+    let reading = StatusReading.all(
+      shelf: harness.shelf,
+      catalogue: Harness.catalogue,
+      now: Harness.start,
+      calendar: utc
+    )
+    #expect(reading[game]?.reason == .settled)
+    // Dismissing what's already dismissed changes nothing, so the log isn't padded.
+    #expect(try harness.perform(.dismissSignal(game, clock: "saveBattery", status: .watch)).isEmpty)
+  }
+
+  /// Dismissals are the log clock parameters are tuned from (risk R2), but they aren't history a person reads.
+  @Test func aDismissalIsLoggedButNotHistory() {
+    let kind = ShelfEvent.Kind.signalDismissed(
+      ObjectID(UUID(uuidString: "00000000-0000-0000-0000-000000000009")!),
+      clock: "saveBattery",
+      status: .act
+    )
+    #expect(!kind.readsAsHistory)
+    #expect(kind.objectID != nil)
+  }
+
+  @Test func onlyAnOwnedObjectsRealSignalsCanBeDismissed() throws {
+    var harness = Harness()
+    let game = try harness.add(subtype: "game-boy", values: [.year: .year(1995)])
+    let wanted = try harness.add(subtype: "game-boy", ownership: .wanted)
+    #expect(throws: ShelfRuleViolation.notOwned) {
+      try harness.perform(.dismissSignal(wanted, clock: "saveBattery", status: .act))
+    }
+    #expect(throws: ShelfRuleViolation.unknownClock("noSuchClock")) {
+      try harness.perform(.dismissSignal(game, clock: "noSuchClock", status: .act))
+    }
+    #expect(throws: ShelfRuleViolation.notASignal) {
+      try harness.perform(.dismissSignal(game, clock: "saveBattery", status: .fine))
+    }
+    try harness.perform(.letGo(game, .lost))
+    #expect(throws: ShelfRuleViolation.notOwned) {
+      try harness.perform(.dismissSignal(game, clock: "saveBattery", status: .act))
+    }
+  }
+}

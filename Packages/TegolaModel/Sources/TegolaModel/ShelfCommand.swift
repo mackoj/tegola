@@ -33,6 +33,9 @@ public enum ShelfCommand: Hashable, Sendable {
   case setWanted(ObjectID, priority: Int?, priceCap: Money?)
   case setGrail(ObjectID, Bool)
   case setMightLetGo(ObjectID, Bool)
+  /// Hides a clock's signal until it gets more urgent than `status`, the status the collector saw (T4.3). The events
+  /// are the log clock parameters are tuned from (risk R2).
+  case dismissSignal(ObjectID, clock: String, status: ObjectStatus)
   /// PD-149.
   case letGo(ObjectID, LetGo.Reason)
   /// PD-020, PD-021.

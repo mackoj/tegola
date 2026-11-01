@@ -54,6 +54,10 @@ public enum ShelfRuleViolation: Error, Hashable, Sendable {
   case quantityBelowZero
   case notOwned
   case notWanted
+  /// A clock the library doesn't have.
+  case unknownClock(String)
+  /// Only a clock's good, watch or act can be dismissed: fine and gone aren't signals.
+  case notASignal
   case alreadyLetGo
   case alreadyOnLoan
   case notOnLoan
@@ -193,6 +197,13 @@ struct Planner {
       let object = try object(id)
       guard object.ownership == .owned, object.letGo == nil else { throw .notOwned }
       if object.mightLetGo != mightLetGo { emit(.mightLetGoChanged(id, mightLetGo)) }
+    case .dismissSignal(let id, let clock, let status):
+      let object = try object(id)
+      // Clocks only run on what the collector owns and keeps (StatusReading), so only those can be dismissed.
+      guard object.ownership == .owned, object.letGo == nil else { throw .notOwned }
+      guard ClockLibrary.definition(clock) != nil else { throw .unknownClock(clock) }
+      guard [.good, .watch, .act].contains(status) else { throw .notASignal }
+      if object.dismissed?[clock] != status { emit(.signalDismissed(id, clock: clock, status: status)) }
     case .letGo(let id, let reason):
       let object = try object(id)
       guard object.letGo == nil else { throw .alreadyLetGo }
@@ -609,6 +620,8 @@ extension Shelf {
       }
     case .grailChanged(let id, let isGrail): touch(id) { $0.isGrail = isGrail }
     case .mightLetGoChanged(let id, let mightLetGo): touch(id) { $0.mightLetGo = mightLetGo }
+    case .signalDismissed(let id, let clock, let status):
+      touch(id) { $0.dismissed = ($0.dismissed ?? [:]).merging([clock: status]) { $1 } }
     case .letGo(let id, let letGo): touch(id) { $0.letGo = letGo }
     case .promoted(let id, let copy):
       touch(id) { $0.quantity -= 1 }

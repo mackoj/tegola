@@ -59,6 +59,7 @@ public struct ShelfEvent: Hashable, Sendable, Codable, Identifiable {
     case wanted(ObjectID, priority: Int?, priceCap: Money?)
     case grailChanged(ObjectID, Bool)
     case mightLetGoChanged(ObjectID, Bool)
+    case signalDismissed(ObjectID, clock: String, status: ObjectStatus)
     case letGo(ObjectID, LetGo)
     /// One copy leaves a quantity object as an object of its own (PD-020).
     case promoted(from: ObjectID, copy: ShelfObject)
@@ -89,6 +90,7 @@ public struct ShelfEvent: Hashable, Sendable, Codable, Identifiable {
       case .wanted: "wanted"
       case .grailChanged: "grail"
       case .mightLetGoChanged: "mightLetGo"
+      case .signalDismissed: "signalDismissed"
       case .letGo: "letGo"
       case .promoted: "promoted"
       case .quantityAdjusted: "quantityAdjusted"
@@ -105,7 +107,7 @@ public struct ShelfEvent: Hashable, Sendable, Codable, Identifiable {
         true
       case .collectionCreated, .collectionRenamed, .placeCreated, .personCreated, .workCreated, .placesMerged, .wanted,
         .grailChanged,
-        .mightLetGoChanged, .quantityAdjusted:
+        .mightLetGoChanged, .quantityAdjusted, .signalDismissed:
         false
       }
     }
@@ -116,7 +118,8 @@ public struct ShelfEvent: Hashable, Sendable, Codable, Identifiable {
       case .added(let object, _): object.id
       case .edited(let id, _), .enriched(let id, _), .confirmed(let id), .placed(let id, _), .moved(let id, _),
         .logged(let id, _, _), .ownershipChanged(let id, _), .wanted(let id, _, _), .grailChanged(let id, _),
-        .mightLetGoChanged(let id, _), .letGo(let id, _), .quantityAdjusted(let id, _):
+        .mightLetGoChanged(let id, _), .letGo(let id, _), .quantityAdjusted(let id, _),
+        .signalDismissed(let id, _, _):
         id
       case .lent(let loan), .borrowed(let loan): loan.objectID
       case .photoAttached(let photo): photo.objectID

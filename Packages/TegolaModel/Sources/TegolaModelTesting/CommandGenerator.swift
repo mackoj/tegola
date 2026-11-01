@@ -88,7 +88,7 @@ public struct CommandGenerator {
       let source: ShelfEvent.Source = origin == .captured ? .capture : origin == .imported ? .import : .collector
       return (.add(draft, to: collection.map { .existing($0.id) } ?? .new(name: "Mine"), origin: origin), source)
     }
-    switch Int.random(in: 0..<17, using: &random) {
+    switch Int.random(in: 0..<18, using: &random) {
     case 0: return (.confirm([object]), pick([.collector, .lookup]))
     case 1:
       let edits = values(shelf, allowAcquired: true).mapValues { Optional($0) }
@@ -113,7 +113,12 @@ public struct CommandGenerator {
     case 10: return (.adjustQuantity(object, by: pick([-1, 1, 2])), .collector)
     case 11: return (.setGrail(object, chance(50)), .collector)
     case 12: return (.setOwned(object), .collector)
-    default: return (.logEvent(object, kind: "cleaned", note: ""), .collector)
+    case 16:
+      let clock = pick(["saveBattery", "discRot", "serviceRisk", "noSuchClock"])
+      return (.dismissSignal(object, clock: clock, status: pick([.watch, .act, .fine])), .collector)
+    default:
+      let kind = pick([CareKind.cleaned, CareKind.serviced, CareKind.checked, CareKind.batterySwapped])
+      return (.logEvent(object, kind: kind, note: ""), .collector)
     }
   }
 }
