@@ -532,3 +532,19 @@ that doesn't fit its field goes into the note as `header: value`, nothing is gue
 cell reader. An unknown type is a Thing with `type: …` in its note; a type that hasn't shipped is a Thing waiting
 for it (D-63). M8 adds what Export needs beyond these (ownership, quantity, place, the money and dates the collector
 typed) as fixed columns after `note`, on both sides at once.
+
+### D-68 · What a Discogs export becomes
+
+> PLAN F9: "`DiscogsCSVImporter`: the CSV file Discogs lets you export." music.yml: "The Goldmine scale, which Discogs
+> returns for every medium here."
+
+**Decision.** A file whose header has Discogs' `Catalog#, Artist, Title, Label, Format, release_id` is certain to be
+an export. Each row is a Music release. The first word of Discogs' format picks the subtype and Music's format
+("2xLP" → Vinyl, 2×LP; "CD" → CD; "Cass" → Cassette; MiniDisc, reel, 8-track and DAT → Other); a format Music doesn't
+name, and the descriptions after it ("Album, RE"), go into the note as `Format: …`. The media grade is the object's
+condition and the sleeve grade its packaging condition, on Goldmine's words; "No Cover" is Missing, and "Good Plus",
+"Generic" and "Not Graded", which Music's scale doesn't have, stay in the note. "Nirvana (2)" is Nirvana: the number
+is how Discogs tells two artists apart. `Released` of 0 and `Catalog#` of "none" are empty. The folder (unless
+Uncategorized), the rating, the release id, the date added and any custom field go into the note: none is a Music
+field, and **Date Added** is when the release was catalogued on Discogs, never `acquired` (D-14). The release id is
+there for matching to use (T6.6).
