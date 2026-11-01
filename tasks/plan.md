@@ -75,8 +75,39 @@ where a board and the PD log disagree, the board sets the look and the log sets 
 
 ## M4 · signals (P2)
 
-Exit test: a 200-object shelf gives a signal list a collector agrees with on 8 of 10. Clocks; ladder and set
-signatures; status derivation; the Today strip as the signal feed; dismissals; local notifications.
+Exit test (page 52): a 200-object shelf gives a signal list a collector agrees with on 8 of 10. That's a test with a
+person, run by the owner. The automated stand-in is a golden signal list over a 200-object fixture shelf, which the
+owner reads to do the real test, plus journey 5 (the weekly glance) as a UI test.
+
+Branch: the session's branch, one commit per task, one PR into `main`. T4.1 to T4.4 are pure model and storage work,
+so they build and test on Linux. T4.5 to T4.7 touch the features, notifications and the app, so they need the Mac.
+
+| Task | Acceptance | Verify |
+|---|---|---|
+| T4.1 Clock functions | Each library clock computes a `ClockSignal` (status, a structured reason, the date it changes, always an **Estimate**) from an object's fields and its latest logged care, with the parameters `ClockLibrary` already holds (D-37). The latest date of each logged kind is part of the projection, so clocks are pure functions of the object. A battery swap resets `saveBattery`. Video games' disc-rot clock is held pending, as PD-018 says (D-56) | Linux: `ClockTests`, one suite per clock, boundaries included |
+| T4.2 Status readings | `StatusReading` (one of the five swatches, the reason, whether it's a signal) derived for every object (D-15 refined): let go → gone; an overdue loan or a clock at act → act; a clock at watch → watch; unconfirmed or needs details → watch, not a signal; lent → fine "Out"; a clock's good moment → good; otherwise fine. "Need attention" counts signals only, so a to-tidy object isn't counted twice. `TodayStrip` reads readings | Linux: `StatusReadingTests`, `TodayStripTests`, a property over random command sequences |
+| T4.3 Dismissals | `ShelfCommand.dismissSignal(ObjectID, clock:)` → `signalDismissed` event carrying the status it hid. A dismissed signal stays hidden until it becomes more urgent. The events are the log the clock parameters are tuned from (risk R2). Not part of the history slot | Linux: `PlanTests`, storage replay |
+| T4.4 Seeds | The seed shelf grows toward 120 objects across the four v1 types, with clocks in every state. A 200-object `SignalShelf` fixture with a golden signal list (`docs/testing/signals-200.md`) that the owner reads for the exit test | Linux: storage tests; the M3 counts the seed changes are updated knowingly |
+| T4.5 Status in the screens | The object's status slot shows its reading with **ESTIMATE** for clocks and a Dismiss action. Collection and Find filter by status. The Shelf passes readings to the Today strip, and "N need attention" opens the signal list | Mac: TestStore and snapshots |
+| T4.6 Local notifications | `NotificationsClient`. Clock notifications are off until offered once, in plain words, when the first clocked object arrives (PD-153); at most one per object per year (PD-017); a loan reminder on the due date (PD-148) | Mac: TestStore with a recording client |
+| T4.7 Journey 5 | The weekly glance as a UI test: Today → *1 needs attention* → a Game Boy cartridge whose battery is due → Log a battery swap → the line is gone | Mac: `scripts/test.sh app` |
+| T4.8 Docs and review | DECISIONS, the M4 report, HANDOFF, a separate review agent. Consider the carried skeleton candidates (`docs/research/`, `docs/i18n/fr-glossary.md`, `scripts/ui-screenshots.sh`) | Read-through; `scripts/ci.sh` on the Mac |
+
+## telaio skeleton still to add
+
+M1 copied what the foundation needed. telaio's other files are **candidates, not commitments**: at the milestone
+below, decide whether tegola needs the file. If it does, add it with real content, never as an empty placeholder
+(D-31). If it doesn't, tick it off in `tasks/todo.md` with the reason, or move it to a later milestone.
+
+| File or folder (telaio's) | Consider at | Why it might be needed then |
+|---|---|---|
+| `docs/research/` | M4 (carried from M2) | Notes on sqlite-data's `SyncEngine` rules, GRDB on Linux, and the cloud toolchain workaround |
+| `docs/i18n/fr-glossary.md` | M4 (carried from M3) | The screens' copy: how to translate it, and the grading terms never translated (PD-156) |
+| `scripts/ui-screenshots.sh` | M4 (carried from M3) | French and English screenshots, adapted to the iOS simulator (`simctl io screenshot`) |
+| `docs/UX-FINDINGS.md` | M5 | The onboarding exit test's testers are the first people to use the app |
+| `REVIEW.md` | M6 | An engineering review of the whole project, as telaio's at its M6 |
+| `docs/guide/`, `docs/guide-images.tsv`, `scripts/guide-images.sh`, `tasks/briefs/user-guide-brief.md` | M9 | The in-app user guide, once there are screens to document |
+| `marketing/` (App Store metadata, brand, copy, website), `.github/workflows/pages.yml` | M9 | Before the first release, from the archive's marketing brief, App Store brief and website pages |
 
 ## M5 · launch types + first piece (P3)
 

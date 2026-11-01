@@ -48,3 +48,28 @@ Plan: `tasks/plan.md`, M3. Report: `docs/milestones/M3.md`.
 ## Open follow-ups
 
 - Generate App Attest's `appattest-environment` entitlement with M6, when the lookup client first runs on a device.
+
+## M4 · signals
+
+Plan: `tasks/plan.md`, M4. Report: `docs/milestones/M4.md`.
+
+- [ ] T4.1 Clock functions
+- [ ] T4.2 Status readings
+- [ ] T4.3 Dismissals
+- [ ] T4.4 Seeds and the 200-object signal fixture
+- [ ] T4.5 Status in the screens (Mac)
+- [ ] T4.6 Local notifications (Mac)
+- [ ] T4.7 Journey 5 (Mac)
+- [ ] T4.8 Docs and review
+
+## telaio skeleton: consider at each milestone, add only if needed (`tasks/plan.md`)
+
+Tick each line either when it's added or when it's judged not needed, with the reason.
+
+- [ ] M4 (from M2): `docs/research/`
+- [ ] M4 (from M3): `docs/i18n/fr-glossary.md`
+- [ ] M4 (from M3): `scripts/ui-screenshots.sh` (iOS simulator)
+- [ ] M5: `docs/UX-FINDINGS.md`
+- [ ] M6: `REVIEW.md`
+- [ ] M9: `docs/guide/`, `docs/guide-images.tsv`, `scripts/guide-images.sh`, `tasks/briefs/user-guide-brief.md`
+- [ ] M9: `marketing/`, `.github/workflows/pages.yml`
