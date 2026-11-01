@@ -22,6 +22,28 @@ public struct Signal: Hashable, Sendable {
     self.changesAt = changesAt
   }
 
+  /// What the collector can do about it, when there's one thing to do: it resets the clock (F15, D-58).
+  public var remedy: Remedy? {
+    switch clock {
+    case "saveBattery": .batterySwap
+    case "mediaRot", "discRot": .backup
+    case "serviceRisk": .service
+    default: nil
+    }
+  }
+
+  public enum Remedy: Hashable, Sendable {
+    case batterySwap, backup, service
+
+    /// The `logged` kind it writes.
+    public var kind: String {
+      switch self {
+      case .batterySwap, .service: ShelfEvent.Kind.servicedKind
+      case .backup: ShelfEvent.Kind.backedUpKind
+      }
+    }
+  }
+
   /// What the reading rests on, as data. The screen words it ("Battery from 1994, usually lasts 25–35 years").
   public enum Reason: Hashable, Sendable {
     /// A save battery fitted, or last swapped, in a year, and how long one usually lasts.

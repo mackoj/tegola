@@ -147,16 +147,61 @@
       }
     }
 
-    // 3. Status: one chip. Clocks and their statuses arrive in M4; until then, only what needs the collector shows.
+    // 3. Status: one chip (D-48, D-59). What needs the collector names it; otherwise the most urgent clock does, in
+    // its swatch. Under it, each showing signal's reason, labelled Estimate, with Dismiss where it needs attention.
     @ViewBuilder
     func status(_ object: ShelfObject) -> some View {
       let shelf = store.snapshot.shelf.shelf
-      if let loan = shelf.openLoan(on: object.id), loan.direction == .out, object.letGo == nil {
-        let name = shelf.persons[loan.personID]?.name ?? ""
-        StatusChip(.watch, label: Text("Lent to \(name)", bundle: .module))
-      } else {
-        identityStatus(object)
+      let signals = store.signals
+      let isLent = shelf.openLoan(on: object.id).map { $0.direction == .out } ?? false
+      // Nothing to say: the slot collapses rather than leave a gap (One Roof: a slot never moves).
+      if isLent || hasIdentityStatus(object) || !signals.isEmpty {
+        statusContent(object, signals: signals)
       }
+    }
+
+    func statusContent(_ object: ShelfObject, signals: [Signal]) -> some View {
+      let shelf = store.snapshot.shelf.shelf
+      return VStack(alignment: .leading, spacing: TegolaSpace.s) {
+        if let loan = shelf.openLoan(on: object.id), loan.direction == .out, object.letGo == nil {
+          let name = shelf.persons[loan.personID]?.name ?? ""
+          StatusChip(store.status == .act ? .act : .watch, label: Text("Lent to \(name)", bundle: .module))
+        } else if hasIdentityStatus(object) {
+          identityStatus(object)
+        } else if let top = signals.first {
+          StatusChip(top.status.swatch, label: top.title)
+            .accessibilityIdentifier("object.status")
+        }
+        ForEach(signals, id: \.clock) { signal in
+          signalLine(signal)
+        }
+      }
+    }
+
+    func signalLine(_ signal: Signal) -> some View {
+      HStack(alignment: .firstTextBaseline, spacing: TegolaSpace.s) {
+        VStack(alignment: .leading, spacing: 2) {
+          EstimateLabel()
+          signal.reasonText
+            .tegolaTextStyle(TegolaType.body)
+            .foregroundStyle(TegolaRole.text)
+            .accessibilityIdentifier("signal.reason.\(signal.clock)")
+        }
+        Spacer(minLength: TegolaSpace.s)
+        if signal.status.needsAttention {
+          Button {
+            send(.dismissTapped(signal))
+          } label: {
+            Text("Dismiss", bundle: .module)
+          }
+          .buttonStyle(.tegola(.quiet))
+          .accessibilityIdentifier("signal.dismiss.\(signal.clock)")
+        }
+      }
+    }
+
+    func hasIdentityStatus(_ object: ShelfObject) -> Bool {
+      object.letGo != nil || object.identity != .confirmed || object.ownership != .owned
     }
 
     @ViewBuilder
@@ -236,6 +281,16 @@
           .buttonStyle(.tegola(.secondary))
           .accessibilityIdentifier("object.photo")
         }
+        // A signal's remedy resets its clock: Log a battery swap, Make a backup (F15, D-58).
+        ForEach(remedies, id: \.self) { remedy in
+          Button {
+            send(.remedyTapped(remedy))
+          } label: {
+            remedy.label
+          }
+          .buttonStyle(.tegola(.secondary))
+          .accessibilityIdentifier("object.remedy.\(remedy)")
+        }
         if object.counts {
           Button {
             send(.mightLetGoTapped)
@@ -246,6 +301,15 @@
           .accessibilityIdentifier("object.mightLetGo")
         }
       }
+    }
+
+    /// The remedies for the signals that need attention, once each.
+    var remedies: [Signal.Remedy] {
+      var seen: [Signal.Remedy] = []
+      for remedy in store.signals.filter(\.status.needsAttention).compactMap(\.remedy) where !seen.contains(remedy) {
+        seen.append(remedy)
+      }
+      return seen
     }
 
     // 7. History: append-only, newest first.

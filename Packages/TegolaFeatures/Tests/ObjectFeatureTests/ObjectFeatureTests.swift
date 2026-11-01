@@ -18,6 +18,20 @@ func seededObject(_ title: String) throws -> ObjectID {
   return try #require(shelf.objects.values.first { $0.title == title }?.id)
 }
 
+/// A Game Boy cartridge from 1994: its battery is due at `testNow` (F15).
+func dueCartridge() throws -> ObjectID {
+  @Dependency(\.shelf) var shelf
+  let draft = ObjectDraft(
+    type: "video-game",
+    subtype: "game-boy",
+    values: [.title: .text("Link's Awakening"), .year: .year(1994), .field("region"): .text("PAL")]
+  )
+  let library = try seededObject("Radiant Silvergun")
+  @Dependency(\.defaultDatabase) var database
+  let collection = try database.read { db in try ShelfRequest().fetch(db).shelf.objects[library]!.collectionID }
+  return try #require(try shelf.perform(.add(draft, to: .existing(collection), origin: .typed)).createdObjects.first)
+}
+
 @MainActor
 @Suite(.dependencies { try $0.seededShelf() })
 struct ObjectFeatureTests {
@@ -64,6 +78,36 @@ struct ObjectFeatureTests {
     #expect(store.state.history.first?.kind.name == "photo")
     @Dependency(\.photoStore) var photoStore
     #expect(photoStore.load("photo-1.jpg") == Data([0xFF, 0xD8]))
+  }
+
+  /// F15's done-when, on the object screen: watch with its reason and Estimate; the swap clears it.
+  @Test func aDueBatteryShowsWatchAndLoggingASwapClearsIt() async throws {
+    let id = try dueCartridge()
+    let store = TestStore(initialState: ObjectFeature.State(id: id)) { ObjectFeature() }
+    try await store.state.$snapshot.load()
+    let signal = try #require(store.state.signals.first)
+    #expect(signal.clock == "saveBattery")
+    #expect(signal.status == .watch)
+    #expect(signal.isEstimate)
+    #expect(store.state.status == .watch)
+    await store.send(.view(.remedyTapped(.batterySwap)))
+    await store.finish()
+    try await store.state.$snapshot.load()
+    #expect(store.state.signals.map(\.status) == [.good])
+    #expect(store.state.status == .good)
+    #expect(store.state.history.first?.kind.name == "logged")
+  }
+
+  @Test func dismissingHidesTheSignal() async throws {
+    let id = try dueCartridge()
+    let store = TestStore(initialState: ObjectFeature.State(id: id)) { ObjectFeature() }
+    try await store.state.$snapshot.load()
+    let signal = try #require(store.state.signals.first)
+    await store.send(.view(.dismissTapped(signal)))
+    await store.finish()
+    try await store.state.$snapshot.load()
+    #expect(store.state.signals.isEmpty)
+    #expect(store.state.status == .fine)
   }
 
   @Test func editOpensTheForm() async throws {

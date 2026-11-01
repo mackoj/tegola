@@ -58,7 +58,14 @@
       case .returned: Text("Returned", bundle: .module)
       case .gaveBack: Text("Given back", bundle: .module)
       case .logged(_, let kind, let note):
-        note.isEmpty ? Text(verbatim: kind.capitalized) : Text(verbatim: "\(kind.capitalized) · \(note)")
+        switch (kind, note.isEmpty) {
+        case (ShelfEvent.Kind.servicedKind, true): Text("Serviced", bundle: .module)
+        case (ShelfEvent.Kind.servicedKind, false): Text("Serviced · \(note)", bundle: .module)
+        case (ShelfEvent.Kind.backedUpKind, true): Text("Backed up", bundle: .module)
+        case (ShelfEvent.Kind.backedUpKind, false): Text("Backed up · \(note)", bundle: .module)
+        case (_, true): Text(verbatim: kind.capitalized)
+        case (_, false): Text(verbatim: "\(kind.capitalized) · \(note)")
+        }
       case .signalDismissed: Text("Estimate dismissed", bundle: .module)
       case .ownershipChanged(_, let ownership):
         ownership == .owned ? Text("It arrived", bundle: .module) : Text(verbatim: ownership.rawValue)

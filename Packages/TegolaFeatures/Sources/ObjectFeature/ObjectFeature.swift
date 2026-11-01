@@ -28,6 +28,24 @@ public struct ObjectFeature {
 
     public var object: ShelfObject? { snapshot.shelf.shelf.objects[id] }
 
+    /// The object's showing signals now, most urgent first (F15).
+    public var signals: [Signal] {
+      @Dependency(\.date.now) var now
+      return snapshot.shelf.signals(for: id, at: now).sorted { $0.status < $1.status }
+    }
+
+    /// The status chip's swatch (D-59).
+    public var status: ObjectStatus? {
+      @Dependency(\.date.now) var now
+      guard let object else { return nil }
+      return ObjectStatus.derive(
+        object: object,
+        signals: signals,
+        openLoan: snapshot.shelf.shelf.openLoan(on: id),
+        now: now
+      )
+    }
+
     /// The History slot: the kinds a person reads, newest first (board 36).
     public var history: [ShelfEvent] {
       snapshot.history.filter(\.kind.readsAsHistory).reversed()
@@ -44,11 +62,13 @@ public struct ObjectFeature {
     case view(View)
 
     public enum View: Equatable {
+      case dismissTapped(Signal)
       case editTapped
       case mightLetGoTapped
       case photoPicked(Data)
       case photoPickerDismissed
       case photoTapped
+      case remedyTapped(Signal.Remedy)
     }
   }
 
@@ -63,6 +83,20 @@ public struct ObjectFeature {
       switch action {
       case .edit:
         return .none
+      case .view(.dismissTapped(let signal)):
+        let id = state.id
+        return .run { [shelf] _ in
+          _ = try shelf.perform(.dismissSignal(id, signal))
+        } catch: { error, _ in
+          reportIssue(error)
+        }
+      case .view(.remedyTapped(let remedy)):
+        let id = state.id
+        return .run { [shelf] _ in
+          _ = try shelf.perform(.logEvent(id, kind: remedy.kind, note: ""))
+        } catch: { error, _ in
+          reportIssue(error)
+        }
       case .view(.editTapped):
         guard let object = state.object else { return .none }
         let shelf = state.snapshot.shelf.shelf

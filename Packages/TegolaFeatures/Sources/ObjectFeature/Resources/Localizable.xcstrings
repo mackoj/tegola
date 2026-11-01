@@ -21,6 +21,16 @@
         }
       }
     },
+    "Dismiss" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Écarter"
+          }
+        }
+      }
+    },
     "Edit" : {
       "localizations" : {
         "fr" : {
