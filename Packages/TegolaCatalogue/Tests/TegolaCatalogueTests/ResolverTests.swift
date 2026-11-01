@@ -45,7 +45,7 @@ import Testing
       subtype: "saturn",
       visible: gameParent + ["spineCard", "ramCart", "satakore"],
       hidden: ["platform": "Sega Saturn", "media": "Optical disc"],
-      clocks: ["discRot"],
+      clocks: ["discRot-pending"],
       ladder: ["mediaCondition", "boxCondition", "manualCondition"]
     ),
     Expected(
@@ -77,7 +77,7 @@ import Testing
       subtype: "ps1",
       visible: gameParent + ["printLabel"],
       hidden: ["platform": "PlayStation", "media": "Optical disc"],
-      clocks: ["discRot"],
+      clocks: ["discRot-pending"],
       ladder: ["mediaCondition", "boxCondition", "manualCondition"]
     ),
     Expected(

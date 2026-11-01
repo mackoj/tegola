@@ -588,7 +588,11 @@ extension Shelf {
     case .gaveBack(let id, _):
       loans[id]?.closedAt = at
       loans[id]?.closedBy = .collector
-    case .logged(let id, _, _): touch(id) { _ in }
+    case .logged(let id, let kind, _):
+      touch(id) { object in
+        let latest = object.latestLog?[kind]
+        if latest.map({ $0 < at }) ?? true { object.latestLog = (object.latestLog ?? [:]).merging([kind: at]) { $1 } }
+      }
     case .ownershipChanged(let id, let ownership):
       touch(id) { object in
         object.ownership = ownership

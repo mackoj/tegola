@@ -162,7 +162,7 @@ subtypes:
       region: [NTSC-J, NTSC-U, PAL]
       parts: [case, manual, disc, spine card]
       lookup: catalogueNumber    # the product code on the spine, T-xxxxG
-      clock: discRot
+      clock: discRot-pending  # PD-018: no disc-rot clock on games until there is evidence (D-56)
     adds:
       - { key: spineCard, label: Spine card, type: yesNo, note: "Japanese releases ship with one; without it a CIB game is incomplete" }
       - { key: ramCart, label: Needs RAM cart, type: choice, options: [No, 1MB, 4MB] }
@@ -206,6 +206,6 @@ subtypes:
       media: Optical disc
       parts: [case, manual, disc, spine card]
       lookup: [catalogueNumber, barcode]   # SCES / SLUS / SLPS serial first
-      clock: discRot
+      clock: discRot-pending  # PD-018: no disc-rot clock on games until there is evidence (D-56)
     adds:
       - { key: printLabel, label: Label, type: choice, options: [Black label, Platinum, Greatest Hits, The Best] }

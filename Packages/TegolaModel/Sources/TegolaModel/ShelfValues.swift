@@ -43,6 +43,11 @@ public struct ShelfObject: Hashable, Sendable, Codable, Identifiable {
   public var letGo: LetGo?
   /// The copy this one was promoted from, for a quantity object's copy (PD-020).
   public let promotedFrom: ObjectID?
+  /// The latest date each kind of care was logged ("serviced", "batterySwapped"), kept by `apply` so clocks are pure
+  /// functions of the object (T4.1). Nil on rows written before M4, which read as no care logged.
+  public var latestLog: [String: Date]?
+  /// The clocks the collector dismissed, with the status each hid (T4.3). Nil on rows written before M4.
+  public var dismissed: [String: ObjectStatus]?
   public let createdAt: Date
   public var updatedAt: Date
 

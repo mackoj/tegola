@@ -1,4 +1,4 @@
-public import Foundation
+import Foundation
 public import TegolaCatalogue
 
 /// What Find asks for (F11): words, and filters that stack as chips. Everything runs on the phone, offline, and

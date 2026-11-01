@@ -319,3 +319,28 @@ reused; a replaced decision stays, marked **superseded by D-n**.
 **Gap.** The contract told the app to register again on `unknown-key` "if the key was revoked or the server lost it", while its `Forbidden` response, tegola-server's D-7 and its stores answer a revoked key with `403` on every call and refuse to register it again (found by tegola-server's M2 review).
 
 **Decision.** `unknown-key` (401) means the server lost the key: register it again. A revoked key gets `403` and stays revoked; the app generates a new App Attest key and registers that one. The contract's `registerAttestKey` description says so; `AppAttestMiddleware` (M6) follows it.
+
+### D-56 · Disc rot on video games, and what a clock says
+
+> PD-018: "Optical games ship without a disc-rot clock. A clock that fires on a healthy disc is worse than none."
+
+**Gap.** `video-game.yml`'s Saturn and PS1 subtypes named `discRot` (from page 48), which contradicts PD-018 and
+PLAN F15.
+
+**Decision.**
+- **Video games hold `discRot` pending** (`discRot-pending`, D-37): named, shown nowhere, until there's evidence.
+  Music's CD and Video Media's discs keep it. PD-018 is about games, and a CD's "last checked for rot" is a care
+  habit its collectors already have.
+- **What clocks read.** Clocks are pure functions of an object (T4.1). The projection keeps the latest date of each
+  logged kind of care (`ShelfObject.latestLog`), so a clock never needs the event log. The kinds are `CareKind`'s:
+  serviced, cleaned, checked and battery swapped.
+- **What each clock says** (parameters from `ClockLibrary`):
+  - **`saveBattery`** goes to watch 3 years before 25 years from fitting, and to act after. "Fitted" is the later of
+    the field's date and a logged swap, or the release year.
+  - **`discRot` and `mediaRot`** go to watch when a check is due, never act. Disc rot can't be told from folklore
+    (PD-018), so the most the clock says is "worth a look".
+  - **`codeExpiry`** goes to watch 60 days before expiry, and to act after it.
+  - **`drinkingWindow`** goes to watch a year before the window opens. While it's open, it's good: One Roof's "Drink
+    it". In its last year it's watch again, and after it, act.
+  - **`serviceRisk`** goes to watch after one service interval, and to act after two.
+- **No basis, no signal.** A clock with nothing to estimate from (no year, no date) says nothing, rather than a guess.
