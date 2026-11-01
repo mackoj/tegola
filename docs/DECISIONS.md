@@ -552,3 +552,23 @@ there for matching to use (T6.6).
   A `429` or `503` waits for its `Retry-After` without spending an attempt. Its state isn't shelf history, so it's
   a `lookupQueue` table, not events. `ShelfStore.perform(_:context:lookup:)` queues a capture's identifier in the
   same transaction as the object it added; a request goes when its object does.
+
+### D-66 · What counts as "you already own this"
+
+> F7: "Every match says, unprompted, whether you already own it or another print of it, and lists related objects
+> (the manifest's `related` keys). A look-alike offers three choices … It asks only when unsure."
+
+**Decision.** `LookAlikes` compares a draft with what the shelf keeps (let-go objects aside), by type and by title
+without case, accents, width or extra spaces:
+
+- **Owned**: owned, same subtype. This is the only case that asks, with **Open it**, **Another copy** and **Add as
+  new**. Another copy raises a count (PD-020) or adds its own object in the same collection; opening writes nothing.
+  No choice merges (PD-151).
+- **Another print**: owned, another subtype (or none). Said, not asked: the PAL and the Japanese copy are two
+  objects (video-game.yml, `duplicates: rows`).
+- **Wanted**: on the wishlist. The screen offers "it arrived" (D-13) instead of adding a second object.
+- **Related**: up to five owned objects sharing a value of a key the type file lists as `related` (the artist, the
+  publisher, the designer, the series).
+
+The server's match buckets are `MatchOutcome`: matched, ambiguous, unknown. Only ambiguous goes to the exceptions
+queue, never as a gate; matched is an enrichment proposal the collector confirms; unknown stays as written.

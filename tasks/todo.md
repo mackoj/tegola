@@ -86,7 +86,7 @@ Plan: `tasks/plan.md`, M6. Report: `docs/milestones/M6.md`.
 - [x] T6.4 `SpreadsheetImporter` (exit test stand-in: `Jeux collection.csv`)
 - [x] T6.5 `DiscogsCSVImporter`
 - [x] T6.6 Lookup queue and enrichment proposals
-- [ ] T6.7 Matches, look-alikes, the exceptions queue
+- [x] T6.7 Matches, look-alikes, the exceptions queue's outcomes
 - [ ] T6.8 `LookupClient` and its middlewares (Mac)
 - [ ] T6.9 Capture (Mac)
 - [ ] T6.10 Import screens and `ExtractionClient`'s cells (Mac)
