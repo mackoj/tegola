@@ -53,10 +53,11 @@ Plan: `tasks/plan.md`, M3. Report: `docs/milestones/M3.md`.
 
 Plan: `tasks/plan.md`, M4. Report: `docs/milestones/M4.md`.
 
-- [ ] T4.1 Clock functions
-- [ ] T4.2 Status readings
-- [ ] T4.3 Dismissals
-- [ ] T4.4 Seeds and the 200-object signal fixture
+- [x] T4.1 Clock functions
+- [x] T4.2 Status readings
+- [x] T4.3 Dismissals
+- [x] T4.4 The 200-object signal shelf and its golden list
+- [ ] T4.4b Seed growth (Mac: snapshots)
 - [ ] T4.5 Status in the screens (Mac)
 - [ ] T4.6 Local notifications (Mac)
 - [ ] T4.7 Journey 5 (Mac)
