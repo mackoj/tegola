@@ -132,6 +132,10 @@ public enum SettingKey: String, CaseIterable, Sendable {
   case notificationsOffer
   /// Opt-in clocks the collector turned on, comma-separated (`unfinished`, D-20, D-57).
   case optedInClocks
+  /// `TypeTesters`: the types the collector said **Count me in** to (46, 2B; PD-031).
+  case typeTesters
+  /// "true" once the collector chose **Just look around first**: the app stops opening on the first piece (PLAN F2).
+  case firstPieceSkipped
 
   public var id: UUID {
     switch self {
@@ -139,6 +143,8 @@ public enum SettingKey: String, CaseIterable, Sendable {
     case .lastCollection: UUID(uuidString: "5E771965-0000-4000-8000-000000000002")!
     case .notificationsOffer: UUID(uuidString: "5E771965-0000-4000-8000-000000000003")!
     case .optedInClocks: UUID(uuidString: "5E771965-0000-4000-8000-000000000004")!
+    case .typeTesters: UUID(uuidString: "5E771965-0000-4000-8000-000000000005")!
+    case .firstPieceSkipped: UUID(uuidString: "5E771965-0000-4000-8000-000000000006")!
     }
   }
 }

@@ -256,3 +256,45 @@ struct StoreHarness {
     #expect(snapshot.optedInClocks == ["unfinished"])
   }
 }
+
+/// The first piece's settings and its waiting Thing, as the shelf's query reads them (T5.2, T5.3).
+@Suite struct FirstPieceStorageTests {
+  func snapshot(_ harness: StoreHarness) throws -> ShelfSnapshot {
+    try harness.store.database.read { db in try ShelfRequest().fetch(db) }
+  }
+
+  @Test func theAppOpensOnTheFirstPieceUntilThereIsOneOrItsSkipped() throws {
+    let harness = try StoreHarness()
+    #expect(try snapshot(harness).opensOnFirstPiece)
+    try harness.store.set(.firstPieceSkipped, to: "true")
+    #expect(try !snapshot(harness).opensOnFirstPiece)
+
+    var other = try StoreHarness()
+    let draft = ObjectDraft(type: "video-game", subtype: "n64", values: [.title: .text("Ocarina of Time")])
+    try other.perform(.firstPiece(draft, story: "Had it since I was a kid", catalogue: StoreHarness.catalogue))
+    #expect(try !snapshot(other).opensOnFirstPiece)
+  }
+
+  @Test func countMeInIsKeptAsOneSortedRow() throws {
+    let harness = try StoreHarness()
+    #expect(try snapshot(harness).typeTesters == TypeTesters())
+    try harness.store.set(.typeTesters, to: TypeTesters().adding("wine").adding("watches").setting)
+    #expect(try snapshot(harness).typeTesters == TypeTesters(["watches", "wine"]))
+    let row = try harness.store.database.read { db in try SettingRow.find(SettingKey.typeTesters.id).fetchOne(db) }
+    #expect(row?.value == "watches,wine")
+  }
+
+  /// A watch saved as a Thing still knows it's a watch after the projection is stored and the log replayed.
+  @Test func aWaitingThingSurvivesStorageAndReplay() throws {
+    var harness = try StoreHarness()
+    let draft = ObjectDraft.recognised(
+      as: "watches",
+      values: [.title: .text("Omega Seamaster"), .year: .year(1968)],
+      catalogue: StoreHarness.catalogue
+    )
+    try harness.perform(.firstPiece(draft, story: "From my grandfather", catalogue: StoreHarness.catalogue))
+    let shelf = try harness.store.shelf()
+    #expect(shelf.waiting(for: "watches").map(\.title) == ["Omega Seamaster"])
+    #expect(apply(try harness.store.log(), to: Shelf()) == shelf)
+  }
+}

@@ -65,9 +65,9 @@ Plan: `tasks/plan.md`, M4. Report: `docs/milestones/M4.md`.
 Plan: `tasks/plan.md`, M5. Report: `docs/milestones/M5.md`.
 
 - [x] T5.1 Type guess
-- [ ] T5.2 First-piece rules
-- [ ] T5.3 Type testers
-- [ ] T5.4 The payoff
+- [x] T5.2 First-piece rules
+- [x] T5.3 Type testers
+- [x] T5.4 The payoff
 - [ ] T5.5 `ExtractionClient` (Mac)
 - [ ] T5.6 Onboarding (Mac)
 - [ ] T5.7 The empty shelf (Mac)

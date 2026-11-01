@@ -43,6 +43,9 @@ public struct ShelfObject: Hashable, Sendable, Codable, Identifiable {
   public var letGo: LetGo?
   /// The copy this one was promoted from, for a quantity object's copy (PD-020).
   public let promotedFrom: ObjectID?
+  /// For a Thing whose real type hasn't shipped: the type it was recognised as, so it's offered the migration when
+  /// that type ships, and first to a collector testing it (46, 2B; PD-031; D-63). Nil on every other object.
+  public var awaitingType: TypeManifest.ID?
   public let createdAt: Date
   public var updatedAt: Date
   /// What the clocks read beyond the values: the last service and backup, and since when it's been Playing. Kept by
