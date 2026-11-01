@@ -26,7 +26,9 @@ struct FindFeatureTests {
     try await store.state.$snapshot.load()
     #expect(store.state.statusChoices.contains(.watch))
     await store.send(.view(.statusTapped(.watch))) { $0.query.status = .watch }
-    #expect(store.state.hits.map(\.object) == [due])
+    // This one and the seed's Tetris.
+    #expect(store.state.hits.count == 2)
+    #expect(store.state.hits.map(\.object).contains(due))
     await store.send(.view(.statusTapped(.watch))) { $0.query.status = nil }
   }
 

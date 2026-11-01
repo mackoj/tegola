@@ -18,8 +18,9 @@ struct SignalsFeatureTests {
     let id = try dueCartridge()
     let store = TestStore(initialState: SignalsFeature.State()) { SignalsFeature() }
     try await store.state.$snapshot.load()
-    #expect(store.state.feed.map(\.object.id) == [id])
-    #expect(store.state.feed.first?.signal.clock == "saveBattery")
+    // The seed's Tetris is due too (journey 5).
+    #expect(store.state.feed.map(\.object.title).sorted() == ["Link's Awakening", "Tetris"])
+    #expect(store.state.feed.allSatisfy { $0.signal.clock == "saveBattery" })
     await store.send(.view(.objectTapped(id)))
     await store.receive(\.delegate.open, .object(id))
   }
@@ -31,6 +32,7 @@ struct SignalsFeatureTests {
     _ = try shelf.perform(.edit(act, values: [.year: .year(1989)]))
     let store = TestStore(initialState: SignalsFeature.State()) { SignalsFeature() }
     try await store.state.$snapshot.load()
-    #expect(store.state.feed.map(\.object.id) == [act, watch])
+    #expect(store.state.feed.first?.object.id == act)
+    #expect(store.state.feed.map(\.object.id).contains(watch))
   }
 }

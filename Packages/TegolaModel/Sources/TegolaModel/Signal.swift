@@ -23,7 +23,10 @@ public struct Signal: Hashable, Sendable {
   }
 
   /// What the collector can do about it, when there's one thing to do: it resets the clock (F15, D-58).
-  public var remedy: Remedy? {
+  public var remedy: Remedy? { Self.remedy(for: clock) }
+
+  /// A clock's remedy, by its name.
+  public static func remedy(for clock: String) -> Remedy? {
     switch clock {
     case "saveBattery": .batterySwap
     case "mediaRot", "discRot": .backup
@@ -284,13 +287,12 @@ struct ClockReading {
     )
   }
 
-  /// Media due a check: watch once the interval has passed since the last service or backup, or since it was made;
-  /// act at twice it, when the action is **Make a backup** (D-58).
+  /// Media due another backup: watch once the interval has passed since the last backup or check, act at twice it
+  /// (D-58). It starts at the first one: counting from the year it was made would put every tape on the shelf in the
+  /// feed. Until then the object offers **Make a backup** without a signal.
   func check(_ name: String, everyYears: Int) -> Signal? {
-    let made: Date? = if case .year(let year) = values[.year] { startOf(year) } else { nil }
-    let checked = [lastServiced, lastBackedUp].compactMap { $0 }.max()
-    guard let since = checked ?? made, everyYears > 0 else { return nil }
-    let reason = Signal.Reason.checked(since: year(of: since), wasChecked: checked != nil, everyYears: everyYears)
+    guard let since = [lastServiced, lastBackedUp].compactMap({ $0 }).max(), everyYears > 0 else { return nil }
+    let reason = Signal.Reason.checked(since: year(of: since), wasChecked: true, everyYears: everyYears)
     return stepped(
       name,
       reason,

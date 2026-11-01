@@ -282,7 +282,7 @@
           .accessibilityIdentifier("object.photo")
         }
         // A signal's remedy resets its clock: Log a battery swap, Make a backup (F15, D-58).
-        ForEach(remedies, id: \.self) { remedy in
+        ForEach(store.remedies, id: \.self) { remedy in
           Button {
             send(.remedyTapped(remedy))
           } label: {
@@ -301,15 +301,6 @@
           .accessibilityIdentifier("object.mightLetGo")
         }
       }
-    }
-
-    /// The remedies for the signals that need attention, once each.
-    var remedies: [Signal.Remedy] {
-      var seen: [Signal.Remedy] = []
-      for remedy in store.signals.filter(\.status.needsAttention).compactMap(\.remedy) where !seen.contains(remedy) {
-        seen.append(remedy)
-      }
-      return seen
     }
 
     // 7. History: append-only, newest first.

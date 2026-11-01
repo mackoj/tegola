@@ -16,12 +16,18 @@ struct ShelfFeatureTests {
     let store = TestStore(initialState: ShelfFeature.State()) { ShelfFeature() }
     await store.send(.view(.onAppear)) { $0.now = testNow }
     let summary = store.state.summary
-    // 16 seeded objects: 13 owned and kept, of which 12 enamel pins count as 12.
-    #expect(summary.count == 24)
+    // 105 seeded objects (M4 grew it): 102 owned and kept, of which 12 enamel pins count as 12.
+    #expect(summary.count == 113)
     #expect(summary.value == nil)
-    #expect(summary.collections.map(\.name) == ["The Library", "My Music", "Board games", "Things"])
+    #expect(
+      summary.collections.map(\.name) == [
+        "The Library", "My Music", "Board games", "Things", "Carts & discs", "Record crates", "Game night",
+        "Odds and ends",
+      ]
+    )
     #expect(summary.wanted == 1)
-    #expect(summary.today.lines == [.toTidy(2)])
+    // Journey 5's line: the seed's Tetris needs attention.
+    #expect(summary.today.lines == [.toTidy(2), .needAttention(1)])
     #expect(!store.state.isEmpty)
   }
 
@@ -38,7 +44,8 @@ struct ShelfFeatureTests {
     let store = TestStore(initialState: ShelfFeature.State()) { ShelfFeature() }
     await store.send(.view(.onAppear)) { $0.now = testNow }
     try await store.state.$snapshot.load()
-    #expect(store.state.summary.today.lines == [.toTidy(2), .needAttention(1)])
+    // The seed's Tetris, and this one.
+    #expect(store.state.summary.today.lines == [.toTidy(2), .needAttention(2)])
     await store.send(.view(.needAttentionTapped))
     await store.receive(\.delegate.open, Route.signals)
   }

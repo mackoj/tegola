@@ -119,7 +119,7 @@ subtypes:
     presets:
       medium: CD
       format: ["CD", "2×CD", "3×CD", "CD Single", "Maxi-single", "Box set"]
-      clock: discRot
+      clock: discRot-pending     # no disc-rot clock in v1 (PD-018, D-57)
     adds:
       - { key: discFormat, label: Disc format, type: choice, options: [CD, HDCD, SACD, Enhanced CD, CD-R, Shaped disc, Blu-spec CD, Other], auto: true }
       - { key: packaging, label: Packaging, type: choice, options: [Jewel case, Slimline case, Fatbox, Digipak, Digisleeve, Card sleeve, Longbox, None], auto: true }

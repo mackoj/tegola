@@ -332,7 +332,7 @@ reused; a replaced decision stays, marked **superseded by D-n**.
 | `codeExpiry` | 60 days before `codeExpires` | the expiry date |
 | `drinkingWindow` | a year before the window opens | the window's last year |
 | `serviceRisk` | the interval (24 months) since the last known service | twice the interval |
-| `mediaRot`, `discRot` | the check interval since the last check, or since it was made | twice the interval |
+| `mediaRot`, `discRot` | the check interval since the last backup or check (D-58) | twice the interval |
 | `unfinished` | 12 months Playing | never |
 
 A clock with nothing to read gives no signal: no year, no date, no known service. The parameters live in `ClockLibrary`; dismissals (risk R2) are how they get tuned.
@@ -350,7 +350,10 @@ A clock with nothing to read gives no signal: no year, no date, no known service
 
 > Owner (2026-11-01), on `mediaRot` and `discRot` never reaching *act*: "maybe try to make a backup of it".
 
-**Decision.** What a collector does about ageing media is back it up. The media clocks reach *act* at twice their interval, and their action is **Make a backup**, logged as a `backedUp` event (`logEvent`). A backup or a service resets them. Disc rot stays pending on v1's types (D-57), so in v1 this shows on video media's tapes once that type ships.
+**Decision.** What a collector does about ageing media is back it up. The media clocks reach *act* at twice their interval, and their action is **Make a backup**, logged as a `backedUp` event (`logEvent`). A backup or a service resets them.
+
+- **They start at the first backup.** The 200-object shelf (T4.9) showed that counting from the year a tape was made puts every cassette and every CD in the feed, which no collector would agree with. So a media clock has nothing to read until a backup or a check is logged. Until then the object offers **Make a backup** in its actions without a signal. After one, it reminds at 2 years (*watch*) and 4 (*act*).
+- **Disc rot stays pending on v1's types** (D-57), music's CDs included. In v1, music's cassettes are the media clock's only users.
 
 ### D-59 · Status, and what the clocks read
 

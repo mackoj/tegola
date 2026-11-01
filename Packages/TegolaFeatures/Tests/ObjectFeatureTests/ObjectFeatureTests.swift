@@ -84,6 +84,20 @@ struct ObjectFeatureTests {
     #expect(store.state.history.first?.kind.name == "logged")
   }
 
+  /// D-58: a tape offers a backup before its clock has anything to read; the backup starts it, and it reads good.
+  @Test func aTapeOffersABackupThatStartsItsClock() async throws {
+    let id = try seededObject("Nebraska")
+    let store = TestStore(initialState: ObjectFeature.State(id: id)) { ObjectFeature() }
+    try await store.state.$snapshot.load()
+    #expect(store.state.signals.isEmpty)
+    #expect(store.state.remedies == [.backup])
+    await store.send(.view(.remedyTapped(.backup)))
+    await store.finish()
+    try await store.state.$snapshot.load()
+    #expect(store.state.signals.map(\.status) == [.good])
+    #expect(store.state.remedies.isEmpty)
+  }
+
   @Test func dismissingHidesTheSignal() async throws {
     let id = try dueCartridge()
     let store = TestStore(initialState: ObjectFeature.State(id: id)) { ObjectFeature() }

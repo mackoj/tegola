@@ -132,16 +132,16 @@ extension Calendar {
     #expect(Self.signal("serviceRisk", [:], serviced: Self.date(2026), now: Self.date(2027))?.status == .good)
   }
 
-  @Test func mediaRotWatchesWhenACheckIsDueAndActsWhenABackupIsOverdue() {
-    let values: [FieldKey: FieldValue] = [.year: .year(2023)]
-    let due = Self.signal("mediaRot", values, now: Self.date(2025, 6))
-    #expect(due?.status == .watch)
-    #expect(due?.reason == .checked(since: 2023, wasChecked: false, everyYears: 2))
-    #expect(due?.changesAt == Self.date(2027))
-    #expect(Self.signal("mediaRot", [.year: .year(1998)], now: Self.date(2027))?.status == .act)
-    let checked = Self.signal("mediaRot", values, serviced: Self.date(2026, 6), now: Self.date(2027))
-    #expect(checked?.status == .good)
-    #expect(checked?.changesAt == Self.date(2028, 6))
+  /// D-58: the media clock starts at the first backup or check, never from the year it was made.
+  @Test func mediaRotRunsFromTheLastBackupAndActsAtTwiceTheInterval() {
+    let values: [FieldKey: FieldValue] = [.year: .year(1985)]
+    #expect(Self.signal("mediaRot", values, now: Self.date(2027)) == nil)
+    let fresh = Self.signal("mediaRot", values, serviced: Self.date(2026, 6), now: Self.date(2027))
+    #expect(fresh?.status == .good)
+    #expect(fresh?.reason == .checked(since: 2026, wasChecked: true, everyYears: 2))
+    #expect(fresh?.changesAt == Self.date(2028, 6))
+    #expect(Self.signal("mediaRot", values, serviced: Self.date(2024, 6), now: Self.date(2027))?.status == .watch)
+    #expect(Self.signal("mediaRot", values, serviced: Self.date(2022), now: Self.date(2027))?.status == .act)
   }
 
   /// D-58: a backup resets the media clocks like a check does.
@@ -204,7 +204,7 @@ extension Calendar {
     ]
     let reading = ClockReading(
       values: values,
-      lastServiced: nil,
+      lastServiced: Self.date(2020),
       playingSince: Self.date(2025),
       now: Self.date(2027),
       calendar: .utc

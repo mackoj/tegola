@@ -174,8 +174,9 @@ struct StoreHarness {
     try Seed.plant(in: harness.store, at: harness.clock, makeID: { ids.next() })
     let shelf = try harness.store.shelf()
     #expect(Set(shelf.objects.values.map(\.typeID)) == Set(Catalogue.enabledInV1))
-    #expect(shelf.objects.count == 16)
-    #expect(shelf.collections.count == 4)
+    // M4 grew it from 16 to 105, in four more collections.
+    #expect(shelf.objects.count == 105)
+    #expect(shelf.collections.count == 8)
     #expect(shelf.objects.values.contains { $0.identity == .unconfirmed })
     #expect(shelf.objects.values.contains { $0.identity == .needsDetails })
     #expect(shelf.objects.values.contains { $0.ownership == .wanted })
@@ -184,6 +185,24 @@ struct StoreHarness {
     #expect(shelf.objects.values.contains { $0.bulk == .quantity })
     #expect(shelf.loans.values.contains { $0.isOpen && $0.direction == .out })
     #expect(apply(try harness.store.log(), to: Shelf()) == shelf)
+  }
+
+  /// Journey 5's starting point: exactly one object needs attention, a Game Boy cartridge whose battery is due.
+  @Test func theSeedHasOneSignalThatNeedsAttention() throws {
+    let harness = try StoreHarness()
+    let ids = harness.ids
+    try Seed.plant(in: harness.store, at: harness.clock, makeID: { ids.next() })
+    let shelf = try harness.store.shelf()
+    var calendar = Calendar(identifier: .gregorian)
+    calendar.timeZone = TimeZone(identifier: "UTC")!
+    let signals = ShelfSignals(shelf: shelf, catalogue: harness.store.catalogue, now: harness.clock, calendar: calendar)
+    let feed = signals.feed.compactMap { shelf.objects[$0.object] }
+    #expect(feed.map(\.title) == ["Tetris"])
+    #expect(feed.first?.subtype == "game-boy")
+    // The rest of what the clocks read: swaps logged, one dismissal, a code that's good.
+    #expect(shelf.objects.values.filter { $0.signalState?.lastServiced != nil }.count == 11)
+    #expect(shelf.objects.values.contains { $0.signalState?.dismissed.isEmpty == false })
+    #expect(signals.statuses.values.filter { $0 == .good }.count == 13)
   }
 }
 

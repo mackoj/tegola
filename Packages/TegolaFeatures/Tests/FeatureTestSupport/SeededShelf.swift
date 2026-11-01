@@ -43,7 +43,7 @@ public func dueCartridge(_ title: String = "Link's Awakening") throws -> ObjectI
     values: [.title: .text(title), .year: .year(1994), .field("region"): .text("PAL")]
   )
   let games = try database.read { db in
-    try ShelfRequest().fetch(db).shelf.collections.values.first { $0.typeID == "video-game" }?.id
+    try ShelfRequest().fetch(db).shelf.collections.values.first { $0.name == "The Library" }?.id
   }
   let choice = games.map(CollectionChoice.existing) ?? .new(name: "The Library")
   return try shelf.perform(.add(draft, to: choice, origin: .typed)).createdObjects[0]
