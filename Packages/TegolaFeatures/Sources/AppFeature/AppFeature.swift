@@ -7,6 +7,7 @@ public import FirstPieceFeature
 public import Foundation
 public import ImportFeature
 public import ObjectFeature
+public import PersonFeature
 public import PlacesFeature
 public import ReviewFeature
 import SQLiteData
@@ -21,6 +22,7 @@ import TegolaStorage
 public enum AppPath {
   case collection(CollectionFeature)
   case object(ObjectFeature)
+  case person(PersonFeature)
   case place(PlaceFeature)
   case places(PlacesFeature)
   case review(ReviewFeature)
@@ -180,7 +182,8 @@ public struct AppFeature {
         .findPath(.element(_, .places(.delegate(.open(let route))))),
         .findPath(.element(_, .place(.delegate(.open(let route))))),
         .findPath(.element(_, .signals(.delegate(.open(let route))))),
-        .findPath(.element(_, .review(.delegate(.open(let route))))):
+        .findPath(.element(_, .review(.delegate(.open(let route))))),
+        .findPath(.element(_, .person(.delegate(.open(let route))))):
         Self.push(route, onto: &state.findPath)
         return .none
       case .findPath:
@@ -191,7 +194,8 @@ public struct AppFeature {
         .shelfPath(.element(_, .places(.delegate(.open(let route))))),
         .shelfPath(.element(_, .place(.delegate(.open(let route))))),
         .shelfPath(.element(_, .signals(.delegate(.open(let route))))),
-        .shelfPath(.element(_, .review(.delegate(.open(let route))))):
+        .shelfPath(.element(_, .review(.delegate(.open(let route))))),
+        .shelfPath(.element(_, .person(.delegate(.open(let route))))):
         Self.push(route, onto: &state.shelfPath)
         return .none
       case .shelfPath:
@@ -260,6 +264,8 @@ public struct AppFeature {
       path.append(.signals(SignalsFeature.State()))
     case .review:
       path.append(.review(ReviewFeature.State()))
+    case .person(let id):
+      path.append(.person(PersonFeature.State(id: id)))
     case .wishlist:
       break
     }

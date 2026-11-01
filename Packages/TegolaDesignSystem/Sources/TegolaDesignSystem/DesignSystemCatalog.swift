@@ -125,6 +125,10 @@
       VStack(alignment: .leading, spacing: TegolaSpace.l) {
         CountBanner(eyebrow: t("Catalogued"), figure: t("482 objects"), isMoney: false)
         CountBanner(eyebrow: t("Estimated value"), figure: t("€14,280"), isMoney: true)
+        HStack(spacing: TegolaSpace.m) {
+          StatTile(eyebrow: t("RETURN RATE"), figure: t("4 / 5"), fill: .statusFine)
+          StatTile(eyebrow: t("AVERAGE OUT"), figure: t("18 days"))
+        }
         HStack(alignment: .top, spacing: TegolaSpace.m) {
           CollectionTile(
             name: t("My Music"),

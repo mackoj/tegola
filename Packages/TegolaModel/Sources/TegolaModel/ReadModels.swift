@@ -13,6 +13,8 @@ public enum Route: Hashable, Sendable {
   /// The review queue: what's left to confirm, with what lookups proposed (F8).
   case review
   case wishlist
+  /// One person's page: what they hold and how lending to them has gone (F13).
+  case person(PersonID)
 }
 
 /// Whether money shows (PD-080, PD-138: off by default). With it off, no read model carries a value, a paid figure or

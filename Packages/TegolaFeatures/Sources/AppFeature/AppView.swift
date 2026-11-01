@@ -6,6 +6,7 @@
   import ImportFeature
   import FirstPieceFeature
   import ObjectFeature
+  import PersonFeature
   import PlacesFeature
   import ReviewFeature
   import SignalsFeature
@@ -93,6 +94,8 @@
           SignalsView(store: store)
         case .review(let store):
           ReviewView(store: store)
+        case .person(let store):
+          PersonView(store: store)
         }
       }
     }
@@ -111,6 +114,7 @@
         case .places(let store): PlacesView(store: store)
         case .signals(let store): SignalsView(store: store)
         case .review(let store): ReviewView(store: store)
+        case .person(let store): PersonView(store: store)
         }
       }
     }

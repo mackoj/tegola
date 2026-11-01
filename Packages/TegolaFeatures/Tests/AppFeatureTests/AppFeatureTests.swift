@@ -6,9 +6,11 @@ import DependenciesTestSupport
 import FeatureTestSupport
 import FirstPieceFeature
 import ObjectFeature
+import PersonFeature
 import ShelfFeature
 import SignalsFeature
 import TegolaModel
+import TegolaStorage
 import Testing
 
 @testable import AppFeature
@@ -46,6 +48,20 @@ struct AppFeatureTests {
     }
     // Tapping the Shelf tab while on it goes back to its root.
     await store.send(.view(.tabTapped(.shelf))) { $0.shelfPath.removeAll() }
+  }
+
+  /// F13: a person's page is a route like any other, and its loans open their objects on the same stack.
+  @Test func aPersonsPageIsPushedAndOpensAnObject() async throws {
+    var state = AppFeature.State()
+    let max = try #require(state.shelf.snapshot.shelf.persons.values.first { $0.name == "Max" }?.id)
+    let kidA = try #require(state.shelf.snapshot.shelf.objects.values.first { $0.title == "Kid A" }?.id)
+    AppFeature.push(.person(max), onto: &state.shelfPath)
+    #expect(state.shelfPath.last == .person(PersonFeature.State(id: max)))
+    let store = TestStore(initialState: state) { AppFeature() }
+    await store.send(\.shelfPath[id: 0].person.view, .loanTapped(kidA))
+    await store.receive(\.shelfPath[id: 0].person.delegate.open, .object(kidA)) {
+      $0.shelfPath[id: 1] = .object(ObjectFeature.State(id: kidA))
+    }
   }
 
   @Test func theSignalFeedIsPushedAndOpensAnObject() async throws {
