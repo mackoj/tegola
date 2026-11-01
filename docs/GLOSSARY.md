@@ -154,6 +154,16 @@ One chip per object, drawn from five shared swatches: fine · good · watch · a
 A type's one derived, time-based status (drinking window, service risk, light exposure). Always labelled **Estimate**, opt-in to notify.
 _Avoid_: Timer, reminder, alert
 
+**Signal**:
+A clock's reading on one object at a moment: *good*, *watch* or *act*, the reason it rests on, and when it next changes. Always an **Estimate**. The ones that need attention make up the signal feed.
+_Avoid_: Alert, warning
+
+**Dismissal**:
+The collector saying a signal is wrong or not worth it. It hides that clock until its reading gets more urgent or there's new evidence, and it's logged so the clocks can be tuned (risk R2).
+
+**Remedy**:
+The one thing that resets a clock, offered as an action: Log a battery swap, Make a backup, Log a service.
+
 **Today strip**:
 The lines at the top of Shelf that appear only when non-empty: to tidy, need attention, overdue.
 

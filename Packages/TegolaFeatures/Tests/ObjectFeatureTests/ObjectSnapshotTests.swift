@@ -8,6 +8,8 @@
 
   import TegolaClients
   import TegolaModel
+  import TegolaStorage
+  import SQLiteData
   import UIKit
 
   @testable import ObjectFeature
@@ -20,6 +22,33 @@
       let id = try seededObject(title)
       let store = Store(initialState: ObjectFeature.State(id: id)) { ObjectFeature() }
       assertScreenSnapshot(of: ObjectView(store: store), named: title, suite: "object", height: 1200)
+    }
+
+    /// F15 on the object screen: a due battery, then after a swap, then dismissed instead.
+    @Test func dueBattery() throws {
+      let id = try dueCartridge()
+      let store = Store(initialState: ObjectFeature.State(id: id)) { ObjectFeature() }
+      assertScreenSnapshot(of: ObjectView(store: store), named: "dueBattery", suite: "object", height: 1200)
+    }
+
+    @Test func afterASwap() throws {
+      @Dependency(\.shelf) var shelf
+      let id = try dueCartridge()
+      _ = try shelf.perform(.logEvent(id, kind: ShelfEvent.Kind.servicedKind, note: ""))
+      let store = Store(initialState: ObjectFeature.State(id: id)) { ObjectFeature() }
+      assertScreenSnapshot(of: ObjectView(store: store), named: "afterASwap", suite: "object", height: 1200)
+    }
+
+    @Test func dismissed() throws {
+      @Dependency(\.shelf) var shelf
+      @Dependency(\.date.now) var now
+      let id = try dueCartridge()
+      @Dependency(\.defaultDatabase) var database
+      let snapshot = try database.read { db in try ShelfRequest().fetch(db) }
+      let signal = try #require(snapshot.signals(for: id, at: now).first)
+      _ = try shelf.perform(.dismissSignal(id, signal))
+      let store = Store(initialState: ObjectFeature.State(id: id)) { ObjectFeature() }
+      assertScreenSnapshot(of: ObjectView(store: store), named: "dismissed", suite: "object", height: 1200)
     }
 
     /// The hero is the collector's photo once there is one (PD-145).

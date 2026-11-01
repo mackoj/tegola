@@ -1,0 +1,26 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Need attention" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "À surveiller"
+          }
+        }
+      }
+    },
+    "Nothing needs you right now." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rien ne réclame votre attention pour l’instant."
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.1"
+}

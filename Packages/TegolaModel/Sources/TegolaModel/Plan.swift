@@ -9,18 +9,22 @@ public struct PlanContext: Sendable {
   public var batchID: BatchID?
   public var catalogue: Catalogue
   public var makeID: @Sendable () -> UUID
+  /// The calendar the clocks read years in, to check a dismissal against the reading at `at` (D-60).
+  public var calendar: Calendar
 
   public init(
     at: Date,
     source: ShelfEvent.Source = .collector,
     batchID: BatchID? = nil,
     catalogue: Catalogue,
+    calendar: Calendar = .gregorianUTC,
     makeID: @escaping @Sendable () -> UUID
   ) {
     self.at = at
     self.source = source
     self.batchID = batchID
     self.catalogue = catalogue
+    self.calendar = calendar
     self.makeID = makeID
   }
 
@@ -67,6 +71,8 @@ public enum ShelfRuleViolation: Error, Hashable, Sendable {
   case unknownPlace(PlaceID)
   /// A place can't merge into itself, or into a place inside it.
   case mergeIntoItself
+  /// Only a signal that needs attention, from a clock the object runs, can be dismissed (D-60).
+  case notDismissable
 }
 
 /// Turns a command into the events that carry it out, or refuses it. Pure: the same command on the same shelf with
@@ -160,6 +166,33 @@ struct Planner {
     case .logEvent(let id, let kind, let note):
       _ = try object(id)
       emit(.logged(id, kind: kind, note: note))
+    case .dismissSignal(let id, let signal):
+      let object = try object(id)
+      guard object.counts, signal.status.needsAttention else { throw .notDismissable }
+      let type: EffectiveType
+      do {
+        type = try context.catalogue.resolve(object.typeID, subtype: object.subtype)
+      } catch {
+        throw .unknownType(object.typeID)
+      }
+      guard let clock = type.clocks.first(where: { $0.name == signal.clock && !$0.isPending })?.definition else {
+        throw .notDismissable
+      }
+      // The reading itself, not the caller's copy: it must be showing now, with the status it was shown with. An
+      // opt-in clock counts as on, since its signal can only have been seen if it was (D-60).
+      let showing = signals(
+        for: object,
+        type: type,
+        now: context.at,
+        calendar: context.calendar,
+        optedIn: [clock.name]
+      )
+      guard let reading = showing.first(where: { $0.clock == clock.name }), reading.status == signal.status else {
+        throw .notDismissable
+      }
+      emit(
+        .signalDismissed(id, SignalDismissal(clock: clock.name, status: reading.status, parameters: clock.parameters))
+      )
     case .lend(let id, let choice, let due, let note):
       try lend(id, to: choice, due: due, note: note)
     case .returnLoan(let loanID, let condition):
@@ -548,22 +581,28 @@ extension Shelf {
     case .placeCreated(let place): places[place.id] = place
     case .personCreated(let person): persons[person.id] = person
     case .workCreated(let work): works[work.id] = work
-    case .added(let object, _): objects[object.id] = object
+    case .added(var object, _):
+      object.noteValues(before: [:], at: at)
+      objects[object.id] = object
     case .edited(let id, let changes):
       touch(id) { object in
+        let before = object.values
         for (key, value) in changes {
           object.values[key] = value
           // The collector touched it, so it's theirs now: no AUTO badge, and no lookup changes it again.
           object.auto.remove(key)
           object.typed.insert(key)
         }
+        object.noteValues(before: before, at: at)
       }
     case .enriched(let id, let changes):
       touch(id) { object in
+        let before = object.values
         for (key, value) in changes {
           object.values[key] = value
           object.auto.insert(key)
         }
+        object.noteValues(before: before, at: at)
       }
     case .confirmed(let id): touch(id) { $0.identity = .confirmed }
     case .placed(let id, let place): touch(id) { $0.placeID = place }
@@ -588,7 +627,26 @@ extension Shelf {
     case .gaveBack(let id, _):
       loans[id]?.closedAt = at
       loans[id]?.closedBy = .collector
-    case .logged(let id, _, _): touch(id) { _ in }
+    case .logged(let id, let kind, _):
+      touch(id) { object in
+        switch kind {
+        case ShelfEvent.Kind.servicedKind:
+          object.signalState = object.signalState.or().with {
+            $0.lastServiced = at
+            $0.lapseDismissals(afterEvent: kind)
+          }
+        case ShelfEvent.Kind.backedUpKind:
+          object.signalState = object.signalState.or().with {
+            $0.lastBackedUp = at
+            $0.lapseDismissals(afterEvent: kind)
+          }
+        default: break
+        }
+      }
+    case .signalDismissed(let id, let dismissal):
+      touch(id) { object in
+        object.signalState = object.signalState.or().with { $0.dismissed[dismissal.clock] = dismissal.status }
+      }
     case .ownershipChanged(let id, let ownership):
       touch(id) { object in
         object.ownership = ownership

@@ -22,6 +22,11 @@ supersedes:
       # so the field itself is dropped rather than carried over.
       cib: derived
 
+# Every game runs these; a subtype adds its own (D-37). codeExpiry reads
+# codeExpires and is silent without it; unfinished is off unless the
+# collector turns it on (D-20).
+clocks: [codeExpiry, unfinished]
+
 # Same title, different region or print = different object.
 duplicates: rows
 
@@ -137,6 +142,11 @@ fields:
     type: date
     note: feeds the clock; original unless replaced
     sample: Original · 1995
+  - key: codeExpires
+    label: Code expires
+    type: date
+    note: a download code or code card's last day; feeds the codeExpiry clock
+    sample: 30 Jun 2027
   - key: playStatus
     label: Play status
     type: choice
@@ -162,7 +172,7 @@ subtypes:
       region: [NTSC-J, NTSC-U, PAL]
       parts: [case, manual, disc, spine card]
       lookup: catalogueNumber    # the product code on the spine, T-xxxxG
-      clock: discRot
+      clock: discRot-pending     # no disc-rot clock in v1 (PD-018); held until there's evidence
     adds:
       - { key: spineCard, label: Spine card, type: yesNo, note: "Japanese releases ship with one; without it a CIB game is incomplete" }
       - { key: ramCart, label: Needs RAM cart, type: choice, options: [No, 1MB, 4MB] }
@@ -206,6 +216,6 @@ subtypes:
       media: Optical disc
       parts: [case, manual, disc, spine card]
       lookup: [catalogueNumber, barcode]   # SCES / SLUS / SLPS serial first
-      clock: discRot
+      clock: discRot-pending     # no disc-rot clock in v1 (PD-018); held until there's evidence
     adds:
       - { key: printLabel, label: Label, type: choice, options: [Black label, Platinum, Greatest Hits, The Best] }

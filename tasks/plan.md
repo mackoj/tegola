@@ -75,8 +75,36 @@ where a board and the PD log disagree, the board sets the look and the log sets 
 
 ## M4 · signals (P2)
 
-Exit test: a 200-object shelf gives a signal list a collector agrees with on 8 of 10. Clocks; ladder and set
-signatures; status derivation; the Today strip as the signal feed; dismissals; local notifications.
+Exit test (page 52): a 200-object shelf gives a signal list a collector agrees with on 8 of 10. That's a test with
+people, run by the owner. The automated stand-ins are a generated 200-object shelf whose signal list is pinned against
+a hand-checked expectation (T4.9), and journey 5, the weekly glance, as a UI test (T4.10).
+
+Branch `m4-signals`, one commit per task, one PR into `main`. The ladder and set signatures shipped in M3 (T3.6), so
+M4 is clocks, status, the signal feed, dismissals and notifications (F15; PLAN §3.3). A signal is a clock's reading
+on one object: a status, its reason, and the date it next changes. It's always labelled **Estimate**.
+
+Four places where the code and the spec disagree today. Each gets a D-entry with its task, for the owner to read:
+
+- **Disc rot.** `video-game.yml` gives Saturn and PS1 `clock: discRot`, but PD-018 says v1 has no disc-rot clock.
+  They become `discRot-pending` (D-37: named, shown nowhere until the evidence is in).
+- **Code expiry.** F15 says `codeExpiry` applies to code cards, but no video-game field holds an expiry date. The type
+  gains a `codeExpires` date field and names the clock; with no date set, there's no signal.
+- **`playStatus`.** D-20's "started long ago, never finished" clock isn't in `ClockLibrary`. It joins the library as
+  `unfinished`, off unless a setting turns it on.
+- **The swatches.** Nothing says which state is which swatch. T4.3 proposes the mapping as a D-entry.
+
+| Task | Acceptance | Verify |
+|---|---|---|
+| T4.1 Clock functions | A pure `Signal` (clock name, status, a structured reason, `changesAt`, always an estimate) and one function per library clock over an object's fields, its events and `now`, with its parameters from `ClockLibrary`. `saveBattery` uses the battery date or else the spine year, a 25–35-year lifespan, *watch* from 25 years, *act* past 35. A `serviced` event (Log a battery swap) resets it. `codeExpiry`, `drinkingWindow`, `serviceRisk` and `mediaRot` run as their definitions say; a pending clock gives no signal; `unfinished` runs only when its setting says so. The reason is data the view words ("Battery from 1994, usually lasts 25–35 years"). | Linux: `SaveBatteryClockTests.dueCartridgeShowsWatchWithItsReasonAndEstimate`, `.loggingASwapClearsIt`, one suite per clock |
+| T4.2 Type files and the library | `discRot-pending` on Saturn and PS1 (PD-018); `codeExpires` and `clocks: [codeExpiry]` on `video-game.yml`; `unfinished` in the library, reading `playStatus` and the `playing` date; the schema and the validator know them. D-entries for the three. | Linux: `TegolaCatalogue`, `scripts/validate-types.sh`; the 13-subtype exit test still passes |
+| T4.3 Status derivation | `ObjectStatus.derive` in `TegolaModel` (D-15): *gone* for let go; *act* for an overdue loan or an *act* signal; *watch* for a *watch* signal; *good* when a clock runs and reads well; *fine* otherwise. To tidy, needs details, lent, wanted and borrowed keep their M3 labels (D-48) and never count as needing attention, so the Today strip doesn't count them twice. A dismissed signal doesn't count. `ShelfSummary` and `TodayStrip` get real statuses. A D-entry records the mapping. Property test: wanted, borrowed and let go objects never need attention. | Linux: `StatusTests`, the promise properties |
+| T4.4 Dismissals | `ShelfCommand.dismissSignal(ObjectID, clock:)` gives a `signalDismissed` event that records the clock, the status and the parameters in force (shape, never content; risk R2). `plan` refuses to dismiss a signal that isn't showing. A dismissal holds until the clock's reading gets worse (*watch* to *act*) or its input changes (a `serviced` event, an edited field). Before the projection and migration, read clctn's `schema.sql` and its ADRs 0006–0008 (D-54). | Linux: plan rules; Mac: `TegolaStorage` replay test |
+| T4.5 The object's status slot | The slot shows the derived chip, the reason, **ESTIMATE**, and **Dismiss**. A `saveBattery` object gets **Log a battery swap** (a `serviced` event). The M3 states still show (D-48). Snapshots: a due cartridge, after a swap, after a dismissal. | Mac: `ObjectFeatureTests`, `scripts/test.sh ios:TegolaFeatures` |
+| T4.6 The signal feed | The Today strip's *need attention* line opens the list of signals, most urgent first (`ObjectStatus` order), each with its reason, and each opens its object (a new `Route`, pushed by `AppFeature`). | Mac: `ShelfFeatureTests`, a new feature's tests, snapshots |
+| T4.7 Status filters | Collection's filter by status (left out in T3.5) and Find's status chip, over the derived status. | Mac: `CollectionFeatureTests`, `FindFeatureTests` |
+| T4.8 Notifications | `NotificationsClient` (live over `UNUserNotificationCenter`; the test value records calls). The offer comes once, in plain words, when the first clocked object arrives. With permission, each signal's `changesAt` is scheduled, and rescheduled or removed when the signal changes or is dismissed. The `unfinished` setting goes through `SettingsClient`; its toggle waits for You (M8). Loan-due reminders are M7's. | Mac: TestStore over the recorded calls |
+| T4.9 Seed and the 200-object shelf | `Seed.swift` grows toward 120 objects, with due, swapped, dismissed and code-card objects. The M3 counts it changes are updated one by one. A generated 200-object shelf in `TegolaTestSupport` has its signal list pinned against a hand-checked expectation (the exit test's stand-in). | Linux: the 200-object test; Mac: the M3 suites |
+| T4.10 Journey 5, docs, review | Journey 5 as a UI test: Today strip → *1 needs attention* → a Game Boy cartridge whose battery is due → Log a battery swap → the line is gone. DECISIONS, GLOSSARY (Signal), HANDOFF, `docs/milestones/M4.md` with the snapshots; a separate review agent before the PR is marked ready. | Mac: `scripts/ci.sh` |
 
 ## M5 · launch types + first piece (P3)
 

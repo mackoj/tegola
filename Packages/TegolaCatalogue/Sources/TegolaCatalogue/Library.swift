@@ -1,7 +1,7 @@
 /// The clocks the app owns (page 52, P2; PLAN §3.3). A type names the ones it uses and can't define its own. Each is a
 /// named, parameterised estimate over an object's fields and events, always labelled **Estimate**. This is the
-/// library's catalogue: names, what each reads and its parameters. The functions that compute a signal arrive with
-/// signals in M4.
+/// library's catalogue: names, what each reads and its parameters. The functions that compute a signal are in
+/// `TegolaModel` (`signals(for:type:now:calendar:optedIn:)`), which reads the parameters from here.
 public struct ClockDefinition: Hashable, Sendable {
   public let name: String
   /// What the collector reads, in a few words.
@@ -10,6 +10,16 @@ public struct ClockDefinition: Hashable, Sendable {
   public let reads: [String]
   /// The parameters and their defaults. A type can't change them; dismissals tune them (risk R2).
   public let parameters: [String: Double]
+  /// Off unless the collector turns it on, even on a type that names it (D-20).
+  public let isOptIn: Bool
+
+  init(name: String, summary: String, reads: [String], parameters: [String: Double], isOptIn: Bool = false) {
+    self.name = name
+    self.summary = summary
+    self.reads = reads
+    self.parameters = parameters
+    self.isOptIn = isOptIn
+  }
 }
 
 public enum ClockLibrary {
@@ -17,8 +27,9 @@ public enum ClockLibrary {
     ClockDefinition(
       name: "saveBattery",
       summary: "The save battery in a cartridge is running out",
-      reads: ["field saveBattery (date fitted)", "spine year"],
-      parameters: ["lifespanYears": 25, "warnYearsBefore": 3]
+      reads: ["field saveBattery (date fitted)", "spine year", "event serviced"],
+      // A lithium cell lasts about 25–35 years (F15): watch from the first, act from the second.
+      parameters: ["lifespanFromYears": 25, "lifespanToYears": 35]
     ),
     ClockDefinition(
       name: "discRot",
@@ -35,7 +46,7 @@ public enum ClockLibrary {
     ClockDefinition(
       name: "codeExpiry",
       summary: "A download code reaches its expiry date",
-      reads: ["field expires (date)"],
+      reads: ["field codeExpires (date)"],
       parameters: ["warnDaysBefore": 60]
     ),
     ClockDefinition(
@@ -49,6 +60,13 @@ public enum ClockLibrary {
       summary: "It's been a long time since the last service",
       reads: ["field lastServiced (event)", "event serviced"],
       parameters: ["intervalMonths": 24]
+    ),
+    ClockDefinition(
+      name: "unfinished",
+      summary: "A game started long ago and never finished",
+      reads: ["field playStatus (choice)", "event edited"],
+      parameters: ["afterMonths": 12],
+      isOptIn: true
     ),
   ]
 

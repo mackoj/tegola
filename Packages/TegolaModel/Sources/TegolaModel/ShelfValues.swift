@@ -45,6 +45,9 @@ public struct ShelfObject: Hashable, Sendable, Codable, Identifiable {
   public let promotedFrom: ObjectID?
   public let createdAt: Date
   public var updatedAt: Date
+  /// What the clocks read beyond the values: the last service and backup, and since when it's been Playing. Kept by
+  /// `apply` from the events, so a signal needs no history (D-59). Absent until a clock has something to read.
+  public var signalState: SignalState? = nil
 
   public var title: String {
     if case .text(let title) = values[.title] { title } else { "" }

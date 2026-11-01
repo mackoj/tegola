@@ -27,6 +27,16 @@
         }
       }
     },
+    "Any status" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tous les états"
+          }
+        }
+      }
+    },
     "Borrowed" : {
       "localizations" : {
         "fr" : {

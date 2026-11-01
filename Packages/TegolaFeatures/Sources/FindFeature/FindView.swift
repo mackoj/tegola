@@ -5,6 +5,7 @@
   import TegolaClients
   import TegolaDesignSystem
   import TegolaDesignTokens
+  import ShelfViews
   import TegolaModel
   import TegolaStorage
 
@@ -58,6 +59,10 @@
         }
         Pill(Text("Lent out", bundle: .module), isActive: store.query.lentOut) { send(.lentOutTapped) }
         Pill(Text("Archive too", bundle: .module), isActive: store.query.includeArchive) { send(.archiveTapped) }
+        ForEach(store.statusChoices, id: \.self) { status in
+          Pill(status.label, isActive: store.query.status == status) { send(.statusTapped(status)) }
+            .accessibilityIdentifier("find.status.\(status.rawValue)")
+        }
         // Find searches by place once there are places to choose from (F10).
         if store.snapshot.shelf.livePlaces.count >= 2 {
           ForEach(store.snapshot.shelf.livePlaces.filter { $0.parentID == nil }.sorted { $0.name < $1.name }) { place in
@@ -92,7 +97,7 @@
 
     @ViewBuilder
     var results: some View {
-      let hits = search(store.query, in: store.snapshot.shelf, catalogue: catalogue)
+      let hits = store.hits
       HStack {
         if let view = store.query.view {
           Chip(view.title, fill: .accentHighlight, ink: .onAccentHighlight)

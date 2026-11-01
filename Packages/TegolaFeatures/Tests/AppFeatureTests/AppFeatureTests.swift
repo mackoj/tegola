@@ -3,7 +3,9 @@ import CollectionFeature
 import ComposableArchitecture
 import DependenciesTestSupport
 import FeatureTestSupport
+import ObjectFeature
 import ShelfFeature
+import SignalsFeature
 import TegolaModel
 import Testing
 
@@ -36,6 +38,19 @@ struct AppFeatureTests {
     }
     // Tapping the Shelf tab while on it goes back to its root.
     await store.send(.view(.tabTapped(.shelf))) { $0.shelfPath.removeAll() }
+  }
+
+  @Test func theSignalFeedIsPushedAndOpensAnObject() async throws {
+    let id = try dueCartridge()
+    let store = TestStore(initialState: AppFeature.State()) { AppFeature() }
+    await store.send(\.shelf.view, .needAttentionTapped)
+    await store.receive(\.shelf.delegate.open, .signals) {
+      $0.shelfPath[id: 0] = .signals(SignalsFeature.State())
+    }
+    await store.send(\.shelfPath[id: 0].signals.view, .objectTapped(id))
+    await store.receive(\.shelfPath[id: 0].signals.delegate.open, .object(id)) {
+      $0.shelfPath[id: 1] = .object(ObjectFeature.State(id: id))
+    }
   }
 
   @Test func typeItOnTheEmptyShelfOpensTheAddSheet() async {

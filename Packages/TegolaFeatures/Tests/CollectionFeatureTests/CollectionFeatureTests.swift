@@ -3,6 +3,7 @@ import DependenciesTestSupport
 import FeatureTestSupport
 import Foundation
 import SQLiteData
+import TegolaClients
 import TegolaModel
 import TegolaStorage
 import Testing
@@ -26,6 +27,25 @@ struct CollectionFeatureTests {
     #expect(store.state.objects.map(\.title) == ["Selected Ambient Works", "Nebraska", "Homogenic", "Kid A"])
     await store.send(.view(.sortTapped(.title))) { $0.sort = .title }
     #expect(store.state.objects.map(\.title) == ["Homogenic", "Kid A", "Nebraska", "Selected Ambient Works"])
+  }
+
+  /// The status filter (D-59): a due cartridge is the collection's only *watch*.
+  @Test func rowsFilterByStatus() async throws {
+    let due = try dueCartridge()
+    let id = try collection(named: "The Library")
+    let store = TestStore(initialState: CollectionFeature.State(id: id)) { CollectionFeature() }
+    try await store.state.$snapshot.load()
+    #expect(store.state.statusChoices == [.watch, .good])
+    await store.send(.view(.statusTapped(.watch))) { $0.status = .watch }
+    #expect(store.state.objects.map(\.id) == [due])
+    // Review of M4, finding 4: once nothing is watch any more, the chosen filter stays, so it can be cleared.
+    @Dependency(\.shelf) var shelf
+    _ = try shelf.perform(.logEvent(due, kind: ShelfEvent.Kind.servicedKind, note: ""))
+    try await store.state.$snapshot.load()
+    #expect(store.state.objects.isEmpty)
+    #expect(store.state.statusChoices.contains(.watch))
+    await store.send(.view(.statusTapped(nil))) { $0.status = nil }
+    #expect(store.state.objects.count > 1)
   }
 
   @Test func letGoObjectsLeaveTheList() async throws {

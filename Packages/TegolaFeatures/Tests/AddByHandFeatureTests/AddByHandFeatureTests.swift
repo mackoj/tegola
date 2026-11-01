@@ -116,7 +116,9 @@ struct AddByHandFeatureTests {
       }
     }
     #expect(store.state.subtype == "n64")
-    let objects = try AddByHandHelpers().shelf().shelf.objects.values.filter { $0.subtype == "n64" }
+    let objects = try AddByHandHelpers().shelf().shelf.objects.values.filter {
+      $0.subtype == "n64" && $0.collectionID == library.id
+    }
     #expect(objects.count == 4)
     #expect(objects.allSatisfy { $0.values[.field("media")] == .text("Cartridge") })
   }

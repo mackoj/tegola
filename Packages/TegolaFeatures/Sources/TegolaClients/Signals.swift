@@ -1,0 +1,52 @@
+public import Dependencies
+public import Foundation
+import TegolaCatalogue
+public import TegolaModel
+public import TegolaStorage
+
+extension ShelfSnapshot {
+  /// The shelf's signals and statuses at `now` (F15), with the bundled catalogue and the app's calendar. Every screen
+  /// that shows a status reads it from here, so they agree.
+  public func signals(at now: Date) -> ShelfSignals {
+    @Dependency(\.catalogue) var catalogue
+    @Dependency(\.calendar) var calendar
+    return ShelfSignals(shelf: shelf, catalogue: catalogue, now: now, calendar: calendar, optedIn: optedInClocks)
+  }
+
+  /// The statuses worth filtering by: the ones some object on the shelf has now, most urgent first. *Fine* is the
+  /// absence of news and *gone* is the archive's, so neither is a filter.
+  public func statusChoices(at now: Date, among ids: Set<ObjectID>? = nil) -> [ObjectStatus] {
+    let statuses = signals(at: now).statuses
+    let present = Set(statuses.filter { ids?.contains($0.key) ?? true }.values)
+    return ObjectStatus.allCases.filter { $0 != .fine && $0 != .gone && present.contains($0) }.sorted()
+  }
+
+  /// The readings to notify about, by object: each one's next change, dismissed ones included once they'd get worse.
+  public func upcomingChanges(at now: Date) -> [ObjectID: [Signal]] {
+    @Dependency(\.catalogue) var catalogue
+    @Dependency(\.calendar) var calendar
+    var upcoming: [ObjectID: [Signal]] = [:]
+    for object in shelf.objects.values where object.counts {
+      guard let type = try? catalogue.resolve(object.typeID, subtype: object.subtype) else { continue }
+      let changes = TegolaModel.upcomingChanges(
+        for: object,
+        type: type,
+        now: now,
+        calendar: calendar,
+        optedIn: optedInClocks
+      )
+      if !changes.isEmpty { upcoming[object.id] = changes }
+    }
+    return upcoming
+  }
+
+  /// One object's showing signals at `now`, without reading the rest of the shelf.
+  public func signals(for id: ObjectID, at now: Date) -> [Signal] {
+    @Dependency(\.catalogue) var catalogue
+    @Dependency(\.calendar) var calendar
+    guard let object = shelf.objects[id], object.counts,
+      let type = try? catalogue.resolve(object.typeID, subtype: object.subtype)
+    else { return [] }
+    return TegolaModel.signals(for: object, type: type, now: now, calendar: calendar, optedIn: optedInClocks)
+  }
+}

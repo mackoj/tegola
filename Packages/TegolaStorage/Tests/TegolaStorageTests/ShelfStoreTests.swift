@@ -174,8 +174,9 @@ struct StoreHarness {
     try Seed.plant(in: harness.store, at: harness.clock, makeID: { ids.next() })
     let shelf = try harness.store.shelf()
     #expect(Set(shelf.objects.values.map(\.typeID)) == Set(Catalogue.enabledInV1))
-    #expect(shelf.objects.count == 16)
-    #expect(shelf.collections.count == 4)
+    // M4 grew it from 16 to 105, in four more collections.
+    #expect(shelf.objects.count == 105)
+    #expect(shelf.collections.count == 8)
     #expect(shelf.objects.values.contains { $0.identity == .unconfirmed })
     #expect(shelf.objects.values.contains { $0.identity == .needsDetails })
     #expect(shelf.objects.values.contains { $0.ownership == .wanted })
@@ -184,6 +185,49 @@ struct StoreHarness {
     #expect(shelf.objects.values.contains { $0.bulk == .quantity })
     #expect(shelf.loans.values.contains { $0.isOpen && $0.direction == .out })
     #expect(apply(try harness.store.log(), to: Shelf()) == shelf)
+  }
+
+  /// Journey 5's starting point: exactly one object needs attention, a Game Boy cartridge whose battery is due.
+  @Test func theSeedHasOneSignalThatNeedsAttention() throws {
+    let harness = try StoreHarness()
+    let ids = harness.ids
+    try Seed.plant(in: harness.store, at: harness.clock, makeID: { ids.next() })
+    let shelf = try harness.store.shelf()
+    var calendar = Calendar(identifier: .gregorian)
+    calendar.timeZone = TimeZone(identifier: "UTC")!
+    let signals = ShelfSignals(shelf: shelf, catalogue: harness.store.catalogue, now: harness.clock, calendar: calendar)
+    let feed = signals.feed.compactMap { shelf.objects[$0.object] }
+    #expect(feed.map(\.title) == ["Tetris"])
+    #expect(feed.first?.subtype == "game-boy")
+    // The rest of what the clocks read: swaps logged, one dismissal, a code that's good.
+    #expect(shelf.objects.values.filter { $0.signalState?.lastServiced != nil }.count == 11)
+    #expect(shelf.objects.values.contains { $0.signalState?.dismissed.isEmpty == false })
+    #expect(signals.statuses.values.filter { $0 == .good }.count == 13)
+  }
+}
+
+@Suite struct SignalStorageTests {
+  /// T4.4: a dismissal and a swap go through the store, and the rebuilt projection keeps what the clocks read.
+  @Test func aDismissalSurvivesRebuildingTheProjection() throws {
+    let harness = try StoreHarness()
+    let ids = harness.ids
+    let context = { PlanContext(at: harness.clock, catalogue: harness.store.catalogue, makeID: { ids.next() }) }
+    let draft = ObjectDraft(
+      type: "video-game",
+      subtype: "game-boy",
+      values: [.title: .text("Tetris"), .year: .year(1994), .field("region"): .text("PAL")]
+    )
+    let id = try harness.store.perform(.add(draft, to: .new(name: "Games"), origin: .typed), context: context())
+      .createdObjects[0]
+    let shelf = try harness.store.shelf()
+    let object = try #require(shelf.objects[id])
+    let type = try harness.store.catalogue.resolve(object.typeID, subtype: object.subtype)
+    let signal = try #require(signals(for: object, type: type, now: harness.clock, calendar: .gregorianUTC).first)
+    _ = try harness.store.perform(.dismissSignal(id, signal), context: context())
+    let live = try harness.store.shelf()
+    #expect(live.objects[id]?.signalState?.dismissed == ["saveBattery": .watch])
+    try harness.store.rebuildProjection()
+    #expect(try harness.store.shelf() == live)
   }
 }
 
@@ -197,5 +241,18 @@ struct StoreHarness {
     #expect(try harness.store.money() == .off)
     let rows = try harness.store.database.read { db in try SettingRow.fetchCount(db) }
     #expect(rows == 1)
+  }
+
+  /// The clock settings (F15, D-20): the offer's answer and the opt-in clocks reach the screens' snapshot.
+  @Test func theClockSettingsReachTheSnapshot() throws {
+    let harness = try StoreHarness()
+    var snapshot = try harness.store.database.read { db in try ShelfRequest().fetch(db) }
+    #expect(snapshot.notificationsOffer == nil)
+    #expect(snapshot.optedInClocks.isEmpty)
+    try harness.store.set(.notificationsOffer, to: "accepted")
+    try harness.store.set(.optedInClocks, to: "unfinished")
+    snapshot = try harness.store.database.read { db in try ShelfRequest().fetch(db) }
+    #expect(snapshot.notificationsOffer == "accepted")
+    #expect(snapshot.optedInClocks == ["unfinished"])
   }
 }

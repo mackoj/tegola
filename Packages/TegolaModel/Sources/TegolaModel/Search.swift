@@ -12,6 +12,8 @@ public struct SearchQuery: Hashable, Sendable {
   /// Include let-go objects (the archive), so "did I ever own this?" has an answer.
   public var includeArchive: Bool
   public var view: SavedView?
+  /// Only objects with this status (F11's status chip; D-59).
+  public var status: ObjectStatus?
 
   public init(
     text: String = "",
@@ -19,7 +21,8 @@ public struct SearchQuery: Hashable, Sendable {
     lentOut: Bool = false,
     place: PlaceID? = nil,
     includeArchive: Bool = false,
-    view: SavedView? = nil
+    view: SavedView? = nil,
+    status: ObjectStatus? = nil
   ) {
     self.text = text
     self.types = types
@@ -27,12 +30,13 @@ public struct SearchQuery: Hashable, Sendable {
     self.place = place
     self.includeArchive = includeArchive
     self.view = view
+    self.status = status
   }
 
   /// Nothing asked yet: Find shows its saved views instead of every object.
   public var isEmpty: Bool {
     text.trimmingCharacters(in: .whitespaces).isEmpty && types.isEmpty && !lentOut && place == nil && view == nil
-      && !includeArchive
+      && !includeArchive && status == nil
   }
 }
 
@@ -58,8 +62,13 @@ public struct SearchHit: Hashable, Sendable, Identifiable {
 
 /// Finds objects for a query. Every word must appear somewhere on the object (case and accents ignored): the spine,
 /// a field, an entry of a list or log (one track on an LP), the notes, the place. Results are the most recently
-/// changed first.
-public func search(_ query: SearchQuery, in shelf: Shelf, catalogue: Catalogue) -> [SearchHit] {
+/// changed first. `statuses` are the shelf's derived statuses (`ShelfSignals`), for the status chip.
+public func search(
+  _ query: SearchQuery,
+  in shelf: Shelf,
+  catalogue: Catalogue,
+  statuses: [ObjectID: ObjectStatus] = [:]
+) -> [SearchHit] {
   let words = query.text.split(whereSeparator: \.isWhitespace).map { normalize(String($0)) }.filter { !$0.isEmpty }
   let lent = Set(shelf.loans.values.filter { $0.isOpen && $0.direction == .out }.map(\.objectID))
   let places = query.place.map { shelf.placeAndInside($0) }
@@ -70,6 +79,7 @@ public func search(_ query: SearchQuery, in shelf: Shelf, catalogue: Catalogue) 
     if !query.types.isEmpty && !query.types.contains(object.typeID) { continue }
     if query.lentOut && !lent.contains(object.id) { continue }
     if let places, !(object.placeID.map(places.contains) ?? false) { continue }
+    if let status = query.status, (statuses[object.id] ?? .fine) != status { continue }
     if let view = query.view {
       let type = try? catalogue.resolve(object.typeID, subtype: object.subtype)
       guard object.matches(view, type: type, duplicates: duplicates) else { continue }

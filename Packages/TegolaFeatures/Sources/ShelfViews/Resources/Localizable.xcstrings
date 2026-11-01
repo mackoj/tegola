@@ -71,12 +71,90 @@
         }
       }
     },
+    "Act" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "À traiter"
+          }
+        }
+      }
+    },
     "Added" : {
       "localizations" : {
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ajouté"
+          }
+        }
+      }
+    },
+    "Backed up" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sauvegardé"
+          }
+        }
+      }
+    },
+    "Backed up · %@" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sauvegardé · %@"
+          }
+        }
+      }
+    },
+    "Battery from %@, usually lasts %@–%@ years" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Battery from %1$@, usually lasts %2$@–%3$@ years"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pile de %@, dure en général %@ à %@ ans"
+          }
+        }
+      }
+    },
+    "Battery swapped in %@, usually lasts %@–%@ years" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Battery swapped in %1$@, usually lasts %2$@–%3$@ years"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pile changée en %@, dure en général %@ à %@ ans"
+          }
+        }
+      }
+    },
+    "Best drunk %@–%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Best drunk %1$@–%2$@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "À boire entre %@ et %@"
           }
         }
       }
@@ -111,6 +189,16 @@
         }
       }
     },
+    "Code expiry" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Expiration du code"
+          }
+        }
+      }
+    },
     "Condition" : {
       "localizations" : {
         "fr" : {
@@ -141,12 +229,52 @@
         }
       }
     },
+    "Drinking window" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fenêtre de dégustation"
+          }
+        }
+      }
+    },
     "Edited · %@" : {
       "localizations" : {
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Modifié · %@"
+          }
+        }
+      }
+    },
+    "Estimate" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estimation"
+          }
+        }
+      }
+    },
+    "Estimate dismissed" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estimation écartée"
+          }
+        }
+      }
+    },
+    "Fine" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rien à signaler"
           }
         }
       }
@@ -181,6 +309,26 @@
         }
       }
     },
+    "Gone" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parti"
+          }
+        }
+      }
+    },
+    "Good" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bon"
+          }
+        }
+      }
+    },
     "Imported" : {
       "localizations" : {
         "fr" : {
@@ -197,6 +345,38 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Il est arrivé"
+          }
+        }
+      }
+    },
+    "Last checked in %@, worth a look every %lld years" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Last checked in %1$@, worth a look every %2$lld years"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vérifié en %@, à revoir tous les %lld ans"
+          }
+        }
+      }
+    },
+    "Last serviced %@, due every %lld months" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Last serviced %1$@, due every %2$lld months"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Révisé en %@, à refaire tous les %lld mois"
           }
         }
       }
@@ -257,6 +437,46 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Parti · échangé"
+          }
+        }
+      }
+    },
+    "Log a battery swap" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noter un changement de pile"
+          }
+        }
+      }
+    },
+    "Log a service" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noter une révision"
+          }
+        }
+      }
+    },
+    "Make a backup" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Faire une sauvegarde"
+          }
+        }
+      }
+    },
+    "Media check" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vérification du support"
           }
         }
       }
@@ -401,12 +621,82 @@
         }
       }
     },
+    "Save battery" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pile de sauvegarde"
+          }
+        }
+      }
+    },
+    "Service" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Révision"
+          }
+        }
+      }
+    },
+    "Serviced" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Révisé"
+          }
+        }
+      }
+    },
+    "Serviced · %@" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Révisé · %@"
+          }
+        }
+      }
+    },
+    "Started %@, never finished" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Commencé en %@, jamais fini"
+          }
+        }
+      }
+    },
+    "The code expires on %@" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le code expire le %@"
+          }
+        }
+      }
+    },
     "To" : {
       "localizations" : {
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "À"
+          }
+        }
+      }
+    },
+    "Unfinished" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pas fini"
           }
         }
       }
@@ -427,6 +717,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Valeur"
+          }
+        }
+      }
+    },
+    "Watch" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "À surveiller"
           }
         }
       }

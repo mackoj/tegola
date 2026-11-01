@@ -46,7 +46,7 @@ import Testing
     #expect(saturn.presets["media"] == .value("Optical disc"))
     #expect(saturn.presets["region"] == .options(["NTSC-J", "NTSC-U", "PAL"]))
     #expect(saturn.parts == ["case", "manual", "disc", "spine card"])
-    #expect(saturn.clocks == ["discRot"])
+    #expect(saturn.clocks == ["discRot-pending"])
   }
 
   @Test func videoMediaHasItsEightSubtypes() throws {

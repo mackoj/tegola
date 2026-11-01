@@ -10,11 +10,23 @@ public struct ShelfSnapshot: Hashable, Sendable {
   public var money: MoneyVisibility
   /// Where the last object was added, if that collection still exists.
   public var lastCollection: CollectionID?
+  /// The answer to the clock notification offer, once given (`accepted`, `declined`).
+  public var notificationsOffer: String?
+  /// The opt-in clocks the collector turned on.
+  public var optedInClocks: Set<String>
 
-  public init(shelf: Shelf = Shelf(), money: MoneyVisibility = .off, lastCollection: CollectionID? = nil) {
+  public init(
+    shelf: Shelf = Shelf(),
+    money: MoneyVisibility = .off,
+    lastCollection: CollectionID? = nil,
+    notificationsOffer: String? = nil,
+    optedInClocks: Set<String> = []
+  ) {
     self.shelf = shelf
     self.money = money
     self.lastCollection = lastCollection
+    self.notificationsOffer = notificationsOffer
+    self.optedInClocks = optedInClocks
   }
 }
 
@@ -26,10 +38,14 @@ public struct ShelfRequest: FetchKeyRequest {
     let shelf = try ShelfStore.loadShelf(db)
     let last = try SettingRow.find(SettingKey.lastCollection.id).fetchOne(db)
       .flatMap { UUID(uuidString: $0.value) }.map(CollectionID.init)
+    let offer = try SettingRow.find(SettingKey.notificationsOffer.id).fetchOne(db)?.value
+    let optedIn = try SettingRow.find(SettingKey.optedInClocks.id).fetchOne(db)?.value ?? ""
     return ShelfSnapshot(
       shelf: shelf,
       money: money ?? .off,
-      lastCollection: last.flatMap { shelf.collections[$0] == nil ? nil : $0 }
+      lastCollection: last.flatMap { shelf.collections[$0] == nil ? nil : $0 },
+      notificationsOffer: offer,
+      optedInClocks: Set(optedIn.split(separator: ",").map(String.init))
     )
   }
 }

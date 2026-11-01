@@ -28,6 +28,43 @@ public struct ObjectFeature {
 
     public var object: ShelfObject? { snapshot.shelf.shelf.objects[id] }
 
+    /// The object's showing signals now, most urgent first (F15).
+    public var signals: [Signal] {
+      @Dependency(\.date.now) var now
+      return snapshot.shelf.signals(for: id, at: now).sorted { $0.status < $1.status }
+    }
+
+    /// The remedies the actions offer, once each (F15, D-58): for a signal that needs attention, and a backup or a
+    /// service for a clock that has nothing to read yet, since logging one is what starts it.
+    public var remedies: [Signal.Remedy] {
+      @Dependency(\.catalogue) var catalogue
+      guard let object, object.counts, let type = try? catalogue.resolve(object.typeID, subtype: object.subtype)
+      else { return [] }
+      let signals = self.signals
+      var remedies: [Signal.Remedy] = []
+      for clock in type.clocks where !clock.isPending {
+        guard let remedy = Signal.remedy(for: clock.name), !remedies.contains(remedy) else { continue }
+        let signal = signals.first { $0.clock == clock.name }
+        let offered =
+          signal.map(\.status.needsAttention)
+          ?? (remedy != .batterySwap && object.signalState?.dismissed[clock.name] == nil)
+        if offered { remedies.append(remedy) }
+      }
+      return remedies
+    }
+
+    /// The status chip's swatch (D-59).
+    public var status: ObjectStatus? {
+      @Dependency(\.date.now) var now
+      guard let object else { return nil }
+      return ObjectStatus.derive(
+        object: object,
+        signals: signals,
+        openLoan: snapshot.shelf.shelf.openLoan(on: id),
+        now: now
+      )
+    }
+
     /// The History slot: the kinds a person reads, newest first (board 36).
     public var history: [ShelfEvent] {
       snapshot.history.filter(\.kind.readsAsHistory).reversed()
@@ -44,11 +81,13 @@ public struct ObjectFeature {
     case view(View)
 
     public enum View: Equatable {
+      case dismissTapped(Signal)
       case editTapped
       case mightLetGoTapped
       case photoPicked(Data)
       case photoPickerDismissed
       case photoTapped
+      case remedyTapped(Signal.Remedy)
     }
   }
 
@@ -63,6 +102,20 @@ public struct ObjectFeature {
       switch action {
       case .edit:
         return .none
+      case .view(.dismissTapped(let signal)):
+        let id = state.id
+        return .run { [shelf] _ in
+          _ = try shelf.perform(.dismissSignal(id, signal))
+        } catch: { error, _ in
+          reportIssue(error)
+        }
+      case .view(.remedyTapped(let remedy)):
+        let id = state.id
+        return .run { [shelf] _ in
+          _ = try shelf.perform(.logEvent(id, kind: remedy.kind, note: ""))
+        } catch: { error, _ in
+          reportIssue(error)
+        }
       case .view(.editTapped):
         guard let object = state.object else { return .none }
         let shelf = state.snapshot.shelf.shelf

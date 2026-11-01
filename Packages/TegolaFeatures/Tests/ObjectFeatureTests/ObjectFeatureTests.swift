@@ -66,6 +66,50 @@ struct ObjectFeatureTests {
     #expect(photoStore.load("photo-1.jpg") == Data([0xFF, 0xD8]))
   }
 
+  /// F15's done-when, on the object screen: watch with its reason and Estimate; the swap clears it.
+  @Test func aDueBatteryShowsWatchAndLoggingASwapClearsIt() async throws {
+    let id = try dueCartridge()
+    let store = TestStore(initialState: ObjectFeature.State(id: id)) { ObjectFeature() }
+    try await store.state.$snapshot.load()
+    let signal = try #require(store.state.signals.first)
+    #expect(signal.clock == "saveBattery")
+    #expect(signal.status == .watch)
+    #expect(signal.isEstimate)
+    #expect(store.state.status == .watch)
+    await store.send(.view(.remedyTapped(.batterySwap)))
+    await store.finish()
+    try await store.state.$snapshot.load()
+    #expect(store.state.signals.map(\.status) == [.good])
+    #expect(store.state.status == .good)
+    #expect(store.state.history.first?.kind.name == "logged")
+  }
+
+  /// D-58: a tape offers a backup before its clock has anything to read; the backup starts it, and it reads good.
+  @Test func aTapeOffersABackupThatStartsItsClock() async throws {
+    let id = try seededObject("Nebraska")
+    let store = TestStore(initialState: ObjectFeature.State(id: id)) { ObjectFeature() }
+    try await store.state.$snapshot.load()
+    #expect(store.state.signals.isEmpty)
+    #expect(store.state.remedies == [.backup])
+    await store.send(.view(.remedyTapped(.backup)))
+    await store.finish()
+    try await store.state.$snapshot.load()
+    #expect(store.state.signals.map(\.status) == [.good])
+    #expect(store.state.remedies.isEmpty)
+  }
+
+  @Test func dismissingHidesTheSignal() async throws {
+    let id = try dueCartridge()
+    let store = TestStore(initialState: ObjectFeature.State(id: id)) { ObjectFeature() }
+    try await store.state.$snapshot.load()
+    let signal = try #require(store.state.signals.first)
+    await store.send(.view(.dismissTapped(signal)))
+    await store.finish()
+    try await store.state.$snapshot.load()
+    #expect(store.state.signals.isEmpty)
+    #expect(store.state.status == .fine)
+  }
+
   @Test func editOpensTheForm() async throws {
     let id = try seededObject("Kid A")
     let store = TestStore(initialState: ObjectFeature.State(id: id)) { ObjectFeature() }

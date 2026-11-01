@@ -128,11 +128,17 @@ public enum SettingKey: String, CaseIterable, Sendable {
   case money
   /// The collection the last object was added to: where Add to points next (F6).
   case lastCollection
+  /// The clock notification offer's answer, once given: `accepted` or `declined` (F15: offered once).
+  case notificationsOffer
+  /// Opt-in clocks the collector turned on, comma-separated (`unfinished`, D-20, D-57).
+  case optedInClocks
 
   public var id: UUID {
     switch self {
     case .money: UUID(uuidString: "5E771965-0000-4000-8000-000000000001")!
     case .lastCollection: UUID(uuidString: "5E771965-0000-4000-8000-000000000002")!
+    case .notificationsOffer: UUID(uuidString: "5E771965-0000-4000-8000-000000000003")!
+    case .optedInClocks: UUID(uuidString: "5E771965-0000-4000-8000-000000000004")!
     }
   }
 }

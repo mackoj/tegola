@@ -5,6 +5,7 @@
   import TegolaClients
   import TegolaDesignSystem
   import TegolaDesignTokens
+  import ShelfViews
   import TegolaModel
   import TegolaStorage
 
@@ -25,6 +26,7 @@
             header(collection)
             sortPills
             if !store.placeChoices.isEmpty { placePills }
+            if !store.statusChoices.isEmpty { statusPills }
             rows
           }
         }
@@ -73,6 +75,19 @@
           Pill(Text("Everywhere", bundle: .module), isActive: store.place == nil) { send(.placeTapped(nil)) }
           ForEach(store.placeChoices) { place in
             Pill(Text(verbatim: place.name), isActive: store.place == place.id) { send(.placeTapped(place.id)) }
+          }
+        }
+        .padding(.trailing, TegolaShadow.small)
+      }
+    }
+
+    var statusPills: some View {
+      ScrollView(.horizontal, showsIndicators: false) {
+        HStack(spacing: TegolaSpace.s) {
+          Pill(Text("Any status", bundle: .module), isActive: store.status == nil) { send(.statusTapped(nil)) }
+          ForEach(store.statusChoices, id: \.self) { status in
+            Pill(status.label, isActive: store.status == status) { send(.statusTapped(status)) }
+              .accessibilityIdentifier("collection.status.\(status.rawValue)")
           }
         }
         .padding(.trailing, TegolaShadow.small)

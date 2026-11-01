@@ -70,7 +70,10 @@
         )
       }
       if !summary.today.lines.isEmpty {
-        TodayStripView(lines: summary.today.lines)
+        TodayStripView(lines: summary.today.lines) { send(.needAttentionTapped) }
+      }
+      if store.offersNotifications {
+        notificationOffer
       }
       if summary.showsPlaces {
         Button {
@@ -128,21 +131,72 @@
     }
   }
 
+  extension ShelfView {
+    /// The clock notification offer (F15): once, in plain words. Either answer puts it away for good.
+    var notificationOffer: some View {
+      VStack(alignment: .leading, spacing: TegolaSpace.s) {
+        Text("A nudge when something's due?", bundle: .module)
+          .tegolaTextStyle(TegolaType.heading).foregroundStyle(TegolaRole.onAccentHighlight)
+        Text(
+          "Some things on your shelf wear out with time, like a game's save battery. Tegola can send a notification when one is probably due.",
+          bundle: .module
+        )
+        .tegolaTextStyle(TegolaType.body).foregroundStyle(TegolaRole.onAccentHighlight)
+        ButtonPair {
+          Button {
+            send(.notificationsAccepted)
+          } label: {
+            Text("Yes, tell me", bundle: .module)
+          }
+          .buttonStyle(.tegola(.primary))
+          .accessibilityIdentifier("shelf.notifications.accept")
+        } trailing: {
+          Button {
+            send(.notificationsDeclined)
+          } label: {
+            Text("No thanks", bundle: .module)
+          }
+          .buttonStyle(.tegola(.secondary))
+          .accessibilityIdentifier("shelf.notifications.decline")
+        }
+      }
+      .padding(TegolaSpace.l)
+      .printed(fill: .accentHighlight, radius: TegolaRadius.card)
+    }
+  }
+
   /// The Today strip: one line per non-empty count, never a zero (F3, PD-140).
   struct TodayStripView: View {
     let lines: [TodayStrip.Line]
+    /// "Need attention" opens the signal feed (journey 5).
+    let openSignals: () -> Void
 
     var body: some View {
       VStack(alignment: .leading, spacing: TegolaSpace.s) {
         Text("Today", bundle: .module).tegolaTextStyle(TegolaType.meta).foregroundStyle(TegolaRole.textMeta)
         ForEach(lines, id: \.self) { line in
-          text(line).tegolaTextStyle(TegolaType.heading).foregroundStyle(TegolaRole.text)
+          if case .needAttention = line {
+            Button(action: openSignals) {
+              HStack {
+                text(line).tegolaTextStyle(TegolaType.heading).foregroundStyle(TegolaRole.text)
+                Spacer()
+                Text(verbatim: "→").tegolaTextStyle(TegolaType.heading).foregroundStyle(TegolaRole.textMuted)
+              }
+              // The whole line is the button, not just the words and the arrow.
+              .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityIdentifier("today.needAttention")
+          } else {
+            text(line).tegolaTextStyle(TegolaType.heading).foregroundStyle(TegolaRole.text)
+          }
         }
       }
       .padding(TegolaSpace.l)
       .frame(maxWidth: .infinity, alignment: .leading)
       .printed(fill: .accentHighlight, radius: TegolaRadius.card)
-      .accessibilityElement(children: .combine)
+      // Contain, not combine: "need attention" is a button of its own, and combining would swallow its tap.
+      .accessibilityElement(children: .contain)
     }
 
     func text(_ line: TodayStrip.Line) -> Text {
