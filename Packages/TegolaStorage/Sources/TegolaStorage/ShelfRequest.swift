@@ -1,4 +1,4 @@
-import Foundation
+public import Foundation
 public import SQLiteData
 public import TegolaModel
 
@@ -16,6 +16,12 @@ public struct ShelfSnapshot: Hashable, Sendable {
   public var optedInClocks: Set<String>
   public var typeTesters: TypeTesters
   public var firstPieceSkipped: Bool
+  /// Every capture asks a lookup to identify it (F17: off).
+  public var alwaysIdentify: Bool
+  public var nudgeTone: NudgeTone
+  public var tabOrder: TabBarLayout
+  /// When the last weekly nudge went out.
+  public var lastWeeklyNudge: Date?
 
   /// The app opens on the first piece while the shelf has never had an object and the collector hasn't chosen to
   /// look around first (PLAN F2). Letting a piece go doesn't bring onboarding back.
@@ -28,7 +34,11 @@ public struct ShelfSnapshot: Hashable, Sendable {
     notificationsOffer: String? = nil,
     optedInClocks: Set<String> = [],
     typeTesters: TypeTesters = TypeTesters(),
-    firstPieceSkipped: Bool = false
+    firstPieceSkipped: Bool = false,
+    alwaysIdentify: Bool = false,
+    nudgeTone: NudgeTone = .dry,
+    tabOrder: TabBarLayout = .default,
+    lastWeeklyNudge: Date? = nil
   ) {
     self.shelf = shelf
     self.money = money
@@ -37,6 +47,10 @@ public struct ShelfSnapshot: Hashable, Sendable {
     self.optedInClocks = optedInClocks
     self.typeTesters = typeTesters
     self.firstPieceSkipped = firstPieceSkipped
+    self.alwaysIdentify = alwaysIdentify
+    self.nudgeTone = nudgeTone
+    self.tabOrder = tabOrder
+    self.lastWeeklyNudge = lastWeeklyNudge
   }
 }
 
@@ -52,6 +66,8 @@ public struct ShelfRequest: FetchKeyRequest {
     let optedIn = try SettingRow.find(SettingKey.optedInClocks.id).fetchOne(db)?.value ?? ""
     let testers = try SettingRow.find(SettingKey.typeTesters.id).fetchOne(db)?.value
     let skipped = try SettingRow.find(SettingKey.firstPieceSkipped.id).fetchOne(db)?.value == "true"
+    func value(_ key: SettingKey) throws -> String? { try SettingRow.find(key.id).fetchOne(db)?.value }
+    let tabOrder = try value(.tabOrder).flatMap { try? JSONDecoder().decode(TabBarLayout.self, from: Data($0.utf8)) }
     return ShelfSnapshot(
       shelf: shelf,
       money: money ?? .off,
@@ -59,7 +75,11 @@ public struct ShelfRequest: FetchKeyRequest {
       notificationsOffer: offer,
       optedInClocks: Set(optedIn.split(separator: ",").map(String.init)),
       typeTesters: TypeTesters(setting: testers),
-      firstPieceSkipped: skipped
+      firstPieceSkipped: skipped,
+      alwaysIdentify: try value(.alwaysIdentify) == "true",
+      nudgeTone: try value(.nudgeTone).flatMap(NudgeTone.init(rawValue:)) ?? .dry,
+      tabOrder: tabOrder ?? .default,
+      lastWeeklyNudge: try value(.lastWeeklyNudge).flatMap { try? Date($0, strategy: .iso8601) }
     )
   }
 }

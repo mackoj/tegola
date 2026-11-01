@@ -869,3 +869,24 @@ was worded for clocks, and appears only when a clock has something to say.
 - **The nudge's line** is worded from `Nudge` alone: *Hi Dara! Just checking in on Homogenic: it was due back 7 days
   ago. No rush, tell me when.* or, before the date, *Hi Max! Hope you're enjoying Kid A. Tell me when you're done with
   it.* The object's card joins it with T7.9.
+
+### D-81 · What export writes, and what "export → import gives the same shelf" means
+
+> PLAN F17: "**Export:** CSV and JSON with photos, in the import template's shape." §1, M8's exit test: "Export →
+> import gives the same shelf."
+
+**Gap.** The template (T6.3) carries an object's type, subtype, title, subtitle, year, parts, condition, signatures,
+bundle, note and its type's fields, but not ownership, collections, places, loans or history; and an import lands
+every row unconfirmed in one collection named after the file (D-64). A literal round trip of the whole shelf through
+the CSV isn't possible without a second import path.
+
+**Decision.** `ShelfExport` (`TegolaInterchange/Export.swift`, T8.2) writes two files:
+- **The CSV**, in the template's shape: one row per object not let go (type, then title), the fixed columns, then
+  every type field the rows use, by key. A subtype's hidden preset isn't written: it comes back with the subtype. A
+  value the template can't carry (a date, a log) goes into the note as `key: value`, as the importer does with a cell
+  it can't read. **No money goes into the CSV**: a note shows with money off (promise 5).
+- **The JSON**: the whole projection, versioned (`tegola-shelf`, 1), dated; photos travel beside it as files.
+- **The exit test** (`ExportTests.exportThenImportGivesBackTheSameShelf`) reads the round trip as *the same objects*:
+  every exported object, imported through `TemplateImporter` and added through the model's rules, comes back with the
+  same type, subtype and values, across the four v1 types. Collections, places, ownership, loans, money and history
+  are kept by the JSON, which isn't importable in v1; restoring from it is a later import path.

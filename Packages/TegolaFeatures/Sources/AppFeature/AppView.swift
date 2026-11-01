@@ -11,6 +11,7 @@
   import PlacesFeature
   import ReviewFeature
   import SignalsFeature
+  import WishlistFeature
   public import ComposableArchitecture
   import ShelfFeature
   public import SwiftUI
@@ -100,6 +101,8 @@
           ReviewView(store: store)
         case .person(let store):
           PersonView(store: store)
+        case .wishlist(let store):
+          WishlistView(store: store)
         }
       }
     }
@@ -119,6 +122,7 @@
         case .signals(let store): SignalsView(store: store)
         case .review(let store): ReviewView(store: store)
         case .person(let store): PersonView(store: store)
+        case .wishlist(let store): WishlistView(store: store)
         }
       }
     }
@@ -138,6 +142,7 @@
         case .signals(let store): SignalsView(store: store)
         case .review(let store): ReviewView(store: store)
         case .person(let store): PersonView(store: store)
+        case .wishlist(let store): WishlistView(store: store)
         }
       }
     }

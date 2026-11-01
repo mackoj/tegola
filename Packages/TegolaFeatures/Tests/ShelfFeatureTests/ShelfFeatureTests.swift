@@ -51,6 +51,13 @@ struct ShelfFeatureTests {
     await store.receive(\.delegate.open, Route.signals)
   }
 
+  /// F16: the dashed wishlist tile opens the wishlist.
+  @Test func theWishlistTileOpensTheWishlist() async {
+    let store = TestStore(initialState: ShelfFeature.State()) { ShelfFeature() }
+    await store.send(.view(.wishlistTapped))
+    await store.receive(\.delegate.open, Route.wishlist)
+  }
+
   /// F15: the offer shows once a clocked object is on the shelf; accepting asks the system, then schedules each
   /// signal's next change, and the offer is gone.
   @Test func acceptingTheOfferSchedulesTheClocks() async throws {

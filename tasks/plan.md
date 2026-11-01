@@ -179,7 +179,36 @@ notifications, the share sheet and the app, so they need the Mac. M7 needs nothi
 | T7.9 Share | `ShareFeature` from the object: **Share the record** and **Share my copy** (owned objects only), the asking price with money on. `ShareCardView` (`ShelfViews`) renders the card with `ImageRenderer` in the view, so no client is needed; Nudge sends the record card too. The wishlist's card list waits for M8's wishlist screen (its model, `WishlistCard`, is T7.4) | Mac: TestStore; snapshots of both cards, money on and off |
 | T7.10 Journey 3, docs, review | *Lend at the door* as a UI test, with the clock moved by a launch argument. DECISIONS, the M7 report, HANDOFF, a separate review agent | Mac: `scripts/test.sh app`; read-through |
 
-## M8 · keeping + you · M9 · polish
+## M8 · keeping + you (F16, F17)
 
-Wishlist, let go, archive, saved views, settings, export, inventory document,
-nudges, analytics, debug screen; French, accessibility, journeys, performance. Broken down when M6 merges.
+Exit test (PLAN §1): **export → import gives back the same shelf**, as `ExportRoundTripTests` over the seed shelf
+(every v1 type, ownership, let-go and loan state that the template carries) on Linux. Journeys 4 (*Saturday in the
+shop*) and 6 (*Letting go and the insurer's email*) pass as UI tests. F17's other *Done when*: the inventory document
+says it is not an appraisal, and money off shows no value on any screen.
+
+What's already there: the commands `setWanted`, `setOwned`, `setGrail`, `setMightLetGo` and `letGo` (with its reasons)
+and their rules (M2); let-go objects out of every count (promise 4) and in Find's archive chip (M3); `TabBarLayout`
+(M3); `WishlistCard` (M7); `Route.wishlist` leads nowhere yet. The app is iOS-only: the iPhone runs gate a merge.
+
+Branch: `m8-keeping-you`. T8.1 to T8.5 are model, storage and interchange work and build and test on Linux. T8.6 to
+T8.11 are the screens, notifications, files and the app, on the Mac.
+
+| Task | Acceptance | Verify |
+|---|---|---|
+| T8.1 Keeping read models | `Wishlist` (wanted, grails first, then priority, then title; the price cap only with money on), `MightLetGo` (owned and kept objects flagged, by title: the flag has no date) and `Archive` (let-go objects, newest first, grouped by reason, the price only with money on). Each answers *did I ever own this?* through search, which already reaches let-go objects | Linux: `KeepingReadModelTests` |
+| T8.2 Export | `ShelfExport` writes the shelf as the `tegola.csv` template (T6.3; no money, D-81) and as JSON (the whole projection, versioned), with the photos beside it. **Exit test:** every exported object, imported through `TemplateImporter` and added through the model's rules, comes back with the same type, subtype and values (D-81) | Linux: `ExportTests`, `ExportRoundTripTests` |
+| T8.3 The inventory document's model | `InventoryDocument` (pure): dated, one section per collection, the objects that count (copies counted), each with its photo's file name, condition (the grade or each ladder part's), provenance (acquired), place, and the price paid (F17: the insurer's question), totals per currency. No market values in v1 (PD-138). The screen (T8.9) says it isn't an appraisal | Linux: `InventoryTests` |
+| T8.4 The weekly nudge | `WeeklyNudge` (pure): at most one a week, only about a named unfinished thing (an object not yet confirmed: the oldest, with how many more; every object has a title, so board 21's nameless photo is an unconfirmed capture), none when nothing's unfinished, and none with the tone Off. Tone Dry, Plain or Off | Linux: `WeeklyNudgeTests` |
+| T8.5 Settings and analytics storage | New settings: always identify, nudge tone, tab order, the last weekly nudge. `AnalyticsEvent` (shape only: a name and counts or enums, never a title, a name or a note) from `05_Tagging and Metrics`, trimmed to v1, with `object_flagged_sellable` and `wish_added`; the local `analyticsEvents` table, append-only | Linux: `AnalyticsTests`, storage replay |
+| T8.6 The wishlist | `WishlistFeature` on `Route.wishlist` (the Shelf's dashed tile): wants with grail and priority, **It arrived** (`setOwned`, history intact), **Grail**, the price cap with money on, and **Share the list** (`WishlistCard`) | Mac: TestStore; snapshots |
+| T8.7 Let go, the archive and Might let go | The object's **Let go** sheet (the reason, a price only with money on), `ArchiveFeature` (searchable, grouped by reason), `MightLetGoFeature` (the list of flagged objects). Let go joins the object's actions and `TegolaAction` | Mac: TestStore; snapshots |
+| T8.8 The You tab | `YouFeature` replaces the placeholder: the money switch, always identify, nudge tone, language (the system's per-app setting), the tab editor (Find, Activity and You around Shelf and Scan), and the entries to export, inventory, the archive, Might let go and the wishlist | Mac: TestStore; snapshots; `AppFeatureTests` |
+| T8.9 Export and inventory screens | `ExportFeature` (CSV or JSON with photos, through the share sheet) and `InventoryFeature` (the PDF, rendered with `UIGraphicsPDFRenderer`, with the not-an-appraisal line on every page) | Mac: TestStore; a snapshot of a page |
+| T8.10 Nudges, analytics, debug | The weekly nudge scheduled through `NotificationsClient` (its own prefix); `AnalyticsClient` records the events at their places; the hidden debug screen (the events, the settings in force, the database counts) | Mac: TestStore records calls |
+| T8.11 Journeys 4 and 6, docs, review | *Saturday in the shop* and *Letting go and the insurer's email* as UI tests. DECISIONS, the M8 report, HANDOFF, a separate review agent | Mac: `scripts/test.sh app`; read-through |
+
+Stats (F12) isn't built yet; it moves to M9 with the polish.
+
+## M9 · polish
+
+French, accessibility, journeys, performance, Stats (F12). Broken down when M8 merges.

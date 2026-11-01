@@ -5,11 +5,9 @@ it short and current.
 
 **Updated:** 2026-11-01, after M7 finished on `m7-people` (PR #18).
 
-**Resume here: M8 (keeping + you).** M7 (people) is done and its PR merges with its report,
-`docs/milestones/M7.md`. M8 isn't broken down yet: do that first, in `tasks/plan.md`, from PLAN's `keeping` and `you`
-modules (wishlist, grail, Might let go, Let go and the archive, saved views; settings, the money switch, the tab
-editor, language, nudges, export, the inventory document, analytics, the debug screen). The wishlist's share card
-(`WishlistCard`) is waiting for M8's wishlist screen.
+**Resume here: M8 (keeping + you), on `m8-keeping-you`.** M7 is merged (#18). The breakdown is in `tasks/plan.md`,
+M8: T8.1 to T8.5 are model, storage and interchange work (Linux), T8.6 to T8.11 the screens and journeys 4 and 6. The
+exit test is export → import giving back the same shelf. The app is iOS-only: the iPhone runs gate a merge.
 
 **Owner, open:** D-76, who pays for paid lookup sources (a subscription, type packs, a free-tier cap) and the
 server's per-install pseudonym for cost per collector. It's tegola-server's D-27 and M5 on the server side; nothing
@@ -19,7 +17,7 @@ changes in the app until the owner decides.
 
 - **Spec:** approved (`docs/PLAN.md`, answers in §10). Decisions: D-1 to D-80.
 - **M1 to M6:** merged (PRs #5, #8, #9, #13, #14, #16, #17; `docs/milestones/M1.md` to `M6.md`).
-- **M7 (people):** done (PR #18, `docs/milestones/M7.md`, D-77 to D-80). Lend and Return sheets, the Person page,
+- **M7 (people):** merged (PR #18, `docs/milestones/M7.md`, D-77 to D-80). Lend and Return sheets, the Person page,
   the Activity tab with the only badge, loan reminders, Nudge, share cards (the record, my copy). Journey 3 passes.
   With it came the owner's request: the system tab bar, and every shared tab and verb defined once as a
   `TegolaAction` in the design system (D-78).
@@ -64,7 +62,7 @@ changes in the app until the owner decides.
    - D-77 to D-80: people's read models and returns, the system tab bar and `TegolaAction` (replacing board 01's
      drawn bar), share cards (the record = the type's `auto` fields), Activity, reminders and Nudge;
    - the exit tests with people: M3's 30 objects, M4's 8 of 10 signals, M5's 5 of 6 testers (`docs/UX-FINDINGS.md`).
-2. **M8** (keeping + you): break it down in `tasks/plan.md`, then build it.
+2. **M8** (keeping + you): `tasks/plan.md`, M8, from T8.1.
 3. **Later:** M9 (polish).
 
 ## Run it locally (Mac)

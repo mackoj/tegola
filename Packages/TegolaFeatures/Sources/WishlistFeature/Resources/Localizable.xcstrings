@@ -1,0 +1,146 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "%lld wanted" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld wanted"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld wanted"
+                }
+              }
+            }
+          }
+        },
+        "fr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld souhaité"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld souhaités"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Add something as wanted and it waits here, dashed, until it arrives." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajoutez un objet souhaité : il attend ici, en pointillés, jusqu’à son arrivée."
+          }
+        }
+      }
+    },
+    "Grail" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Graal"
+          }
+        }
+      }
+    },
+    "It arrived" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il est arrivé"
+          }
+        }
+      }
+    },
+    "Not a grail" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plus un graal"
+          }
+        }
+      }
+    },
+    "Nothing wanted" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucune envie"
+          }
+        }
+      }
+    },
+    "Priority %lld" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Priorité %lld"
+          }
+        }
+      }
+    },
+    "Share the list" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partager la liste"
+          }
+        }
+      }
+    },
+    "Up to %@" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jusqu’à %@"
+          }
+        }
+      }
+    },
+    "Wishlist" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Envies"
+          }
+        }
+      }
+    },
+    "yet" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "pour l’instant"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

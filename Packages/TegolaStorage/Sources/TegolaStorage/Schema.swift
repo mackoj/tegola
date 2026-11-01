@@ -142,6 +142,15 @@ struct LookupRow: Identifiable {
 /// A setting the collector changed (PD-161, ADR-0008): only those are stored, so a missing row is the default. Not a
 /// shelf change, so not an event. Each setting has a fixed id, because `SyncEngine` allows no unique constraint on
 /// `key` (D-44).
+@Table("analyticsEvents")
+struct AnalyticsRow: Identifiable {
+  let id: UUID
+  var name: String
+  var at: Date
+  /// The event as JSON (`StoredJSON`).
+  var data: String
+}
+
 @Table("settings")
 public struct SettingRow: Identifiable, Sendable {
   public let id: UUID
@@ -163,6 +172,14 @@ public enum SettingKey: String, CaseIterable, Sendable {
   case typeTesters
   /// "true" once the collector chose **Just look around first**: the app stops opening on the first piece (PLAN F2).
   case firstPieceSkipped
+  /// "true" when every capture asks a lookup to identify it (F17: off by default).
+  case alwaysIdentify
+  /// `NudgeTone`: the weekly nudge's voice, or off (F17: Dry by default).
+  case nudgeTone
+  /// `TabBarLayout`'s order, as JSON: the collector's tab order (story 148).
+  case tabOrder
+  /// When the last weekly nudge went out, ISO 8601 (F17: at most one a week).
+  case lastWeeklyNudge
 
   public var id: UUID {
     switch self {
@@ -172,6 +189,10 @@ public enum SettingKey: String, CaseIterable, Sendable {
     case .optedInClocks: UUID(uuidString: "5E771965-0000-4000-8000-000000000004")!
     case .typeTesters: UUID(uuidString: "5E771965-0000-4000-8000-000000000005")!
     case .firstPieceSkipped: UUID(uuidString: "5E771965-0000-4000-8000-000000000006")!
+    case .alwaysIdentify: UUID(uuidString: "5E771965-0000-4000-8000-000000000007")!
+    case .nudgeTone: UUID(uuidString: "5E771965-0000-4000-8000-000000000008")!
+    case .tabOrder: UUID(uuidString: "5E771965-0000-4000-8000-000000000009")!
+    case .lastWeeklyNudge: UUID(uuidString: "5E771965-0000-4000-8000-00000000000A")!
     }
   }
 }
@@ -374,6 +395,21 @@ extension ShelfStore {
       )
       .execute(db)
       try #sql(#"CREATE INDEX "index_lookupQueue_on_objectID" ON "lookupQueue"("objectID")"#).execute(db)
+    }
+    // F17's shape-only analytics, on the phone (T8.5). Append-only; never synced, never sent.
+    migrator.registerMigration("Create analytics events") { db in
+      try #sql(
+        """
+        CREATE TABLE "analyticsEvents" (
+          "id" TEXT PRIMARY KEY NOT NULL ON CONFLICT REPLACE DEFAULT (uuid()),
+          "name" TEXT NOT NULL,
+          "at" TEXT NOT NULL,
+          "data" TEXT NOT NULL
+        ) STRICT
+        """
+      )
+      .execute(db)
+      try #sql(#"CREATE INDEX "index_analyticsEvents_on_at" ON "analyticsEvents"("at")"#).execute(db)
     }
     return migrator
   }

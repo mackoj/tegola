@@ -364,3 +364,46 @@ struct StoreHarness {
     #expect(apply(try harness.store.log(), to: Shelf()) == shelf)
   }
 }
+
+/// T8.5: M8's settings and the analytics table.
+@Suite struct KeepingSettingsTests {
+  @Test func theNewSettingsHaveTheirDefaultsAndRemember() throws {
+    let harness = try StoreHarness()
+    let before = try harness.store.database.read { db in try ShelfRequest().fetch(db) }
+    #expect(!before.alwaysIdentify)
+    #expect(before.nudgeTone == .dry)
+    #expect(before.tabOrder == .default)
+    #expect(before.lastWeeklyNudge == nil)
+
+    let order = try #require(TabBarLayout(movable: [.you, .find, .activity]))
+    let json = try #require(String(data: JSONEncoder().encode(order), encoding: .utf8))
+    try harness.store.set(.alwaysIdentify, to: "true")
+    try harness.store.set(.nudgeTone, to: NudgeTone.off.rawValue)
+    try harness.store.set(.tabOrder, to: json)
+    try harness.store.set(.lastWeeklyNudge, to: "2027-01-10T10:00:00Z")
+    let after = try harness.store.database.read { db in try ShelfRequest().fetch(db) }
+    #expect(after.alwaysIdentify)
+    #expect(after.nudgeTone == .off)
+    #expect(after.tabOrder == order)
+    #expect(after.lastWeeklyNudge == Date(timeIntervalSince1970: 1_799_575_200))
+  }
+
+  @Test func analyticsEventsAreKeptNewestFirst() throws {
+    let harness = try StoreHarness()
+    try withDependencies {
+      $0.uuid = .incrementing
+    } operation: {
+      try harness.store.record(AnalyticsEvent(.firstOpen, at: Date(timeIntervalSince1970: 1)))
+      try harness.store.record(
+        AnalyticsEvent(
+          .objectAdded,
+          at: Date(timeIntervalSince1970: 2),
+          [.type: .type("music"), .source: .word(.typed)]
+        )
+      )
+    }
+    let events = try harness.store.analyticsEvents()
+    #expect(events.map(\.name) == [.objectAdded, .firstOpen])
+    #expect(events.first?.properties[.type] == .type("music"))
+  }
+}
