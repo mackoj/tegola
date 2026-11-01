@@ -779,3 +779,25 @@ than selecting all stay.
 - UI tests find tabs by their label in the system tab bar (`app.tab("Find")`), since a `Tab`'s identifier doesn't
   reach the system's button.
 - The catalog's *tabBar* section is now *actions*: every action's item and button.
+
+### D-78 · What a share card shows
+
+> PLAN F14: "**Share the record** (public facts) and **share my copy** (condition, photos, and an asking price only
+> with money on) render a **share card** image … What was paid is never on a card … A wishlist shares as a card list
+> that reveals wants, never holdings (PD-071)."
+
+**Gap.** "Public facts" isn't defined per field. Sorting fields by kind fails: a box's condition, *sealed*, *framed*,
+*completeness*, *graded by* and *missing parts* are choice, yes/no or list fields that describe one copy. v1 has no
+asking-price field (Let go is M8).
+
+**Decision.** `ShareCard` and `WishlistCard` (`TegolaModel/ShareCard.swift`, T7.4):
+- **The record** has the title, the subtype, the spine's subtitle and year, and the fields marked `auto` in the type
+  file: the ones a lookup fills from a catalogue, which are the same for every copy. A type with no `auto` field
+  (watches) shares its spine only. Leaving a fact out is the safe direction.
+- **My copy** adds every other visible field the collector filled, the ladder's grades and the photos.
+- **Never on a card:** any money value, whatever the field, and paid, value, acquired, the notes and the place. A
+  property test over random shelves of every v1 type checks both kinds with money on and off.
+- **The asking price** is typed on the share screen (T7.9) and shows only on *my copy* with money on.
+- **The wishlist card** lists wanted objects (grails first, then by title) with type, subtype, title and year: no
+  price cap, no priority, nothing owned.
+- If a field's public-ness ever needs to differ from `auto`, it gets its own key in the type schema then.
