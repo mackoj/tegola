@@ -88,7 +88,7 @@ Plan: `tasks/plan.md`, M6. Report: `docs/milestones/M6.md`.
 - [x] T6.9 Capture
 - [x] T6.10 Import screens (cells: NoteReader, D-74)
 - [x] T6.11 Review queue and matches
-- [ ] T6.12 Journey 2, docs, review
+- [x] T6.12 Journey 2, docs, review
 
 ## Open follow-ups
 

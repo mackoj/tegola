@@ -80,8 +80,14 @@
     var progress: some View {
       HStack(spacing: TegolaSpace.s) {
         ProgressView()
-        Text(store.step == .reading ? "Reading your list…" : "Building your shelf…", bundle: .module)
-          .tegolaTextStyle(TegolaType.body).foregroundStyle(TegolaRole.textMuted)
+        Group {
+          if store.step == .reading {
+            Text("Reading your list…", bundle: .module)
+          } else {
+            Text("Building your shelf…", bundle: .module)
+          }
+        }
+        .tegolaTextStyle(TegolaType.body).foregroundStyle(TegolaRole.textMuted)
       }
     }
 

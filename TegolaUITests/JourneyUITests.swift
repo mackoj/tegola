@@ -134,9 +134,12 @@ final class JourneyUITests: XCTestCase {
     let shutter = app.buttons["capture.shutter"]
     XCTAssertTrue(shutter.waitForExistence(timeout: 5) && shutter.isHittable)
     shutter.tap()
-    XCTAssertTrue(app.staticTexts["capture.trayCount"].waitForExistence(timeout: 5))
+    let count = app.staticTexts["capture.trayCount"]
+    XCTAssertTrue(count.waitForExistence(timeout: 5))
     app.buttons["capture.shutter"].tap()
-    XCTAssertTrue(app.staticTexts["2 saved"].waitForExistence(timeout: 5))
+    // The camera stayed open: the second shot joins the first in the tray (the label is set in caps).
+    let two = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label ==[c] '2 saved'"), object: count)
+    XCTAssertEqual(XCTWaiter.wait(for: [two], timeout: 5), .completed)
   }
 
   /// M3's exit test, automated: thirty objects across Video games and Thing in one sitting, without a hint (page 52,
