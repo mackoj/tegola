@@ -82,6 +82,9 @@ public struct ImporterRegistry: Sendable {
     self.importers = importers
   }
 
+  /// The v1 importers, the known formats before any text (PLAN F9).
+  public static let v1 = ImporterRegistry([TemplateImporter(), SpreadsheetImporter()])
+
   /// The importers that can read the file, most certain first; on a tie, the registry's order.
   public func candidates(for input: ImportInput) -> [(importer: any Importer, recognition: Recognition)] {
     importers.enumerated()
