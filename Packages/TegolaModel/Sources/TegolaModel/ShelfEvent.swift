@@ -64,6 +64,10 @@ public struct ShelfEvent: Hashable, Sendable, Codable, Identifiable {
     /// One copy leaves a quantity object as an object of its own (PD-020).
     case promoted(from: ObjectID, copy: ShelfObject)
     case quantityAdjusted(ObjectID, by: Int)
+    /// An import's record; its rows follow as `added` events carrying its batch id.
+    case batchImported(ImportBatchRecord)
+    /// An import undone: the objects it removed, and the ones kept because the collector had changed them (D-12).
+    case batchUndone(BatchID, removed: [ObjectID], kept: [ObjectID])
 
     /// The kind's name, as the log's `kind` column stores it. The History slot filters on it (PLAN §3.2).
     public var name: String {
@@ -94,6 +98,8 @@ public struct ShelfEvent: Hashable, Sendable, Codable, Identifiable {
       case .letGo: "letGo"
       case .promoted: "promoted"
       case .quantityAdjusted: "quantityAdjusted"
+      case .batchImported: "batchImported"
+      case .batchUndone: "batchUndone"
       }
     }
 
@@ -107,14 +113,16 @@ public struct ShelfEvent: Hashable, Sendable, Codable, Identifiable {
         true
       case .collectionCreated, .collectionRenamed, .placeCreated, .personCreated, .workCreated, .placesMerged, .wanted,
         .grailChanged,
-        .mightLetGoChanged, .quantityAdjusted, .signalDismissed:
+        .mightLetGoChanged, .quantityAdjusted, .signalDismissed, .batchImported, .batchUndone:
         false
       }
     }
 
     public var objectID: ObjectID? {
       switch self {
-      case .collectionCreated, .collectionRenamed, .placeCreated, .personCreated, .workCreated, .placesMerged: nil
+      case .collectionCreated, .collectionRenamed, .placeCreated, .personCreated, .workCreated, .placesMerged,
+        .batchImported, .batchUndone:
+        nil
       case .added(let object, _): object.id
       case .edited(let id, _), .enriched(let id, _), .confirmed(let id), .placed(let id, _), .moved(let id, _),
         .logged(let id, _, _), .ownershipChanged(let id, _), .wanted(let id, _, _), .grailChanged(let id, _),
@@ -136,6 +144,7 @@ public enum AddOrigin: Hashable, Sendable, Codable {
   case typed
   /// From the camera: unconfirmed, or needs details when nothing was identified.
   case captured
+  /// From a list the collector brought: unconfirmed until they look (PD-047).
   case imported
   /// The onboarding's first piece, with the story the collector told (46).
   case firstPiece(story: String)

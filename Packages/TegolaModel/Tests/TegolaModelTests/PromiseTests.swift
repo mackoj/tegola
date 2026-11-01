@@ -37,16 +37,24 @@ import Testing
 
         // 1. No command but the collector's own edit changes a value the collector typed (PD-045, PD-047).
         let isCollectorEdit = if case .edit = command { source == .collector } else { false }
+        // The one way out: the collector undoes an import, and only the rows nobody touched since go (PD-047, D-12).
+        let undone = Set(before.objects.keys).subtracting(after.objects.keys)
+        if case .undoBatch(let batchID) = command, source == .collector {
+          for id in undone {
+            #expect(before.objects[id]?.imported == ImportMark(batchID: batchID, touched: false), "undo: \(context)")
+          }
+        } else {
+          // 2. No command merges or removes an object (PD-151).
+          #expect(undone.isEmpty, "an object went: \(context)")
+        }
         if !isCollectorEdit {
-          for (id, old) in before.objects {
+          for (id, old) in before.objects where !undone.contains(id) {
             // Typed and cleared keys alike: a cleared key stays empty.
             for key in old.typed {
               #expect(after.objects[id]?.values[key] == old.values[key], "typed \(key) changed: \(context)")
             }
           }
         }
-        // 2. No command merges or removes an object (PD-151).
-        #expect(Set(before.objects.keys).isSubset(of: after.objects.keys), "an object went: \(context)")
         // 3. History only grows: the old log is a prefix of the new one (PD-051).
         #expect(Array(harness.log.prefix(logBefore.count)) == logBefore, "history changed: \(context)")
         // 6. A count is never lent (PD-020, PD-121).

@@ -71,7 +71,7 @@
         }
       case .promoted: Text("One copy taken out", bundle: .module)
       case .collectionCreated, .collectionRenamed, .placeCreated, .personCreated, .workCreated, .placesMerged, .wanted,
-        .grailChanged, .mightLetGoChanged, .quantityAdjusted:
+        .grailChanged, .mightLetGoChanged, .quantityAdjusted, .signalDismissed, .batchImported, .batchUndone:
         Text(verbatim: kind.name)
       }
     }

@@ -75,6 +75,11 @@ public enum ShelfRuleViolation: Error, Hashable, Sendable {
   case notTheFirstPiece
   /// Only a Thing waits for a type, and only for a type that exists and hasn't shipped (D-59).
   case cantAwaitType(TypeManifest.ID)
+  /// An import with no rows.
+  case emptyBatch
+  case unknownBatch(BatchID)
+  /// Already undone, or more than 30 days old (PD-047).
+  case cantUndoBatch(BatchID)
 }
 
 /// Turns a command into the events that carry it out, or refuses it. Pure: the same command on the same shelf with
@@ -101,6 +106,8 @@ struct Planner {
   var shelf: Shelf
   let context: PlanContext
   var events: [ShelfEvent] = []
+  /// The context's batch, or the one an import makes.
+  lazy var batchID: BatchID? = context.batchID
 
   /// Records an event and applies it, so later events in the same command see it (a place made on the way).
   mutating func emit(_ kind: ShelfEvent.Kind) {
@@ -109,7 +116,7 @@ struct Planner {
       seq: shelf.lastSeq + 1,
       at: context.at,
       source: context.source,
-      batchID: context.batchID,
+      batchID: batchID,
       kind: kind
     )
     shelf.apply(event)
@@ -235,6 +242,21 @@ struct Planner {
         emit(.placed(object.id, into))
       }
       emit(.placesMerged(from: from, into: into))
+    case .importBatch(let batch):
+      try importBatch(batch)
+    case .undoBatch(let id):
+      try requireCollector()
+      guard let record = shelf.batches[id] else { throw .unknownBatch(id) }
+      guard record.canUndo(at: context.at) else { throw .cantUndoBatch(id) }
+      let rows = shelf.objects.values.filter { $0.imported?.batchID == id }.sorted { $0.id < $1.id }
+      batchID = id
+      emit(
+        .batchUndone(
+          id,
+          removed: rows.filter { $0.imported?.touched == false }.map(\.id),
+          kept: rows.filter { $0.imported?.touched == true }.map(\.id)
+        )
+      )
     case .moveObjects(let ids, let collectionID):
       guard let collection = shelf.collections[collectionID] else { throw .unknownCollection(collectionID) }
       for id in ids {
@@ -245,6 +267,30 @@ struct Planner {
         if object.collectionID != collectionID { emit(.moved(id, to: collectionID)) }
       }
     }
+  }
+
+  /// One collection named as the collector agreed, typed when every row is one type, then every row as an
+  /// unconfirmed `added` (PD-047). A row the rules refuse refuses the whole batch: an importer never sends one.
+  mutating func importBatch(_ batch: ImportBatch) throws(ShelfRuleViolation) {
+    guard context.source == .import else { throw .originMismatch }
+    guard !batch.rows.isEmpty else { throw .emptyBatch }
+    let id: BatchID = batchID ?? context.id()
+    batchID = id
+    let types = Set(batch.rows.map(\.type))
+    let collectionID = try createCollection(name: batch.collectionName, type: types.count == 1 ? types.first : nil)
+    emit(
+      .batchImported(
+        ImportBatchRecord(
+          id: id,
+          importer: batch.importer,
+          fileName: batch.fileName,
+          collectionID: collectionID,
+          rowCount: batch.rows.count,
+          at: context.at
+        )
+      )
+    )
+    for row in batch.rows { try add(row, to: .existing(collectionID), origin: .imported) }
   }
 
   mutating func createCollection(name: String, type: TypeManifest.ID?) throws(ShelfRuleViolation) -> CollectionID {
@@ -407,7 +453,8 @@ struct Planner {
     // Promise 8: only the collector's own words confirm. A capture is a guess until they agree (PD-042).
     let identity: ShelfObject.Identity =
       switch origin {
-      case .typed, .firstPiece, .imported: .confirmed
+      case .typed, .firstPiece: .confirmed
+      case .imported: .unconfirmed
       case .captured: needsDetails ? .needsDetails : .unconfirmed
       }
     // Promise 7: the values are the draft's, plus what the subtype presets (Saturn → media: Optical disc). The app
@@ -437,6 +484,7 @@ struct Planner {
       letGo: nil,
       promotedFrom: nil,
       awaitingType: draft.awaitingType,
+      imported: origin == .imported ? batchID.map { ImportMark(batchID: $0, touched: false) } : nil,
       createdAt: context.at,
       updatedAt: context.at
     )
@@ -565,6 +613,12 @@ extension Shelf {
   mutating func apply(_ event: ShelfEvent) {
     lastSeq = max(lastSeq, event.seq)
     let at = event.at
+    // The collector's own change keeps an imported object when its batch is undone (D-12).
+    if let id = event.objectID, objects[id]?.imported?.touched == false,
+      [.collector, .capture].contains(event.source)
+    {
+      if case .added = event.kind {} else { objects[id]?.imported?.touched = true }
+    }
     func touch(_ id: ObjectID, _ change: (inout ShelfObject) -> Void) {
       guard var object = objects[id] else { return }
       change(&object)
@@ -645,6 +699,14 @@ extension Shelf {
       touch(id) { $0.quantity -= 1 }
       objects[copy.id] = copy
     case .quantityAdjusted(let id, let delta): touch(id) { $0.quantity += delta }
+    case .batchImported(let record): batches[record.id] = record
+    case .batchUndone(let id, let removed, _):
+      batches[id]?.undoneAt = at
+      for objectID in removed { objects[objectID] = nil }
+      // The collection the import made goes too, once nothing is left in it.
+      if let collectionID = batches[id]?.collectionID, !objects.values.contains(where: { $0.collectionID == collectionID }) {
+        collections[collectionID] = nil
+      }
     }
   }
 }
