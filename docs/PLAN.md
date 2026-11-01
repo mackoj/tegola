@@ -686,8 +686,8 @@ propose → confirm → fill, the same for every type. The Scan tab presents the
 VisionKit), with **Type it** always available. **Add to** defaults to the last-used collection and can be corrected
 before shooting. The first object of a type creates its collection ("My Music"). After a shot, the camera **stays
 open** and the new object goes to a tray, which fixes journey 1's fault 3. With no signal, objects save with what's
-known and lookups queue. **Identify?** (sending the photo) is per shot and off by default, and hidden in v1: the lookup
-contract has no photo endpoint (§7). *Done when* the first object of a type creates its collection, and Add to
+known and lookups queue. **Identify?** (sending the photo) is per shot and off by default. It sends the shot with
+whatever the camera read, through `POST /types/{type}/identify` (§7, D-71). *Done when* the first object of a type creates its collection, and Add to
 remembers the last collection used.
 
 **F7 · Match, "you already own this", look-alikes.** Stories 21, 22, 26, 27; PD-044, PD-151. Every match says,
@@ -934,7 +934,7 @@ ObjectFeature
 | `CatalogueClient` | the bundled manifests | the same (pure); fixtures for the twelve disabled types |
 | `LookupClient` | the generated `TegolaLookupAPI` client over `URLSessionTransport` (ephemeral session) with `AppAttestMiddleware` and `RetryMiddleware`, pointed at tegola-server | recorded responses from `TegolaTestSupport`; `unimplemented` by default |
 | `AppAttestClient` | `DCAppAttestService` (generate key, attest, assert) | a fake signer whose assertions the contract tests check for shape |
-| `IdentifyClient` | none in v1 unless Q3 says otherwise | scripted |
+| `IdentifyClient` | none: Identify is `LookupClient`'s `identify`, the contract's `identifyObject` (D-71) | — |
 | `ExtractionClient` | Foundation Models (`LanguageModelSession`, guided generation into `@Generable` types built from the resolved type) for import shape and cell extraction, and for inferring the first piece's type; on devices without Apple Intelligence it falls back to the column mapper and keeps cells as notes | recorded outputs per fixture cell; `unimplemented` by default |
 | `ScannerClient` | VisionKit `DataScannerViewController` (barcodes, text) | an `AsyncStream` driven by the test |
 | `PhotoStoreClient` | files in Application Support, thumbnails | an in-memory store |
@@ -1003,13 +1003,13 @@ The contract's endpoints:
 | Endpoint | Used by |
 |---|---|
 | `GET /types/{type}/barcodes/{code}` | capture (barcode) |
-| `POST /types/{type}/search` | capture (OCR text), Add by hand, the first piece's guess |
+| `POST /types/{type}/identify` | capture (OCR text; the photo too with **Identify?** on), Add by hand, the first piece's guess (D-71) |
 | `POST /types/{type}/match` | import step 4, 50 rows a call, answering matched, ambiguous or unknown |
 | `GET /works/{id}` | "Also exists on", series |
 | `GET /health` | which types the server can look up |
 
-What goes out is an identifier, a title or OCR text, and the type and subtype; never a photo or anything about the rest
-of the shelf. Every candidate carries its `reasons` and `confidence`, which the review queue shows (PD-150).
+What goes out is an identifier, a title or OCR text, and the type and subtype. A photo goes out only through Identify,
+one shot the collector chose, with its metadata stripped (D-71). Nothing about the rest of the shelf ever goes out. Every candidate carries its `reasons` and `confidence`, which the review queue shows (PD-150).
 `scripts/lint-api.sh` lints the contract in CI. An `OpenAPIContractTests` suite decodes recorded server responses with
 the generated types, so a contract change breaks a test before it breaks the app.
 
@@ -1023,7 +1023,8 @@ How the queue works:
   `auto` until touched.
 - Which databases the server uses per type is the server's business (page 49 suggests IGDB, ScreenScraper and
   Wikidata for games). The app only sees candidates and their `sources`, and shows any attribution a source requires.
-- **Identify** (sending a photo) isn't in the contract, and stays hidden in v1 (PD-118).
+- **Identify** (sending a photo) is `identifyObject` in the contract (D-71). It needs a signal: a photo is never
+  queued. Offline, the shot saves with what's known, and its barcode or text lookup queues as usual.
 
 ---
 

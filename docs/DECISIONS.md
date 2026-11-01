@@ -590,3 +590,29 @@ without case, accents, width or extra spaces:
 
 The server's match buckets are `MatchOutcome`: matched, ambiguous, unknown. Only ambiguous goes to the exceptions
 queue, never as a gate; matched is an enrichment proposal the collector confirms; unknown stays as written.
+
+### D-71 · Identify: a photo lookup in the contract
+
+> PD-118: a photo leaves the phone only through Identify, and the camera says plainly when it does.
+
+**Gap.** PLAN §7 kept Identify out of the contract and hidden in v1. The owner asked for it on 2026-11-01: an object
+should be findable from words, a photo and a barcode, in any combination.
+
+**Decision.**
+- **One endpoint for everything but a bare barcode.** `POST /types/{typeID}/identify` (`identifyObject`) replaces
+  `searchObjects`, which the owner removed (contract 0.2.0): words alone did the same through both.
+  - Without a photo, the body is the hints as JSON: title, subtitle, OCR text, catalogue number, barcode, year,
+    subtype, region. D-33's rule carries over: at least one of title, text, catalogue number or barcode, checked by
+    the server (`400`), not by the schema.
+  - With a photo, it's `multipart/form-data`: the JPEG in `image`, the same hints in `hints`.
+  - It answers a `LookupResult`. A candidate the photo supports says so with the new `image` reason.
+  - `lookupBarcode` stays: a barcode alone is a GET that HTTP caches can answer for everyone.
+- **The photo**, as PD-118 asks:
+  - it's sent only when the collector turns **Identify?** on for that shot, and the switch is off by default;
+  - it's one JPEG, cropped to the object where the camera can, at most 2048 px and 2 MiB, with EXIF, GPS and every
+    other metadata removed;
+  - the server uses it for that answer and drops it: no storage, no log, no cache, and no source that keeps it.
+- **Never queued.** Identify needs a signal. Offline, the shot saves with what's known, and its barcode or text
+  lookup queues as before (D-69). A photo never sits in the queue waiting to leave.
+- **The server** chooses how to match an image, per type, as it does for every other source (PLAN §7). Until it has
+  a source for a type, it answers from the hints alone, or with no candidates.

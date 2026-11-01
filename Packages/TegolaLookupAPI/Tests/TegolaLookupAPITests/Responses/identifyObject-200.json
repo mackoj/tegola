@@ -1,0 +1,19 @@
+{
+  "candidates": [
+    {
+      "releaseID": "igdb:release:1182",
+      "workID": "wikidata:Q1062386",
+      "typeID": "video-game",
+      "subtype": "ps1",
+      "title": "Ridge Racer",
+      "year": 1995,
+      "region": "PAL",
+      "confidence": 0.91,
+      "reasons": [
+        { "kind": "image", "detail": "The cover looks like this release" },
+        { "kind": "ocr", "detail": "The catalogue number on the label matches" }
+      ],
+      "sources": [{ "name": "IGDB", "url": "https://www.igdb.com", "attribution": "Data from IGDB" }]
+    }
+  ]
+}
