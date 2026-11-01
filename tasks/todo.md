@@ -113,7 +113,7 @@ Plan: `tasks/plan.md`, M8.
 - [x] T8.2 Export, and the round trip (exit test)
 - [x] T8.3 The inventory document's model
 - [x] T8.4 The weekly nudge
-- [ ] T8.5 Settings and analytics storage
+- [x] T8.5 Settings and analytics storage
 - [ ] T8.6 The wishlist
 - [ ] T8.7 Let go, the archive and Might let go
 - [ ] T8.8 The You tab

@@ -148,6 +148,26 @@ public struct ShelfStore: Sendable {
     }
   }
 
+  /// Records one analytics event (F17, T8.5): shape only, on the phone, append-only.
+  public func record(_ event: AnalyticsEvent) throws {
+    @Dependency(\.uuid) var uuid
+    try database.write { db in
+      try AnalyticsRow.insert {
+        AnalyticsRow(id: uuid(), name: event.name.rawValue, at: event.at, data: StoredJSON.encode(event))
+      }
+      .execute(db)
+    }
+  }
+
+  /// The most recent analytics events, newest first: the debug screen's list (PD-162).
+  public func analyticsEvents(limit: Int = 200) throws -> [AnalyticsEvent] {
+    try database.read { db in
+      try AnalyticsRow.order { $0.at.desc() }.limit(limit).fetchAll(db).map {
+        try StoredJSON.decode(AnalyticsEvent.self, from: $0.data)
+      }
+    }
+  }
+
   /// An object's events, oldest first: what the History slot reads, before it filters by kind.
   public func history(of object: ObjectID) throws -> [ShelfEvent] {
     try database.read { db in
