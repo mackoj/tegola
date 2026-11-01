@@ -114,7 +114,7 @@ Plan: `tasks/plan.md`, M8.
 - [x] T8.3 The inventory document's model
 - [x] T8.4 The weekly nudge
 - [x] T8.5 Settings and analytics storage
-- [ ] T8.6 The wishlist
+- [x] T8.6 The wishlist
 - [ ] T8.7 Let go, the archive and Might let go
 - [ ] T8.8 The You tab
 - [ ] T8.9 Export and inventory screens

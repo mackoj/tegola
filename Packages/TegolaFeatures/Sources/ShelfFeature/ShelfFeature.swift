@@ -112,6 +112,7 @@ public struct ShelfFeature {
       case collectionTapped(CollectionID)
       case needAttentionTapped
       case overdueTapped
+      case wishlistTapped
       case toTidyTapped
       case notificationsAccepted
       case notificationsDeclined
@@ -136,6 +137,8 @@ public struct ShelfFeature {
         return .none
       case .view(.collectionTapped(let id)):
         return .send(.delegate(.open(.collection(id))))
+      case .view(.wishlistTapped):
+        return .send(.delegate(.open(.wishlist)))
       case .view(.overdueTapped):
         return .send(.delegate(.showActivity))
       case .view(.needAttentionTapped):

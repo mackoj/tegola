@@ -561,6 +561,16 @@
         }
       }
     },
+    "On my wishlist" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mes envies"
+          }
+        }
+      }
+    },
     "One copy taken out" : {
       "localizations" : {
         "fr" : {

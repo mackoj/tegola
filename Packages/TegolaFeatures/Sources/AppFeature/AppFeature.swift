@@ -17,6 +17,7 @@ public import SignalsFeature
 import TegolaClients
 public import TegolaModel
 import TegolaStorage
+public import WishlistFeature
 
 /// Every screen a tab's stack can push (PLAN §5). One enum for every tab, defined here: only the root pushes.
 @Reducer
@@ -24,6 +25,7 @@ public enum AppPath {
   case collection(CollectionFeature)
   case object(ObjectFeature)
   case person(PersonFeature)
+  case wishlist(WishlistFeature)
   case place(PlaceFeature)
   case places(PlacesFeature)
   case review(ReviewFeature)
@@ -117,7 +119,8 @@ public struct AppFeature {
         .activityPath(.element(_, .place(.delegate(.open(let route))))),
         .activityPath(.element(_, .signals(.delegate(.open(let route))))),
         .activityPath(.element(_, .review(.delegate(.open(let route))))),
-        .activityPath(.element(_, .person(.delegate(.open(let route))))):
+        .activityPath(.element(_, .person(.delegate(.open(let route))))),
+        .activityPath(.element(_, .wishlist(.delegate(.open(let route))))):
         Self.push(route, onto: &state.activityPath)
         return .none
       case .activityPath:
@@ -207,7 +210,8 @@ public struct AppFeature {
         .findPath(.element(_, .place(.delegate(.open(let route))))),
         .findPath(.element(_, .signals(.delegate(.open(let route))))),
         .findPath(.element(_, .review(.delegate(.open(let route))))),
-        .findPath(.element(_, .person(.delegate(.open(let route))))):
+        .findPath(.element(_, .person(.delegate(.open(let route))))),
+        .findPath(.element(_, .wishlist(.delegate(.open(let route))))):
         Self.push(route, onto: &state.findPath)
         return .none
       case .findPath:
@@ -219,7 +223,8 @@ public struct AppFeature {
         .shelfPath(.element(_, .place(.delegate(.open(let route))))),
         .shelfPath(.element(_, .signals(.delegate(.open(let route))))),
         .shelfPath(.element(_, .review(.delegate(.open(let route))))),
-        .shelfPath(.element(_, .person(.delegate(.open(let route))))):
+        .shelfPath(.element(_, .person(.delegate(.open(let route))))),
+        .shelfPath(.element(_, .wishlist(.delegate(.open(let route))))):
         Self.push(route, onto: &state.shelfPath)
         return .none
       case .shelfPath:
@@ -294,7 +299,7 @@ public struct AppFeature {
     case .person(let id):
       path.append(.person(PersonFeature.State(id: id)))
     case .wishlist:
-      break
+      path.append(.wishlist(WishlistFeature.State()))
     }
   }
 }

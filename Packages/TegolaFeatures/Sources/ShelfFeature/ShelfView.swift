@@ -129,10 +129,16 @@
           .accessibilityIdentifier("shelf.collection.\(line.name)")
         }
         if summary.wanted > 0 {
-          DashedTile(
-            title: Text("Wishlist", bundle: .module),
-            meta: Text("\(summary.wanted) wanted", bundle: .module)
-          )
+          Button {
+            send(.wishlistTapped)
+          } label: {
+            DashedTile(
+              title: Text("Wishlist", bundle: .module),
+              meta: Text("\(summary.wanted) wanted", bundle: .module)
+            )
+          }
+          .buttonStyle(.plain)
+          .accessibilityIdentifier("shelf.wishlist")
         }
       }
     }
