@@ -1,3 +1,4 @@
+public import ActivityFeature
 public import AddByHandFeature
 public import CaptureFeature
 public import CollectionFeature
@@ -43,6 +44,8 @@ public struct AppFeature {
     public var shelfPath = StackState<AppPath.State>()
     public var find = FindFeature.State()
     public var findPath = StackState<AppPath.State>()
+    public var activity = ActivityFeature.State()
+    public var activityPath = StackState<AppPath.State>()
     /// Add by hand: the empty shelf's Type it, and the camera's.
     @Presents public var addByHand: AddByHandFeature.State?
     /// Scan presents instead of selecting a tab (PD-117): the camera (F6, T6.9).
@@ -64,6 +67,8 @@ public struct AppFeature {
   }
 
   public enum Action: ViewAction {
+    case activity(ActivityFeature.Action)
+    case activityPath(StackActionOf<AppPath>)
     case addByHand(PresentationAction<AddByHandFeature.Action>)
     case capture(PresentationAction<CaptureFeature.Action>)
     case importing(PresentationAction<ImportFeature.Action>)
@@ -93,10 +98,29 @@ public struct AppFeature {
   public var body: some ReducerOf<Self> {
     Scope(state: \.shelf, action: \.shelf) { ShelfFeature() }
     Scope(state: \.find, action: \.find) { FindFeature() }
+    Scope(state: \.activity, action: \.activity) { ActivityFeature() }
     Reduce { state, action in
       switch action {
       case .shelf(.delegate(.open(let route))):
         Self.push(route, onto: &state.shelfPath)
+        return .none
+      case .shelf(.delegate(.showActivity)):
+        state.selectedTab = .activity
+        return .none
+      case .activity(.delegate(.open(let route))):
+        Self.push(route, onto: &state.activityPath)
+        return .none
+      case .activity:
+        return .none
+      case .activityPath(.element(_, .collection(.delegate(.open(let route))))),
+        .activityPath(.element(_, .places(.delegate(.open(let route))))),
+        .activityPath(.element(_, .place(.delegate(.open(let route))))),
+        .activityPath(.element(_, .signals(.delegate(.open(let route))))),
+        .activityPath(.element(_, .review(.delegate(.open(let route))))),
+        .activityPath(.element(_, .person(.delegate(.open(let route))))):
+        Self.push(route, onto: &state.activityPath)
+        return .none
+      case .activityPath:
         return .none
       case .shelf(.delegate(.addByHand)):
         state.addByHand = AddByHandFeature.State()
@@ -208,6 +232,8 @@ public struct AppFeature {
           state.shelfPath.removeAll()
         } else if tab == state.selectedTab, tab == .find {
           state.findPath.removeAll()
+        } else if tab == state.selectedTab, tab == .activity {
+          state.activityPath.removeAll()
         } else {
           state.selectedTab = tab
         }
@@ -216,6 +242,7 @@ public struct AppFeature {
     }
     .forEach(\.shelfPath, action: \.shelfPath)
     .forEach(\.findPath, action: \.findPath)
+    .forEach(\.activityPath, action: \.activityPath)
     .ifLet(\.$addByHand, action: \.addByHand) { AddByHandFeature() }
     .ifLet(\.$capture, action: \.capture) { CaptureFeature() }
     .ifLet(\.$importing, action: \.importing) { ImportFeature() }

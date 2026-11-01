@@ -91,6 +91,7 @@
         TodayStripView(
           lines: summary.today.lines,
           openSignals: { send(.needAttentionTapped) },
+          openActivity: { send(.overdueTapped) },
           openReview: { send(.toTidyTapped) }
         )
       }
@@ -192,6 +193,8 @@
     let lines: [TodayStrip.Line]
     /// "Need attention" opens the signal feed (journey 5).
     let openSignals: () -> Void
+    /// *N overdue* opens the Activity tab (F13).
+    let openActivity: () -> Void
     /// "To tidy" opens the review queue (F8).
     let openReview: () -> Void
 
@@ -223,7 +226,16 @@
             .buttonStyle(.plain)
             .accessibilityIdentifier("today.needAttention")
           } else {
-            text(line).tegolaTextStyle(TegolaType.heading).foregroundStyle(TegolaRole.text)
+            Button(action: openActivity) {
+              HStack {
+                text(line).tegolaTextStyle(TegolaType.heading).foregroundStyle(TegolaRole.text)
+                Spacer()
+                Text(verbatim: "→").tegolaTextStyle(TegolaType.heading).foregroundStyle(TegolaRole.textMuted)
+              }
+              .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityIdentifier("today.overdue")
           }
         }
       }

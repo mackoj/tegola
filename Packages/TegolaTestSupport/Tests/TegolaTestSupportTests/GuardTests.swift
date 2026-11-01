@@ -141,7 +141,8 @@ import Testing
 
   /// A key's literal may interpolate (`"\\(count) objects"`): the catalog stores those as format specifiers.
   static let keyPatterns = [
-    #"String\(localized:\s*"((?:[^"\\]|\\\((?:[^()"]|\([^()"]*\))*\))+)""#,
+    // swift-format may break a long call after the parenthesis: `String(\n  localized: "…"`.
+    #"String\(\s*localized:\s*"((?:[^"\\]|\\\((?:[^()"]|\([^()"]*\))*\))+)""#,
     #"Text\(\s*"((?:[^"\\]|\\\((?:[^()"]|\([^()"]*\))*\))+)",\s*bundle:"#,
   ]
 

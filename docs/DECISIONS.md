@@ -801,3 +801,30 @@ asking-price field (Let go is M8).
 - **The wishlist card** lists wanted objects (grails first, then by title) with type, subtype, title and year: no
   price cap, no priority, nothing owned.
 - If a field's public-ness ever needs to differ from `auto`, it gets its own key in the type schema then.
+
+### D-79 · The Person page, the Activity tab, reminders and the nudge
+
+> PLAN F13: "Each Person has a page with what they hold now and a track record … **Activity** gathers loans out,
+> borrowed objects and overdue loans. It's the only tab with a badge … There's one reminder notification on the due
+> date … **Nudge** opens the share sheet with a friendly line and the object card."
+
+**Gaps.** Board 19's **Lend him something** goes straight to the lend sheet, which needs an object. Board 17's footer
+puts either Nudge or Mark returned on a card, and the overdue one shows only Mark returned. D-61's notifications offer
+was worded for clocks, and appears only when a clock has something to say.
+
+**Decision.**
+- **The Person page** (T7.6) shows the tiles only when there's a loan out to read (*Came back n of m*, and *Average
+  out* once one has come back), then every loan both ways with a chip: *Overdue*, *Out now*, *Returned*, *Theirs, here*,
+  *Given back*. **Lend them something** opens a sheet listing what can be lent (owned, kept, one copy, not out),
+  searchable; picking one turns the same sheet into the lend sheet with the person already chosen.
+- **Activity** (T7.7) has its own stack. Its pills are *Out now*, *Returned* and *By person*; *In the house, not yours*
+  follows whenever something is borrowed. Each card's footer says *Overdue · n days* (rust), *Due today* or *Due in n
+  days* (yellow within a week), or *Out · n days*, with **Nudge** and **Mark returned** on every card: a late loan is
+  the one most worth a nudge. The Today strip's *N overdue* line switches to the tab. The badge is the system's
+  `.badge`, the overdue count, and none at zero.
+- **Reminders** (T7.8) follow the clocks: scheduled when the offer is accepted and each time the Shelf appears, under
+  their own `loan.` prefix so neither kind clears the other. The offer now also appears when a loan has a due date. The
+  reminder reads *Homogenic · Due back from Dara today.*
+- **The nudge's line** is worded from `Nudge` alone: *Hi Dara! Just checking in on Homogenic: it was due back 7 days
+  ago. No rush, tell me when.* or, before the date, *Hi Max! Hope you're enjoying Kid A. Tell me when you're done with
+  it.* The object's card joins it with T7.9.

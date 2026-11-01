@@ -5,6 +5,7 @@ import Foundation
 import SQLiteData
 import TegolaClients
 import TegolaModel
+import TegolaStorage
 import Testing
 
 @testable import ShelfFeature
@@ -80,6 +81,40 @@ struct ShelfFeatureTests {
     let moved = try #require(log.replacements.last?.first { $0.id.contains(due.description) })
     let day = Calendar.testUTC.dateComponents([.year, .month, .day], from: moved.at)
     #expect([day.year, day.month, day.day] == [2052, 1, 15])
+  }
+
+  /// F13, T7.8: a loan with a due date brings the offer on its own; accepting schedules its reminder, and a return
+  /// takes it away the next time the shelf appears.
+  @Test func aLoanWithADateGetsOneReminder() async throws {
+    @Dependency(\.shelf) var shelf
+    @Dependency(\.defaultDatabase) var database
+    let before = try await database.read { db in try ShelfRequest().fetch(db).shelf }
+    let homogenic = try #require(before.objects.values.first { $0.title == "Homogenic" }?.id)
+    let due = testNow + 14 * 86_400
+    _ = try shelf.perform(.lend(homogenic, to: .new(name: "Dara"), due: due, note: ""))
+    let log = NotificationLog()
+    let store = TestStore(initialState: ShelfFeature.State()) {
+      ShelfFeature()
+    } withDependencies: {
+      $0.notifications = .recording(into: log)
+    }
+    try await store.state.$snapshot.load()
+    #expect(store.state.offersNotifications)
+    await store.send(.view(.notificationsAccepted))
+    await store.finish()
+    let reminder = try #require(log.loanReplacements.first?.first)
+    #expect(reminder.id.hasPrefix(NotificationsClient.loanPrefix))
+    #expect(reminder.title == "Homogenic")
+    #expect(reminder.body == "Due back from Dara today.")
+    #expect(reminder.at == due)
+
+    let lent = try await database.read { db in try ShelfRequest().fetch(db).shelf }
+    let loan = try #require(lent.openLoan(on: homogenic))
+    _ = try shelf.perform(.returnLoan(loan.id, condition: nil))
+    try await store.state.$snapshot.load()
+    await store.send(.view(.onAppear)) { $0.now = testNow }
+    await store.finish()
+    #expect(log.loanReplacements.last == [])
   }
 
   @Test func decliningPutsTheOfferAwayAndSchedulesNothing() async throws {

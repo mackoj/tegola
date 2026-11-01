@@ -1,4 +1,5 @@
 #if canImport(SwiftUI)
+  import ActivityFeature
   import AddByHandFeature
   import CaptureFeature
   import CollectionFeature
@@ -39,6 +40,8 @@
             tab.action.item
           }
           .accessibilityIdentifier("tab.\(tab.rawValue)")
+          // F13: Activity is the only tab with a badge, the overdue loans, and it's gone when none is.
+          .badge(tab == .activity ? store.activity.activity.badge ?? 0 : 0)
         }
       }
       .tint(theme[.accentAction].color)
@@ -70,7 +73,8 @@
       case .find: findStack
       // Scan never shows a screen of its own: choosing it presents the camera.
       case .scan: Color.clear
-      case .activity, .you: placeholder(tab)
+      case .activity: activityStack
+      case .you: placeholder(tab)
       }
     }
 
@@ -103,6 +107,25 @@
     var findStack: some View {
       NavigationStack(path: $store.scope(state: \.findPath, action: \.findPath)) {
         FindView(store: store.scope(state: \.find, action: \.find))
+          #if os(iOS)
+            .toolbar(.hidden, for: .navigationBar)
+          #endif
+      } destination: { path in
+        switch path.case {
+        case .collection(let store): CollectionView(store: store)
+        case .object(let store): ObjectView(store: store)
+        case .place(let store): PlaceView(store: store)
+        case .places(let store): PlacesView(store: store)
+        case .signals(let store): SignalsView(store: store)
+        case .review(let store): ReviewView(store: store)
+        case .person(let store): PersonView(store: store)
+        }
+      }
+    }
+
+    var activityStack: some View {
+      NavigationStack(path: $store.scope(state: \.activityPath, action: \.activityPath)) {
+        ActivityView(store: store.scope(state: \.activity, action: \.activity))
           #if os(iOS)
             .toolbar(.hidden, for: .navigationBar)
           #endif

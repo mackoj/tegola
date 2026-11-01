@@ -100,8 +100,8 @@ Plan: `tasks/plan.md`, M7.
 - [x] T7.4 Share cards (never what was paid)
 - [x] T7.5 Lend and Return sheets
 - [x] T7.6 The Person screen
-- [ ] T7.7 Activity
-- [ ] T7.8 Reminders and Nudge
+- [x] T7.7 Activity
+- [x] T7.8 Reminders and Nudge
 - [ ] T7.9 Share
 - [ ] T7.10 Journey 3, docs, review
 

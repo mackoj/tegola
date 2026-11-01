@@ -1,3 +1,4 @@
+import ActivityFeature
 import AddByHandFeature
 import CaptureFeature
 import CollectionFeature
@@ -9,6 +10,8 @@ import ObjectFeature
 import PersonFeature
 import ShelfFeature
 import SignalsFeature
+import Foundation
+import TegolaClients
 import TegolaModel
 import TegolaStorage
 import Testing
@@ -62,6 +65,23 @@ struct AppFeatureTests {
     await store.receive(\.shelfPath[id: 0].person.delegate.open, .object(kidA)) {
       $0.shelfPath[id: 1] = .object(ObjectFeature.State(id: kidA))
     }
+  }
+
+  /// F13: the Today strip's *N overdue* opens Activity, whose rows push onto its own stack.
+  @Test func overdueOpensActivityAndItsRowsPushThere() async throws {
+    @Dependency(\.shelf) var shelf
+    let homogenic = try #require(
+      AppFeature.State().shelf.snapshot.shelf.objects.values.first { $0.title == "Homogenic" }?.id
+    )
+    _ = try shelf.perform(.lend(homogenic, to: .new(name: "Dara"), due: testNow - 86_400, note: ""))
+    let store = TestStore(initialState: AppFeature.State()) { AppFeature() }
+    await store.send(\.shelf.view, .overdueTapped)
+    await store.receive(\.shelf.delegate.showActivity) { $0.selectedTab = .activity }
+    await store.send(\.activity.view, .objectTapped(homogenic))
+    await store.receive(\.activity.delegate.open, .object(homogenic)) {
+      $0.activityPath[id: 0] = .object(ObjectFeature.State(id: homogenic))
+    }
+    await store.send(.view(.tabTapped(.activity))) { $0.activityPath.removeAll() }
   }
 
   @Test func theSignalFeedIsPushedAndOpensAnObject() async throws {
