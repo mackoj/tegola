@@ -45,6 +45,21 @@ Plan: `tasks/plan.md`, M3. Report: `docs/milestones/M3.md`.
 - [x] T3.11 Places
 - [x] T3.12 Journeys, seed, docs, review
 
+## M4 · signals (branch `m4-signals`)
+
+Plan: `tasks/plan.md`, M4. Report: `docs/milestones/M4.md`.
+
+- [ ] T4.1 Clock functions: `Signal`, one function per library clock, the save-battery tests
+- [ ] T4.2 Type files and the library: `discRot-pending`, `codeExpires` and `codeExpiry`, `unfinished`
+- [ ] T4.3 Status derivation, and real statuses for `ShelfSummary` and `TodayStrip`
+- [ ] T4.4 Dismissals: command, event, plan rules, projection
+- [ ] T4.5 The object's status slot: reason, Estimate, Dismiss, Log a battery swap
+- [ ] T4.6 The signal feed from the Today strip
+- [ ] T4.7 Status filters in Collection and Find
+- [ ] T4.8 Notifications: `NotificationsClient`, the offer, scheduling
+- [ ] T4.9 Seed toward 120 objects, and the 200-object signal test
+- [ ] T4.10 Journey 5, docs, review
+
 ## Open follow-ups
 
 - Generate App Attest's `appattest-environment` entitlement with M6, when the lookup client first runs on a device.
