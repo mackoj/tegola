@@ -5,12 +5,10 @@ it short and current.
 
 **Updated:** 2026-11-01, after M6 finished on `m6-capture-lookup-import`.
 
-**Resume here: M7 (people), once M5, the contract and M6 are merged.** Three PRs wait, in this order:
-- #15, lookup contract 0.2.0 (D-71);
+**Resume here: M7 (people), once M5 and M6 are merged.** Lookup contract 0.2.0 is merged (PR #15, D-71), and
+tegola-server takes it on. Two PRs wait, in this order:
 - #16, M5 (`docs/milestones/M5.md`);
-- M6, on `m6-capture-lookup-import`, stacked on both (`docs/milestones/M6.md`).
-
-tegola-server takes contract 0.2.0 on its own.
+- M6, on `m6-capture-lookup-import`, stacked on #16 (`docs/milestones/M6.md`).
 
 ## Where things stand
 
