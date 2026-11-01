@@ -1,11 +1,5 @@
 {
   "sourceLanguage" : "en",
-  "strings" : {
-    "Activity" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Activité" } } } },
-    "Find" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Chercher" } } } },
-    "Scan" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Scanner" } } } },
-    "Shelf" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Étagère" } } } },
-    "You" : { "localizations" : { "fr" : { "stringUnit" : { "state" : "translated", "value" : "Vous" } } } }
-  },
+  "strings" : {},
   "version" : "1.1"
 }

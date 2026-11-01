@@ -47,16 +47,6 @@
         }
       }
     },
-    "Cancel" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Annuler"
-          }
-        }
-      }
-    },
     "Everywhere" : {
       "localizations" : {
         "fr" : {
@@ -123,16 +113,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Renommer"
-          }
-        }
-      }
-    },
-    "Save" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Enregistrer"
           }
         }
       }

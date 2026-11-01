@@ -2,6 +2,7 @@
   public import SwiftUI
   public import TegolaCatalogue
   public import TegolaModel
+  import TegolaDesignSystem
 
   // How the shelf's values read on screen, shared by every feature that shows an object: the object screen, rows,
   // Find's "what matched", the edit form's previews. Words come from this target's catalog; data stays verbatim.
@@ -20,7 +21,7 @@
       case .money(let money): Text(money.amount, format: .currency(code: money.currency.code))
       case .options(let options): Text(verbatim: options.joined(separator: " · "))
       case .entries(let entries): Text("\(entries.count) entries", bundle: .module)
-      case .photo: Text("Photo", bundle: .module)
+      case .photo: TegolaAction.photo.label
       }
     }
   }

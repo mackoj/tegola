@@ -31,16 +31,6 @@
         }
       }
     },
-    "Edit" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Modifier"
-          }
-        }
-      }
-    },
     "Grail" : {
       "localizations" : {
         "fr" : {
@@ -107,16 +97,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "À compléter"
-          }
-        }
-      }
-    },
-    "Photo" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Photo"
           }
         }
       }

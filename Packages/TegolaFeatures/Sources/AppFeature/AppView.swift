@@ -17,8 +17,8 @@
   import TegolaModel
   import TegolaStorage
 
-  /// The root view: each tab's stack above the tab bar (board 29, state 5). Find, Activity and You get their screens
-  /// later in M3 and in M7–M8; until then they show their title.
+  /// The root view: the system tab bar, one stack per tab (D-77). Activity and You get their screens in M7 and M8;
+  /// until then they show their title. Scan presents the camera rather than selecting (PD-117).
   @ViewAction(for: AppFeature.self)
   public struct AppView: View {
     @Bindable public var store: StoreOf<AppFeature>
@@ -29,19 +29,18 @@
     }
 
     public var body: some View {
-      VStack(spacing: 0) {
-        Group {
-          switch store.selectedTab {
-          case .shelf: shelfStack
-          case .find: findStack
-          default: placeholder(store.selectedTab)
+      // Choosing Scan sends `tabTapped(.scan)`, which presents the camera and leaves the selection where it was.
+      TabView(selection: $store.selectedTab.sending(\.view.tabTapped)) {
+        ForEach(store.tabs.order, id: \.self) { tab in
+          Tab(value: tab) {
+            screen(tab)
+          } label: {
+            tab.action.item
           }
+          .accessibilityIdentifier("tab.\(tab.rawValue)")
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        tabBar
       }
-      .background(theme[.surface].color)
-      .ignoresSafeArea(.container, edges: .bottom)
+      .tint(theme[.accentAction].color)
       .sheet(item: $store.scope(state: \.addByHand, action: \.addByHand)) { add in
         AddByHandView(store: add)
       }
@@ -61,6 +60,17 @@
         }
       #endif
       .onAppear { send(.onAppear) }
+    }
+
+    @ViewBuilder
+    func screen(_ tab: AppTab) -> some View {
+      switch tab {
+      case .shelf: shelfStack
+      case .find: findStack
+      // Scan never shows a screen of its own: choosing it presents the camera.
+      case .scan: Color.clear
+      case .activity, .you: placeholder(tab)
+      }
     }
 
     var shelfStack: some View {
@@ -106,36 +116,24 @@
     }
 
     func placeholder(_ tab: AppTab) -> some View {
-      Text(tab.title)
+      tab.action.label
         .tegolaTextStyle(TegolaType.displayTitle)
         .foregroundStyle(.text)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .padding(.horizontal, TegolaSpace.gutter)
         .padding(.top, TegolaSpace.l)
     }
-
-    var tabBar: some View {
-      let order = store.tabs.order.filter { !$0.presents }
-      let items = order.map { TabBarItem(id: $0.rawValue, label: Text($0.title)) }
-      return TegolaTabBar(
-        leading: Array(items.prefix(2)),
-        trailing: Array(items.dropFirst(2)),
-        selected: store.selectedTab.rawValue,
-        scanLabel: Text(AppTab.scan.title),
-        select: { id in if let tab = AppTab(rawValue: id) { send(.tabTapped(tab)) } },
-        scan: { send(.tabTapped(.scan)) }
-      )
-    }
   }
 
   extension AppTab {
-    var title: String {
+    /// The shared action a tab is: its words and symbol (D-77).
+    var action: TegolaAction {
       switch self {
-      case .shelf: String(localized: "Shelf", bundle: .module)
-      case .find: String(localized: "Find", bundle: .module)
-      case .scan: String(localized: "Scan", bundle: .module)
-      case .activity: String(localized: "Activity", bundle: .module)
-      case .you: String(localized: "You", bundle: .module)
+      case .shelf: .shelf
+      case .find: .find
+      case .scan: .scan
+      case .activity: .activity
+      case .you: .you
       }
     }
   }

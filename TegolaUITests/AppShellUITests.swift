@@ -11,10 +11,16 @@ final class AppShellUITests: XCTestCase {
 
     // An empty shelf opens on the first piece; looking around first leaves it.
     app.buttons["firstPiece.lookAround"].tap()
-    for tab in ["find", "activity", "you", "shelf"] {
-      app.buttons["tab.\(tab)"].tap()
+    for tab in ["Find", "Activity", "You", "Shelf"] {
+      app.tab(tab).tap()
+      XCTAssertTrue(app.tab(tab).isSelected, "\(tab) is selected")
     }
-    app.buttons["tab.scan"].tap()
+    app.tab("Scan").tap()
     XCTAssertTrue(app.buttons["capture.type.music"].waitForExistence(timeout: 2))
   }
+}
+
+extension XCUIApplication {
+  /// A tab in the system tab bar, by its English label (the tests launch in English; D-77).
+  func tab(_ label: String) -> XCUIElement { tabBars.buttons[label] }
 }

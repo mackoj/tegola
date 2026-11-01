@@ -150,9 +150,7 @@
       VStack(spacing: 0) {
         ModalBar(
           Text("Rename", bundle: .module),
-          dismissLabel: Text("Cancel", bundle: .module),
           dismiss: { send(.renameCancelTapped) },
-          saveLabel: Text("Save", bundle: .module),
           canSave: !(store.renameDraft ?? "").trimmingCharacters(in: .whitespaces).isEmpty,
           save: { send(.renameSaveTapped) }
         )

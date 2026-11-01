@@ -106,7 +106,7 @@
           .frame(height: 320)
           .frame(maxWidth: .infinity)
           .clipped()
-          .accessibilityLabel(Text("Photo", bundle: .module))
+          .accessibilityLabel(TegolaAction.photo.label)
       } else {
         TypeTint(gradient: manifest.gradient, mark: manifest.mark, bottomInset: Self.panelOverlap)
           .frame(height: 260)
@@ -265,21 +265,9 @@
     func actions(_ object: ShelfObject) -> some View {
       VStack(spacing: TegolaSpace.m) {
         ButtonPair {
-          Button {
-            send(.editTapped)
-          } label: {
-            Text("Edit", bundle: .module)
-          }
-          .buttonStyle(.tegola(.primary))
-          .accessibilityIdentifier("object.edit")
+          ActionButton(.edit, id: "object.edit") { send(.editTapped) }
         } trailing: {
-          Button {
-            send(.photoTapped)
-          } label: {
-            Text("Photo", bundle: .module)
-          }
-          .buttonStyle(.tegola(.secondary))
-          .accessibilityIdentifier("object.photo")
+          ActionButton(.photo, id: "object.photo") { send(.photoTapped) }
         }
         // A signal's remedy resets its clock: Log a battery swap, Make a backup (F15, D-58).
         ForEach(store.remedies, id: \.self) { remedy in

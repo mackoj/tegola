@@ -41,16 +41,6 @@
         }
       }
     },
-    "Close" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fermer"
-          }
-        }
-      }
-    },
     "Identify?" : {
       "localizations" : {
         "fr" : {
@@ -127,16 +117,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Enregistré · à compléter"
-          }
-        }
-      }
-    },
-    "Scan" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scanner"
           }
         }
       }

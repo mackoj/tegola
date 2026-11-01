@@ -161,6 +161,8 @@ What's already there: `lend`, `returnLoan`, `markBorrowed` and `giveBack` with t
 and `loans` tables (M2), a loan's overdue status and the Today strip's *N overdue* line (M4), and Places (F10, done in
 M3 as T3.11). Boards 17 to 22 are the screens; their "differs from the decision log" notes apply.
 
+Shared verbs (Lend, Mark returned, Give back, Nudge, Share) are `TegolaAction`s and the tab bar is the system's (D-77).
+
 Branch: `m7-people`. T7.1 to T7.4 are model work and build and test on Linux. T7.5 to T7.10 touch the features,
 notifications, the share sheet and the app, so they need the Mac. M7 needs nothing from tegola-server.
 
@@ -172,7 +174,7 @@ notifications, the share sheet and the app, so they need the Mac. M7 needs nothi
 | T7.4 Share cards | `ShareCard` (pure, F14): **the record** has the public facts only; **my copy** adds condition and photos, and an asking price only with money on. What was paid is never on a card, of either kind, with money on or off (a property test over the command generator's shelves). A wishlist shares as a list of wants that reveals no holdings (PD-071) | Linux: `ShareCardTests` |
 | T7.5 Lend and Return | `LendFeature` (board 18): names typed with recent first and **+ New**, **Back by** (2 weeks, 1 month, a date, or none), the optional note, **Hand it over**. `ReturnFeature` (board 20): the three ways back, the note, *What gets written*, **It's home**. Both from the object's actions; **Give back** and **Mark borrowed** for someone else's object | Mac: TestStore; snapshots |
 | T7.6 The Person screen | `PersonFeature` (board 19) on `Route.person`: the header, the two tiles, every loan with its chip, **Lend them something** (the picker preset). It opens from Activity, a loan's history line and the lend sheet's names | Mac: TestStore; snapshots |
-| T7.7 Activity | `ActivityFeature` replaces the placeholder tab (boards 17, 22): *Out now*, *Returned*, *By person*, and the borrowed objects with dashed edges. Each card's footer says due, overdue or out, with **Nudge** or **Mark returned**. The tab's badge is `Activity.badge` and the only badge in the app. The Today strip's *N overdue* line opens it | Mac: TestStore; snapshots; `AppFeatureTests` |
+| T7.7 Activity | `ActivityFeature` replaces the placeholder tab (boards 17, 22): *Out now*, *Returned*, *By person*, and the borrowed objects with dashed edges. Each card's footer says due, overdue or out, with **Nudge** or **Mark returned**. The tab's badge is `Activity.badge` through the system's `.badge`, and the only badge in the app. The Today strip's *N overdue* line opens it | Mac: TestStore; snapshots; `AppFeatureTests` |
 | T7.8 Reminders and Nudge | `NotificationsClient` gets `replaceLoanReminders`, with a `loan.` prefix that leaves the clock notifications alone. It runs on the same occasions as the clocks' (D-61's offer covers both). **Nudge** opens the share sheet with T7.3's line and the object's card | Mac: TestStore records schedule calls |
 | T7.9 Share | `ShareFeature` from the object: **Share the record** and **Share my copy**. `ShareCardClient` renders the card view with `ImageRenderer` and opens the share sheet. The wishlist's card list | Mac: TestStore; snapshots of both cards, money on and off |
 | T7.10 Journey 3, docs, review | *Lend at the door* as a UI test, with the clock moved by a launch argument. DECISIONS, the M7 report, HANDOFF, a separate review agent | Mac: `scripts/test.sh app`; read-through |

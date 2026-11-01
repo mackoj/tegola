@@ -94,7 +94,7 @@ final class JourneyUITests: XCTestCase {
     XCTAssertTrue(app.staticTexts["Serviced"].firstMatch.waitForExistence(timeout: 5))
 
     // Back to the shelf: tapping the tab you're on returns to its root.
-    app.buttons["tab.shelf"].tap()
+    app.tab("Shelf").tap()
     XCTAssertTrue(app.staticTexts["2 to tidy"].waitForExistence(timeout: 5))
     XCTAssertFalse(app.buttons["today.needAttention"].firstMatch.exists)
   }
@@ -129,7 +129,7 @@ final class JourneyUITests: XCTestCase {
     let app = XCUIApplication()
     app.launchArguments = ["--reset", "--seed", "-AppleLanguages", "(en)", "-AppleLocale", "en_GB"]
     app.launch()
-    app.buttons["tab.scan"].tap()
+    app.tab("Scan").tap()
     app.buttons["capture.type.video-game"].tap()
     let shutter = app.buttons["capture.shutter"]
     XCTAssertTrue(shutter.waitForExistence(timeout: 5) && shutter.isHittable)
@@ -148,13 +148,13 @@ final class JourneyUITests: XCTestCase {
   func testThirtyObjectsInOneSitting() {
     let app = launch()
     app.buttons["firstPiece.lookAround"].tap()
-    app.buttons["tab.scan"].tap()
+    app.tab("Scan").tap()
     app.buttons["capture.typeIt"].tap()
     XCTAssertTrue(app.buttons["add.type.video-game"].waitForExistence(timeout: 5))
     app.buttons["add.type.video-game"].tap()
     for n in 1...15 { addTitle("Game \(n)", andAnother: true, in: app) }
     app.buttons["modal.dismiss"].tap()
-    app.buttons["tab.scan"].tap()
+    app.tab("Scan").tap()
     app.buttons["capture.typeIt"].tap()
     XCTAssertTrue(app.buttons["add.type.thing"].waitForExistence(timeout: 5))
     app.buttons["add.type.thing"].tap()

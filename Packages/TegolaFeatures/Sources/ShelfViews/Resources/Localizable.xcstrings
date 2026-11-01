@@ -571,16 +571,6 @@
         }
       }
     },
-    "Photo" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Photo"
-          }
-        }
-      }
-    },
     "Photo added" : {
       "localizations" : {
         "fr" : {

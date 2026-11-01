@@ -23,7 +23,6 @@
       VStack(spacing: 0) {
         ModalBar(
           Text("Type it", bundle: .module),
-          dismissLabel: Text("Close", bundle: .module),
           dismiss: { send(.closeTapped) }
         )
         ScrollView {
@@ -125,14 +124,8 @@
         .disabled(!store.canSave)
         .accessibilityIdentifier("add.saveAnother")
       } trailing: {
-        Button {
-          send(.saveTapped(addAnother: false))
-        } label: {
-          Text("Save", bundle: .module)
-        }
-        .buttonStyle(.tegola(.confirm))
-        .disabled(!store.canSave)
-        .accessibilityIdentifier("add.save")
+        ActionButton(.save, id: "add.save") { send(.saveTapped(addAnother: false)) }
+          .disabled(!store.canSave)
       }
     }
 

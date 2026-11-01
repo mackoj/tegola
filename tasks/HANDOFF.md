@@ -101,6 +101,9 @@ scripts/ci.sh                          # the full gate → build/ci-summary.md (
   - Navigation: children send `.delegate(.open(Route))`, and only `AppFeature.push` pushes, onto Shelf's or Find's
     stack (`AppPath`). Each feature is its own target in `TegolaFeatures`. Shared value views are in `ShelfViews`,
     and test helpers in `FeatureTestSupport` (`seededShelf()`).
+- **Shared actions** (D-77): a tab or a verb more than one screen says (Close, Cancel, Save, Edit, Lend, Share…) is a
+  `TegolaAction` in the design system. Use `ActionButton(.lend, id:)` or `.label`; add a case there rather than a
+  new string in a feature. The tab bar is the system's `TabView`.
 - **Strings:** use `Text("…", bundle: .module)` in packages; the guard test refuses un-bundled literals.
   - Don't put quotes inside an interpolation in a key; hoist the value into a local first.
   - After UI text changes, run `scripts/sync-strings.sh`, then add French for every new key and drop `stale` entries.

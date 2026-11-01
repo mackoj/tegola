@@ -71,16 +71,6 @@
         }
       }
     },
-    "Close" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fermer"
-          }
-        }
-      }
-    },
     "Every object needs a title." : {
       "localizations" : {
         "fr" : {
@@ -117,16 +107,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Une de ces valeurs ne correspond pas à son champ."
-          }
-        }
-      }
-    },
-    "Save" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Enregistrer"
           }
         }
       }

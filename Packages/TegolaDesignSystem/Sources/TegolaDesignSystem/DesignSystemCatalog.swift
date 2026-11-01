@@ -7,7 +7,7 @@
   /// verbatim.
   public enum DesignSystemCatalog {
     public enum Section: String, CaseIterable, Sendable {
-      case titles, buttons, pills, chips, surfaces, tiles, rows, empty, bars, tabBar
+      case titles, buttons, actions, pills, chips, surfaces, tiles, rows, empty, bars
     }
 
     @MainActor @ViewBuilder
@@ -16,6 +16,7 @@
         switch section {
         case .titles: titles
         case .buttons: buttons
+        case .actions: actions
         case .pills: pills
         case .chips: chips
         case .surfaces: surfaces
@@ -23,10 +24,9 @@
         case .rows: rows
         case .empty: empty
         case .bars: bars
-        case .tabBar: tabBar
         }
       }
-      .padding(section == .bars || section == .tabBar ? 0 : TegolaSpace.gutter)
+      .padding(section == .bars ? 0 : TegolaSpace.gutter)
       .frame(width: 393, alignment: .topLeading)
       .background(TegolaTheme.board[.surface].color)
     }
@@ -198,20 +198,24 @@
             t("Share")
           }.buttonStyle(.tegola(.secondary)).fixedSize()
         }
-        ModalBar(t("Lend sheet"), dismissLabel: t("Close"), dismiss: {}, saveLabel: t("Save"), save: {})
+        ModalBar(t("Lend sheet"), dismiss: {})
+        ModalBar(t("Edit"), dismiss: {}, save: {})
       }
     }
 
-    @MainActor static var tabBar: some View {
-      TegolaTabBar(
-        leading: [.init(id: "shelf", label: t("Shelf")), .init(id: "find", label: t("Find"))],
-        trailing: [.init(id: "activity", label: t("Activity")), .init(id: "you", label: t("You"))],
-        selected: "shelf",
-        scanLabel: t("Scan"),
-        select: { _ in },
-        scan: {}
-      )
-      .padding(.top, TegolaSpace.l)
+    /// Every shared action (D-77): its item (symbol and words, as a tab shows it) and its button in its usual look.
+    @MainActor static var actions: some View {
+      VStack(alignment: .leading, spacing: TegolaSpace.s) {
+        ForEach(TegolaAction.allCases, id: \.self) { action in
+          HStack(spacing: TegolaSpace.m) {
+            action.item
+              .tegolaTextStyle(TegolaType.label)
+              .foregroundStyle(TegolaRole.text)
+              .frame(width: 150, alignment: .leading)
+            ActionButton(action, id: "catalog.\(action.rawValue)") {}
+          }
+        }
+      }
     }
   }
 

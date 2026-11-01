@@ -756,3 +756,26 @@ back?*, where the model had one free-text condition.
   collector's words, trimmed; blank words are none. Both live on the loan's JSON and on the `returned` event, where
   `cameBack` is optional, so events written before M7 decode unchanged. The history reads *Back from Dara, closed by
   you · damaged · Sleeve torn*: "closed by you" is how it says one-sided (PD-160).
+
+### D-77 · The system tab bar, and one place for shared actions
+
+> The owner, 2026-11-01: "change the tabbar to the native iOS one; centralize all the button and tabbar action in one
+> place to prevent duplicates in the design system."
+
+**Replaces.** `docs/design/BOARDS.md`'s PD-117 note ("keep the board's geometry"): board 01's drawn bar with the
+raised yellow Scan button is gone. PD-117's five tabs, their order rules (`TabBarLayout`) and Scan presenting rather
+than selecting all stay.
+
+**Decision.**
+- **The tab bar is SwiftUI's `TabView`** with one `Tab` per `AppTab`, in the collector's order, tinted with the
+  accent. Choosing Scan sends `tabTapped(.scan)`, which presents the camera and leaves the selection where it was.
+  The bar, its glass and its safe area are the system's. `TegolaTabBar`, `TabBarItem` and the three tab-bar metrics
+  are removed. Activity's badge (T7.7) will be the system's `.badge`.
+- **`TegolaAction`** (`TegolaDesignSystem/Actions.swift`) defines every tab and every verb more than one screen uses,
+  once: its words (in the design system's catalog, so translated once), its SF Symbol and its usual look. The tabs'
+  items, `ModalBar`'s Close, Cancel and Save, and the shared buttons all read it. **`ActionButton(.save, id:)`** is the
+  button for one, and a screen may ask for another look. A verb only one screen says stays with that screen.
+- `ModalBar` takes no labels: it says Close, or Cancel when it has a Save.
+- UI tests find tabs by their label in the system tab bar (`app.tab("Find")`), since a `Tab`'s identifier doesn't
+  reach the system's button.
+- The catalog's *tabBar* section is now *actions*: every action's item and button.

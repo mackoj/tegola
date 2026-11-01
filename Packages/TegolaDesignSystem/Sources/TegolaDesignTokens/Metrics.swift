@@ -195,9 +195,6 @@ public enum TegolaShadow {
 
 public enum TegolaMetrics {
   public static let minimumHitTarget: Double = 44
-  public static let tabBarHeight: Double = 88
-  public static let scanButtonDiameter: Double = 40
-  public static let scanButtonRaise: Double = 9
   public static let sheetGrabber: (width: Double, height: Double) = (46, 5)
   public static let halftoneSpacing: Double = 7
   public static let halftoneDot: Double = 1

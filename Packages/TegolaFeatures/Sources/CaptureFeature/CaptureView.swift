@@ -27,7 +27,7 @@
 
     public var body: some View {
       VStack(spacing: 0) {
-        ModalBar(Text("Scan", bundle: .module), dismissLabel: Text("Close", bundle: .module)) { send(.closeTapped) }
+        ModalBar(TegolaAction.scan.label) { send(.closeTapped) }
         ScrollView {
           VStack(alignment: .leading, spacing: TegolaSpace.l) {
             addTo
