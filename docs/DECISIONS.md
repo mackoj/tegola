@@ -464,8 +464,34 @@ invent: "Mario 64 (boite endommagé + cartouche)" gets *manual: missing*, which 
 - **Damage** ("endommagé", "abîmé", "ko", "HS") grades the part's ladder axis at the scale's worst step (Poor), and
   **"manque <part>"** grades it Missing. A missing thing that isn't a part ("manque cd audio") is noticed as imperfect
   and stays in the note.
-- **"dédicace JDG"** is the item level's Signed, by JDG. **"doublon"** is a second copy, its own object, noticed as
-  a duplicate. **"/"** in the title is a bundle (`contains`); "+" in a title isn't ("Tony Hawks 1+2").
+- **"dédicace JDG"** is the item level's Signed, by JDG. **"doublon"** marks the cell itself as the second copy:
+  Jeux has "Fantasy zone (cartouche)" and "Fantasy zone (cartouche) doublon", two objects, one noticed as the
+  duplicate (49 §03), so a doublon never makes an object of its own. **"/"** in the title is a bundle (`contains`);
+  "+" in a title isn't ("Tony Hawks 1+2").
 - **"digital"** is noticed and asked about in the exceptions queue (keep, wishlist, leave out; 43 Q4), and stays in
   the note, since no field says it.
 - **Anything else** ("platinum", "four players", "cartouche x2") goes into the note, as written, joined by " + ".
+
+### D-62 · The two layouts a spreadsheet comes in
+
+> PLAN F9: "the layout (a column per platform, no title header) maps headers to subtypes". PD-048: "Only "name" is
+> required, and any column order, separator, encoding or date format is accepted."
+
+**Decision.** `SpreadsheetImporter` reads each sheet as one of two layouts.
+
+- **A grid** is a sheet where at least two headers each name exactly one subtype of a v1 type, by its key, label or
+  `recognise` words, whole: "Game Boy advence" isn't Game Boy. Every non-empty cell is an object of that type. A
+  header that names a subtype becomes it, and the sentence shows it as a dashed chip when the file spells it
+  differently (Ps1 → PlayStation). Any other header is written, as the file spells it, into the field every subtype
+  presets (video games' platform), and names the row's shelf. Renaming "Game Boy advence" to GBA is matching's job.
+- **A list** is anything else: the first row is headers, mapped with clctn's spine aliases (English and French) and
+  the type's field keys and labels; a text or choice field takes a value only if it fits. The type is the one the
+  file's name and headers name (`Catalogue.guess`), if it ships, or a Thing. Without a title header the first column
+  is the name. A column nothing maps, or a value that doesn't fit, goes into the note as "Header: value", so nothing
+  is dropped. A year is read only as four digits; `acquired` is never read from a list until the mapper assigns it
+  (D-14).
+- **Sheet tabs.** A tab named like a wishlist ("Recherché", "Wanted", "Envies") is wanted objects; their grades stay
+  in the note, since a wanted object has none. A sold tab ("Vendu") needs a let-go row in `ImportBatch`, which T6.10
+  adds with the screens; until then it imports as owned.
+- **Every row is one `plan` takes.** `RowBuilder` dry-runs each draft; one it would refuse falls back to its cell,
+  as written, as the title. Jeux has none.

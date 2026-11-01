@@ -9,7 +9,7 @@ import TegolaModel
 /// - **Parts** ("cartouche + manuel") fill the type's What's inside slots, and a cart or disc its media.
 /// - **Damage** ("boite endommagé", "cartouche ko") grades that part at the scale's worst step; **missing**
 ///   ("manque manuel") grades it Missing.
-/// - "dédicace JDG" is signed by JDG; "doublon" is a second copy; "complet" is every part.
+/// - "dédicace JDG" is signed by JDG; "doublon" says this cell is a second copy; "complet" is every part.
 /// - "/" in the title is a bundle of works.
 ///
 /// Everything it doesn't read stays in the note as written, and so does "digital", which no field holds. The title
@@ -29,7 +29,6 @@ public struct NoteReader: CellExtracting {
     // A trailing "doublon", outside the brackets.
     if let range = text.range(of: #"\s+doublon\s*$"#, options: [.regularExpression, .caseInsensitive]) {
       text.removeSubrange(range)
-      result.copies = 2
       result.noticed.insert(.duplicate)
     }
     var groups: [String] = []
@@ -120,7 +119,6 @@ struct Parts {
         return false  // read, but no field holds it: the note keeps the word
       }
       if first == "doublon" {
-        result.copies = 2
         result.noticed.insert(.duplicate)
         return true
       }
