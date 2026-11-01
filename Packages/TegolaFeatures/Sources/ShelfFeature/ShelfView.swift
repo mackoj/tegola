@@ -70,7 +70,7 @@
         )
       }
       if !summary.today.lines.isEmpty {
-        TodayStripView(lines: summary.today.lines)
+        TodayStripView(lines: summary.today.lines) { send(.needAttentionTapped) }
       }
       if summary.showsPlaces {
         Button {
@@ -131,12 +131,26 @@
   /// The Today strip: one line per non-empty count, never a zero (F3, PD-140).
   struct TodayStripView: View {
     let lines: [TodayStrip.Line]
+    /// "Need attention" opens the signal feed (journey 5).
+    let openSignals: () -> Void
 
     var body: some View {
       VStack(alignment: .leading, spacing: TegolaSpace.s) {
         Text("Today", bundle: .module).tegolaTextStyle(TegolaType.meta).foregroundStyle(TegolaRole.textMeta)
         ForEach(lines, id: \.self) { line in
-          text(line).tegolaTextStyle(TegolaType.heading).foregroundStyle(TegolaRole.text)
+          if case .needAttention = line {
+            Button(action: openSignals) {
+              HStack {
+                text(line).tegolaTextStyle(TegolaType.heading).foregroundStyle(TegolaRole.text)
+                Spacer()
+                Text(verbatim: "→").tegolaTextStyle(TegolaType.heading).foregroundStyle(TegolaRole.textMuted)
+              }
+            }
+            .buttonStyle(.plain)
+            .accessibilityIdentifier("today.needAttention")
+          } else {
+            text(line).tegolaTextStyle(TegolaType.heading).foregroundStyle(TegolaRole.text)
+          }
         }
       }
       .padding(TegolaSpace.l)

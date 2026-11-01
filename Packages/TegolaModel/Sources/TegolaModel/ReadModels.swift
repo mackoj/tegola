@@ -8,6 +8,8 @@ public enum Route: Hashable, Sendable {
   case object(ObjectID)
   case places
   case place(PlaceID)
+  /// The signal feed: what needs attention (F15).
+  case signals
   case wishlist
 }
 

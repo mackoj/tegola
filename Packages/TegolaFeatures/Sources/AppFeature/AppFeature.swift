@@ -5,6 +5,7 @@ public import FindFeature
 public import ObjectFeature
 public import PlacesFeature
 public import ShelfFeature
+public import SignalsFeature
 public import TegolaModel
 
 /// Every screen a tab's stack can push (PLAN §5). One enum for every tab, defined here: only the root pushes.
@@ -14,6 +15,7 @@ public enum AppPath {
   case object(ObjectFeature)
   case place(PlaceFeature)
   case places(PlacesFeature)
+  case signals(SignalsFeature)
 }
 
 extension AppPath.State: Equatable {}
@@ -72,7 +74,8 @@ public struct AppFeature {
         return .none
       case .findPath(.element(_, .collection(.delegate(.open(let route))))),
         .findPath(.element(_, .places(.delegate(.open(let route))))),
-        .findPath(.element(_, .place(.delegate(.open(let route))))):
+        .findPath(.element(_, .place(.delegate(.open(let route))))),
+        .findPath(.element(_, .signals(.delegate(.open(let route))))):
         Self.push(route, onto: &state.findPath)
         return .none
       case .findPath:
@@ -81,7 +84,8 @@ public struct AppFeature {
         return .none
       case .shelfPath(.element(_, .collection(.delegate(.open(let route))))),
         .shelfPath(.element(_, .places(.delegate(.open(let route))))),
-        .shelfPath(.element(_, .place(.delegate(.open(let route))))):
+        .shelfPath(.element(_, .place(.delegate(.open(let route))))),
+        .shelfPath(.element(_, .signals(.delegate(.open(let route))))):
         Self.push(route, onto: &state.shelfPath)
         return .none
       case .shelfPath:
@@ -116,6 +120,8 @@ public struct AppFeature {
       path.append(.places(PlacesFeature.State()))
     case .place(let id):
       path.append(.place(PlaceFeature.State(id: id)))
+    case .signals:
+      path.append(.signals(SignalsFeature.State()))
     case .wishlist:
       break
     }

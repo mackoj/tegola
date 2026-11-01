@@ -1,9 +1,9 @@
 public import ComposableArchitecture
 public import Foundation
 public import SQLiteData
+import TegolaClients
 public import TegolaModel
 public import TegolaStorage
-import TegolaClients
 
 /// The Shelf home (F3, board 01): the count, the Today strip, the collections as tiles, the wishlist, and the empty
 /// shelf (board 02) before the first object. It reads the shelf through one query and asks for screens by route.
@@ -53,6 +53,7 @@ public struct ShelfFeature {
 
     public enum View: Equatable {
       case collectionTapped(CollectionID)
+      case needAttentionTapped
       case onAppear
       case placesTapped
       case typeItTapped
@@ -70,6 +71,8 @@ public struct ShelfFeature {
         return .none
       case .view(.collectionTapped(let id)):
         return .send(.delegate(.open(.collection(id))))
+      case .view(.needAttentionTapped):
+        return .send(.delegate(.open(.signals)))
       case .view(.onAppear):
         state.now = now
         return .none

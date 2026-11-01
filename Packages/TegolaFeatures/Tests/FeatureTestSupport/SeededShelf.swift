@@ -3,7 +3,7 @@ public import Foundation
 import SQLiteData
 import TegolaCatalogue
 import TegolaClients
-import TegolaModel
+public import TegolaModel
 import TegolaStorage
 
 extension Calendar {
@@ -31,4 +31,20 @@ extension DependencyValues {
     settings = SettingsClient { key, value in try store.set(key, to: value) }
     photoStore = .inMemory()
   }
+}
+
+/// Adds a Game Boy cartridge from 1994 to the seed's games: its save battery is due at `testNow` (F15, journey 5).
+public func dueCartridge(_ title: String = "Link's Awakening") throws -> ObjectID {
+  @Dependency(\.shelf) var shelf
+  @Dependency(\.defaultDatabase) var database
+  let draft = ObjectDraft(
+    type: "video-game",
+    subtype: "game-boy",
+    values: [.title: .text(title), .year: .year(1994), .field("region"): .text("PAL")]
+  )
+  let games = try database.read { db in
+    try ShelfRequest().fetch(db).shelf.collections.values.first { $0.typeID == "video-game" }?.id
+  }
+  let choice = games.map(CollectionChoice.existing) ?? .new(name: "The Library")
+  return try shelf.perform(.add(draft, to: choice, origin: .typed)).createdObjects[0]
 }

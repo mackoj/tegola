@@ -2,6 +2,7 @@ import ComposableArchitecture
 import DependenciesTestSupport
 import FeatureTestSupport
 import Foundation
+import SQLiteData
 import TegolaModel
 import Testing
 
@@ -28,6 +29,17 @@ struct ShelfFeatureTests {
     let id = try #require(store.state.summary.collections.first?.id)
     await store.send(.view(.collectionTapped(id)))
     await store.receive(\.delegate.open, Route.collection(id))
+  }
+
+  /// Journey 5's start: a due battery is one line in the Today strip, and it opens the signal feed.
+  @Test func aDueBatteryNeedsAttentionAndTheLineOpensTheFeed() async throws {
+    _ = try dueCartridge()
+    let store = TestStore(initialState: ShelfFeature.State()) { ShelfFeature() }
+    await store.send(.view(.onAppear)) { $0.now = testNow }
+    try await store.state.$snapshot.load()
+    #expect(store.state.summary.today.lines == [.toTidy(2), .needAttention(1)])
+    await store.send(.view(.needAttentionTapped))
+    await store.receive(\.delegate.open, Route.signals)
   }
 
   @Test func typeItAsksForTheAddSheet() async {

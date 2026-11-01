@@ -4,6 +4,7 @@
   import FindFeature
   import ObjectFeature
   import PlacesFeature
+  import SignalsFeature
   public import ComposableArchitecture
   import ShelfFeature
   public import SwiftUI
@@ -58,6 +59,8 @@
           PlaceView(store: store)
         case .places(let store):
           PlacesView(store: store)
+        case .signals(let store):
+          SignalsView(store: store)
         }
       }
     }
@@ -74,6 +77,7 @@
         case .object(let store): ObjectView(store: store)
         case .place(let store): PlaceView(store: store)
         case .places(let store): PlacesView(store: store)
+        case .signals(let store): SignalsView(store: store)
         }
       }
     }

@@ -18,20 +18,6 @@ func seededObject(_ title: String) throws -> ObjectID {
   return try #require(shelf.objects.values.first { $0.title == title }?.id)
 }
 
-/// A Game Boy cartridge from 1994: its battery is due at `testNow` (F15).
-func dueCartridge() throws -> ObjectID {
-  @Dependency(\.shelf) var shelf
-  let draft = ObjectDraft(
-    type: "video-game",
-    subtype: "game-boy",
-    values: [.title: .text("Link's Awakening"), .year: .year(1994), .field("region"): .text("PAL")]
-  )
-  let library = try seededObject("Radiant Silvergun")
-  @Dependency(\.defaultDatabase) var database
-  let collection = try database.read { db in try ShelfRequest().fetch(db).shelf.objects[library]!.collectionID }
-  return try #require(try shelf.perform(.add(draft, to: .existing(collection), origin: .typed)).createdObjects.first)
-}
-
 @MainActor
 @Suite(.dependencies { try $0.seededShelf() })
 struct ObjectFeatureTests {
