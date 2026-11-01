@@ -11,9 +11,13 @@ modules (wishlist, grail, Might let go, Let go and the archive, saved views; set
 editor, language, nudges, export, the inventory document, analytics, the debug screen). The wishlist's share card
 (`WishlistCard`) is waiting for M8's wishlist screen.
 
+**Owner, open:** D-76, who pays for paid lookup sources (a subscription, type packs, a free-tier cap) and the
+server's per-install pseudonym for cost per collector. It's tegola-server's D-27 and M5 on the server side; nothing
+changes in the app until the owner decides.
+
 ## Where things stand
 
-- **Spec:** approved (`docs/PLAN.md`, answers in §10). Decisions: D-1 to D-70.
+- **Spec:** approved (`docs/PLAN.md`, answers in §10). Decisions: D-1 to D-80.
 - **M1 to M6:** merged (PRs #5, #8, #9, #13, #14, #16, #17; `docs/milestones/M1.md` to `M6.md`).
 - **M7 (people):** done (PR #18, `docs/milestones/M7.md`, D-77 to D-80). Lend and Return sheets, the Person page,
   the Activity tab with the only badge, loan reminders, Nudge, share cards (the record, my copy). Journey 3 passes.
