@@ -133,9 +133,28 @@ so they need the Mac.
 
 ## M6 · capture, lookup, import (P4)
 
-Exit test: `Jeux collection.csv` imports in under 3 minutes with under 5% of rows needing a fix. Camera (VisionKit);
-`LookupClient` with App Attest middleware; lookup queue; review queue; enrichment; Importer API and the three v1
-importers; batch undo.
+Exit test (page 52): `Jeux collection.csv` (485 games) imports in under 3 minutes, with under 5% of rows needing a
+fix. The automated stand-in is `ImportIntegrationTests` over the real file (every cell kept, the counts, the payoff)
+plus journey 2 (*Bring your list*) as a UI test; the 3 minutes are measured on a device with the on-device model.
+
+Branch: the session's branch, stacked on M4 and M5. T6.1 to T6.7 are model, storage and parser work, so they build
+and test on Linux. T6.8 to T6.12 touch the clients, the camera, the on-device model, the screens and the app, so they
+need the Mac.
+
+| Task | Acceptance | Verify |
+|---|---|---|
+| T6.1 Import batches | `ShelfCommand.importBatch(ImportBatch)`: one collection named after the file, every row `added` with origin `.imported` and the batch id, all **unconfirmed** (PD-042, PD-047; revises D-38's reading), never `acquired` (D-14). `undoBatch(BatchID)` within 30 days (PD-047) appends one `batchUndone` event that removes the rows nobody touched since and names the ones kept (D-12). `importBatches` table; a removed object's row is soft-deleted (`deletedAt`), never dropped | Linux: `PlanTests`, `ImportBatchTests`, storage replay |
+| T6.2 The Importer API | `ImportInput` (bytes, file name, sheet tabs), `Recognition`, `Importer`, `ImporterRegistry` (the most certain wins; the collector can pick another), `ImportPlan` (collection name, typed rows, the one sentence, what was guessed, what was noticed) and `CellExtracting`, with a rule-based reader as the stand-in for the on-device model. Anything not read goes into the note, untouched | Linux: `ImporterRegistryTests` |
+| T6.3 `TemplateImporter` | The `tegola.csv` template's columns, written down once (`TemplateFormat`) for Export (M8) to write. A file with its header imports with nothing guessed | Linux: `TemplateImporterTests` |
+| T6.4 `SpreadsheetImporter` | Any other CSV, TSV or pasted text. A list with headers maps them (clctn's `ColumnMapping` aliases, English and French). A grid with a column per platform maps headers to subtypes, else to the platform field as written. The cell reader takes parts from "(cartouche + manuel)", condition notes from "boite endommagé", "/" as a bundle, "doublon" as a second copy, "dédicace" as signed, "(digital)" apart. **Jeux:** 485 rows, every cell kept, under 5% flagged | Linux: `ImportIntegrationTests` |
+| T6.5 `DiscogsCSVImporter` | Discogs' collection export (Catalog#, Artist, Title, Label, Format, Released, release_id, the two conditions, notes) into Music with the medium as subtype; the grades map to the type's scale or stay in the note | Linux: `DiscogsCSVImporterTests` |
+| T6.6 Lookup queue and enrichment | `LookupQueue` (pure): enqueue with the object, oldest first, exponential backoff, five attempts then "needs details", `Retry-After` honoured. `EnrichmentProposal` from a candidate (reasons, confidence, sources); applying one goes through `applyLookup`, which fills only empty fields (PD-045) | Linux: `LookupQueueTests`, `EnrichmentTests` |
+| T6.7 Matches and look-alikes | `LookAlikes` (pure): "you already own this", another print, related objects from the manifest's `related` keys; the three choices; never a merge (PD-151). The exceptions queue as a read model over an import's unmatched and ambiguous rows | Linux: `LookAlikeTests` |
+| T6.8 `LookupClient` | `TegolaClients` wraps the generated client: `AppAttestMiddleware` (`swift-keychain`, debug token on the simulator), `RetryMiddleware`, `ReachabilityClient`, the queue's worker effect; the `appattest-environment` entitlement | Mac: TestStore with recorded responses |
+| T6.9 Capture | The Scan tab's camera (VisionKit barcode and text), the tray, Add to, the shot saved before any network | Mac: TestStore; snapshots |
+| T6.10 Import screens | `ImportFeature`: Add's **Import a list**, the share sheet, the one sentence with rename, **Build my shelf**, **Something's off** (the column mapper), the payoff, undo. `ExtractionClient`'s cell extraction (Foundation Models, 20–30 cells a call) behind `CellExtracting`; the rule-based reader without Apple Intelligence | Mac: TestStore with recorded outputs; snapshots |
+| T6.11 Review queue and matches | F7 and F8's screens: grouped rows with why, **Confirm**, **Fill in**, **Confirm all** for strong matches only; the match sheet's three choices; enrichment asks first | Mac: `ReviewQueueFeatureTests`, `MatchFeatureTests` |
+| T6.12 Journey 2, docs, review | *Bring your list* as a UI test (`--import-fixture`), the empty shelf's **Bring your list** (T5.7), DECISIONS, the M6 report, HANDOFF, `REVIEW.md` (skeleton candidate), a separate review agent | Mac: `scripts/test.sh app`; read-through |
 
 ## M7 · people · M8 · keeping + you · M9 · polish
 
