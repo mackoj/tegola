@@ -15,7 +15,7 @@ import Testing
 
   static let gameParent = [
     "publisher", "catalogueNumber", "region", "edition", "revision", "mediaCondition", "boxCondition",
-    "manualCondition", "inserts", "slab", "saveBattery", "playStatus", "playLog",
+    "manualCondition", "inserts", "slab", "saveBattery", "codeExpires", "playStatus", "playLog",
   ]
   static let mediaParent = [
     "director", "studio", "label", "edition", "cut", "standard", "regionCode", "aspect", "discs", "packaging",
@@ -45,7 +45,7 @@ import Testing
       subtype: "saturn",
       visible: gameParent + ["spineCard", "ramCart", "satakore"],
       hidden: ["platform": "Sega Saturn", "media": "Optical disc"],
-      clocks: ["discRot"],
+      clocks: ["codeExpiry", "unfinished", "discRot-pending"],
       ladder: ["mediaCondition", "boxCondition", "manualCondition"]
     ),
     Expected(
@@ -53,7 +53,7 @@ import Testing
       subtype: "n64",
       visible: gameParent + ["expansionPak", "pakSupport"],
       hidden: ["platform": "Nintendo 64", "media": "Cartridge"],
-      clocks: ["saveBattery"],
+      clocks: ["codeExpiry", "unfinished", "saveBattery"],
       ladder: ["mediaCondition", "boxCondition", "manualCondition"]
     ),
     Expected(
@@ -61,7 +61,7 @@ import Testing
       subtype: "neo-geo",
       visible: gameParent + ["board", "conversion"],
       hidden: ["platform": "Neo Geo", "media": "Cartridge"],
-      clocks: [],
+      clocks: ["codeExpiry", "unfinished"],
       ladder: ["mediaCondition", "boxCondition", "manualCondition"]
     ),
     Expected(
@@ -69,7 +69,7 @@ import Testing
       subtype: "game-boy",
       visible: gameParent + ["sgb"],
       hidden: ["platform": "Game Boy", "media": "Cartridge"],
-      clocks: ["saveBattery"],
+      clocks: ["codeExpiry", "unfinished", "saveBattery"],
       ladder: ["mediaCondition", "boxCondition", "manualCondition"]
     ),
     Expected(
@@ -77,7 +77,7 @@ import Testing
       subtype: "ps1",
       visible: gameParent + ["printLabel"],
       hidden: ["platform": "PlayStation", "media": "Optical disc"],
-      clocks: ["discRot"],
+      clocks: ["codeExpiry", "unfinished", "discRot-pending"],
       ladder: ["mediaCondition", "boxCondition", "manualCondition"]
     ),
     Expected(
@@ -197,7 +197,7 @@ import Testing
     let games = try #require(try Self.catalogue.get().manifest("video-game"))
     let effective = try games.resolve(subtype: nil)
     #expect(effective.visibleFields.map(\.key) == games.fields.map(\.key))
-    #expect(effective.clocks.isEmpty)
+    #expect(effective.clocks.map(\.name) == ["codeExpiry", "unfinished"])
   }
 
   @Test func anUnknownSubtypeIsAnError() throws {

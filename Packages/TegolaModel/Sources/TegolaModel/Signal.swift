@@ -34,27 +34,34 @@ public struct Signal: Hashable, Sendable {
     case serviced(last: Date, everyMonths: Int)
     /// Media last checked (or made) in a year, and how often it should be checked.
     case checked(since: Int, wasChecked: Bool, everyYears: Int)
+    /// A game marked as playing since a date, and never finished (D-20).
+    case unfinished(since: Date)
   }
 }
 
 extension ShelfEvent.Kind {
   /// The `logged` kind a service writes: "Log a battery swap" is one (F15). It resets the clocks that read it.
   public static let servicedKind = "serviced"
+  /// The `logged` kind **Make a backup** writes, on media the clocks say is ageing (D-58). It resets them like a check.
+  public static let backedUpKind = "backedUp"
 }
 
 /// The signals an object's clocks give at `now`: one per clock the type runs, in the type's order. A clock held back
-/// (`-pending`, D-37) gives none, and so does one with nothing to read. Pure: the object's events, the moment and
-/// the calendar come in, so the same inputs give the same reading.
+/// (`-pending`, D-37) gives none, and so does one with nothing to read, or an opt-in clock the collector hasn't turned
+/// on. Pure: the object's events, the moment and the calendar come in, so the same inputs give the same reading.
 public func signals(
   for object: ShelfObject,
   type: EffectiveType,
   events: [ShelfEvent],
   now: Date,
-  calendar: Calendar
+  calendar: Calendar,
+  optedIn: Set<String> = []
 ) -> [Signal] {
   let reading = ClockReading(object: object, events: events, now: now, calendar: calendar)
   return type.clocks.compactMap { reference in
-    guard !reference.isPending, let definition = reference.definition else { return nil }
+    guard !reference.isPending, let definition = reference.definition,
+      !definition.isOptIn || optedIn.contains(definition.name)
+    else { return nil }
     return reading.signal(definition)
   }
 }
@@ -66,23 +73,68 @@ struct ClockReading {
   let calendar: Calendar
   /// The latest `serviced` event on the object.
   let lastServiced: Date?
+  /// The latest `backedUp` event: media that's been backed up counts as checked (D-58).
+  let lastBackedUp: Date?
+  /// When `playStatus` last became Playing, if it still is.
+  let playingSince: Date?
 
-  init(values: [FieldKey: FieldValue], lastServiced: Date?, now: Date, calendar: Calendar) {
+  init(
+    values: [FieldKey: FieldValue],
+    lastServiced: Date?,
+    lastBackedUp: Date? = nil,
+    playingSince: Date? = nil,
+    now: Date,
+    calendar: Calendar
+  ) {
     self.values = values
     self.lastServiced = lastServiced
+    self.lastBackedUp = lastBackedUp
+    self.playingSince = playingSince
     self.now = now
     self.calendar = calendar
   }
 
   init(object: ShelfObject, events: [ShelfEvent], now: Date, calendar: Calendar) {
-    let lastServiced =
+    let last = { (wanted: String) in
       events
-      .filter { event in
-        guard event.at <= now, case .logged(let id, let kind, _) = event.kind else { return false }
-        return id == object.id && kind == ShelfEvent.Kind.servicedKind
+        .filter { event in
+          guard event.at <= now, case .logged(let id, let kind, _) = event.kind else { return false }
+          return id == object.id && kind == wanted
+        }
+        .map(\.at).max()
+    }
+    self.init(
+      values: object.values,
+      lastServiced: last(ShelfEvent.Kind.servicedKind),
+      lastBackedUp: last(ShelfEvent.Kind.backedUpKind),
+      playingSince: Self.playingSince(object: object, events: events, now: now),
+      now: now,
+      calendar: calendar
+    )
+  }
+
+  static let playing = FieldValue.text("Playing")
+
+  /// The moment the object's `playStatus` last turned to Playing, from its `added` and `edited` events. Nothing once
+  /// it's anything else.
+  static func playingSince(object: ShelfObject, events: [ShelfEvent], now: Date) -> Date? {
+    guard object.values[.field("playStatus")] == playing else { return nil }
+    var since: Date?
+    var current: FieldValue?
+    for event in events.sorted(by: { ($0.at, $0.seq) < ($1.at, $1.seq) }) where event.at <= now {
+      let next: FieldValue??
+      switch event.kind {
+      case .added(let added, _) where added.id == object.id: next = .some(added.values[.field("playStatus")])
+      case .edited(let id, let changes) where id == object.id: next = changes[.field("playStatus")]
+      case .enriched(let id, let changes) where id == object.id:
+        next = changes[.field("playStatus")].map { FieldValue?.some($0) }
+      default: next = nil
       }
-      .map(\.at).max()
-    self.init(values: object.values, lastServiced: lastServiced, now: now, calendar: calendar)
+      guard let value = next else { continue }
+      if value == playing && current != playing { since = event.at }
+      current = value
+    }
+    return since
   }
 
   func signal(_ clock: ClockDefinition) -> Signal? {
@@ -98,6 +150,8 @@ struct ClockReading {
       return serviceRisk(clock.name, everyMonths: parameter("intervalMonths"))
     case "mediaRot", "discRot":
       return check(clock.name, everyYears: parameter("checkEveryYears"))
+    case "unfinished":
+      return unfinished(clock.name, afterMonths: parameter("afterMonths"))
     default:
       return nil
     }
@@ -144,12 +198,24 @@ struct ClockReading {
     )
   }
 
-  /// Media due a check: watch once the interval has passed since the last service, or since it was made.
+  /// Media due a check: watch once the interval has passed since the last service or backup, or since it was made;
+  /// act at twice it, when the action is **Make a backup** (D-58).
   func check(_ name: String, everyYears: Int) -> Signal? {
     let made: Date? = if case .year(let year) = values[.year] { startOf(year) } else { nil }
-    guard let since = lastServiced ?? made, everyYears > 0 else { return nil }
-    let reason = Signal.Reason.checked(since: year(of: since), wasChecked: lastServiced != nil, everyYears: everyYears)
-    return stepped(name, reason, thresholds: [add(.year, everyYears, to: since)])
+    let checked = [lastServiced, lastBackedUp].compactMap { $0 }.max()
+    guard let since = checked ?? made, everyYears > 0 else { return nil }
+    let reason = Signal.Reason.checked(since: year(of: since), wasChecked: checked != nil, everyYears: everyYears)
+    return stepped(
+      name,
+      reason,
+      thresholds: [add(.year, everyYears, to: since), add(.year, 2 * everyYears, to: since)]
+    )
+  }
+
+  /// Watch once a game has been Playing for the given months: "started 14 months ago, never finished". No act.
+  func unfinished(_ name: String, afterMonths: Int) -> Signal? {
+    guard let since = playingSince, afterMonths > 0 else { return nil }
+    return stepped(name, .unfinished(since: since), thresholds: [add(.month, afterMonths, to: since)])
   }
 
   // MARK: Helpers

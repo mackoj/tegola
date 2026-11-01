@@ -319,3 +319,35 @@ reused; a replaced decision stays, marked **superseded by D-n**.
 **Gap.** The contract told the app to register again on `unknown-key` "if the key was revoked or the server lost it", while its `Forbidden` response, tegola-server's D-7 and its stores answer a revoked key with `403` on every call and refuse to register it again (found by tegola-server's M2 review).
 
 **Decision.** `unknown-key` (401) means the server lost the key: register it again. A revoked key gets `403` and stays revoked; the app generates a new App Attest key and registers that one. The contract's `registerAttestKey` description says so; `AppAttestMiddleware` (M6) follows it.
+
+### D-56 · The clocks' thresholds (M4)
+
+**Gap.** PLAN §3.3 and F15 name the clocks and their parameters, and F15 gives the save battery's 25–35 years. Nothing says where *watch* turns to *act* for any of them.
+
+**Decision.** A clock's reading is *good*, *watch* or *act* (`Signal`, `TegolaModel`), and moves at fixed thresholds:
+
+| Clock | *watch* from | *act* from |
+|---|---|---|
+| `saveBattery` | 25 years since the swap, the fitted date or the release year | 35 years |
+| `codeExpiry` | 60 days before `codeExpires` | the expiry date |
+| `drinkingWindow` | a year before the window opens | the window's last year |
+| `serviceRisk` | the interval (24 months) since the last known service | twice the interval |
+| `mediaRot`, `discRot` | the check interval since the last check, or since it was made | twice the interval |
+| `unfinished` | 12 months Playing | never |
+
+A clock with nothing to read gives no signal: no year, no date, no known service. The parameters live in `ClockLibrary`; dismissals (risk R2) are how they get tuned.
+
+### D-57 · Disc rot held back, code expiry, and the unfinished game
+
+**Gap.** `video-game.yml` gave Saturn and PlayStation `clock: discRot`, against PD-018 (no disc-rot clock in v1). F15's `codeExpiry` "applies to code cards", but no field held an expiry date. D-20's opt-in "started long ago, never finished" clock wasn't in the library.
+
+**Decision.**
+- **Disc rot.** Saturn and PlayStation name `discRot-pending`: the clock is named and shown nowhere until there's evidence (D-37).
+- **Code expiry.** Video games gain `codeExpires` (a date) and name `codeExpiry` for every game. Without a date there's no signal, so it costs a cartridge nothing.
+- **Unfinished.** The library gains `unfinished`, which reads when `playStatus` last turned to Playing. It's `isOptIn`: no signal unless the collector turns it on (a setting through `SettingsClient`; the toggle waits for You, M8).
+
+### D-58 · A media check is a backup
+
+> Owner (2026-11-01), on `mediaRot` and `discRot` never reaching *act*: "maybe try to make a backup of it".
+
+**Decision.** What a collector does about ageing media is back it up. The media clocks reach *act* at twice their interval, and their action is **Make a backup**, logged as a `backedUp` event (`logEvent`). A backup or a service resets them. Disc rot stays pending on v1's types (D-57), so in v1 this shows on video media's tapes once that type ships.

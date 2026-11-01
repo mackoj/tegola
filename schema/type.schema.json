@@ -79,7 +79,7 @@
     "clocks": {
       "description": "Clocks from the app's library (TegolaCatalogue's ClockLibrary). A -pending suffix holds one back until there's evidence.",
       "type": "array",
-      "items": { "type": "string", "pattern": "^(saveBattery|discRot|mediaRot|codeExpiry|drinkingWindow|serviceRisk)(-pending)?$" }
+      "items": { "type": "string", "pattern": "^(saveBattery|discRot|mediaRot|codeExpiry|drinkingWindow|serviceRisk|unfinished)(-pending)?$" }
     },
     "subtypes": { "type": "array", "items": { "$ref": "#/$defs/subtype" } },
     "supersedes": {

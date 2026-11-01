@@ -10,6 +10,16 @@ public struct ClockDefinition: Hashable, Sendable {
   public let reads: [String]
   /// The parameters and their defaults. A type can't change them; dismissals tune them (risk R2).
   public let parameters: [String: Double]
+  /// Off unless the collector turns it on, even on a type that names it (D-20).
+  public let isOptIn: Bool
+
+  init(name: String, summary: String, reads: [String], parameters: [String: Double], isOptIn: Bool = false) {
+    self.name = name
+    self.summary = summary
+    self.reads = reads
+    self.parameters = parameters
+    self.isOptIn = isOptIn
+  }
 }
 
 public enum ClockLibrary {
@@ -50,6 +60,13 @@ public enum ClockLibrary {
       summary: "It's been a long time since the last service",
       reads: ["field lastServiced (event)", "event serviced"],
       parameters: ["intervalMonths": 24]
+    ),
+    ClockDefinition(
+      name: "unfinished",
+      summary: "A game started long ago and never finished",
+      reads: ["field playStatus (choice)", "event edited"],
+      parameters: ["afterMonths": 12],
+      isOptIn: true
     ),
   ]
 

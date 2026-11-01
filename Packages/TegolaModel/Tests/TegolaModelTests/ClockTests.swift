@@ -133,15 +133,71 @@ extension Calendar {
     #expect(Self.signal("serviceRisk", [:], serviced: Self.date(2026), now: Self.date(2027))?.status == .good)
   }
 
-  @Test func mediaRotWatchesOnceACheckIsDueAndAServiceResetsIt() {
-    let values: [FieldKey: FieldValue] = [.year: .year(1998)]
-    let due = Self.signal("mediaRot", values, now: Self.date(2027))
+  @Test func mediaRotWatchesWhenACheckIsDueAndActsWhenABackupIsOverdue() {
+    let values: [FieldKey: FieldValue] = [.year: .year(2023)]
+    let due = Self.signal("mediaRot", values, now: Self.date(2025, 6))
     #expect(due?.status == .watch)
-    #expect(due?.reason == .checked(since: 1998, wasChecked: false, everyYears: 2))
-    #expect(due?.changesAt == nil)
+    #expect(due?.reason == .checked(since: 2023, wasChecked: false, everyYears: 2))
+    #expect(due?.changesAt == Self.date(2027))
+    #expect(Self.signal("mediaRot", [.year: .year(1998)], now: Self.date(2027))?.status == .act)
     let checked = Self.signal("mediaRot", values, serviced: Self.date(2026, 6), now: Self.date(2027))
     #expect(checked?.status == .good)
     #expect(checked?.changesAt == Self.date(2028, 6))
+  }
+
+  /// D-58: a backup resets the media clocks like a check does.
+  @Test func aBackupResetsTheMediaClocks() {
+    let reading = ClockReading(
+      values: [.year: .year(1998)],
+      lastServiced: nil,
+      lastBackedUp: Self.date(2026, 6),
+      now: Self.date(2027),
+      calendar: .utc
+    )
+    let signal = reading.signal(ClockLibrary.definition("mediaRot")!)
+    #expect(signal?.status == .good)
+    #expect(signal?.reason == .checked(since: 2026, wasChecked: true, everyYears: 2))
+  }
+
+  @Test func unfinishedIsOptInAndWatchesAfterAYearOfPlaying() throws {
+    var harness = Harness()
+    let id = try SaveBatteryClockTests.cartridge(&harness, year: nil)
+    try harness.perform(.edit(id, values: [.field("playStatus"): .text("Playing")]))
+    let started = try #require(harness.log.last?.at)
+    let object = try #require(harness.shelf.objects[id])
+    let type = try Harness.catalogue.resolve(object.typeID, subtype: object.subtype)
+    let events = harness.log.filter { $0.objectID == id }
+    let later = Calendar.utc.date(byAdding: .month, value: 14, to: started)!
+    let off = TegolaModel.signals(for: object, type: type, events: events, now: later, calendar: .utc)
+    #expect(off.isEmpty)
+    let on = TegolaModel.signals(
+      for: object,
+      type: type,
+      events: events,
+      now: later,
+      calendar: .utc,
+      optedIn: ["unfinished"]
+    )
+    #expect(on == [Signal(clock: "unfinished", status: .watch, reason: .unfinished(since: started), changesAt: nil)])
+    try harness.perform(.edit(id, values: [.field("playStatus"): .text("Finished")]))
+    let finished = try #require(harness.shelf.objects[id])
+    #expect(
+      TegolaModel.signals(
+        for: finished,
+        type: type,
+        events: harness.log.filter { $0.objectID == id },
+        now: later,
+        calendar: .utc,
+        optedIn: ["unfinished"]
+      ).isEmpty
+    )
+  }
+
+  /// Disc rot is held back on v1's video games (PD-018): a Saturn disc gives no signal.
+  @Test func aPendingClockGivesNoSignal() throws {
+    var harness = Harness()
+    let id = try harness.add(subtype: "saturn", values: [.field("region"): .text("NTSC-J"), .year: .year(1995)])
+    #expect(try SaveBatteryClockTests.signals(harness, id).isEmpty)
   }
 
   /// Every clock in the library has a function; a new name without one fails here, not on a shelf.
@@ -150,8 +206,15 @@ extension Calendar {
       .year: .year(1995), .field("saveBattery"): .date(Self.date(1995)), .field("codeExpires"): .date(Self.date(2030)),
       .field("drinkingWindow"): .yearRange(from: 2030, to: 2035), .field("lastServiced"): .date(Self.date(2020)),
     ]
+    let reading = ClockReading(
+      values: values,
+      lastServiced: nil,
+      playingSince: Self.date(2025),
+      now: Self.date(2027),
+      calendar: .utc
+    )
     for clock in ClockLibrary.all {
-      #expect(Self.reading(values, now: Self.date(2027)).signal(clock) != nil, "\(clock.name)")
+      #expect(reading.signal(clock) != nil, "\(clock.name)")
     }
   }
 }
