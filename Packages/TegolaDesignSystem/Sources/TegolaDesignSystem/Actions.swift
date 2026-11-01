@@ -12,7 +12,7 @@
     // Leaving and keeping (board 29, state 4).
     case close, cancel, save
     // The object's verbs (PLAN F4, F13, F14).
-    case edit, photo, confirm, lend, returnLoan, giveBack, nudge, share
+    case edit, photo, confirm, lend, returnLoan, markBorrowed, giveBack, nudge, share
     // Answers.
     case notNow
 
@@ -32,6 +32,7 @@
       case .confirm: Text("Confirm", bundle: .module)
       case .lend: Text("Lend", bundle: .module)
       case .returnLoan: Text("Mark returned", bundle: .module)
+      case .markBorrowed: Text("Whose is it?", bundle: .module)
       case .giveBack: Text("Give back", bundle: .module)
       case .nudge: Text("Nudge", bundle: .module)
       case .share: Text("Share", bundle: .module)
@@ -55,6 +56,7 @@
       case .confirm: "checkmark.seal"
       case .lend: "arrow.up.forward.circle"
       case .returnLoan: "arrow.down.backward.circle"
+      case .markBorrowed: "person.crop.circle.badge.questionmark"
       case .giveBack: "arrow.uturn.backward.circle"
       case .nudge: "hand.wave"
       case .share: "square.and.arrow.up"
@@ -69,7 +71,7 @@
       case .edit, .lend: .primary
       case .nudge, .share: .accent
       case .close, .cancel: .quiet
-      case .shelf, .find, .scan, .activity, .you, .photo, .returnLoan, .giveBack, .notNow: .secondary
+      case .shelf, .find, .scan, .activity, .you, .photo, .returnLoan, .markBorrowed, .giveBack, .notNow: .secondary
       }
     }
 

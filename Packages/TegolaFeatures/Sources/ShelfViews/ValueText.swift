@@ -29,7 +29,7 @@
   extension ShelfEvent {
     /// A return's history line: who it came back from, closed by the collector alone (one-sided, PD-160), how it came
     /// back, and the collector's words.
-    static func returnLine(from name: String, cameBack: Loan.CameBack?, words: String?) -> String {
+    public static func returnLine(from name: String, cameBack: Loan.CameBack?, words: String?) -> String {
       let shape: String? =
         switch cameBack {
         case .sameShape: String(localized: "same shape", bundle: .module)

@@ -159,6 +159,8 @@ public struct ObjectSlots: Hashable, Sendable {
 
   public enum Action: String, CaseIterable, Hashable, Sendable {
     case edit, photo, lend, returnLoan, mightLetGo, letGo, promote, setOwned
+    /// Someone else's object: say whose it is, then give it back (PD-061).
+    case markBorrowed, giveBack
   }
 
   /// The order is the product's, never the type's.
@@ -217,6 +219,9 @@ public struct ObjectSlots: Hashable, Sendable {
       actions += [.mightLetGo, .letGo]
     }
     if object.ownership == .wanted { actions.append(.setOwned) }
+    if object.ownership == .borrowed && object.letGo == nil {
+      actions.append(onLoan?.direction == .in ? .giveBack : .markBorrowed)
+    }
     self.actions = actions
   }
 

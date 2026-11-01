@@ -191,6 +191,16 @@
         }
       }
     },
+    "Whose is it?" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "À qui est-ce ?"
+          }
+        }
+      }
+    },
     "Yes" : {
       "localizations" : {
         "fr" : {

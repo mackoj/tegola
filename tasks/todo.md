@@ -98,7 +98,7 @@ Plan: `tasks/plan.md`, M7.
 - [x] T7.2 Return details, and the person's name in the history (D-3)
 - [x] T7.3 Loan reminders and the nudge's line
 - [x] T7.4 Share cards (never what was paid)
-- [ ] T7.5 Lend and Return sheets
+- [x] T7.5 Lend and Return sheets
 - [ ] T7.6 The Person screen
 - [ ] T7.7 Activity
 - [ ] T7.8 Reminders and Nudge

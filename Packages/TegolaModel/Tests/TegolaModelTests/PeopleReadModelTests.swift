@@ -113,4 +113,19 @@ import Testing
     let lending = try Lending()
     #expect(ShelfSummary(shelf: lending.harness.shelf, money: .off, now: lending.now).count == 4)
   }
+
+  /// T7.5: someone else's object offers Mark borrowed until it's known whose it is, then Give back.
+  @Test func someoneElsesObjectOffersMarkBorrowedThenGiveBack() throws {
+    var harness = Harness()
+    let id = try harness.add("music", "Blue Train", ownership: .borrowed)
+    func actions() throws -> [ObjectSlots.Action] {
+      let object = try #require(harness.shelf.objects[id])
+      let manifest = try #require(Harness.catalogue.manifest("music"))
+      let type = try Harness.catalogue.resolve("music", subtype: nil)
+      return ObjectSlots(object: object, type: type, manifest: manifest, shelf: harness.shelf, money: .off).actions
+    }
+    #expect(try actions() == [.edit, .photo, .markBorrowed])
+    try harness.perform(.markBorrowed(id, from: .new(name: "Anne")))
+    #expect(try actions() == [.edit, .photo, .giveBack])
+  }
 }
