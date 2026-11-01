@@ -93,7 +93,10 @@ import Testing
     let id = try builder.add(
       "music",
       subtype: "vinyl",
-      [.title: .text("Debut"), .acquired: .date(acquired), .paid: .money(Money(minorUnits: 4_000, currency: Self.euro))]
+      [
+        .title: .text("Debut"), .acquired: .date(acquired),
+        .paid: .money(Money(minorUnits: 4_000, currency: Self.euro)),
+      ]
     )
     let object = try #require(builder.shelf.objects[id])
     let row = ShelfExport.row(object, catalogue: Self.catalogue)
