@@ -4,6 +4,10 @@ name:
   singular: Work
   plural: Works
   collection: The Wall
+# Words that name the type in a photo's description or a typed line: the first piece's
+# type is inferred from them, not asked (PD-166, D-58).
+recognise: [artwork, painting, lithograph, etching, drawing, canvas, sculpture, screen print]
+
 mark: "ART"
 icon: frame
 gradient: [claret, verdigris]

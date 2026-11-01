@@ -4,6 +4,10 @@ name:
   singular: Card
   plural: Cards
   collection: Trading Cards
+# Words that name the type in a photo's description or a typed line: the first piece's
+# type is inferred from them, not asked (PD-166, D-58).
+recognise: [trading card, pokemon card, magic the gathering, mtg, yu gi oh, baseball card, booster pack]
+
 mark: TCG
 icon: rectangle.stack
 gradient: [pink, cobalt]

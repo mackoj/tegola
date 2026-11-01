@@ -3,6 +3,10 @@ name:
   singular: Film
   plural: Films
   collection: The Shelf
+# Words that name the type in a photo's description or a typed line: the first piece's
+# type is inferred from them, not asked (PD-166, D-58).
+recognise: [film, movie]
+
 mark: "OOP"
 icon: reel
 # See 51_Video Media.dc.html. Built on subtypes (48).
@@ -50,18 +54,21 @@ fields:
 subtypes:
   - key: vhs
     label: VHS
+    recognise: [vhs, videotape]
     presets: { regionCode: hidden, packaging: [slipcase, clamshell, big box], parts: [sleeve, shell, tape, insert], clock: mediaRot }
     adds:
       - { key: tapeSpeed, label: Tape speed, type: choice, options: [SP, LP, EP] }
       - { key: printMark, label: Print mark, type: text }
   - key: betamax
     label: Betamax
+    recognise: [betamax]
     presets: { regionCode: hidden, packaging: [slipcase, clamshell], parts: [sleeve, shell, tape], clock: mediaRot }
     adds:
       - { key: tapeSpeed, label: Tape speed, type: choice, options: [βI, βII, βIII] }
       - { key: betaHifi, label: Beta Hi-Fi, type: bool }
   - key: laserdisc
     label: LaserDisc
+    recognise: [laserdisc, laser disc]
     presets: { standard: [NTSC, PAL], regionCode: hidden, packaging: [single jacket, gatefold, box set], parts: [jacket, discs, inner sleeves, obi, insert], clock: discRot }
     adds:
       - { key: sides, label: Sides, type: int }
@@ -69,26 +76,31 @@ subtypes:
       - { key: obi, label: Obi, type: bool }
   - key: ced
     label: CED
+    recognise: [ced, videodisc]
     presets: { standard: [NTSC], regionCode: hidden, packaging: [caddy], parts: [sleeve, caddy, disc], clock: mediaRot }
     adds:
       - { key: caddyCondition, label: Caddy, type: scale, replaces: caseCondition }
   - key: dvd
     label: DVD
+    recognise: [dvd]
     presets: { regionCode: ["0","1","2","3","4","5","6","7","8"], packaging: [keepcase, snapper, digipak, steelbook, box set], lookup: barcode, clock: discRot }
     adds:
       - { key: layers, label: Layers, type: choice, options: [DVD-5, DVD-9] }
   - key: hd-dvd
     label: HD DVD
+    recognise: [hd dvd]
     presets: { regionCode: hidden, packaging: [keepcase, slipcover], lookup: barcode, clock: discRot-pending }
     adds:
       - { key: combo, label: Combo disc, type: bool }
   - key: blu-ray
     label: Blu-ray
+    recognise: [blu ray, bluray]
     presets: { regionCode: [A, B, C, free], packaging: [keepcase, steelbook, mediabook, digipak, box set], lookup: [barcode, spineNo], clock: discRot }
     adds:
       - { key: limitedNo, label: Limited no., type: text, unique: true }
   - key: uhd
     label: 4K UHD
+    recognise: [4k uhd, uhd]
     presets: { regionCode: hidden, packaging: [keepcase, steelbook, mediabook], lookup: barcode, clock: discRot-pending }
     adds:
       - { key: hdr, label: HDR, type: set, options: [HDR10, HDR10+, Dolby Vision] }

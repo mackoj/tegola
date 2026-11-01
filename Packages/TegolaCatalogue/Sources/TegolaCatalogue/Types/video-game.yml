@@ -4,6 +4,10 @@ name:
   singular: Game
   plural: Games
   collection: The Library
+# Words that name the type in a photo's description or a typed line: the first piece's
+# type is inferred from them, not asked (PD-166, D-58).
+recognise: [video game, videogame, game cartridge, cartridge, console game]
+
 mark: "CIB"
 icon: cartridge
 gradient: [indigo, claret]
@@ -156,6 +160,7 @@ fields:
 subtypes:
   - key: saturn
     label: Sega Saturn
+    recognise: [sega saturn, saturn]
     presets:
       platform: Sega Saturn
       media: Optical disc
@@ -169,6 +174,7 @@ subtypes:
       - { key: satakore, label: Satakore ID, type: text }
   - key: n64
     label: Nintendo 64
+    recognise: [n64, nintendo 64]
     presets:
       platform: Nintendo 64
       media: Cartridge
@@ -180,6 +186,7 @@ subtypes:
       - { key: pakSupport, label: Rumble / Controller Pak, type: set, options: [Rumble Pak, Controller Pak] }
   - key: neo-geo
     label: Neo Geo
+    recognise: [neo geo, neogeo, aes, mvs]
     presets:
       platform: Neo Geo
       media: Cartridge
@@ -191,6 +198,7 @@ subtypes:
       - { key: conversion, label: Conversion, type: yesNo, note: an MVS board rehoused as AES; never passes for an original }
   - key: game-boy
     label: Game Boy
+    recognise: [game boy, gameboy, game boy color, gbc]
     presets:
       platform: Game Boy
       media: Cartridge
@@ -201,6 +209,7 @@ subtypes:
       - { key: sgb, label: Super Game Boy, type: yesNo }
   - key: ps1
     label: PlayStation
+    recognise: [playstation, ps1, psx]
     presets:
       platform: PlayStation
       media: Optical disc

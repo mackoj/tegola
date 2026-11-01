@@ -4,6 +4,10 @@ name:
   singular: Coin
   plural: Coins
   collection: Coins
+# Words that name the type in a photo's description or a typed line: the first piece's
+# type is inferred from them, not asked (PD-166, D-58).
+recognise: [coin, numismatic, sovereign, denarius, proof set]
+
 mark: NUM
 icon: centsign.circle
 gradient: [yellow, rust]

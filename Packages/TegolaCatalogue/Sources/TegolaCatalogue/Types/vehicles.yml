@@ -5,6 +5,10 @@ name:
   singular: Vehicle
   plural: Vehicles
   collection: The Garage
+# Words that name the type in a photo's description or a typed line: the first piece's
+# type is inferred from them, not asked (PD-166, D-58).
+recognise: [vehicle, classic car]
+
 mark: VIN              # overridden per kind below
 icon: car
 gradient: [rust, cobalt]
@@ -106,6 +110,7 @@ fields:
 subtypes:
   - key: car
     label: Car
+    recognise: [car, coupe, roadster]
     presets:
       kind: Car
     adds:
@@ -115,6 +120,7 @@ subtypes:
       - { key: doors, label: Doors, type: number }
   - key: motorbike
     label: Motorbike
+    recognise: [motorbike, motorcycle, moped, scooter]
     presets:
       kind: Motorbike
     adds:

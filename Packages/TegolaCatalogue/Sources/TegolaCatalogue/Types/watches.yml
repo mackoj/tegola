@@ -4,6 +4,10 @@ name:
   singular: Watch
   plural: Watches
   collection: Watches
+# Words that name the type in a photo's description or a typed line: the first piece's
+# type is inferred from them, not asked (PD-166, D-58).
+recognise: [watch, wristwatch, pocket watch, chronograph, omega, rolex, seiko, seamaster, speedmaster]
+
 mark: AUTO
 icon: clock
 gradient: [teal, rust]

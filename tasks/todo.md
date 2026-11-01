@@ -63,6 +63,19 @@ Plan: `tasks/plan.md`, M4. Report: `docs/milestones/M4.md`.
 - [ ] T4.7 Journey 5 (Mac)
 - [ ] T4.8 Docs and review
 
+## M5 · launch types + first piece
+
+Plan: `tasks/plan.md`, M5. Report: `docs/milestones/M5.md`.
+
+- [x] T5.1 Type guess
+- [ ] T5.2 First-piece rules
+- [ ] T5.3 Type testers
+- [ ] T5.4 The payoff
+- [ ] T5.5 `ExtractionClient` (Mac)
+- [ ] T5.6 Onboarding (Mac)
+- [ ] T5.7 The empty shelf (Mac)
+- [ ] T5.8 Journey and review
+
 ## telaio skeleton: consider at each milestone, add only if needed (`tasks/plan.md`)
 
 Tick each line either when it's added or when it's judged not needed, with the reason.
