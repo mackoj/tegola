@@ -3,11 +3,11 @@
 The state of the work for whoever picks it up next: a new session, another agent, or the owner. Read this first, keep
 it short and current.
 
-**Updated:** 2026-11-01, M4's model half done (T4.1–T4.4); the screens half waits for the Mac.
+**Updated:** 2026-11-01. M4's and M5's model halves are done (T4.1–T4.4, T5.1–T5.4); both screens halves wait for the Mac.
 
 ## Where things stand
 
-- **Spec:** approved (`docs/PLAN.md`, answers in §10). Decisions: `docs/DECISIONS.md`, D-1 to D-57.
+- **Spec:** approved (`docs/PLAN.md`, answers in §10). Decisions: `docs/DECISIONS.md`, D-1 to D-59.
 - **M1–M3:** merged (PRs #5, #8, #9; reports in `docs/milestones/`).
 - **M4 (signals):** in progress on `claude/tegola-rearchitecture-jcq29f`, as a draft PR. The model half is done and
   verified on Linux (190 tests across the seven pure packages, zero warnings):
@@ -17,7 +17,15 @@ it short and current.
     `readings:`.
   - **T4.3 dismissals** (`ShelfCommand.dismissSignal`, `signalDismissed`).
   - **T4.4 the 200-object `SignalShelf`** and its golden list, `docs/testing/signals-200.md`: 41 signals.
-- **Waiting for the Mac:** T4.4b, T4.5, T4.6 and T4.7 touch the features, snapshots and the app.
+- **M5 (launch types, first piece):** stacked on M4 on the same branch and PR. The model half is done and verified on
+  Linux (214 tests, zero warnings):
+  - **T5.1 type guess.** Type files have `recognise:` words; `Catalogue.guess(from:)` (D-58).
+  - **T5.2 first-piece rules.** `ShelfCommand.firstPiece(draft, story:catalogue:)`, `notTheFirstPiece`; a type
+    that hasn't shipped becomes a Thing with `awaitingType` via `ObjectDraft.recognised(as:)` (D-59).
+  - **T5.3 testers.** `SettingKey.typeTesters` (`TypeTesters`) and `firstPieceSkipped`; `ShelfSnapshot` reads both,
+    with `opensOnFirstPiece`. `Shelf.waiting(for:)`.
+  - **T5.4 payoff.** `FirstPiecePayoff` and `Clocks.firstSignalDate`.
+- **Waiting for the Mac:** T4.4b–T4.7 and T5.5–T5.7 touch the features, snapshots and the app.
 - **tegola-server** (`mackoj/tegola-server`, D-41): its M1 is done. The app needs it from M6 on.
 
 ## What's next
@@ -42,7 +50,19 @@ it short and current.
    - **T4.4b.** Grow `Seed.swift` toward 120 objects with clocks in every state, re-record the snapshots, and update
      the M3 counts knowingly.
    - **T4.8.** The M4 report, a separate review agent, and the carried skeleton candidates (`tasks/todo.md`).
-3. **Later:** M5 (first piece, launch types), M6 (camera, lookup, import), M7 (people), M8 (keeping, You), M9 (polish).
+3. **M5 on the Mac**, after M4's screens (`tasks/plan.md`, M5):
+   - **T5.5 `ExtractionClient`** in `TegolaClients`: Foundation Models' guided generation describes a photo or a
+     typed line as a name and words. `catalogue.guess(from:)` maps the words to a type. Unavailable without Apple
+     Intelligence; `unimplemented` test value.
+   - **T5.6 `FirstPieceFeature`**, PLAN F2's four screens. `AppFeature` opens on it when
+     `snapshot.opensOnFirstPiece`; **Just look around first** sets `.firstPieceSkipped` to `"true"`. The write is
+     `ShelfCommand.firstPiece(ObjectDraft.recognised(as: guess.type, …), story:, catalogue:)`. **Count me in** sets
+     `.typeTesters` to `snapshot.typeTesters.adding(type).setting`. The payoff reads
+     `FirstPiecePayoff(object:type:now:calendar:)`. `ShelfViews/ValueText.swift`'s history line reads
+     "First piece · \(story)": give an empty story its own key.
+   - **T5.7** the empty shelf's two offers; **T5.8** the first-piece UI test, `docs/UX-FINDINGS.md`, the report and
+     the review.
+4. **Later:** M6 (camera, lookup, import), M7 (people), M8 (keeping, You), M9 (polish).
 
 ## Run it locally (Mac)
 
@@ -119,4 +139,8 @@ scripts/ci.sh                          # the full gate → build/ci-summary.md (
 
 ## Owner questions
 
-None open. The owner approved M2 and M3's readings (D-35, D-38, D-45, D-50, D-51; D-54).
+The owner approved M2 and M3's readings (D-35, D-38, D-45, D-50, D-51; D-54). Open, for M5:
+
+- **D-58:** the `recognise:` words in each type file are a first list. Add the words your testers use.
+- **D-59:** the first piece's story is stored as the collector's words, not as a chip id, so it doesn't change
+  language if they switch the app's language later. Say if it should.

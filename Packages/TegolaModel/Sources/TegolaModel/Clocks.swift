@@ -70,6 +70,36 @@ public enum Clocks {
     }
   }
 
+  /// When a clock that has nothing to say now will first say something: the first piece's "We'll tell you when it's
+  /// time" (46), and the first notification (T4.6). Nil when it already says something, never will, or has no basis.
+  public static func firstSignalDate(
+    _ clock: ClockReference,
+    for object: ShelfObject,
+    now: Date,
+    calendar: Calendar
+  ) -> Date? {
+    guard !clock.isPending, let definition = clock.definition,
+      signal(clock, for: object, now: now, calendar: calendar) == nil
+    else { return nil }
+    let parameter = { (name: String) in Int(definition.parameters[name] ?? 0) }
+    let context = Context(object: object, now: now, calendar: calendar)
+    let starts: Date? =
+      switch clock.name {
+      case "saveBattery":
+        context.batteryFitted.map {
+          context.adding(.year, parameter("lifespanYears") - parameter("warnYearsBefore"), to: $0)
+        }
+      case "discRot", "mediaRot":
+        context.lastChecked.map { context.adding(.year, parameter("checkEveryYears"), to: $0) }
+      case "codeExpiry":
+        context.date(.field("expires")).map { context.adding(.day, -parameter("warnDaysBefore"), to: $0) }
+      case "drinkingWindow": context.windowOpens(warn: parameter("warnYearsBefore"))
+      case "serviceRisk": context.lastServiced.map { context.adding(.month, parameter("intervalMonths"), to: $0) }
+      default: nil
+      }
+    return starts.flatMap { $0 > now ? $0 : nil }
+  }
+
   /// Every signal an object's clocks give now, most urgent first.
   public static func signals(
     for object: ShelfObject,
@@ -108,9 +138,24 @@ private struct Context {
 
   /// The battery was fitted when the field says (an owner who replaced it writes the date), or at the last logged
   /// swap, whichever is later; otherwise with the game.
+  var batteryFitted: Date? {
+    [date(.field("saveBattery")), care(CareKind.batterySwapped)].compactMap { $0 }.max() ?? releaseDate
+  }
+
+  var lastChecked: Date? { care(CareKind.checked, CareKind.serviced, CareKind.cleaned) ?? releaseDate }
+
+  var lastServiced: Date? {
+    [date(.field("lastServiced")), care(CareKind.serviced)].compactMap { $0 }.max() ?? releaseDate
+  }
+
+  /// The first of January of the year the drinking window starts to be worth watching.
+  func windowOpens(warn: Int) -> Date? {
+    guard case .yearRange(let from, _) = object.values[.field("drinkingWindow")] else { return nil }
+    return calendar.date(from: DateComponents(year: from - warn, month: 1, day: 1))
+  }
+
   func saveBattery(lifespan: Int, warn: Int) -> ClockSignal? {
-    let fitted = [date(.field("saveBattery")), care(CareKind.batterySwapped)].compactMap { $0 }.max() ?? releaseDate
-    guard let fitted else { return nil }
+    guard let fitted = batteryFitted else { return nil }
     let dies = adding(.year, lifespan, to: fitted)
     let warns = adding(.year, lifespan - warn, to: fitted)
     if now >= dies {
@@ -135,7 +180,7 @@ private struct Context {
   /// Media that should be played or looked at every few years. Only ever watch: disc rot can't be told from folklore
   /// (PD-018), so the clock never claims more than "worth a look".
   func checkDue(clock: String, every years: Int) -> ClockSignal? {
-    guard let since = care(CareKind.checked, CareKind.serviced, CareKind.cleaned) ?? releaseDate else { return nil }
+    guard let since = lastChecked else { return nil }
     let due = adding(.year, years, to: since)
     guard now >= due else { return nil }
     return ClockSignal(
@@ -193,8 +238,7 @@ private struct Context {
 
   /// Watch once a service interval has passed since the last service (logged, or the field), act at twice that.
   func serviceRisk(intervalMonths: Int) -> ClockSignal? {
-    let since = [date(.field("lastServiced")), care(CareKind.serviced)].compactMap { $0 }.max() ?? releaseDate
-    guard let since else { return nil }
+    guard let since = lastServiced else { return nil }
     let due = adding(.month, intervalMonths, to: since)
     let overdue = adding(.month, intervalMonths * 2, to: since)
     if now >= overdue {

@@ -71,6 +71,10 @@ public enum ShelfRuleViolation: Error, Hashable, Sendable {
   case unknownPlace(PlaceID)
   /// A place can't merge into itself, or into a place inside it.
   case mergeIntoItself
+  /// Only the shelf's first object is the first piece (PLAN F2): onboarding happens once.
+  case notTheFirstPiece
+  /// Only a Thing waits for a type, and only for a type that exists and hasn't shipped (D-59).
+  case cantAwaitType(TypeManifest.ID)
 }
 
 /// Turns a command into the events that carry it out, or refuses it. Pure: the same command on the same shelf with
@@ -372,6 +376,13 @@ struct Planner {
       case .imported: .import
       }
     guard context.source == expected else { throw .originMismatch }
+    if case .firstPiece = origin, !shelf.objects.isEmpty { throw .notTheFirstPiece }
+    if let awaited = draft.awaitingType {
+      let exists = context.catalogue.manifest(awaited) != nil
+      guard draft.type == "thing", exists, !Catalogue.enabledInV1.contains(awaited) else {
+        throw .cantAwaitType(awaited)
+      }
+    }
     let needsDetails = origin == .captured && draft.needsDetails
     guard hasTitle || needsDetails else { throw .emptyTitle }
     let bulk: ShelfObject.Bulk =
@@ -425,10 +436,16 @@ struct Planner {
       priceCap: nil,
       letGo: nil,
       promotedFrom: nil,
+      awaitingType: draft.awaitingType,
       createdAt: context.at,
       updatedAt: context.at
     )
-    emit(.added(object, origin: origin))
+    // The story is the collector's words, kept as they typed or tapped them (PD-166).
+    if case .firstPiece(let story) = origin {
+      emit(.added(object, origin: .firstPiece(story: story.trimmingCharacters(in: .whitespacesAndNewlines))))
+    } else {
+      emit(.added(object, origin: origin))
+    }
   }
 
   mutating func edit(_ id: ObjectID, values: [FieldKey: FieldValue?]) throws(ShelfRuleViolation) {
@@ -487,6 +504,7 @@ struct Planner {
       priceCap: nil,
       letGo: nil,
       promotedFrom: object.id,
+      awaitingType: object.awaitingType,
       createdAt: context.at,
       updatedAt: context.at
     )

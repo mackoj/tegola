@@ -128,11 +128,17 @@ public enum SettingKey: String, CaseIterable, Sendable {
   case money
   /// The collection the last object was added to: where Add to points next (F6).
   case lastCollection
+  /// `TypeTesters`: the types the collector said **Count me in** to (46, 2B; PD-031).
+  case typeTesters
+  /// "true" once the collector chose **Just look around first**: the app stops opening on the first piece (PLAN F2).
+  case firstPieceSkipped
 
   public var id: UUID {
     switch self {
     case .money: UUID(uuidString: "5E771965-0000-4000-8000-000000000001")!
     case .lastCollection: UUID(uuidString: "5E771965-0000-4000-8000-000000000002")!
+    case .typeTesters: UUID(uuidString: "5E771965-0000-4000-8000-000000000003")!
+    case .firstPieceSkipped: UUID(uuidString: "5E771965-0000-4000-8000-000000000004")!
     }
   }
 }

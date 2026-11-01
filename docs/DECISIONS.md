@@ -388,3 +388,31 @@ only describes the piece in words. The same guess reads the text a capture recog
 - **No word names two types.** A shared word would make one of them unguessable; a test refuses it.
 - **Every type is guessable, enabled or not.** A guess says whether its type has shipped, so a watch is recognised
   as a watch and saved as a Thing that waits for the type (46, 2B; D-59).
+
+### D-59 · The first piece: one write, a waiting Thing, and what the payoff says
+
+> 46: "If the type hasn't shipped yet, the user becomes a tester for it." PD-031: "A shipped type offers migration
+> and never imposes it."
+
+**Gap.** Page 46 says a watch is "saved safely as a Thing" and that testers' "pieces upgrade automatically", but not
+how a Thing remembers what it is, where **Count me in** is kept, or what the payoff says when a clock has nothing to
+say yet.
+
+**Decision.**
+
+- **One write.** `ShelfCommand.firstPiece(draft, story:catalogue:)` is an `add` into a new collection named by the
+  type file (`name.collection`, PD-137), with the `firstPiece(story:)` origin. `plan` refuses it on a shelf that has
+  ever had an object (`notTheFirstPiece`): onboarding happens once. Letting the piece go doesn't bring it back.
+- **The story is the collector's words.** The chip they tapped and the line they typed are stored as one trimmed
+  text, in the language they answered in, like any note. It's the `added` event's origin, so it's the History slot's
+  first line, and it's never `acquired` (PD-165). An empty story is allowed: nothing on the screen is required.
+- **A waiting Thing.** `ObjectDraft.recognised(as:)` turns a guess of a type that hasn't shipped into a Thing with
+  `awaitingType` set. It keeps only what every type means the same way: the title, the maker, the year and the notes.
+  `plan` allows `awaitingType` only on a Thing, and only for a type that exists and isn't enabled
+  (`cantAwaitType`). `Shelf.waiting(for:)` lists those pieces, for the migration a shipped type offers (v1.x).
+- **Count me in** is a setting, not a shelf change (`SettingKey.typeTesters`, read as `TypeTesters`): it describes
+  the collector, not an object, and it has no history. So is **Just look around first** (`firstPieceSkipped`).
+  `ShelfSnapshot.opensOnFirstPiece` is true while the shelf has no object and it hasn't been skipped.
+- **The payoff** (`FirstPiecePayoff`) is the most urgent thing the piece's clocks say now, at any status, good
+  included. When they say nothing yet, it's the earliest date one will (`Clocks.firstSignalDate`): page 46's wine,
+  "Not yet. Soon." A piece with no clock shows its story alone. T4.6's first notification reads the same date.

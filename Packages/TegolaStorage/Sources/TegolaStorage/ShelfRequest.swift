@@ -2,7 +2,7 @@ import Foundation
 public import SQLiteData
 public import TegolaModel
 
-/// What the shelf's screens read: the projection and the money setting, in one transaction. Screens hold it in a
+/// What the shelf's screens read: the projection and the settings that steer them, in one transaction. Screens hold it in a
 /// `@Fetch`, so they update whenever a command changes the database, and derive what they show with the pure read
 /// models (`ShelfSummary`, `CollectionMeta`, `ObjectSlots`).
 public struct ShelfSnapshot: Hashable, Sendable {
@@ -10,11 +10,25 @@ public struct ShelfSnapshot: Hashable, Sendable {
   public var money: MoneyVisibility
   /// Where the last object was added, if that collection still exists.
   public var lastCollection: CollectionID?
+  public var typeTesters: TypeTesters
+  public var firstPieceSkipped: Bool
 
-  public init(shelf: Shelf = Shelf(), money: MoneyVisibility = .off, lastCollection: CollectionID? = nil) {
+  /// The app opens on the first piece while the shelf has never had an object and the collector hasn't chosen to
+  /// look around first (PLAN F2). Letting a piece go doesn't bring onboarding back.
+  public var opensOnFirstPiece: Bool { shelf.objects.isEmpty && !firstPieceSkipped }
+
+  public init(
+    shelf: Shelf = Shelf(),
+    money: MoneyVisibility = .off,
+    lastCollection: CollectionID? = nil,
+    typeTesters: TypeTesters = TypeTesters(),
+    firstPieceSkipped: Bool = false
+  ) {
     self.shelf = shelf
     self.money = money
     self.lastCollection = lastCollection
+    self.typeTesters = typeTesters
+    self.firstPieceSkipped = firstPieceSkipped
   }
 }
 
@@ -26,10 +40,14 @@ public struct ShelfRequest: FetchKeyRequest {
     let shelf = try ShelfStore.loadShelf(db)
     let last = try SettingRow.find(SettingKey.lastCollection.id).fetchOne(db)
       .flatMap { UUID(uuidString: $0.value) }.map(CollectionID.init)
+    let testers = try SettingRow.find(SettingKey.typeTesters.id).fetchOne(db)?.value
+    let skipped = try SettingRow.find(SettingKey.firstPieceSkipped.id).fetchOne(db)?.value == "true"
     return ShelfSnapshot(
       shelf: shelf,
       money: money ?? .off,
-      lastCollection: last.flatMap { shelf.collections[$0] == nil ? nil : $0 }
+      lastCollection: last.flatMap { shelf.collections[$0] == nil ? nil : $0 },
+      typeTesters: TypeTesters(setting: testers),
+      firstPieceSkipped: skipped
     )
   }
 }

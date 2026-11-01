@@ -61,6 +61,8 @@ public struct ObjectDraft: Hashable, Sendable {
   public var quantity: Int
   /// For a capture: nothing could be identified, so the object needs details (CONTEXT: Needs details).
   public var needsDetails: Bool
+  /// A piece recognised as a type that hasn't shipped is saved as a Thing that waits for it (D-59).
+  public var awaitingType: TypeManifest.ID?
 
   public init(
     type: TypeManifest.ID,
@@ -69,7 +71,8 @@ public struct ObjectDraft: Hashable, Sendable {
     ownership: ShelfObject.Ownership = .owned,
     bulk: ShelfObject.Bulk? = nil,
     quantity: Int = 1,
-    needsDetails: Bool = false
+    needsDetails: Bool = false,
+    awaitingType: TypeManifest.ID? = nil
   ) {
     self.type = type
     self.subtype = subtype
@@ -78,6 +81,22 @@ public struct ObjectDraft: Hashable, Sendable {
     self.bulk = bulk
     self.quantity = quantity
     self.needsDetails = needsDetails
+    self.awaitingType = awaitingType
+  }
+
+  /// A piece the collector or a guess said is `type`. A type that hasn't shipped becomes a Thing waiting for it
+  /// (46, 2B; D-59), keeping only what every type means the same way: the title, the maker, the year and the notes.
+  public static func recognised(
+    as type: TypeManifest.ID,
+    subtype: String? = nil,
+    values: [FieldKey: FieldValue],
+    catalogue: Catalogue
+  ) -> ObjectDraft {
+    if Catalogue.enabledInV1.contains(type) {
+      return ObjectDraft(type: type, subtype: subtype, values: values)
+    }
+    let spine = values.filter { [.title, .subtitle, .year, .notes].contains($0.key) }
+    return ObjectDraft(type: "thing", values: spine, awaitingType: catalogue.manifest(type) == nil ? nil : type)
   }
 }
 
@@ -85,6 +104,15 @@ public struct ObjectDraft: Hashable, Sendable {
 public enum CollectionChoice: Hashable, Sendable {
   case existing(CollectionID)
   case new(name: String)
+}
+
+extension ShelfCommand {
+  /// The onboarding's one write (PLAN F2): the piece, in the collection its type names, which the collector never
+  /// created (PD-137), with how it came to them as its first history line (PD-166). Never `acquired` (PD-165).
+  public static func firstPiece(_ draft: ObjectDraft, story: String, catalogue: Catalogue) -> ShelfCommand {
+    let name = catalogue.manifest(draft.type)?.name.collection ?? draft.type.rawValue
+    return .add(draft, to: .new(name: name), origin: .firstPiece(story: story))
+  }
 }
 
 /// Who a loan is with: someone already on the shelf, or a name typed for the first time (CONTEXT: Person).
