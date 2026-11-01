@@ -78,7 +78,7 @@ public struct TodayStrip: Hashable, Sendable {
   public enum Line: Hashable, Sendable {
     /// Objects waiting to be confirmed or given details.
     case toTidy(Int)
-    /// Objects whose status is watch or act.
+    /// Objects whose status is watch or act, less the overdue ones: they have their own line (D-59).
     case needAttention(Int)
     /// Loans past their due date.
     case overdue(Int)
@@ -89,11 +89,9 @@ public struct TodayStrip: Hashable, Sendable {
   public init(shelf: Shelf, now: Date, statuses: [ObjectID: ObjectStatus]) {
     let live = shelf.objects.values.filter { $0.letGo == nil }
     let tidy = live.filter { $0.identity != .confirmed }.count
-    let attention = live.filter { statuses[$0.id]?.needsAttention == true }.count
-    let overdue = shelf.loans.values.filter {
-      $0.isOpen && $0.direction == .out && ($0.dueAt.map { $0 < now } ?? false)
-    }
-    .count
+    let overdueObjects = Set(shelf.loans.values.filter { $0.isOverdue(at: now) }.map(\.objectID))
+    let attention = live.filter { statuses[$0.id]?.needsAttention == true && !overdueObjects.contains($0.id) }.count
+    let overdue = shelf.loans.values.filter { $0.isOverdue(at: now) }.count
     lines = [.toTidy(tidy), .needAttention(attention), .overdue(overdue)].filter { line in
       switch line {
       case .toTidy(let n), .needAttention(let n), .overdue(let n): n > 0

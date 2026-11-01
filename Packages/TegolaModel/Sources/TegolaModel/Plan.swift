@@ -548,22 +548,28 @@ extension Shelf {
     case .placeCreated(let place): places[place.id] = place
     case .personCreated(let person): persons[person.id] = person
     case .workCreated(let work): works[work.id] = work
-    case .added(let object, _): objects[object.id] = object
+    case .added(var object, _):
+      object.noteValues(before: [:], at: at)
+      objects[object.id] = object
     case .edited(let id, let changes):
       touch(id) { object in
+        let before = object.values
         for (key, value) in changes {
           object.values[key] = value
           // The collector touched it, so it's theirs now: no AUTO badge, and no lookup changes it again.
           object.auto.remove(key)
           object.typed.insert(key)
         }
+        object.noteValues(before: before, at: at)
       }
     case .enriched(let id, let changes):
       touch(id) { object in
+        let before = object.values
         for (key, value) in changes {
           object.values[key] = value
           object.auto.insert(key)
         }
+        object.noteValues(before: before, at: at)
       }
     case .confirmed(let id): touch(id) { $0.identity = .confirmed }
     case .placed(let id, let place): touch(id) { $0.placeID = place }
@@ -588,7 +594,14 @@ extension Shelf {
     case .gaveBack(let id, _):
       loans[id]?.closedAt = at
       loans[id]?.closedBy = .collector
-    case .logged(let id, _, _): touch(id) { _ in }
+    case .logged(let id, let kind, _):
+      touch(id) { object in
+        switch kind {
+        case ShelfEvent.Kind.servicedKind: object.signalState = object.signalState.or().with { $0.lastServiced = at }
+        case ShelfEvent.Kind.backedUpKind: object.signalState = object.signalState.or().with { $0.lastBackedUp = at }
+        default: break
+        }
+      }
     case .ownershipChanged(let id, let ownership):
       touch(id) { object in
         object.ownership = ownership

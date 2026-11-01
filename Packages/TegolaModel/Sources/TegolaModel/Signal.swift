@@ -39,6 +39,49 @@ public struct Signal: Hashable, Sendable {
   }
 }
 
+/// What an object's clocks read beyond its values, kept by `apply` (D-59). Stored on the object, so reading a whole
+/// shelf's signals needs no event history.
+public struct SignalState: Hashable, Sendable, Codable {
+  /// The latest `serviced` event.
+  public var lastServiced: Date?
+  /// The latest `backedUp` event (D-58).
+  public var lastBackedUp: Date?
+  /// When `playStatus` last turned to Playing, while it still is.
+  public var playingSince: Date?
+
+  public init(lastServiced: Date? = nil, lastBackedUp: Date? = nil, playingSince: Date? = nil) {
+    self.lastServiced = lastServiced
+    self.lastBackedUp = lastBackedUp
+    self.playingSince = playingSince
+  }
+
+  func with(_ change: (inout Self) -> Void) -> Self {
+    var copy = self
+    change(&copy)
+    return copy
+  }
+}
+
+extension SignalState? {
+  func or() -> SignalState { self ?? SignalState() }
+}
+
+extension ShelfObject {
+  static let playStatus = FieldKey.field("playStatus")
+  static let playing = FieldValue.text("Playing")
+
+  /// After a change to its values: note when it started Playing, and forget it once it's anything else.
+  mutating func noteValues(before: [FieldKey: FieldValue], at: Date) {
+    let now = values[Self.playStatus]
+    guard now != before[Self.playStatus] else { return }
+    if now == Self.playing {
+      signalState = signalState.or().with { $0.playingSince = at }
+    } else if signalState?.playingSince != nil {
+      signalState = signalState.or().with { $0.playingSince = nil }
+    }
+  }
+}
+
 extension ShelfEvent.Kind {
   /// The `logged` kind a service writes: "Log a battery swap" is one (F15). It resets the clocks that read it.
   public static let servicedKind = "serviced"
@@ -48,16 +91,15 @@ extension ShelfEvent.Kind {
 
 /// The signals an object's clocks give at `now`: one per clock the type runs, in the type's order. A clock held back
 /// (`-pending`, D-37) gives none, and so does one with nothing to read, or an opt-in clock the collector hasn't turned
-/// on. Pure: the object's events, the moment and the calendar come in, so the same inputs give the same reading.
+/// on. Pure: the object (with its `signalState`), the moment and the calendar come in.
 public func signals(
   for object: ShelfObject,
   type: EffectiveType,
-  events: [ShelfEvent],
   now: Date,
   calendar: Calendar,
   optedIn: Set<String> = []
 ) -> [Signal] {
-  let reading = ClockReading(object: object, events: events, now: now, calendar: calendar)
+  let reading = ClockReading(object: object, now: now, calendar: calendar)
   return type.clocks.compactMap { reference in
     guard !reference.isPending, let definition = reference.definition,
       !definition.isOptIn || optedIn.contains(definition.name)
@@ -94,47 +136,18 @@ struct ClockReading {
     self.calendar = calendar
   }
 
-  init(object: ShelfObject, events: [ShelfEvent], now: Date, calendar: Calendar) {
-    let last = { (wanted: String) in
-      events
-        .filter { event in
-          guard event.at <= now, case .logged(let id, let kind, _) = event.kind else { return false }
-          return id == object.id && kind == wanted
-        }
-        .map(\.at).max()
-    }
+  init(object: ShelfObject, now: Date, calendar: Calendar) {
+    let state = object.signalState ?? SignalState()
+    // A moment after `now` hasn't happened yet: reading the past stays the past.
+    let past = { (date: Date?) in date.flatMap { $0 <= now ? $0 : nil } }
     self.init(
       values: object.values,
-      lastServiced: last(ShelfEvent.Kind.servicedKind),
-      lastBackedUp: last(ShelfEvent.Kind.backedUpKind),
-      playingSince: Self.playingSince(object: object, events: events, now: now),
+      lastServiced: past(state.lastServiced),
+      lastBackedUp: past(state.lastBackedUp),
+      playingSince: past(state.playingSince),
       now: now,
       calendar: calendar
     )
-  }
-
-  static let playing = FieldValue.text("Playing")
-
-  /// The moment the object's `playStatus` last turned to Playing, from its `added` and `edited` events. Nothing once
-  /// it's anything else.
-  static func playingSince(object: ShelfObject, events: [ShelfEvent], now: Date) -> Date? {
-    guard object.values[.field("playStatus")] == playing else { return nil }
-    var since: Date?
-    var current: FieldValue?
-    for event in events.sorted(by: { ($0.at, $0.seq) < ($1.at, $1.seq) }) where event.at <= now {
-      let next: FieldValue??
-      switch event.kind {
-      case .added(let added, _) where added.id == object.id: next = .some(added.values[.field("playStatus")])
-      case .edited(let id, let changes) where id == object.id: next = changes[.field("playStatus")]
-      case .enriched(let id, let changes) where id == object.id:
-        next = changes[.field("playStatus")].map { FieldValue?.some($0) }
-      default: next = nil
-      }
-      guard let value = next else { continue }
-      if value == playing && current != playing { since = event.at }
-      current = value
-    }
-    return since
   }
 
   func signal(_ clock: ClockDefinition) -> Signal? {

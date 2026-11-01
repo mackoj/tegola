@@ -3,6 +3,7 @@ public import Foundation
 public import SQLiteData
 public import TegolaModel
 public import TegolaStorage
+import TegolaClients
 
 /// The Shelf home (F3, board 01): the count, the Today strip, the collections as tiles, the wishlist, and the empty
 /// shelf (board 02) before the first object. It reads the shelf through one query and asks for screens by route.
@@ -21,7 +22,12 @@ public struct ShelfFeature {
     }
 
     public var summary: ShelfSummary {
-      ShelfSummary(shelf: snapshot.shelf, money: snapshot.money, now: now)
+      ShelfSummary(
+        shelf: snapshot.shelf,
+        money: snapshot.money,
+        now: now,
+        statuses: snapshot.signals(at: now).statuses
+      )
     }
 
     /// Nothing on the shelf at all, wanted objects included: the empty state (board 02).

@@ -351,3 +351,13 @@ A clock with nothing to read gives no signal: no year, no date, no known service
 > Owner (2026-11-01), on `mediaRot` and `discRot` never reaching *act*: "maybe try to make a backup of it".
 
 **Decision.** What a collector does about ageing media is back it up. The media clocks reach *act* at twice their interval, and their action is **Make a backup**, logged as a `backedUp` event (`logEvent`). A backup or a service resets them. Disc rot stays pending on v1's types (D-57), so in v1 this shows on video media's tapes once that type ships.
+
+### D-59 · Status, and what the clocks read
+
+**Gap.** D-15 says status is derived in the model, from One Roof's rules, but One Roof only gives the five swatches and "needs attention = watch or act". D-48 left the slot's M4 rules open. A signal needs an object's service, backup and play history, and the screens read a projection with no events.
+
+**Decision.**
+- **The rule** (`ObjectStatus.derive`): let go is *gone*. Wanted and borrowed objects have no signals and are *fine*: they aren't the collector's to look after. An owned object takes the most urgent of its showing signals; a loan out past its due date raises it to *act*; with no signal it's *fine*. To tidy, needs details and lent keep their M3 labels in the slot (D-48) and don't change the swatch.
+- **Counted once.** The Today strip's *need attention* leaves out objects that are overdue, which have their own line.
+- **What the clocks read** is kept on the object as `signalState` (last service, last backup, playing since), written by `apply` from `logged` and value events. Objects are stored as JSON (D-39), so it needs no migration, and a replay rebuilds it. A whole shelf's signals (`ShelfSignals`) then need no history.
+- **The calendar** is a dependency, like the date: a clock's year boundary comes from `\.calendar`, never `Calendar.current`.

@@ -29,7 +29,6 @@ extension Calendar {
     return TegolaModel.signals(
       for: object,
       type: type,
-      events: harness.log.filter { $0.objectID == id },
       now: harness.clock,
       calendar: .utc
     )
@@ -166,14 +165,12 @@ extension Calendar {
     let started = try #require(harness.log.last?.at)
     let object = try #require(harness.shelf.objects[id])
     let type = try Harness.catalogue.resolve(object.typeID, subtype: object.subtype)
-    let events = harness.log.filter { $0.objectID == id }
     let later = Calendar.utc.date(byAdding: .month, value: 14, to: started)!
-    let off = TegolaModel.signals(for: object, type: type, events: events, now: later, calendar: .utc)
+    let off = TegolaModel.signals(for: object, type: type, now: later, calendar: .utc)
     #expect(off.isEmpty)
     let on = TegolaModel.signals(
       for: object,
       type: type,
-      events: events,
       now: later,
       calendar: .utc,
       optedIn: ["unfinished"]
@@ -185,7 +182,6 @@ extension Calendar {
       TegolaModel.signals(
         for: finished,
         type: type,
-        events: harness.log.filter { $0.objectID == id },
         now: later,
         calendar: .utc,
         optedIn: ["unfinished"]
