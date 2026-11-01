@@ -127,6 +127,18 @@ struct ImportBatchRow: Identifiable {
   var data: String
 }
 
+/// An identifier waiting for the network (PLAN §7). Not shelf history, so not an event: the queue's own state.
+@Table("lookupQueue")
+struct LookupRow: Identifiable {
+  let id: UUID
+  var objectID: UUID
+  var attempts: Int
+  var lastTriedAt: Date?
+  var state: String
+  /// The model value as JSON (`StoredJSON`).
+  var data: String
+}
+
 /// A setting the collector changed (PD-161, ADR-0008): only those are stored, so a missing row is the default. Not a
 /// shelf change, so not an event. Each setting has a fixed id, because `SyncEngine` allows no unique constraint on
 /// `key` (D-44).
@@ -339,6 +351,23 @@ extension ShelfStore {
         """
       )
       .execute(db)
+    }
+    // PLAN §3.2's `lookupQueue`. A row goes when its object does, so no request outlives what it was for.
+    migrator.registerMigration("Create the lookup queue") { db in
+      try #sql(
+        """
+        CREATE TABLE "lookupQueue" (
+          "id" TEXT PRIMARY KEY NOT NULL ON CONFLICT REPLACE DEFAULT (uuid()),
+          "objectID" TEXT NOT NULL REFERENCES "objects"("id") ON DELETE CASCADE,
+          "attempts" INTEGER NOT NULL ON CONFLICT REPLACE DEFAULT 0,
+          "lastTriedAt" TEXT,
+          "state" TEXT NOT NULL,
+          "data" TEXT NOT NULL
+        ) STRICT
+        """
+      )
+      .execute(db)
+      try #sql(#"CREATE INDEX "index_lookupQueue_on_objectID" ON "lookupQueue"("objectID")"#).execute(db)
     }
     return migrator
   }

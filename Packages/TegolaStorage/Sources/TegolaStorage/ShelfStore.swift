@@ -1,4 +1,4 @@
-import Foundation
+public import Foundation
 public import SQLiteData
 public import TegolaCatalogue
 public import TegolaModel
@@ -47,8 +47,15 @@ public struct ShelfStore: Sendable {
 
   /// Checks a command against the rules, appends its events to the log and applies them to the projection, in one
   /// transaction. A refused command throws `ShelfRuleViolation` and writes nothing.
+  ///
+  /// A capture's identifier, when there is one, is queued for the object it added in the same transaction, so it's
+  /// saved before any network (PLAN §7, PD-046).
   @discardableResult
-  public func perform(_ command: ShelfCommand, context: PlanContext) throws -> CommandReceipt {
+  public func perform(
+    _ command: ShelfCommand,
+    context: PlanContext,
+    lookup: LookupQueue.Request.Identifier? = nil
+  ) throws -> CommandReceipt {
     try database.write { db in
       let before = try Self.loadShelf(db)
       let events = try plan(command, on: before, context: context)
@@ -57,8 +64,44 @@ public struct ShelfStore: Sendable {
         try EventRow.insert { EventRow(event) }.execute(db)
       }
       try Self.writeChanges(from: before, to: after, at: context.at, db)
-      return CommandReceipt(events: events, batchID: events.first?.batchID ?? context.batchID)
+      let receipt = CommandReceipt(events: events, batchID: events.first?.batchID ?? context.batchID)
+      if let lookup, let id = receipt.createdObjects.first, let object = after.objects[id] {
+        let request = LookupQueue.Request(
+          id: context.makeID(),
+          objectID: id,
+          type: object.typeID,
+          subtype: object.subtype,
+          identifier: lookup,
+          queuedAt: context.at
+        )
+        try LookupRow.insert { LookupRow(request) }.execute(db)
+      }
+      return receipt
     }
+  }
+
+  /// The lookups waiting, answered or given up, for the worker and the review queue. Those of an object an undo
+  /// removed are gone with it.
+  public func lookupQueue() throws -> LookupQueue {
+    try database.read { db in try Self.loadQueue(db) }
+  }
+
+  /// What happened when the worker tried a request (PLAN §7).
+  public func recordLookup(_ id: UUID, _ outcome: LookupQueue.Outcome, at now: Date) throws {
+    try database.write { db in
+      var queue = try Self.loadQueue(db)
+      queue.record(id, outcome, at: now)
+      if let request = queue.requests.first(where: { $0.id == id }) {
+        try LookupRow.upsert { LookupRow(request) }.execute(db)
+      }
+    }
+  }
+
+  static func loadQueue(_ db: Database) throws -> LookupQueue {
+    let live = Set(try ObjectRow.where { $0.deletedAt.is(nil) }.select(\.id).fetchAll(db))
+    let requests = try LookupRow.fetchAll(db).filter { live.contains($0.objectID) }
+      .map { try StoredJSON.decode(LookupQueue.Request.self, from: $0.data) }
+    return LookupQueue(requests: requests)
   }
 
   /// The projection, as the model sees it.
@@ -304,6 +347,19 @@ extension ImportBatchRow {
       rowCount: value.rowCount,
       createdAt: value.at,
       undoneAt: value.undoneAt,
+      data: StoredJSON.encode(value)
+    )
+  }
+}
+
+extension LookupRow {
+  init(_ value: LookupQueue.Request) {
+    self.init(
+      id: value.id,
+      objectID: value.objectID.rawValue,
+      attempts: value.attempts,
+      lastTriedAt: value.lastTriedAt,
+      state: value.state.rawValue,
       data: StoredJSON.encode(value)
     )
   }

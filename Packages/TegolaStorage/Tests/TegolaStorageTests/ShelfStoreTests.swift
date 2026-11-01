@@ -171,6 +171,33 @@ struct StoreHarness {
     #expect(try harness.store.shelf() == live)
   }
 
+  /// A capture's barcode is queued with its object, in the same write, and the queue keeps what the worker learns.
+  @Test func aCapturedIdentifierWaitsInTheQueue() throws {
+    let harness = try StoreHarness()
+    let receipt = try harness.store.perform(
+      .add(Self.draft("Mario Kart 64", subtype: "n64"), to: .new(name: "Games"), origin: .captured),
+      context: harness.context(.capture),
+      lookup: .barcode("045496870010")
+    )
+    let id = try #require(receipt.createdObjects.first)
+    var queue = try harness.store.lookupQueue()
+    let request = try #require(queue.next(at: harness.clock))
+    #expect(request.objectID == id && request.subtype == "n64" && request.identifier == .barcode("045496870010"))
+    try harness.store.recordLookup(request.id, .failed, at: harness.clock)
+    queue = try harness.store.lookupQueue()
+    #expect(queue.requests.map(\.attempts) == [1])
+    #expect(queue.next(at: harness.clock) == nil)
+    // A refused command queues nothing.
+    #expect(throws: (any Error).self) {
+      try harness.store.perform(
+        .add(Self.draft(""), to: .new(name: "Games"), origin: .captured),
+        context: harness.context(.capture),
+        lookup: .barcode("1")
+      )
+    }
+    #expect(try harness.store.lookupQueue().requests.count == 1)
+  }
+
   /// The replay test (PLAN §3.1): for random command sequences on every v1 type, rebuilding the projection from the
   /// log gives the tables the commands left, and both equal the model's own replay.
   @Test(arguments: Catalogue.enabledInV1)
