@@ -3,17 +3,15 @@
 The state of the work for whoever picks it up next: a new session, another agent, or the owner. Read this first, keep
 it short and current.
 
-**Updated:** 2026-11-01, after M6 finished on `m6-capture-lookup-import`.
+**Updated:** 2026-11-01, after M5 (#16) and M6 (#17) merged.
 
-**Resume here: M7 (people), once M5 and M6 are merged.** Lookup contract 0.2.0 is merged (PR #15, D-71), and
-tegola-server takes it on. Two PRs wait, in this order:
-- #16, M5 (`docs/milestones/M5.md`);
-- M6, on `m6-capture-lookup-import`, stacked on #16 (`docs/milestones/M6.md`).
+**Resume here: M7 (people), on `m7-people`.** The breakdown is in `tasks/plan.md`, M7: T7.1 to T7.4 are model work
+(Linux), T7.5 to T7.10 the screens, notifications and journey 3 (Mac). It needs nothing from tegola-server.
 
 ## Where things stand
 
 - **Spec:** approved (`docs/PLAN.md`, answers in §10). Decisions: D-1 to D-70.
-- **M1 to M4:** merged (PRs #5, #8, #9, #13; `docs/milestones/M1.md` to `M4.md`).
+- **M1 to M6:** merged (PRs #5, #8, #9, #13, #14, #16, #17; `docs/milestones/M1.md` to `M6.md`).
 - **M6 (capture, lookup, import):** done. The Mac half:
   - the lookup client with App Attest, and the queue's worker (T6.8, D-73);
   - the Scan camera with the tray and Identify (T6.9);
@@ -53,7 +51,7 @@ tegola-server takes it on. Two PRs wait, in this order:
    - D-72: the first piece's story chips, *What is it?*'s type chips, and the sync fallback;
    - D-73 to D-75: the worker and App Attest, Bring your list (NoteReader everywhere for now), Review;
    - the exit tests with people: M3's 30 objects, M4's 8 of 10 signals, M5's 5 of 6 testers (`docs/UX-FINDINGS.md`).
-2. **M7** (people): `tasks/plan.md`, M7.
+2. **M7** (people): `tasks/plan.md`, M7, from T7.1.
 3. **Later:** M8 (keeping, You: the `unfinished` toggle lives there), M9 (polish).
 
 ## Run it locally (Mac)

@@ -90,6 +90,21 @@ Plan: `tasks/plan.md`, M6. Report: `docs/milestones/M6.md`.
 - [x] T6.11 Review queue and matches
 - [x] T6.12 Journey 2, docs, review
 
+## M7 · people (branch `m7-people`)
+
+Plan: `tasks/plan.md`, M7.
+
+- [ ] T7.1 People read models: `PersonRecord`, `Activity`, the badge, recent names
+- [ ] T7.2 Return details, and the person's name in the history (D-3)
+- [ ] T7.3 Loan reminders and the nudge's line
+- [ ] T7.4 Share cards (never what was paid)
+- [ ] T7.5 Lend and Return sheets
+- [ ] T7.6 The Person screen
+- [ ] T7.7 Activity
+- [ ] T7.8 Reminders and Nudge
+- [ ] T7.9 Share
+- [ ] T7.10 Journey 3, docs, review
+
 ## Open follow-ups
 
 - Share sheet: open a CSV from Files or Mail into Bring your list (needs document types in the generated Info.plist,

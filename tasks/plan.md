@@ -152,7 +152,32 @@ app, so they need the Mac.
 | T6.11 Review queue and matches | F7 and F8's screens: grouped rows with why, **Confirm**, **Fill in**, **Confirm all** for strong matches only; the match sheet's three choices; enrichment asks first | Mac: `ReviewQueueFeatureTests`, `MatchFeatureTests` |
 | T6.12 Journey 2, docs, review | *Bring your list* as a UI test (`--import-fixture`), the empty shelf's **Bring your list** (T5.7), DECISIONS, the M6 report, HANDOFF, `REVIEW.md` (skeleton candidate), a separate review agent | Mac: `scripts/test.sh app`; read-through |
 
-## M7 · people · M8 · keeping + you · M9 · polish
+## M7 · people (F13, F14)
 
-Lending, Activity, share cards; wishlist, let go, archive, saved views, settings, export, inventory document,
+Exit test: journey 3, *Lend at the door*, passes as a UI test: object → Lend → "Dara" → due in 2 weeks → overdue on
+a moved clock → Return → the history names Dara and says the loan was closed one-sided (PLAN §4.4, F13's *Done when*).
+
+What's already there: `lend`, `returnLoan`, `markBorrowed` and `giveBack` with their rules and events, the `persons`
+and `loans` tables (M2), a loan's overdue status and the Today strip's *N overdue* line (M4), and Places (F10, done in
+M3 as T3.11). Boards 17 to 22 are the screens; their "differs from the decision log" notes apply.
+
+Branch: `m7-people`. T7.1 to T7.4 are model work and build and test on Linux. T7.5 to T7.10 touch the features,
+notifications, the share sheet and the app, so they need the Mac. M7 needs nothing from tegola-server.
+
+| Task | Acceptance | Verify |
+|---|---|---|
+| T7.1 People read models | `PersonRecord` (board 19): what the person holds now, every loan both ways newest first, returned out of closed, the average days out, and nothing invented when there's no history. `Activity` (boards 17, 22): loans out with overdue first, then due soonest, then no date; *Returned*; *By person*; the objects borrowed in, oldest first. `Activity.badge` counts only overdue loans, so the badge is gone when nothing is due. The people picker's names, most recently used first. Borrowed and lent objects keep counting the way promise 4 says | Linux: `PeopleReadModelTests`, `ReadModelTests` |
+| T7.2 Return details and the history's person | `returnLoan` takes how it came back (*same shape*, *damaged*, *something missing*) and an optional note (board 20, PD-148), stored on the loan (nullable columns). `lent`, `returned`, `borrowed` and `gaveBack` carry the person's id and their name at the time (D-3), so a rename later doesn't rewrite history. A collector-closed loan says so (`closedBy: .collector`, PD-160) | Linux: `PlanTests`, storage replay, `CommandGenerator` covers the new arguments |
+| T7.3 Loan reminders and the nudge's line | `LoanReminders` (pure): one notification on the due date for each open loan out with a date, and none for a returned loan or one with no date. The nudge's friendly line names the object and how long it's been out, and never says what was paid | Linux: `LoanReminderTests` |
+| T7.4 Share cards | `ShareCard` (pure, F14): **the record** has the public facts only; **my copy** adds condition and photos, and an asking price only with money on. What was paid is never on a card, of either kind, with money on or off (a property test over the command generator's shelves). A wishlist shares as a list of wants that reveals no holdings (PD-071) | Linux: `ShareCardTests` |
+| T7.5 Lend and Return | `LendFeature` (board 18): names typed with recent first and **+ New**, **Back by** (2 weeks, 1 month, a date, or none), the optional note, **Hand it over**. `ReturnFeature` (board 20): the three ways back, the note, *What gets written*, **It's home**. Both from the object's actions; **Give back** and **Mark borrowed** for someone else's object | Mac: TestStore; snapshots |
+| T7.6 The Person screen | `PersonFeature` (board 19) on `Route.person`: the header, the two tiles, every loan with its chip, **Lend them something** (the picker preset). It opens from Activity, a loan's history line and the lend sheet's names | Mac: TestStore; snapshots |
+| T7.7 Activity | `ActivityFeature` replaces the placeholder tab (boards 17, 22): *Out now*, *Returned*, *By person*, and the borrowed objects with dashed edges. Each card's footer says due, overdue or out, with **Nudge** or **Mark returned**. The tab's badge is `Activity.badge` and the only badge in the app. The Today strip's *N overdue* line opens it | Mac: TestStore; snapshots; `AppFeatureTests` |
+| T7.8 Reminders and Nudge | `NotificationsClient` gets `replaceLoanReminders`, with a `loan.` prefix that leaves the clock notifications alone. It runs on the same occasions as the clocks' (D-61's offer covers both). **Nudge** opens the share sheet with T7.3's line and the object's card | Mac: TestStore records schedule calls |
+| T7.9 Share | `ShareFeature` from the object: **Share the record** and **Share my copy**. `ShareCardClient` renders the card view with `ImageRenderer` and opens the share sheet. The wishlist's card list | Mac: TestStore; snapshots of both cards, money on and off |
+| T7.10 Journey 3, docs, review | *Lend at the door* as a UI test, with the clock moved by a launch argument. DECISIONS, the M7 report, HANDOFF, a separate review agent | Mac: `scripts/test.sh app`; read-through |
+
+## M8 · keeping + you · M9 · polish
+
+Wishlist, let go, archive, saved views, settings, export, inventory document,
 nudges, analytics, debug screen; French, accessibility, journeys, performance. Broken down when M6 merges.
