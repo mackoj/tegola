@@ -30,6 +30,8 @@ extension DependencyValues {
     shelf = .store(store)
     settings = SettingsClient { key, value in try store.set(key, to: value) }
     photoStore = .inMemory()
+    // Offline: the lookup worker has nothing to do unless a test says otherwise.
+    reachability = ReachabilityClient(updates: { AsyncStream { $0.finish() } })
   }
 }
 

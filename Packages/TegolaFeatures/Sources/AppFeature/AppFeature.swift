@@ -6,6 +6,7 @@ public import FirstPieceFeature
 public import ObjectFeature
 public import PlacesFeature
 import SQLiteData
+import TegolaClients
 public import ShelfFeature
 public import SignalsFeature
 public import TegolaModel
@@ -50,6 +51,8 @@ public struct AppFeature {
     case firstPiece(PresentationAction<FirstPieceFeature.Action>)
     /// Scan, once the first piece's cover has gone: SwiftUI can't present a sheet while a cover is dismissing.
     case presentScan
+    /// Something was queued for a lookup: the worker starts again, so it goes out now.
+    case lookupsChanged
     case shelf(ShelfFeature.Action)
     case shelfPath(StackActionOf<AppPath>)
     case view(View)
@@ -62,6 +65,7 @@ public struct AppFeature {
   }
 
   @Dependency(\.continuousClock) var clock
+  @Dependency(\.reachability) var reachability
 
   public init() {}
 
@@ -96,14 +100,9 @@ public struct AppFeature {
       case .firstPiece:
         return .none
       case .view(.onAppear):
-        @Dependency(\.defaultDatabase) var database
-        do {
-          let snapshot = try database.read { db in try ShelfRequest().fetch(db) }
-          if snapshot.opensOnFirstPiece, state.firstPiece == nil { state.firstPiece = FirstPieceFeature.State() }
-        } catch {
-          reportIssue(error)
-        }
-        return .none
+        return .merge(openOnFirstPiece(&state), lookups())
+      case .lookupsChanged:
+        return lookups()
       case .addByHand:
         return .none
       case .find(.delegate(.open(let route))):
@@ -148,6 +147,33 @@ public struct AppFeature {
     .ifLet(\.$addByHand, action: \.addByHand) { AddByHandFeature() }
     .ifLet(\.$firstPiece, action: \.firstPiece) { FirstPieceFeature() }
   }
+
+  /// The app opens on the first piece while the shelf is empty and it hasn't been skipped (PLAN F2).
+  func openOnFirstPiece(_ state: inout State) -> Effect<Action> {
+    @Dependency(\.defaultDatabase) var database
+    do {
+      let snapshot = try database.read { db in try ShelfRequest().fetch(db) }
+      if snapshot.opensOnFirstPiece, state.firstPiece == nil { state.firstPiece = FirstPieceFeature.State() }
+    } catch {
+      reportIssue(error)
+    }
+    return .none
+  }
+
+  /// The lookup worker (PLAN §7, D-73): whenever the network is there, it drains the queue, then waits for the next
+  /// request to be ready. Restarted when something is queued, so a capture's lookup goes out at once.
+  func lookups() -> Effect<Action> {
+    .run { [reachability] _ in
+      for await online in reachability.updates() where online {
+        try await LookupWorker.run()
+      }
+    } catch: { error, _ in
+      if !(error is CancellationError) { reportIssue(error) }
+    }
+    .cancellable(id: CancelID.lookups, cancelInFlight: true)
+  }
+
+  enum CancelID { case lookups }
 
   /// The one place a route becomes a screen. Routes whose screen arrives later in M3 do nothing yet.
   static func push(_ route: Route, onto path: inout StackState<AppPath.State>) {

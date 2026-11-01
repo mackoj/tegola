@@ -136,6 +136,9 @@ public struct LookupQueue: Hashable, Sendable, Codable {
     /// Not before this: the backoff, or what the server's `Retry-After` asked for.
     public var notBefore: Date?
     public var state: State
+    /// What the server proposed, once answered: the review queue's candidates (D-73). Nil until then, and on rows
+    /// written before M6's Mac half.
+    public var answer: [LookupCandidate]?
 
     public init(
       id: UUID,
@@ -159,7 +162,7 @@ public struct LookupQueue: Hashable, Sendable, Codable {
   /// How a try ended.
   public enum Outcome: Hashable, Sendable {
     /// The server answered, with candidates or with none: either way the request is done.
-    case answered
+    case answered([LookupCandidate])
     /// The network or the server failed: one attempt spent, then the backoff.
     case failed
     /// `429` or `503`: the server asked to wait. No attempt is spent (PLAN §7: handed back, never slept on).
@@ -197,9 +200,10 @@ public struct LookupQueue: Hashable, Sendable, Codable {
     guard let index = requests.firstIndex(where: { $0.id == id }), requests[index].state == .waiting else { return }
     var request = requests[index]
     switch outcome {
-    case .answered:
+    case .answered(let candidates):
       request.state = .answered
       request.lastTriedAt = now
+      request.answer = candidates
     case .failed:
       request.attempts += 1
       request.lastTriedAt = now

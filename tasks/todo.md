@@ -84,7 +84,7 @@ Plan: `tasks/plan.md`, M6. Report: `docs/milestones/M6.md`.
 - [x] T6.5 `DiscogsCSVImporter`
 - [x] T6.6 Lookup queue and enrichment proposals
 - [x] T6.7 Matches, look-alikes, the exceptions queue's outcomes
-- [ ] T6.8 `LookupClient` and its middlewares (Mac)
+- [x] T6.8 `LookupClient`, App Attest and the worker
 - [ ] T6.9 Capture (Mac)
 - [ ] T6.10 Import screens and `ExtractionClient`'s cells (Mac)
 - [ ] T6.11 Review queue and match screens (Mac)

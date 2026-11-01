@@ -657,3 +657,31 @@ text, and v1 runs on iOS 26.
   collection, with the story as its note.
 - **When it opens:** at launch, while `opensOnFirstPiece`. The app reads the shelf once on appear to decide, and
   doesn't reopen onboarding later in the session.
+
+### D-73 · The lookup client, its worker, and where an answer waits
+
+> PLAN §7: "A result never writes. It creates an enrichment proposal." "`RetryMiddleware` honours `Retry-After` …
+> by handing the request back to the queue, never by sleeping in the call."
+
+**Gap.** D-69 made the queue pure and the answer a proposal, but nothing kept an answer until the review queue shows
+it, and PLAN §7 doesn't say where the server's address and a simulator's debug token come from.
+
+**Decision.**
+- **An answer waits on its request.** `LookupQueue.Outcome.answered` carries the candidates, and the request keeps
+  them (`answer`) in its `lookupQueue` row's JSON: no new table and no migration. The review queue reads them from
+  there; nothing touches the shelf until the collector applies a proposal (D-69).
+- **No retry middleware.** The generated client's typed outputs already say `429` and `503`, so `LookupClient` turns
+  them into `LookupFailure.retryAfter(seconds)` and the queue waits without spending an attempt. Other failures spend
+  one; `4xx` refusals too, so a request the server keeps refusing ends in *needs details* after five.
+- **A queued request** is a barcode lookup when it has a barcode, and `identifyObject` with the text or catalogue
+  number otherwise (D-71). A photo is never queued.
+- **The worker** runs from the app: when the network is there (`ReachabilityClient`, `NWPathMonitor`), it drains
+  every ready request once, oldest first, then sleeps until the next is ready (at most 15 minutes) and drains again.
+  It restarts when something is queued.
+- **App Attest** (`AppAttestMiddleware`): the key id is kept with `mackoj/swift-keychain`
+  (`KeychainKey.appAttestKeyID`). A first call registers a key; a `401` naming an unknown key registers once more and
+  retries once. The `appattest-environment` entitlement is `development`; App Store and TestFlight builds use
+  production whatever it says.
+- **Configuration.** Release builds call the production host. Debug builds read `TEGOLA_LOOKUP_URL` and
+  `TEGOLA_DEBUG_TOKEN` from the scheme's environment, so no token is ever in the bundle; with a token, calls carry
+  it instead of an assertion (contract, security step 3).

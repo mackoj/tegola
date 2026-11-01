@@ -33,6 +33,12 @@ let package = Package(
     .package(path: "../TegolaModel"),
     .package(path: "../TegolaStorage"),
     .package(path: "../TegolaDesignSystem"),
+    .package(path: "../TegolaLookupAPI"),
+    .package(path: "../TegolaInterchange"),
+    .package(url: "https://github.com/apple/swift-openapi-runtime", "1.8.0"..<"2.0.0"),
+    .package(url: "https://github.com/apple/swift-openapi-urlsession", "1.1.0"..<"2.0.0"),
+    .package(url: "https://github.com/mackoj/swift-keychain", "0.4.0"..<"0.5.0"),
+    .package(url: "https://github.com/apple/swift-http-types", "1.0.0"..<"2.0.0"),
   ],
   targets: [
     // Every client's interface with its test and preview values (PLAN §2.4). ShelfClient's live value is the
@@ -46,6 +52,11 @@ let package = Package(
         .product(name: "TegolaCatalogue", package: "TegolaCatalogue"),
         .product(name: "TegolaModel", package: "TegolaModel"),
         .product(name: "TegolaStorage", package: "TegolaStorage"),
+        .product(name: "TegolaLookupAPI", package: "TegolaLookupAPI"),
+        .product(name: "OpenAPIRuntime", package: "swift-openapi-runtime"),
+        .product(name: "OpenAPIURLSession", package: "swift-openapi-urlsession"),
+        .product(name: "Keychain", package: "swift-keychain"),
+        .product(name: "KeychainLive", package: "swift-keychain"),
       ],
       swiftSettings: swiftSettings
     ),
@@ -59,6 +70,9 @@ let package = Package(
         .product(name: "TegolaCatalogue", package: "TegolaCatalogue"),
         .product(name: "TegolaModel", package: "TegolaModel"),
         .product(name: "TegolaStorage", package: "TegolaStorage"),
+        .product(name: "OpenAPIRuntime", package: "swift-openapi-runtime"),
+        .product(name: "HTTPTypes", package: "swift-http-types"),
+        .product(name: "Keychain", package: "swift-keychain"),
       ],
       swiftSettings: swiftSettings
     ),
