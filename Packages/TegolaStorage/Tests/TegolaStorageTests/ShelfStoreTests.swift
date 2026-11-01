@@ -196,6 +196,18 @@ struct StoreHarness {
       )
     }
     #expect(try harness.store.lookupQueue().requests.count == 1)
+    // An answer keeps its candidates for the review queue (D-73).
+    let candidate = LookupCandidate(
+      releaseID: "igdb:1",
+      type: "video-game",
+      subtype: "n64",
+      values: [.title: .text("Ocarina of Time")],
+      confidence: 0.95,
+      reasons: [.barcode],
+      sources: [.init(name: "IGDB")]
+    )
+    try harness.store.recordLookup(request.id, .answered([candidate]), at: harness.clock + 3600)
+    #expect(try harness.store.lookupQueue().requests.first?.answer == [candidate])
   }
 
   /// The replay test (PLAN §3.1): for random command sequences on every v1 type, rebuilding the projection from the

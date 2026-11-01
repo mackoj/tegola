@@ -61,7 +61,8 @@ release_project = common_project + """				COPY_PHASE_STRIP = NO;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				VALIDATE_PRODUCT = YES;
 """
-app_settings = """				CODE_SIGN_STYLE = Automatic;
+app_settings = """				CODE_SIGN_ENTITLEMENTS = Tegola/Tegola.entitlements;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = Tegola;

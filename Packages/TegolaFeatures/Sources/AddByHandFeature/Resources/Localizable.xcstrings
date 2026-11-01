@@ -3,24 +3,6 @@
   "strings" : {
     "%lld added" : {
       "localizations" : {
-        "fr" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld ajouté"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld ajoutés"
-                }
-              }
-            }
-          }
-        },
         "en" : {
           "variations" : {
             "plural" : {
@@ -34,6 +16,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld added"
+                }
+              }
+            }
+          }
+        },
+        "fr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ajouté"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ajoutés"
                 }
               }
             }
@@ -87,6 +87,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Chaque objet a besoin d’un titre."
+          }
+        }
+      }
+    },
+    "Import a list" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importer une liste"
           }
         }
       }

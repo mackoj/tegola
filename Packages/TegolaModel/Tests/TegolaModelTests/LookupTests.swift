@@ -81,7 +81,7 @@ import Testing
     queue.enqueue(Self.request(1, at: 0))
     #expect(queue.requests.count == 2)
     #expect(queue.next(at: Self.start + 20)?.id == Self.request(1).id)
-    queue.record(Self.request(1).id, .answered, at: Self.start + 20)
+    queue.record(Self.request(1).id, .answered([]), at: Self.start + 20)
     #expect(queue.next(at: Self.start + 20)?.id == Self.request(2).id)
   }
 
@@ -113,7 +113,7 @@ import Testing
     #expect(queue.next(at: Self.start + 119) == nil)
     #expect(queue.next(at: Self.start + 120)?.id == id)
     // A finished request doesn't change again.
-    queue.record(id, .answered, at: Self.start + 120)
+    queue.record(id, .answered([]), at: Self.start + 120)
     queue.record(id, .failed, at: Self.start + 121)
     #expect(queue.requests[0].state == .answered && queue.requests[0].attempts == 0)
   }

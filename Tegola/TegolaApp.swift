@@ -21,6 +21,14 @@ struct TegolaApp: App {
     WindowGroup {
       AppView(store: Self.store)
         .tegolaTheme(.board)
+        #if DEBUG
+          .task {
+            let arguments = LaunchArguments(ProcessInfo.processInfo.arguments)
+            if let path = arguments.importFixture, let data = FileManager.default.contents(atPath: path) {
+              Self.store.send(.view(.importFixture(name: (path as NSString).lastPathComponent, data: data)))
+            }
+          }
+        #endif
     }
   }
 }

@@ -40,8 +40,7 @@
     }
 
     /// Board 02, as F2 has it: **Scan your first object**, the first piece's camera, and **Bring your list**, Add's
-    /// import, which waits for M6. **Type it** stays for a collector who'd rather not use the camera. No sample data
-    /// (PD-102).
+    /// import. **Type it** stays for a collector who'd rather not use the camera. No sample data (PD-102).
     var empty: some View {
       EmptyState(
         title: [Text("Nothing on the", bundle: .module), Text("shelf yet", bundle: .module)],
@@ -62,6 +61,13 @@
           }
           .buttonStyle(.tegola(.secondary))
           .accessibilityIdentifier("shelf.typeIt")
+          Button {
+            send(.bringListTapped)
+          } label: {
+            Text("Bring your list", bundle: .module)
+          }
+          .buttonStyle(.tegola(.secondary))
+          .accessibilityIdentifier("shelf.bringList")
         }
       }
     }
@@ -82,7 +88,11 @@
         )
       }
       if !summary.today.lines.isEmpty {
-        TodayStripView(lines: summary.today.lines) { send(.needAttentionTapped) }
+        TodayStripView(
+          lines: summary.today.lines,
+          openSignals: { send(.needAttentionTapped) },
+          openReview: { send(.toTidyTapped) }
+        )
       }
       if store.offersNotifications {
         notificationOffer
@@ -182,12 +192,25 @@
     let lines: [TodayStrip.Line]
     /// "Need attention" opens the signal feed (journey 5).
     let openSignals: () -> Void
+    /// "To tidy" opens the review queue (F8).
+    let openReview: () -> Void
 
     var body: some View {
       VStack(alignment: .leading, spacing: TegolaSpace.s) {
         Text("Today", bundle: .module).tegolaTextStyle(TegolaType.meta).foregroundStyle(TegolaRole.textMeta)
         ForEach(lines, id: \.self) { line in
-          if case .needAttention = line {
+          if case .toTidy = line {
+            Button(action: openReview) {
+              HStack {
+                text(line).tegolaTextStyle(TegolaType.heading).foregroundStyle(TegolaRole.text)
+                Spacer()
+                Text(verbatim: "→").tegolaTextStyle(TegolaType.heading).foregroundStyle(TegolaRole.textMuted)
+              }
+              .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityIdentifier("today.toTidy")
+          } else if case .needAttention = line {
             Button(action: openSignals) {
               HStack {
                 text(line).tegolaTextStyle(TegolaType.heading).foregroundStyle(TegolaRole.text)

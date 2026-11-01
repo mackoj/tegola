@@ -97,6 +97,26 @@ public struct ShelfStore: Sendable {
     }
   }
 
+  /// An answer that came without the queue: Identify's, for a shot with nothing read to queue (D-71, D-73). It's kept
+  /// as an answered request, so the review queue finds it where it finds the worker's; it's never sent.
+  public func recordAnswer(for object: ObjectID, _ candidates: [LookupCandidate], at now: Date, id: UUID) throws {
+    try database.write { db in
+      guard let row = try ObjectRow.find(object.rawValue).fetchOne(db), row.deletedAt == nil else { return }
+      var queue = LookupQueue(requests: [
+        LookupQueue.Request(
+          id: id,
+          objectID: object,
+          type: TypeManifest.ID(rawValue: row.typeID),
+          subtype: row.subtype,
+          identifier: .text(""),
+          queuedAt: now
+        )
+      ])
+      queue.record(id, .answered(candidates), at: now)
+      try LookupRow.insert { LookupRow(queue.requests[0]) }.execute(db)
+    }
+  }
+
   static func loadQueue(_ db: Database) throws -> LookupQueue {
     let live = Set(try ObjectRow.where { $0.deletedAt.is(nil) }.select(\.id).fetchAll(db))
     let requests = try LookupRow.fetchAll(db).filter { live.contains($0.objectID) }

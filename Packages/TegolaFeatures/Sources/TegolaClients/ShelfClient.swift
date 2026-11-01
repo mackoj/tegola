@@ -13,6 +13,10 @@ public struct ShelfClient: Sendable {
   /// Checks the command against the rules, appends its events and updates the projection, in one transaction. Throws
   /// `ShelfRuleViolation` for a command the rules refuse, and writes nothing.
   public var perform: @Sendable (_ command: ShelfCommand, _ source: ShelfEvent.Source) throws -> CommandReceipt
+  /// A capture's add, with what the camera read queued for a lookup in the same transaction, so the object is saved
+  /// before any network (PLAN §7, PD-046).
+  public var capture:
+    @Sendable (_ command: ShelfCommand, _ lookup: LookupQueue.Request.Identifier?) throws -> CommandReceipt
 }
 
 extension ShelfClient {
@@ -23,19 +27,16 @@ extension ShelfClient {
 
   /// A client over a store: the time from `date`, new ids from `uuid`.
   public static func store(_ store: ShelfStore) -> ShelfClient {
-    ShelfClient { command, source in
+    @Sendable func context(_ source: ShelfEvent.Source) -> PlanContext {
       @Dependency(\.date.now) var now
       @Dependency(\.uuid) var uuid
       @Dependency(\.calendar) var calendar
-      let context = PlanContext(
-        at: now,
-        source: source,
-        catalogue: store.catalogue,
-        calendar: calendar,
-        makeID: { uuid() }
-      )
-      return try store.perform(command, context: context)
+      return PlanContext(at: now, source: source, catalogue: store.catalogue, calendar: calendar, makeID: { uuid() })
     }
+    return ShelfClient(
+      perform: { command, source in try store.perform(command, context: context(source)) },
+      capture: { command, lookup in try store.perform(command, context: context(.capture), lookup: lookup) }
+    )
   }
 }
 
