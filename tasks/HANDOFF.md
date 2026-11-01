@@ -3,14 +3,19 @@
 The state of the work for whoever picks it up next: a new session, another agent, or the owner. Read this first, keep
 it short and current.
 
-**Updated:** 2026-11-01. M4's and M5's model halves are done (T4.1–T4.4, T5.1–T5.4); both screens halves wait for the Mac.
+**Updated:** 2026-11-01. M4's and M5's model halves are done (T4.1–T4.4, T5.1–T5.4); both screens halves wait for
+the Mac.
+
+**Resume here.** Branch `claude/tegola-rearchitecture-jcq29f` (8 commits ahead of `main`, last `924f6e2`), draft
+PR #12, which covers M4 and M5. Nothing is uncommitted. A cloud session can't go further than this without the Mac:
+every task left in M4 and M5 touches `TegolaFeatures`, snapshots or the app. Its useful work meanwhile is M6's pure
+side (the importers in `TegolaInterchange`, the lookup queue's model) or tegola-server.
 
 ## Where things stand
 
 - **Spec:** approved (`docs/PLAN.md`, answers in §10). Decisions: `docs/DECISIONS.md`, D-1 to D-59.
 - **M1–M3:** merged (PRs #5, #8, #9; reports in `docs/milestones/`).
-- **M4 (signals):** in progress on `claude/tegola-rearchitecture-jcq29f`, as a draft PR. The model half is done and
-  verified on Linux (190 tests across the seven pure packages, zero warnings):
+- **M4 (signals):** in progress on the branch above. The model half is done and verified on Linux:
   - **T4.1 clock functions** (`Clocks`, `ClockSignal`). Care is kept on the object (`ShelfObject.latestLog`), and
     video games' disc rot is held pending (D-56).
   - **T4.2 status readings** (`StatusReading.derive` / `.all`, D-57). `TodayStrip` and `ShelfSummary` take
@@ -18,7 +23,8 @@ it short and current.
   - **T4.3 dismissals** (`ShelfCommand.dismissSignal`, `signalDismissed`).
   - **T4.4 the 200-object `SignalShelf`** and its golden list, `docs/testing/signals-200.md`: 41 signals.
 - **M5 (launch types, first piece):** stacked on M4 on the same branch and PR. The model half is done and verified on
-  Linux (214 tests, zero warnings):
+  Linux. With M4's, that's 214 tests across the seven pure packages, zero warnings, `swift format lint --strict`
+  clean:
   - **T5.1 type guess.** Type files have `recognise:` words; `Catalogue.guess(from:)` (D-58).
   - **T5.2 first-piece rules.** `ShelfCommand.firstPiece(draft, story:catalogue:)`, `notTheFirstPiece`; a type
     that hasn't shipped becomes a Thing with `awaitingType` via `ObjectDraft.recognised(as:)` (D-59).
@@ -33,7 +39,8 @@ it short and current.
 1. **Owner:** M4's exit test. Read `docs/testing/signals-200.md`, mark the signals you agree with (8 of 10 passes),
    and say whether anything is missing. The cassette clock (every 2 years, counted from the release year when nothing's
    logged) is the one most likely to feel noisy; its parameter is in `ClockLibrary` (D-37).
-2. **M4 on the Mac**, on the M4 branch (`tasks/plan.md`, M4):
+2. **M4 on the Mac**, on the same branch (`tasks/plan.md`, M4). First run `scripts/test.sh` to check the M3 suites
+   against the model changes, which nobody has done on a Mac yet:
    - **T4.5 status in the screens.**
      - `ShelfFeature` computes `StatusReading.all(shelf:catalogue:now:calendar:)` and passes `readings:` to
        `ShelfSummary`, so "N need attention" appears.
@@ -124,6 +131,12 @@ scripts/ci.sh                          # the full gate → build/ci-summary.md (
   - Fetch the `amd64` layers of `mirror.gcr.io/library/swift:6.4.2-noble` into `/opt/swiftroot` and `chroot` into it,
     with the repo, `/proc`, `/dev`, `resolv.conf`, the proxy CA and the proxy environment.
   - `scripts/test-linux.sh` then runs the pure packages and storage (install `libsqlite3-dev` first).
+  - Pitfalls seen so far: the proxy port changes between sessions, so read `$HTTPS_PROXY` when you chroot, not once
+    into a script. The proxy is HTTPS-only, so switch the rootfs's `ubuntu.sources` to `https://` and run apt with
+    `-o APT::Sandbox::User=root -o Acquire::https::CAInfo=<the proxy CA>`. After a container restart, the bind
+    mounts (repo, `/proc`, `/dev`) are gone and need redoing.
+  - Searching `Packages/` with plain `grep -r` walks the `.build` folders and takes minutes: limit it to
+    `Packages/*/Sources` and `Packages/*/Tests`.
   - Feature, app and snapshot tests are Mac-only (D-32).
 - **Reviews:** a separate review agent reads each milestone against the plan before its PR. Keep its scope narrow, and
   keep it off the simulator while a UI run is going.
