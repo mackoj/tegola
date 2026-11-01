@@ -109,7 +109,7 @@ Plan: `tasks/plan.md`, M7.
 
 Plan: `tasks/plan.md`, M8.
 
-- [ ] T8.1 Keeping read models: `Wishlist`, `MightLetGo`, `Archive`
+- [x] T8.1 Keeping read models: `Wishlist`, `MightLetGo`, `Archive`
 - [ ] T8.2 Export, and the round trip (exit test)
 - [ ] T8.3 The inventory document's model
 - [ ] T8.4 The weekly nudge
