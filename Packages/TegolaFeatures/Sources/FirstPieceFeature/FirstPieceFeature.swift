@@ -18,8 +18,12 @@ public struct FirstPieceFeature {
     /// The shot or the library photo, as JPEG. Nil for a piece typed in.
     public var photo: Data?
     public var name = ""
-    /// The year the description read, if any: kept with the piece so its clocks have something to read.
+    /// The year the description read, shown on *Is this it?* and editable on *What is it?*: the collector sees it
+    /// before it's saved as theirs, so its clocks have something to read.
     public var year: Int?
+    /// What the description said kind of thing it is: the guess reads these with whatever name is typed, so a guess
+    /// from the photo survives typing its name.
+    public var words: [String] = []
     /// What the description named. Kept apart from `type` so **Not quite** can show what was guessed.
     public var guess: TypeGuess?
     /// The type the piece is saved as: the guess, or the collector's pick on *What is it?*. Nil saves a Thing.
@@ -32,6 +36,10 @@ public struct FirstPieceFeature {
     public var awaiting: TypeManifest.ID?
     public var payoff: FirstPiecePayoff?
     public var refusal: ShelfRuleViolation?
+    /// A save is under way: a second tap does nothing.
+    public var isSaving = false
+    /// The last save failed for a reason other than the rules.
+    public var saveFailed = false
 
     public init() {}
 
@@ -67,7 +75,13 @@ public struct FirstPieceFeature {
         && lhs.guess == rhs.guess
         && lhs.type == rhs.type && lhs.subtype == rhs.subtype && lhs.chip == rhs.chip && lhs.line == rhs.line
         && lhs.saved == rhs.saved && lhs.awaiting == rhs.awaiting && lhs.payoff == rhs.payoff
-        && lhs.refusal == rhs.refusal
+        && lhs.refusal == rhs.refusal && lhs.words == rhs.words && lhs.isSaving == rhs.isSaving
+        && lhs.saveFailed == rhs.saveFailed
+    }
+
+    /// The guess from what the description said and what the collector typed.
+    func guessing(_ catalogue: Catalogue) -> TypeGuess? {
+      catalogue.guess(from: (words + [name]).joined(separator: " "))
     }
   }
 
@@ -91,6 +105,7 @@ public struct FirstPieceFeature {
     case delegate(Delegate)
     case described(PieceDescription)
     case describeFailed
+    case saveFailed
     case saveRefused(ShelfRuleViolation)
     case saved(ObjectID, awaiting: TypeManifest.ID?)
     case typedDescribed(PieceDescription)
@@ -98,6 +113,8 @@ public struct FirstPieceFeature {
 
     @CasePathable
     public enum Delegate: Equatable {
+      /// **Close**, after the first screen: the shelf, as it is. Onboarding comes back next launch if it's still empty.
+      case closed
       /// **Just look around first**: the shelf, empty, and onboarding doesn't come back.
       case skipped
       /// **One at a time**: the next piece, through Scan.
@@ -109,6 +126,7 @@ public struct FirstPieceFeature {
     @CasePathable
     public enum View: Equatable {
       case chipTapped(StoryChip)
+      case closeTapped
       case countMeInTapped
       case lineChanged(String)
       case lookAroundTapped
@@ -123,6 +141,7 @@ public struct FirstPieceFeature {
       case thatsItTapped
       case typeItTapped
       case typeTapped(TypeManifest.ID)
+      case yearChanged(String)
     }
   }
 
@@ -145,6 +164,7 @@ public struct FirstPieceFeature {
       case .described(let description):
         state.name = description.name ?? ""
         state.year = description.year
+        state.words = description.words
         state.guess = catalogue.guess(from: description.guessText)
         state.type = state.guess?.type
         state.subtype = state.guess?.subtype
@@ -155,11 +175,25 @@ public struct FirstPieceFeature {
         state.step = .whatIsIt
         return .none
 
+      case .saveFailed:
+        state.isSaving = false
+        state.saveFailed = true
+        return .none
+
+      case .saveRefused(.notTheFirstPiece):
+        // The shelf gained an object since onboarding opened (another device's, through sync): this piece is an
+        // ordinary one now, typed by the collector, with its story kept as its note.
+        state.refusal = .notTheFirstPiece
+        return save(&state, asFirstPiece: false)
+
       case .saveRefused(let violation):
+        state.isSaving = false
         state.refusal = violation
         return .none
 
       case .saved(let id, let awaiting):
+        state.isSaving = false
+        state.saveFailed = false
         state.saved = id
         state.awaiting = awaiting
         state.refusal = nil
@@ -173,16 +207,20 @@ public struct FirstPieceFeature {
 
       case .typedDescribed(let description):
         // The collector's name stands; the model only adds what kind of thing it is.
-        state.guess = catalogue.guess(from: description.guessText)
+        // A year the model read from a typed name isn't shown, so it isn't kept: only what the collector saw is.
+        state.words = description.words
+        state.guess = state.guessing(catalogue)
         state.type = state.guess?.type
         state.subtype = state.guess?.subtype
-        state.year = state.year ?? description.year
         state.step = .story
         return .none
 
       case .view(.chipTapped(let chip)):
         state.chip = state.chip == chip ? nil : chip
         return .none
+
+      case .view(.closeTapped):
+        return .send(.delegate(.closed))
 
       case .view(.countMeInTapped):
         guard let type = state.awaiting else { return .none }
@@ -209,9 +247,9 @@ public struct FirstPieceFeature {
 
       case .view(.nameChanged(let name)):
         state.name = name
-        // While the collector hasn't picked a type, the guess follows what they type.
+        // While the collector hasn't picked a type, the guess follows what they type, with the photo's words.
         if state.type == state.guess?.type {
-          state.guess = catalogue.guess(from: name)
+          state.guess = state.guessing(catalogue)
           state.type = state.guess?.type
           state.subtype = state.guess?.subtype
         }
@@ -257,37 +295,7 @@ public struct FirstPieceFeature {
         }
 
       case .view(.saveTapped):
-        let name = state.name.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !name.isEmpty else { return .none }
-        let draft = ObjectDraft.recognised(
-          as: state.type ?? "thing",
-          subtype: state.subtype,
-          values: state.year.map { [.title: .text(name), .year: .year($0)] } ?? [.title: .text(name)],
-          catalogue: catalogue
-        )
-        let command = ShelfCommand.firstPiece(draft, story: state.story, catalogue: catalogue)
-        let photo = state.photo
-        return .run { [shelf, photoStore, now] send in
-          // The photo's file is written before the command that records it (PhotoStoreClient).
-          let file = try photo.map { try photoStore.save($0) }
-          do {
-            let receipt = try shelf.perform(command)
-            guard let id = receipt.createdObjects.first else { return }
-            if let file {
-              do {
-                _ = try shelf.perform(.attachPhoto(id, fileName: file, takenAt: now))
-              } catch {
-                // The piece is saved; a photo that didn't attach is reported, never a reason to save again.
-                reportIssue(error)
-              }
-            }
-            await send(.saved(id, awaiting: draft.awaitingType))
-          } catch let violation as ShelfRuleViolation {
-            await send(.saveRefused(violation))
-          }
-        } catch: { error, _ in
-          reportIssue(error)
-        }
+        return save(&state, asFirstPiece: true)
 
       case .view(.thatsEnoughTapped):
         return .send(.delegate(.finished))
@@ -301,6 +309,11 @@ public struct FirstPieceFeature {
         state.step = .whatIsIt
         return .none
 
+      case .view(.yearChanged(let text)):
+        let digits = text.filter(\.isNumber)
+        state.year = digits.isEmpty ? nil : Int(digits.prefix(4))
+        return .none
+
       case .view(.typeTapped(let type)):
         if state.type == type {
           state.type = nil
@@ -311,6 +324,56 @@ public struct FirstPieceFeature {
         }
         return .none
       }
+    }
+  }
+
+  /// The one write: the first piece, or, when the shelf has gained an object since, an ordinary typed add with the
+  /// story as its note. The photo's file is written before the command that records it (PhotoStoreClient).
+  func save(_ state: inout State, asFirstPiece: Bool) -> Effect<Action> {
+    let name = state.name.trimmingCharacters(in: .whitespacesAndNewlines)
+    guard !name.isEmpty, state.saved == nil, asFirstPiece ? !state.isSaving : true else { return .none }
+    state.isSaving = true
+    state.saveFailed = false
+    var values: [FieldKey: FieldValue] = [.title: .text(name)]
+    if let year = state.year { values[.year] = .year(year) }
+    let story = state.story
+    if !asFirstPiece, !story.isEmpty { values[.notes] = .text(story) }
+    let draft = ObjectDraft.recognised(
+      as: state.type ?? "thing",
+      subtype: state.subtype,
+      values: values,
+      catalogue: catalogue
+    )
+    // The fallback goes where Add by hand would: the type's own collection, else a new one named by the type.
+    let own = state.snapshot.shelf.collections.values.filter { $0.typeID == draft.type }.min { $0.sortKey < $1.sortKey }
+    let collection =
+      own.map { CollectionChoice.existing($0.id) }
+      ?? .new(name: catalogue.manifest(draft.type)?.name.collection ?? draft.type.rawValue)
+    let command =
+      asFirstPiece
+      ? ShelfCommand.firstPiece(draft, story: story, catalogue: catalogue)
+      : .add(draft, to: collection, origin: .typed)
+    let photo = state.photo
+    return .run { [shelf, photoStore, now] send in
+      let file = try photo.map { try photoStore.save($0) }
+      do {
+        let receipt = try shelf.perform(command)
+        guard let id = receipt.createdObjects.first else { return await send(.saveFailed) }
+        if let file {
+          do {
+            _ = try shelf.perform(.attachPhoto(id, fileName: file, takenAt: now))
+          } catch {
+            // The piece is saved; a photo that didn't attach is reported, never a reason to save again.
+            reportIssue(error)
+          }
+        }
+        await send(.saved(id, awaiting: draft.awaitingType))
+      } catch let violation as ShelfRuleViolation {
+        await send(.saveRefused(violation))
+      }
+    } catch: { error, send in
+      reportIssue(error)
+      await send(.saveFailed)
     }
   }
 

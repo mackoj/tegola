@@ -26,7 +26,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Une ligne sur lui, si tu veux"
+            "value" : "Une ligne sur lui, si vous voulez"
           }
         }
       }
@@ -36,7 +36,17 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vers %@. On te dira quand ce sera le moment."
+            "value" : "Vers %@. On vous dira quand ce sera le moment."
+          }
+        }
+      }
+    },
+    "Close" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fermer"
           }
         }
       }
@@ -46,7 +56,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "arrivé chez toi ?"
+            "value" : "arrivé chez vous ?"
           }
         }
       }
@@ -56,7 +66,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Je suis partant"
+            "value" : "J’en suis"
           }
         }
       }
@@ -66,7 +76,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Donne-lui un nom pour continuer."
+            "value" : "Donnez-lui un nom pour continuer."
           }
         }
       }
@@ -76,7 +86,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Je l’ai depuis tout petit"
+            "value" : "Je l’ai depuis l’enfance"
           }
         }
       }
@@ -156,7 +166,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "C’est la première ligne de son histoire, pas la date où tu l’as eu."
+            "value" : "C’est la première ligne de son histoire, pas la date où vous l’avez eu."
           }
         }
       }
@@ -176,7 +186,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Son nom, comme tu le dirais"
+            "value" : "Son nom, comme vous le diriez"
           }
         }
       }
@@ -196,7 +206,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Une seule chose, celle qui a une histoire. Montre-la."
+            "value" : "Une seule chose, celle qui a une histoire. Montrez-la."
           }
         }
       }
@@ -226,7 +236,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pas d’appareil photo ici. Tape son nom, ou choisis une photo."
+            "value" : "Pas d’appareil photo ici. Tapez son nom, ou choisissez une photo."
           }
         }
       }
@@ -286,7 +296,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Montre-nous"
+            "value" : "Montrez-nous"
           }
         }
       }
@@ -316,7 +326,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ça n’a pas été enregistré. Réessaie."
+            "value" : "Ça n’a pas été enregistré. Réessayez."
           }
         }
       }
@@ -356,7 +366,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tester les %@ quand ils seront prêts ? Tes pièces seront les premières à passer au nouveau type."
+            "value" : "Tester les %@ quand ils seront prêts ? Vos pièces seront les premières à passer au nouveau type."
           }
         }
       }
@@ -381,12 +391,22 @@
         }
       }
     },
+    "Year, if you know it" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L’année, si vous la connaissez"
+          }
+        }
+      }
+    },
     "you love" : {
       "localizations" : {
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "que tu aimes"
+            "value" : "que vous aimez"
           }
         }
       }
@@ -396,7 +416,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ton étagère · 1 pièce"
+            "value" : "Votre étagère · 1 pièce"
           }
         }
       }

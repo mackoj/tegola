@@ -19,7 +19,9 @@
   /// The model's answer, in the shape guided generation fills.
   @Generable
   struct GeneratedDescription {
-    @Guide(description: "The object's name as printed on it or as collectors know it, without its type. Empty if unknown.")
+    @Guide(
+      description: "The object's name as printed on it or as collectors know it, without its type. Empty if unknown."
+    )
     var name: String
     @Guide(
       description: "Up to six plain English words or short phrases for what kind of object it is, most specific first.",
@@ -103,7 +105,9 @@
       text = lines.compactMap { $0.topCandidates(1).first?.string }.prefix(20).joined(separator: "\n")
       let classes = try await ClassifyImageRequest().perform(on: data)
       // The taxonomy's ids read as words ("wristwatch", "vinyl_record"); only the confident ones are worth guessing on.
-      labels = classes.filter { $0.confidence > 0.3 }.prefix(6).map { $0.identifier.replacing("_", with: " ") }
+      labels = classes.filter { $0.confidence > 0.3 }.sorted { $0.confidence > $1.confidence }.prefix(6).map {
+        $0.identifier.replacing("_", with: " ")
+      }
     }
   }
 #endif

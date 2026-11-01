@@ -607,13 +607,16 @@ text, and v1 runs on iOS 26.
   - On iOS 26, it gets Vision's text and the image classifier's confident labels instead.
   - Without Apple Intelligence, a photo gets Vision's labels as words and no name, so *What is it?* asks for one. A
     typed name stands as it is.
-  - The photo never leaves the phone here: describing is on-device. It's re-encoded at 2048 px, which drops its
-    metadata, before it's stored.
+  - The photo never leaves the phone here: describing is on-device. A shot and a library photo alike are re-encoded at
+    2048 px, which drops their metadata, location included, before they're described or stored.
 - **The year** goes on the piece, so its clocks have something to read: page 46's "running since 1998" is the save
-  battery reading the year. Nothing else the model says is written.
+  battery reading the year. It's written only once the collector has seen it: a chip on *Is this it?*, and an editable
+  field on *What is it?*. A year the model reads from a typed name isn't shown, so it isn't kept. Nothing else the
+  model says is written.
 - **What is it?** has the name field, dashed and focused, and *It's…* chips: v1's three types, the guessed type when
   it hasn't shipped, and Thing (shown as its hobby name, "Something else"). The guess is picked; the collector can pick
-  another. **Next** is disabled until there's a name, and a line under it says so. With no type picked and the model
+  another; the guess reads the description's words with the typed name, so a guess from the photo survives typing.
+  **Next** is disabled until there's a name, and a line under it says so. With no type picked and the model
   available, **Next** asks the model what kind of thing the name is; with none, the piece is a Thing.
 - **How did it come to you?** offers five chips (A gift, I bought it, Handed down, I found it, Had it since I was a kid)
   and a line. The story is the chip's words and the line, joined by " · ", in the collector's language (D-63).
@@ -622,5 +625,9 @@ text, and v1 runs on iOS 26.
   the cover has gone.
 - **The empty shelf** offers **Scan your first object**, which opens the first piece again, and keeps **Type it**.
   **Bring your list** waits for M6's import.
+- **Ways out.** After the first screen, **Close** returns to the shelf as it is; onboarding comes back next launch if
+  the shelf is still empty. A save runs once. If the shelf gained an object since onboarding opened (another device's,
+  through sync), `plan` refuses the first piece, and the piece is saved as an ordinary typed add into its type's
+  collection, with the story as its note.
 - **When it opens:** at launch, while `opensOnFirstPiece`. The app reads the shelf once on appear to decide, and
   doesn't reopen onboarding later in the session.

@@ -41,6 +41,7 @@ struct FirstPieceFeatureTests {
     await store.receive(\.described) {
       $0.name = "Ocarina of Time"
       $0.year = 1998
+      $0.words = ["Nintendo 64", "game cartridge"]
       $0.guess = TypeGuess(type: "video-game", subtype: "n64", isEnabled: true)
       $0.type = "video-game"
       $0.subtype = "n64"
@@ -49,11 +50,10 @@ struct FirstPieceFeatureTests {
     await store.send(.view(.thatsItTapped)) { $0.step = .story }
     await store.send(.view(.chipTapped(.sinceChild))) { $0.chip = .sinceChild }
     await store.send(.view(.lineChanged("  my brother's, then mine "))) { $0.line = "  my brother's, then mine " }
-    await store.send(.view(.saveTapped))
-    let snapshot = try shelfNow()
-    let piece = try #require(snapshot.shelf.objects.values.first)
+    await store.send(.view(.saveTapped)) { $0.isSaving = true }
     await store.receive(\.saved) {
-      $0.saved = piece.id
+      $0.isSaving = false
+      $0.saved = try #require(try shelfNow().shelf.objects.keys.first)
       // 46: "Your save is at risk. The cart's CR2032 has been running since 1998."
       $0.payoff = FirstPiecePayoff(
         line: .now(
@@ -68,6 +68,9 @@ struct FirstPieceFeatureTests {
       $0.step = .payoff
     }
 
+    let snapshot = try shelfNow()
+    let piece = try #require(snapshot.shelf.objects.values.first)
+    #expect(snapshot.shelf.objects.count == 1)
     #expect(snapshot.shelf.collections.values.map(\.name) == ["The Library"])
     #expect(piece.title == "Ocarina of Time")
     #expect(piece.subtype == "n64")
@@ -78,6 +81,14 @@ struct FirstPieceFeatureTests {
       if case .added(_, .firstPiece(let story)) = event.kind { story } else { nil }
     }
     #expect(story == ["Had it since I was a kid · my brother's, then mine"])
+    // The story is the first line of the piece's history.
+    @Dependency(\.defaultDatabase) var database
+    @Dependency(\.catalogue) var catalogue
+    let history = try ShelfStore(migrated: database, catalogue: catalogue).history(of: piece.id)
+    guard case .added(_, .firstPiece) = history.first?.kind else {
+      Issue.record("the first history line isn't the story: \(String(describing: history.first))")
+      return
+    }
     #expect(events.contains { if case .photoAttached = $0.kind { true } else { false } })
   }
 
@@ -124,14 +135,59 @@ struct FirstPieceFeatureTests {
     await store.send(.view(.nextTapped))
     await store.send(.view(.nameChanged("Kid A"))) { $0.name = "Kid A" }
     await store.send(.view(.typeTapped("music"))) { $0.type = "music" }
+    await store.send(.view(.yearChanged("2000"))) { $0.year = 2000 }
     await store.send(.view(.nextTapped)) { $0.step = .story }
-    await store.send(.view(.saveTapped))
+    await store.send(.view(.saveTapped)) { $0.isSaving = true }
     await store.receive(\.saved) {
-      $0.saved = try #require(try shelfNow().shelf.objects.keys.first)
+      $0.isSaving = false
+      $0.saved = try shelfNow().shelf.objects.keys.first
       $0.payoff = FirstPiecePayoff(line: nil)
       $0.step = .payoff
     }
     #expect(try shelfNow().shelf.collections.values.map(\.name) == ["My Music"])
+    #expect(try shelfNow().shelf.objects.values.first?.values[.year] == .year(2000))
+  }
+
+  /// Without Apple Intelligence a photo's guess comes from Vision's labels alone; typing the name keeps it (review).
+  @Test func aGuessFromThePhotoSurvivesTypingItsName() async throws {
+    let store = TestStore(initialState: FirstPieceFeature.State()) {
+      FirstPieceFeature()
+    } withDependencies: {
+      $0.extraction.describePhoto = { _ in PieceDescription(name: nil, words: ["wristwatch"]) }
+    }
+    store.exhaustivity = .off
+    await store.send(.view(.photoTaken(jpeg)))
+    await store.receive(\.described) { $0.step = .whatIsIt }
+    #expect(store.state.type == "watches")
+    await store.send(.view(.nameChanged("Omega")))
+    #expect(store.state.type == "watches")
+  }
+
+  /// A typed name's year from the model isn't shown, so it isn't kept (review): only what the collector saw is theirs.
+  @Test func aYearTheCollectorDidntSeeIsntKept() async throws {
+    let store = TestStore(initialState: FirstPieceFeature.State()) {
+      FirstPieceFeature()
+    } withDependencies: {
+      $0.extraction.isModelAvailable = { true }
+      $0.extraction.describeText = { _ in PieceDescription(name: "Kid A", words: ["album"], year: 2000) }
+    }
+    store.exhaustivity = .off
+    await store.send(.view(.typeItTapped))
+    await store.send(.view(.nameChanged("Kid A")))
+    await store.send(.view(.nextTapped))
+    await store.receive(\.typedDescribed)
+    #expect(store.state.year == nil)
+  }
+
+  /// A second tap while a save is under way, or after it, does nothing: one piece, one write.
+  @Test func savingTwiceDoesNothing() async throws {
+    var state = FirstPieceFeature.State()
+    state.step = .story
+    state.name = "Kid A"
+    state.isSaving = true
+    let store = TestStore(initialState: state) { FirstPieceFeature() }
+    await store.send(.view(.saveTapped))
+    #expect(try shelfNow().shelf.objects.isEmpty)
   }
 
   /// A model that fails is a piece nobody named yet, never an error.
@@ -163,6 +219,7 @@ struct FirstPieceFeatureTests {
     await store.send(.view(.nameChanged("Twilight Imperium"))) { $0.name = "Twilight Imperium" }
     await store.send(.view(.nextTapped)) { $0.step = .reading }
     await store.receive(\.typedDescribed) {
+      $0.words = ["board game"]
       $0.guess = TypeGuess(type: "board-games", subtype: nil, isEnabled: true)
       $0.type = "board-games"
       $0.step = .story
@@ -186,5 +243,30 @@ enum ShelfEvents {
     @Dependency(\.defaultDatabase) var database
     @Dependency(\.catalogue) var catalogue
     return try ShelfStore(migrated: database, catalogue: catalogue).log()
+  }
+}
+
+/// A shelf that gained objects since onboarding opened (another device's, through sync): the piece is saved as an
+/// ordinary typed add, with its story as the note, rather than refused for good (review).
+@MainActor
+@Suite(.dependencies { try $0.seededShelf() })
+struct FirstPieceOnAShelfThatFilledUpTests {
+  @Test func aRefusedFirstPieceIsSavedAsAnOrdinaryPiece() async throws {
+    var state = FirstPieceFeature.State()
+    state.step = .story
+    state.name = "A first piece that came late"
+    state.type = "board-games"
+    state.chip = .gift
+    let before = try shelfNow().shelf.objects.count
+    let store = TestStore(initialState: state) { FirstPieceFeature() }
+    store.exhaustivity = .off
+    await store.send(.view(.saveTapped))
+    await store.receive(\.saveRefused)
+    await store.receive(\.saved) { $0.step = .payoff }
+    let shelf = try shelfNow().shelf
+    #expect(shelf.objects.count == before + 1)
+    let piece = try #require(shelf.objects.values.first { $0.title == "A first piece that came late" })
+    #expect(piece.values[.notes] == .text("A gift"))
+    #expect(shelf.collections[piece.collectionID]?.typeID == "board-games")
   }
 }

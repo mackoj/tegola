@@ -26,6 +26,18 @@
     public var body: some View {
       ScrollView {
         VStack(alignment: .leading, spacing: TegolaSpace.xl) {
+          if [.recognised, .whatIsIt, .story].contains(store.step) {
+            HStack {
+              Spacer()
+              Button {
+                send(.closeTapped)
+              } label: {
+                Text("Close", bundle: .module)
+              }
+              .buttonStyle(.tegola(.quiet))
+              .accessibilityIdentifier("firstPiece.close")
+            }
+          }
           switch store.step {
           case .ask: ask
           case .reading: reading
@@ -44,7 +56,10 @@
       .onChange(of: library) { _, item in
         guard let item else { return }
         Task {
-          if let data = try? await item.loadTransferable(type: Data.self) { send(.photoTaken(data)) }
+          // A library photo is re-encoded like a shot: 2048 px, and none of its metadata, location included (D-72).
+          if let data = try? await item.loadTransferable(type: Data.self), let jpeg = reencoded(data) {
+            send(.photoTaken(jpeg))
+          }
           library = nil
         }
       }
@@ -56,7 +71,9 @@
       VStack(alignment: .leading, spacing: TegolaSpace.l) {
         ScreenHeader(
           eyebrow: Text("Welcome to Tegola", bundle: .module),
-          title: [Text("Show us", bundle: .module), Text("something", bundle: .module), Text("you love", bundle: .module)],
+          title: [
+            Text("Show us", bundle: .module), Text("something", bundle: .module), Text("you love", bundle: .module),
+          ],
           body: Text("Just one thing, the one with a story. Hold it up.", bundle: .module)
         )
         camera
@@ -94,7 +111,7 @@
       #if os(iOS)
         CameraView { data in send(.photoTaken(data)) }
       #else
-        Color.black.opacity(0.85)
+        theme[.surfaceCamera].color
       #endif
     }
 
@@ -135,8 +152,9 @@
             .tegolaTextStyle(TegolaType.displaySmall)
             .foregroundStyle(TegolaRole.text)
             .accessibilityIdentifier("firstPiece.guessName")
-          if let type = store.type {
-            Chip(typeName(type))
+          HStack(spacing: TegolaSpace.xs) {
+            if let type = store.type { Chip(typeName(type)) }
+            if let year = store.year { Chip(Text(verbatim: String(year))) }
           }
         }
         ButtonPair {
@@ -174,6 +192,17 @@
         .submitLabel(.next)
         .onSubmit { send(.nextTapped) }
         .accessibilityIdentifier("firstPiece.name")
+        TextField(text: Binding(get: { store.year.map(String.init) ?? "" }, set: { send(.yearChanged($0)) })) {
+          Text("Year, if you know it", bundle: .module)
+        }
+        #if os(iOS)
+          .keyboardType(.numberPad)
+        #endif
+        .tegolaTextStyle(TegolaType.label)
+        .padding(.horizontal, TegolaSpace.m)
+        .frame(minHeight: TegolaMetrics.minimumHitTarget)
+        .printed(radius: TegolaRadius.input, shadow: TegolaShadow.small)
+        .accessibilityIdentifier("firstPiece.year")
         VStack(alignment: .leading, spacing: TegolaSpace.s) {
           Text("It's…", bundle: .module).tegolaTextStyle(TegolaType.meta).foregroundStyle(TegolaRole.textMeta)
           FlowLayout(spacing: TegolaSpace.xs) {
@@ -239,8 +268,9 @@
           Text("Put it on the shelf", bundle: .module)
         }
         .buttonStyle(.tegola(.accent))
+        .disabled(store.isSaving)
         .accessibilityIdentifier("firstPiece.save")
-        if store.refusal != nil {
+        if store.saveFailed || (store.refusal != nil && store.refusal != .notTheFirstPiece) {
           Text("That didn't save. Try once more.", bundle: .module)
             .tegolaTextStyle(TegolaType.bodySmall).foregroundStyle(TegolaRole.textMeta)
         }
@@ -349,6 +379,15 @@
         Text("It's on the shelf.", bundle: .module).tegolaTextStyle(TegolaType.heading).foregroundStyle(TegolaRole.text)
       }
     }
+  }
+
+  /// A library photo, as the camera would have kept it.
+  func reencoded(_ data: Data) -> Data? {
+    #if os(iOS)
+      JPEG.resized(data)
+    #else
+      data
+    #endif
   }
 
   #Preview("One question") {

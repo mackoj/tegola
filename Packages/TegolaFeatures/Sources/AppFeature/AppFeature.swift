@@ -5,10 +5,10 @@ public import FindFeature
 public import FirstPieceFeature
 public import ObjectFeature
 public import PlacesFeature
+import SQLiteData
 public import ShelfFeature
 public import SignalsFeature
 public import TegolaModel
-import SQLiteData
 import TegolaStorage
 
 /// Every screen a tab's stack can push (PLAN §5). One enum for every tab, defined here: only the root pushes.
@@ -79,7 +79,8 @@ public struct AppFeature {
       case .shelf(.delegate(.scanFirstObject)):
         state.firstPiece = FirstPieceFeature.State()
         return .none
-      case .firstPiece(.presented(.delegate(.skipped))), .firstPiece(.presented(.delegate(.finished))):
+      case .firstPiece(.presented(.delegate(.skipped))), .firstPiece(.presented(.delegate(.finished))),
+        .firstPiece(.presented(.delegate(.closed))):
         state.firstPiece = nil
         return .none
       case .firstPiece(.presented(.delegate(.oneAtATime))):

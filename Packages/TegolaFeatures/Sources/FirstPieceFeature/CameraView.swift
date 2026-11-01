@@ -1,6 +1,8 @@
 #if os(iOS)
   import AVFoundation
   import SwiftUI
+  import TegolaDesignSystem
+  import TegolaDesignTokens
   import UIKit
 
   /// The live camera of the first piece's one question (46, screen 01): already running when the screen appears, with
@@ -9,17 +11,18 @@
   struct CameraView: View {
     let shot: (Data) -> Void
     @State private var camera = Camera()
+    @Environment(\.tegolaTheme) private var theme
 
     var body: some View {
       ZStack(alignment: .bottom) {
         if camera.isRunning {
           CameraPreview(session: camera.session)
         } else {
-          Color.black.opacity(0.85)
+          theme[.surfaceCamera].color
             .overlay {
               Text("No camera here. Type it, or pick a photo.", bundle: .module)
-                .font(.footnote)
-                .foregroundStyle(.white.opacity(0.7))
+                .tegolaTextStyle(TegolaType.bodySmall)
+                .foregroundStyle(TegolaRole.textOnStage)
                 .multilineTextAlignment(.center)
                 .padding()
             }
@@ -29,11 +32,12 @@
             camera.capture(shot)
           } label: {
             Circle()
-              .strokeBorder(.white, lineWidth: 4)
+              .strokeBorder(theme[.textOnStage].color, lineWidth: 4)
               .frame(width: 68, height: 68)
               .padding(.bottom, 16)
           }
           .accessibilityLabel(Text("Take the photo", bundle: .module))
+          .disabled(camera.isCapturing)
           .accessibilityIdentifier("firstPiece.shutter")
         }
       }
@@ -48,9 +52,10 @@
     private let output = AVCapturePhotoOutput()
     private var delegate: PhotoDelegate?
     var isRunning = false
+    var isCapturing = false
 
     func start() async {
-      guard await AVCaptureDevice.requestAccess(for: .video),
+      guard await AVCaptureDevice.requestAccess(for: .video), !Task.isCancelled,
         let device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back),
         let input = try? AVCaptureDeviceInput(device: device)
       else { return }
@@ -67,6 +72,8 @@
           done.resume()
         }
       }
+      // Left before the camera came up: it mustn't keep running behind the next screen.
+      if Task.isCancelled { return stop() }
       isRunning = session.isRunning
     }
 
@@ -78,14 +85,20 @@
     private static let queue = DispatchQueue(label: "fr.macko.tegola.camera")
 
     func capture(_ done: @escaping (Data) -> Void) {
+      guard !isCapturing else { return }
+      isCapturing = true
       let delegate = PhotoDelegate { data in
         Task { @MainActor in
           if let data { done(data) }
           self.delegate = nil
+          self.isCapturing = false
         }
       }
       self.delegate = delegate
-      output.capturePhoto(with: AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.jpeg]), delegate: delegate)
+      output.capturePhoto(
+        with: AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.jpeg]),
+        delegate: delegate
+      )
     }
   }
 
@@ -100,7 +113,11 @@
 
     init(done: @escaping (Data?) -> Void) { self.done = done }
 
-    func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: (any Error)?) {
+    func photoOutput(
+      _ output: AVCapturePhotoOutput,
+      didFinishProcessingPhoto photo: AVCapturePhoto,
+      error: (any Error)?
+    ) {
       done(photo.fileDataRepresentation().flatMap(JPEG.resized))
     }
   }

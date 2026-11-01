@@ -23,16 +23,32 @@ final class JourneyUITests: XCTestCase {
     app.buttons[andAnother ? "add.saveAnother" : "add.save"].tap()
   }
 
-  /// Journey 1, the first evening, as far as M3 goes: the first object typed by hand on the empty shelf (the
-  /// first-piece camera is M5), a second one, then a place set through Edit, which shows in the object's history.
-  /// The photo beat needs the system photo picker, which a UI test can't drive; it joins with M6's scripted camera.
+  /// Journey 1, the first evening (PLAN F2, T5.8): the app opens on the first piece; it's typed, named a record, given
+  /// its story, and lands in a collection the collector never made. One at a time opens Scan for the second; then a
+  /// place set through Edit shows in the object's history. The camera beat needs a real camera, which the simulator
+  /// hasn't got; it joins with M6's scripted camera.
   @MainActor
   func testTheFirstEvening() {
     let app = launch()
-    app.buttons["shelf.typeIt"].tap()
-    app.buttons["add.type.music"].tap()
-    addTitle("Kid A", andAnother: true, in: app)
-    XCTAssertTrue(app.staticTexts["add.count"].waitForExistence(timeout: 5))
+    let typeIt = app.buttons["firstPiece.typeIt"]
+    XCTAssertTrue(typeIt.waitForExistence(timeout: 5))
+    typeIt.tap()
+    let name = app.textFields["firstPiece.name"]
+    XCTAssertTrue(name.waitForExistence(timeout: 5))
+    XCTAssertFalse(app.buttons["firstPiece.next"].isEnabled)
+    name.tap()
+    name.typeText("Kid A")
+    app.buttons["firstPiece.type.music"].tap()
+    app.buttons["firstPiece.next"].tap()
+    app.buttons["firstPiece.story.gift"].tap()
+    app.buttons["firstPiece.save"].tap()
+    // The payoff: a record has no clock, so it's the story.
+    XCTAssertTrue(app.staticTexts["firstPiece.payoff.story"].waitForExistence(timeout: 5))
+    app.buttons["firstPiece.oneAtATime"].tap()
+
+    let music = app.buttons["add.type.music"]
+    XCTAssertTrue(music.waitForExistence(timeout: 5))
+    music.tap()
     addTitle("Homogenic", andAnother: false, in: app)
 
     // The first object of a type made its collection.
@@ -84,6 +100,7 @@ final class JourneyUITests: XCTestCase {
   @MainActor
   func testThirtyObjectsInOneSitting() {
     let app = launch()
+    app.buttons["firstPiece.lookAround"].tap()
     app.buttons["tab.scan"].tap()
     app.buttons["add.type.video-game"].tap()
     for n in 1...15 { addTitle("Game \(n)", andAnother: true, in: app) }

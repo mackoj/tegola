@@ -258,7 +258,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Scanner ton premier objet"
+            "value" : "Scanner votre premier objet"
           }
         }
       }
@@ -288,7 +288,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Commence par une pièce que tu aimes, l’étagère grandit à partir de là."
+            "value" : "Commencez par une pièce que vous aimez, l’étagère grandit à partir de là."
           }
         }
       }

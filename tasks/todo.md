@@ -68,10 +68,10 @@ Plan: `tasks/plan.md`, M5. Report: `docs/milestones/M5.md`.
 - [x] T5.2 First-piece rules
 - [x] T5.3 Type testers
 - [x] T5.4 The payoff
-- [ ] T5.5 `ExtractionClient` (Mac)
-- [ ] T5.6 Onboarding (Mac)
-- [ ] T5.7 The empty shelf (Mac)
-- [ ] T5.8 Journey and review
+- [x] T5.5 `ExtractionClient`
+- [x] T5.6 Onboarding
+- [x] T5.7 The empty shelf
+- [x] T5.8 Journey and review
 
 ## M6 · capture, lookup, import
 
