@@ -3,10 +3,13 @@
 The state of the work for whoever picks it up next: a new session, another agent, or the owner. Read this first, keep
 it short and current.
 
-**Updated:** 2026-11-01, after M6 finished on `m6-capture-lookup-import`.
+**Updated:** 2026-11-01, after M7 finished on `m7-people` (PR #18).
 
-**Resume here: M7 (people).** M5 and M6 are merged (#16, #17). Lookup contract 0.2.0 is merged (PR #15, D-71), and
-tegola-server serves it.
+**Resume here: M8 (keeping + you).** M7 (people) is done and its PR merges with its report,
+`docs/milestones/M7.md`. M8 isn't broken down yet: do that first, in `tasks/plan.md`, from PLAN's `keeping` and `you`
+modules (wishlist, grail, Might let go, Let go and the archive, saved views; settings, the money switch, the tab
+editor, language, nudges, export, the inventory document, analytics, the debug screen). The wishlist's share card
+(`WishlistCard`) is waiting for M8's wishlist screen.
 
 **Owner, open:** D-76, who pays for paid lookup sources (a subscription, type packs, a free-tier cap) and the
 server's per-install pseudonym for cost per collector. It's tegola-server's D-27 and M5 on the server side; nothing
@@ -14,8 +17,12 @@ changes in the app until the owner decides.
 
 ## Where things stand
 
-- **Spec:** approved (`docs/PLAN.md`, answers in §10). Decisions: D-1 to D-76.
-- **M1 to M4:** merged (PRs #5, #8, #9, #13; `docs/milestones/M1.md` to `M4.md`).
+- **Spec:** approved (`docs/PLAN.md`, answers in §10). Decisions: D-1 to D-80.
+- **M1 to M6:** merged (PRs #5, #8, #9, #13, #14, #16, #17; `docs/milestones/M1.md` to `M6.md`).
+- **M7 (people):** done (PR #18, `docs/milestones/M7.md`, D-77 to D-80). Lend and Return sheets, the Person page,
+  the Activity tab with the only badge, loan reminders, Nudge, share cards (the record, my copy). Journey 3 passes.
+  With it came the owner's request: the system tab bar, and every shared tab and verb defined once as a
+  `TegolaAction` in the design system (D-78).
 - **M6 (capture, lookup, import):** done. The Mac half:
   - the lookup client with App Attest, and the queue's worker (T6.8, D-73);
   - the Scan camera with the tray and Identify (T6.9);
@@ -54,9 +61,11 @@ changes in the app until the owner decides.
    - D-64: imported rows are unconfirmed, which takes up the option D-38 left open (keep or reverse);
    - D-72: the first piece's story chips, *What is it?*'s type chips, and the sync fallback;
    - D-73 to D-75: the worker and App Attest, Bring your list (NoteReader everywhere for now), Review;
+   - D-77 to D-80: people's read models and returns, the system tab bar and `TegolaAction` (replacing board 01's
+     drawn bar), share cards (the record = the type's `auto` fields), Activity, reminders and Nudge;
    - the exit tests with people: M3's 30 objects, M4's 8 of 10 signals, M5's 5 of 6 testers (`docs/UX-FINDINGS.md`).
-2. **M7** (people): `tasks/plan.md`, M7.
-3. **Later:** M8 (keeping, You: the `unfinished` toggle lives there), M9 (polish).
+2. **M8** (keeping + you): break it down in `tasks/plan.md`, then build it.
+3. **Later:** M9 (polish).
 
 ## Run it locally (Mac)
 
@@ -73,7 +82,8 @@ scripts/ci.sh                          # the full gate → build/ci-summary.md (
 ```
 
 - **In the app:** the Shelf tab (board 01), with a seed shelf when launched with `--seed` in a debug build. Scan opens
-  Add by hand, Find searches, and an object opens its seven slots. Activity and You are still placeholders (M7, M8).
+  the camera, Find searches, an object opens its seven slots, and Activity lists loans. You is still a placeholder
+  (M8). `--days-ahead <n>` moves a debug build's clock forward (journey 3).
 - Never run bare `swift test`: swiftly's toolchain breaks snapshot testing. The scripts use `xcrun`.
 - **If anything fails:** paste `build/ci-summary.md`, and the failing log it names, into a session.
 
@@ -105,6 +115,9 @@ scripts/ci.sh                          # the full gate → build/ci-summary.md (
   - Navigation: children send `.delegate(.open(Route))`, and only `AppFeature.push` pushes, onto Shelf's or Find's
     stack (`AppPath`). Each feature is its own target in `TegolaFeatures`. Shared value views are in `ShelfViews`,
     and test helpers in `FeatureTestSupport` (`seededShelf()`).
+- **Shared actions** (D-78): a tab or a verb more than one screen says (Close, Cancel, Save, Edit, Lend, Share…) is a
+  `TegolaAction` in the design system. Use `ActionButton(.lend, id:)` or `.label`; add a case there rather than a
+  new string in a feature. The tab bar is the system's `TabView`.
 - **Strings:** use `Text("…", bundle: .module)` in packages; the guard test refuses un-bundled literals.
   - Don't put quotes inside an interpolation in a key; hoist the value into a local first.
   - After UI text changes, run `scripts/sync-strings.sh`, then add French for every new key and drop `stale` entries.
@@ -151,5 +164,5 @@ scripts/ci.sh                          # the full gate → build/ci-summary.md (
 
 ## Owner questions
 
-Open: M4's readings (D-56, D-58, D-61); D-64's unconfirmed imports; D-72; D-73 to D-75. The owner approved M2 and M3's (D-35, D-38,
+Open: M4's readings (D-56, D-58, D-61); D-64's unconfirmed imports; D-72; D-73 to D-80. The owner approved M2 and M3's (D-35, D-38,
 D-45, D-50, D-51; D-54).

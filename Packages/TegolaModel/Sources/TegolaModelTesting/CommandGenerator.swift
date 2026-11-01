@@ -100,7 +100,10 @@ public struct CommandGenerator {
       return (.applyLookup(object, values: offered), .lookup)
     case 4: return (.setPlace([object], PlacePath(typed: pick(["Office › Shelf 2", "Attic", "Office"]))), .collector)
     case 5: return (.lend(object, to: .new(name: pick(["Max", "Léa"])), due: nil, note: ""), .collector)
-    case 6: return (loans.isEmpty ? .giveBack(object) : .returnLoan(pick(loans), condition: nil), .collector)
+    case 6:
+      guard !loans.isEmpty else { return (.giveBack(object), .collector) }
+      let cameBack: Loan.CameBack? = pick([nil, .sameShape, .damaged, .somethingMissing])
+      return (.returnLoan(pick(loans), cameBack: cameBack, condition: pick([nil, "", " Fine "])), .collector)
     case 7: return (.markBorrowed(object, from: .new(name: "Léa")), .collector)
     case 13: return (.edit(object, values: [pick([FieldKey.year, .notes]): nil]), .collector)
     case 15:

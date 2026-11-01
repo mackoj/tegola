@@ -40,8 +40,12 @@ public struct ShelfFeature {
     /// collector answers.
     public var offersNotifications: Bool {
       @Dependency(\.date.now) var now
-      // A clock with something to read: every game names codeExpiry, but a game with no code date isn't clocked.
-      return snapshot.notificationsOffer == nil && !snapshot.signals(at: now).signals.isEmpty
+      @Dependency(\.calendar) var calendar
+      // A clock with something to read (every game names codeExpiry, but a game with no code date isn't clocked), or
+      // a loan with a due date: the one offer covers both (D-61, T7.8).
+      guard snapshot.notificationsOffer == nil else { return false }
+      return !snapshot.signals(at: now).signals.isEmpty
+        || !snapshot.shelf.loanReminders(at: now, calendar: calendar).isEmpty
     }
 
     /// The clock notifications to schedule now: one for each signal's next change, soonest first, at most 50 (the
@@ -66,6 +70,20 @@ public struct ShelfFeature {
         .map { $0 }
     }
 
+    /// The loan reminders to schedule now (F13): one on each open loan's due date, in the collector's words.
+    public func loanReminders(at now: Date) -> [LocalNotification] {
+      @Dependency(\.calendar) var calendar
+      return snapshot.shelf.loanReminders(at: now, calendar: calendar).map { reminder in
+        let person = reminder.person
+        return LocalNotification(
+          id: NotificationsClient.loanID(reminder.id),
+          title: reminder.title,
+          body: String(localized: "Due back from \(person) today.", bundle: .module),
+          at: reminder.at
+        )
+      }
+    }
+
     /// The reducer's own state. The snapshot is the database's, kept current outside any action, so tests assert on
     /// it directly rather than through exhaustive state comparison.
     public static func == (lhs: Self, rhs: Self) -> Bool {
@@ -86,11 +104,14 @@ public struct ShelfFeature {
       /// **Bring your list**: Add's import (F2, F9).
       case bringList
       case open(Route)
+      /// The Today strip's *N overdue*: the Activity tab (F13).
+      case showActivity
     }
 
     public enum View: Equatable {
       case collectionTapped(CollectionID)
       case needAttentionTapped
+      case overdueTapped
       case toTidyTapped
       case notificationsAccepted
       case notificationsDeclined
@@ -115,16 +136,20 @@ public struct ShelfFeature {
         return .none
       case .view(.collectionTapped(let id)):
         return .send(.delegate(.open(.collection(id))))
+      case .view(.overdueTapped):
+        return .send(.delegate(.showActivity))
       case .view(.needAttentionTapped):
         return .send(.delegate(.open(.signals)))
       case .view(.toTidyTapped):
         return .send(.delegate(.open(.review)))
       case .view(.notificationsAccepted):
         let scheduled = state.clockNotifications(at: now)
+        let reminders = state.loanReminders(at: now)
         return .run { [notifications, settings] _ in
           try settings.set(.notificationsOffer, "accepted")
           guard try await notifications.requestAuthorization() else { return }
           try await notifications.replaceClockNotifications(scheduled)
+          try await notifications.replaceLoanReminders(reminders)
         } catch: { error, _ in
           reportIssue(error)
         }
@@ -136,12 +161,14 @@ public struct ShelfFeature {
         }
       case .view(.onAppear):
         state.now = now
-        // Each time the shelf appears, the clock notifications follow the signals: a swap, a dismissal or an edit
-        // since last time moves or removes them.
+        // Each time the shelf appears, the clock notifications follow the signals (a swap, a dismissal or an edit
+        // since last time moves or removes them), and the loan reminders follow the loans.
         guard state.snapshot.notificationsOffer == "accepted" else { return .none }
         let scheduled = state.clockNotifications(at: now)
+        let reminders = state.loanReminders(at: now)
         return .run { [notifications] _ in
           try await notifications.replaceClockNotifications(scheduled)
+          try await notifications.replaceLoanReminders(reminders)
         } catch: { error, _ in
           reportIssue(error)
         }

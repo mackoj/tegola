@@ -1,6 +1,9 @@
 #if canImport(SwiftUI)
   public import ComposableArchitecture
+  import LendFeature
   import ObjectEditFeature
+  import ReturnFeature
+  import ShareFeature
   import ShelfViews
   import PhotosUI
   public import SwiftUI
@@ -49,7 +52,7 @@
                 case .status: status(object)
                 case .signature: signature(slots, type: type)
                 case .fields: fields(slots)
-                case .actions: actions(object)
+                case .actions: actions(object, slots: slots)
                 case .history: history(type)
                 }
               }
@@ -79,8 +82,17 @@
         }
       }
       .background(theme[.surfaceStage].color)
-      .sheet(item: $store.scope(state: \.edit, action: \.edit)) { edit in
+      .sheet(item: $store.scope(state: \.destination?.edit, action: \.destination.edit)) { edit in
         ObjectEditView(store: edit)
+      }
+      .sheet(item: $store.scope(state: \.destination?.lend, action: \.destination.lend)) { lend in
+        LendView(store: lend)
+      }
+      .sheet(item: $store.scope(state: \.destination?.returnLoan, action: \.destination.returnLoan)) { sheet in
+        ReturnView(store: sheet)
+      }
+      .sheet(item: $store.scope(state: \.destination?.share, action: \.destination.share)) { sheet in
+        ShareView(store: sheet)
       }
       .photosPicker(
         isPresented: Binding(get: { store.isPickingPhoto }, set: { if !$0 { send(.photoPickerDismissed) } }),
@@ -106,7 +118,7 @@
           .frame(height: 320)
           .frame(maxWidth: .infinity)
           .clipped()
-          .accessibilityLabel(Text("Photo", bundle: .module))
+          .accessibilityLabel(TegolaAction.photo.label)
       } else {
         TypeTint(gradient: manifest.gradient, mark: manifest.mark, bottomInset: Self.panelOverlap)
           .frame(height: 260)
@@ -261,25 +273,14 @@
       .accessibilityElement(children: .combine)
     }
 
-    // 6. Actions: the app's verbs. Edit and Photo always; Might let go on what's owned and kept.
-    func actions(_ object: ShelfObject) -> some View {
+    // 6. Actions: the app's verbs, as `ObjectSlots.actions` lists them. Edit and Photo always; lending on what's
+    // owned and kept, and Mark borrowed or Give back on someone else's; Might let go on what counts.
+    func actions(_ object: ShelfObject, slots: ObjectSlots) -> some View {
       VStack(spacing: TegolaSpace.m) {
         ButtonPair {
-          Button {
-            send(.editTapped)
-          } label: {
-            Text("Edit", bundle: .module)
-          }
-          .buttonStyle(.tegola(.primary))
-          .accessibilityIdentifier("object.edit")
+          ActionButton(.edit, id: "object.edit") { send(.editTapped) }
         } trailing: {
-          Button {
-            send(.photoTapped)
-          } label: {
-            Text("Photo", bundle: .module)
-          }
-          .buttonStyle(.tegola(.secondary))
-          .accessibilityIdentifier("object.photo")
+          ActionButton(.photo, id: "object.photo") { send(.photoTapped) }
         }
         // A signal's remedy resets its clock: Log a battery swap, Make a backup (F15, D-58).
         ForEach(store.remedies, id: \.self) { remedy in
@@ -291,6 +292,20 @@
           .buttonStyle(.tegola(.secondary))
           .accessibilityIdentifier("object.remedy.\(remedy)")
         }
+        if slots.actions.contains(.lend) {
+          ActionButton(.lend, id: "object.lend") { send(.lendTapped) }
+        }
+        if slots.actions.contains(.returnLoan) {
+          ActionButton(.returnLoan, id: "object.return") { send(.returnTapped) }
+        }
+        if slots.actions.contains(.markBorrowed) {
+          ActionButton(.markBorrowed, id: "object.markBorrowed") { send(.markBorrowedTapped) }
+        }
+        if slots.actions.contains(.giveBack) {
+          ActionButton(.giveBack, id: "object.giveBack") { send(.giveBackTapped) }
+        }
+        // F14: every object can be shared as its record; what's owned, as my copy too.
+        ActionButton(.share, kind: .secondary, id: "object.share") { send(.shareTapped) }
         if object.counts {
           Button {
             send(.mightLetGoTapped)

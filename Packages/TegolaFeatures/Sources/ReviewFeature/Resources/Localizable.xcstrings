@@ -71,16 +71,6 @@
         }
       }
     },
-    "Confirm" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Confirmer"
-          }
-        }
-      }
-    },
     "Confirm all" : {
       "localizations" : {
         "fr" : {
@@ -147,16 +137,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ouvrir le vôtre"
-          }
-        }
-      }
-    },
-    "Photo" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Photo"
           }
         }
       }

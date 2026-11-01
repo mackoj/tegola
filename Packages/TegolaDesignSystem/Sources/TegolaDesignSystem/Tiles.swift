@@ -197,6 +197,31 @@
     }
   }
 
+  /// A small figure with its eyebrow (board 19's "Return rate 4 / 5", board 22's "Borrowed 6 things"). Two sit side by
+  /// side and share the width.
+  public struct StatTile: View {
+    let eyebrow: Text
+    let figure: Text
+    let fill: TegolaRole
+
+    public init(eyebrow: Text, figure: Text, fill: TegolaRole = .surfaceRaised) {
+      self.eyebrow = eyebrow
+      self.figure = figure
+      self.fill = fill
+    }
+
+    public var body: some View {
+      VStack(alignment: .leading, spacing: TegolaSpace.xs) {
+        eyebrow.tegolaTextStyle(TegolaType.metaSmall).foregroundStyle(TegolaRole.textMeta)
+        figure.tegolaTextStyle(TegolaType.heading).foregroundStyle(TegolaRole.text)
+      }
+      .padding(TegolaSpace.m)
+      .frame(maxWidth: .infinity, alignment: .leading)
+      .printed(fill: fill, radius: TegolaRadius.card)
+      .accessibilityElement(children: .combine)
+    }
+  }
+
   struct RowSurface: ViewModifier {
     let notYours: Bool
 

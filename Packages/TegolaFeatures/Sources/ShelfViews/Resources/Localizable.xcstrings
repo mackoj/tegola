@@ -91,6 +91,26 @@
         }
       }
     },
+    "Asking" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prix demandé"
+          }
+        }
+      }
+    },
+    "Back from %@, closed by you" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revenu de chez %@, clos par vous"
+          }
+        }
+      }
+    },
     "Backed up" : {
       "localizations" : {
         "fr" : {
@@ -219,6 +239,16 @@
         }
       }
     },
+    "damaged" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "abîmé"
+          }
+        }
+      }
+    },
     "Details filled in · %@" : {
       "localizations" : {
         "fr" : {
@@ -299,12 +329,12 @@
         }
       }
     },
-    "Given back" : {
+    "Given back to %@" : {
       "localizations" : {
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rendu"
+            "value" : "Rendu à %@"
           }
         }
       }
@@ -551,16 +581,6 @@
         }
       }
     },
-    "Photo" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Photo"
-          }
-        }
-      }
-    },
     "Photo added" : {
       "localizations" : {
         "fr" : {
@@ -611,12 +631,12 @@
         }
       }
     },
-    "Returned" : {
+    "same shape" : {
       "localizations" : {
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Revenu"
+            "value" : "même état"
           }
         }
       }
@@ -657,6 +677,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Révisé · %@"
+          }
+        }
+      }
+    },
+    "Shared from Tegola" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partagé depuis Tegola"
+          }
+        }
+      }
+    },
+    "something missing" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "il manque quelque chose"
           }
         }
       }

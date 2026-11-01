@@ -1,3 +1,4 @@
+import ActivityFeature
 import AddByHandFeature
 import CaptureFeature
 import CollectionFeature
@@ -5,10 +6,14 @@ import ComposableArchitecture
 import DependenciesTestSupport
 import FeatureTestSupport
 import FirstPieceFeature
+import Foundation
 import ObjectFeature
+import PersonFeature
 import ShelfFeature
 import SignalsFeature
+import TegolaClients
 import TegolaModel
+import TegolaStorage
 import Testing
 
 @testable import AppFeature
@@ -46,6 +51,37 @@ struct AppFeatureTests {
     }
     // Tapping the Shelf tab while on it goes back to its root.
     await store.send(.view(.tabTapped(.shelf))) { $0.shelfPath.removeAll() }
+  }
+
+  /// F13: a person's page is a route like any other, and its loans open their objects on the same stack.
+  @Test func aPersonsPageIsPushedAndOpensAnObject() async throws {
+    var state = AppFeature.State()
+    let max = try #require(state.shelf.snapshot.shelf.persons.values.first { $0.name == "Max" }?.id)
+    let kidA = try #require(state.shelf.snapshot.shelf.objects.values.first { $0.title == "Kid A" }?.id)
+    AppFeature.push(.person(max), onto: &state.shelfPath)
+    #expect(state.shelfPath.last == .person(PersonFeature.State(id: max)))
+    let store = TestStore(initialState: state) { AppFeature() }
+    await store.send(\.shelfPath[id: 0].person.view, .loanTapped(kidA))
+    await store.receive(\.shelfPath[id: 0].person.delegate.open, .object(kidA)) {
+      $0.shelfPath[id: 1] = .object(ObjectFeature.State(id: kidA))
+    }
+  }
+
+  /// F13: the Today strip's *N overdue* opens Activity, whose rows push onto its own stack.
+  @Test func overdueOpensActivityAndItsRowsPushThere() async throws {
+    @Dependency(\.shelf) var shelf
+    let homogenic = try #require(
+      AppFeature.State().shelf.snapshot.shelf.objects.values.first { $0.title == "Homogenic" }?.id
+    )
+    _ = try shelf.perform(.lend(homogenic, to: .new(name: "Dara"), due: testNow - 86_400, note: ""))
+    let store = TestStore(initialState: AppFeature.State()) { AppFeature() }
+    await store.send(\.shelf.view, .overdueTapped)
+    await store.receive(\.shelf.delegate.showActivity) { $0.selectedTab = .activity }
+    await store.send(\.activity.view, .objectTapped(homogenic))
+    await store.receive(\.activity.delegate.open, .object(homogenic)) {
+      $0.activityPath[id: 0] = .object(ObjectFeature.State(id: homogenic))
+    }
+    await store.send(.view(.tabTapped(.activity))) { $0.activityPath.removeAll() }
   }
 
   @Test func theSignalFeedIsPushedAndOpensAnObject() async throws {

@@ -23,7 +23,7 @@
 
     public var body: some View {
       VStack(spacing: 0) {
-        ModalBar(Text("Bring your list", bundle: .module), dismissLabel: Text("Close", bundle: .module)) {
+        ModalBar(Text("Bring your list", bundle: .module)) {
           send(.closeTapped)
         }
         ScrollView {

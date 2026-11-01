@@ -2,6 +2,7 @@
   public import SwiftUI
   public import TegolaCatalogue
   public import TegolaModel
+  import TegolaDesignSystem
 
   // How the shelf's values read on screen, shared by every feature that shows an object: the object screen, rows,
   // Find's "what matched", the edit form's previews. Words come from this target's catalog; data stays verbatim.
@@ -20,18 +21,36 @@
       case .money(let money): Text(money.amount, format: .currency(code: money.currency.code))
       case .options(let options): Text(verbatim: options.joined(separator: " · "))
       case .entries(let entries): Text("\(entries.count) entries", bundle: .module)
-      case .photo: Text("Photo", bundle: .module)
+      case .photo: TegolaAction.photo.label
       }
     }
   }
 
   extension ShelfEvent {
+    /// A return's history line: who it came back from, closed by the collector alone (one-sided, PD-160), how it came
+    /// back, and the collector's words.
+    public static func returnLine(from name: String, cameBack: Loan.CameBack?, words: String?) -> String {
+      let shape: String? =
+        switch cameBack {
+        case .sameShape: String(localized: "same shape", bundle: .module)
+        case .damaged: String(localized: "damaged", bundle: .module)
+        case .somethingMissing: String(localized: "something missing", bundle: .module)
+        case nil: nil
+        }
+      let head = String(localized: "Back from \(name), closed by you", bundle: .module)
+      return ([head, shape, words].compactMap { $0 }).joined(separator: " · ")
+    }
+
     /// One line in the History slot (board 36): what happened, in the collector's words where they wrote some.
     public func historyLine(shelf: Shelf, type: EffectiveType?) -> Text {
       func person(_ loan: Loan) -> String { shelf.persons[loan.personID]?.name ?? "" }
       func movedTo(_ name: String) -> Text { Text("Moved to \(name)", bundle: .module) }
       func lentTo(_ name: String) -> Text { Text("Lent to \(name)", bundle: .module) }
       func borrowedFrom(_ name: String) -> Text { Text("Borrowed from \(name)", bundle: .module) }
+      // The person a loan was with: names can't be changed in v1, so the loan's person is the name at the time (D-3,
+      // D-77).
+      func person(of loan: LoanID) -> String { shelf.loans[loan].map(person) ?? "" }
+      func givenBackTo(_ name: String) -> Text { Text("Given back to \(name)", bundle: .module) }
       return switch kind {
       case .added(_, let origin):
         switch origin {
@@ -55,8 +74,9 @@
       case .moved(_, let collection): movedTo(shelf.collections[collection]?.name ?? "")
       case .lent(let loan): lentTo(person(loan))
       case .borrowed(let loan): borrowedFrom(person(loan))
-      case .returned: Text("Returned", bundle: .module)
-      case .gaveBack: Text("Given back", bundle: .module)
+      case .returned(let loan, _, let words, let cameBack):
+        Text(verbatim: Self.returnLine(from: person(of: loan), cameBack: cameBack, words: words))
+      case .gaveBack(let loan, _): givenBackTo(person(of: loan))
       case .logged(_, let kind, let note):
         switch (kind, note.isEmpty) {
         case (ShelfEvent.Kind.servicedKind, true): Text("Serviced", bundle: .module)

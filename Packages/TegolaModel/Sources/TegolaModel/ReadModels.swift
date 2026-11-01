@@ -13,6 +13,8 @@ public enum Route: Hashable, Sendable {
   /// The review queue: what's left to confirm, with what lookups proposed (F8).
   case review
   case wishlist
+  /// One person's page: what they hold and how lending to them has gone (F13).
+  case person(PersonID)
 }
 
 /// Whether money shows (PD-080, PD-138: off by default). With it off, no read model carries a value, a paid figure or
@@ -159,6 +161,8 @@ public struct ObjectSlots: Hashable, Sendable {
 
   public enum Action: String, CaseIterable, Hashable, Sendable {
     case edit, photo, lend, returnLoan, mightLetGo, letGo, promote, setOwned
+    /// Someone else's object: say whose it is, then give it back (PD-061).
+    case markBorrowed, giveBack
   }
 
   /// The order is the product's, never the type's.
@@ -217,6 +221,9 @@ public struct ObjectSlots: Hashable, Sendable {
       actions += [.mightLetGo, .letGo]
     }
     if object.ownership == .wanted { actions.append(.setOwned) }
+    if object.ownership == .borrowed && object.letGo == nil {
+      actions.append(onLoan?.direction == .in ? .giveBack : .markBorrowed)
+    }
     self.actions = actions
   }
 

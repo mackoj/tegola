@@ -41,16 +41,6 @@
         }
       }
     },
-    "Close" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fermer"
-          }
-        }
-      }
-    },
     "come to you?" : {
       "localizations" : {
         "fr" : {
@@ -237,16 +227,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pas d’appareil photo ici. Tapez son nom, ou choisissez une photo."
-          }
-        }
-      }
-    },
-    "Not now" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pas maintenant"
           }
         }
       }

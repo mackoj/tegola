@@ -203,6 +203,16 @@
         }
       }
     },
+    "Due back from %@ today." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ doit le rendre aujourd’hui."
+          }
+        }
+      }
+    },
     "Estimated value" : {
       "localizations" : {
         "fr" : {

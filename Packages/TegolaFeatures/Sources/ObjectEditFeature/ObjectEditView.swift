@@ -21,10 +21,8 @@
     public var body: some View {
       VStack(spacing: 0) {
         ModalBar(
-          Text("Edit", bundle: .module),
-          dismissLabel: Text("Cancel", bundle: .module),
+          TegolaAction.edit.label,
           dismiss: { send(.cancelTapped) },
-          saveLabel: Text("Save", bundle: .module),
           canSave: store.canSave,
           save: { send(.saveTapped) }
         )

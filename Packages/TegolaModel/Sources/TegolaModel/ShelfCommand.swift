@@ -26,8 +26,9 @@ public enum ShelfCommand: Hashable, Sendable {
   case dismissSignal(ObjectID, Signal)
   /// PD-123, PD-148.
   case lend(ObjectID, to: PersonChoice, due: Date?, note: String)
-  /// PD-148, PD-160: closed by the collector alone without a backend (D-2).
-  case returnLoan(LoanID, condition: String?)
+  /// PD-148, PD-160: closed by the collector alone without a backend (D-2). How it came back, and the collector's
+  /// words for the record (board 20); a blank note is no note.
+  case returnLoan(LoanID, cameBack: Loan.CameBack? = nil, condition: String?)
   /// PD-061.
   case markBorrowed(ObjectID, from: PersonChoice)
   case giveBack(ObjectID)

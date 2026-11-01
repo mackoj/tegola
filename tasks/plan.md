@@ -152,7 +152,34 @@ app, so they need the Mac.
 | T6.11 Review queue and matches | F7 and F8's screens: grouped rows with why, **Confirm**, **Fill in**, **Confirm all** for strong matches only; the match sheet's three choices; enrichment asks first | Mac: `ReviewQueueFeatureTests`, `MatchFeatureTests` |
 | T6.12 Journey 2, docs, review | *Bring your list* as a UI test (`--import-fixture`), the empty shelf's **Bring your list** (T5.7), DECISIONS, the M6 report, HANDOFF, `REVIEW.md` (skeleton candidate), a separate review agent | Mac: `scripts/test.sh app`; read-through |
 
-## M7 · people · M8 · keeping + you · M9 · polish
+## M7 · people (F13, F14)
 
-Lending, Activity, share cards; wishlist, let go, archive, saved views, settings, export, inventory document,
+Exit test: journey 3, *Lend at the door*, passes as a UI test: object → Lend → "Dara" → due in 2 weeks → overdue on
+a moved clock → Return → the history names Dara and says the loan was closed one-sided (PLAN §4.4, F13's *Done when*).
+
+What's already there: `lend`, `returnLoan`, `markBorrowed` and `giveBack` with their rules and events, the `persons`
+and `loans` tables (M2), a loan's overdue status and the Today strip's *N overdue* line (M4), and Places (F10, done in
+M3 as T3.11). Boards 17 to 22 are the screens; their "differs from the decision log" notes apply.
+
+Shared verbs (Lend, Mark returned, Give back, Nudge, Share) are `TegolaAction`s and the tab bar is the system's (D-78).
+
+Branch: `m7-people`. T7.1 to T7.4 are model work and build and test on Linux. T7.5 to T7.10 touch the features,
+notifications, the share sheet and the app, so they need the Mac. M7 needs nothing from tegola-server.
+
+| Task | Acceptance | Verify |
+|---|---|---|
+| T7.1 People read models | `PersonRecord` (board 19): what the person holds now, every loan both ways newest first, returned out of lent, the average days out, and nothing invented when there's no history. `Activity` (boards 17, 22): loans out with overdue first, then due soonest, then no date; *Returned*; *By person*; the objects borrowed in, oldest first. `Activity.badge` counts only overdue loans, so the badge is gone when nothing is due. The people picker's names, most recently used first. Borrowed and lent objects keep counting the way promise 4 says | Linux: `PeopleReadModelTests`, `ReadModelTests` |
+| T7.2 Return details and the history's person | `returnLoan` takes how it came back (*same shape*, *damaged*, *something missing*) and an optional note (board 20, PD-148), stored on the loan's JSON and the `returned` event (optional, so older events decode). The history names the person on every loan line, as they were named then (D-3; no rename exists in v1, so the loan's person is enough, D-77). A collector-closed loan says so (`closedBy: .collector`, PD-160) | Linux: `PlanTests`, storage replay, `CommandGenerator` covers the new arguments |
+| T7.3 Loan reminders and the nudge's line | `LoanReminders` (pure): one notification on the due date for each open loan out with a date, and none for a returned loan or one with no date. The nudge's friendly line names the object and how long it's been out, and never says what was paid | Linux: `LoanReminderTests` |
+| T7.4 Share cards | `ShareCard` (pure, F14, D-79): **the record** has the public facts only (the spine's subtitle and year, and the lookup-filled `auto` fields); **my copy** adds condition and photos, and an asking price only with money on. What was paid is never on a card, of either kind, with money on or off (a property test over the command generator's shelves). A wishlist shares as a list of wants that reveals no holdings (PD-071) | Linux: `ShareCardTests` |
+| T7.5 Lend and Return | `LendFeature` (board 18): names typed with recent first and **+ New**, **Back by** (2 weeks, 1 month, a date, or none), the optional note, **Hand it over**. `ReturnFeature` (board 20): the three ways back, the note, *What gets written*, **It's home**. Both from the object's actions, presented through `ObjectFeature.Destination` (one target per reducer: `LendFeature`, `ReturnFeature`); **Give back** (one tap) and **Whose is it?** (the lend sheet in `borrow` mode) for someone else's object, through `ObjectSlots.actions` | Mac: TestStore; snapshots |
+| T7.6 The Person screen | `PersonFeature` (board 19) on `Route.person`: the header, the two tiles (`StatTile`, new in the design system), every loan both ways with its chip, **Lend them something** (pick what's lendable, then the lend sheet with them chosen, in one sheet). It opens from Activity (T7.7) | Mac: TestStore; snapshots |
+| T7.7 Activity | `ActivityFeature` replaces the placeholder tab (boards 17, 22): *Out now*, *Returned*, *By person*, and the borrowed objects with dashed edges. Each card's footer says due, overdue or out, with **Nudge** or **Mark returned**. The tab's badge is `Activity.badge` through the system's `.badge`, and the only badge in the app. The Today strip's *N overdue* line opens it | Mac: TestStore; snapshots; `AppFeatureTests` |
+| T7.8 Reminders and Nudge | `NotificationsClient` gets `replaceLoanReminders`, with a `loan.` prefix that leaves the clock notifications alone. It runs on the same occasions as the clocks' (D-61's offer covers both, and now also appears for a loan with a date, D-80). **Nudge**, on every Activity card, opens the share sheet with the friendly line; the object's card joins it in T7.9 | Mac: TestStore records schedule calls |
+| T7.9 Share | `ShareFeature` from the object: **Share the record** and **Share my copy** (owned objects only), the asking price with money on. `ShareCardView` (`ShelfViews`) renders the card with `ImageRenderer` in the view, so no client is needed; Nudge sends the record card too. The wishlist's card list waits for M8's wishlist screen (its model, `WishlistCard`, is T7.4) | Mac: TestStore; snapshots of both cards, money on and off |
+| T7.10 Journey 3, docs, review | *Lend at the door* as a UI test, with the clock moved by a launch argument. DECISIONS, the M7 report, HANDOFF, a separate review agent | Mac: `scripts/test.sh app`; read-through |
+
+## M8 · keeping + you · M9 · polish
+
+Wishlist, let go, archive, saved views, settings, export, inventory document,
 nudges, analytics, debug screen; French, accessibility, journeys, performance. Broken down when M6 merges.

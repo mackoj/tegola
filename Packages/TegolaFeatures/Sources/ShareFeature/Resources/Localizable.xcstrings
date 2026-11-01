@@ -1,0 +1,56 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Asking price (optional)" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prix demandé (facultatif)"
+          }
+        }
+      }
+    },
+    "My copy" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mon exemplaire"
+          }
+        }
+      }
+    },
+    "The public facts, the same for every copy." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les faits publics, les mêmes pour chaque exemplaire."
+          }
+        }
+      }
+    },
+    "The record" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La fiche"
+          }
+        }
+      }
+    },
+    "Yours: its condition, its details and its photo." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le vôtre : son état, ses détails et sa photo."
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

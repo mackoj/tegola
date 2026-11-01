@@ -90,9 +90,25 @@ Plan: `tasks/plan.md`, M6. Report: `docs/milestones/M6.md`.
 - [x] T6.11 Review queue and matches
 - [x] T6.12 Journey 2, docs, review
 
+## M7 · people (branch `m7-people`)
+
+Plan: `tasks/plan.md`, M7.
+
+- [x] T7.1 People read models: `PersonRecord`, `Activity`, the badge, recent names
+- [x] T7.2 Return details, and the person's name in the history (D-3)
+- [x] T7.3 Loan reminders and the nudge's line
+- [x] T7.4 Share cards (never what was paid)
+- [x] T7.5 Lend and Return sheets
+- [x] T7.6 The Person screen
+- [x] T7.7 Activity
+- [x] T7.8 Reminders and Nudge
+- [x] T7.9 Share
+- [x] T7.10 Journey 3, docs, review
+
 ## Open follow-ups
 
 - Share sheet: open a CSV from Files or Mail into Bring your list (needs document types in the generated Info.plist,
   D-74).
 - The column mapper behind Something's off, for a spreadsheet whose headers no alias names (D-74).
 - Cell extraction with the on-device model, once measured against Jeux (D-74).
+- The wishlist shared as a card list (F14, PD-071): `WishlistCard` is ready; it needs M8's wishlist screen.

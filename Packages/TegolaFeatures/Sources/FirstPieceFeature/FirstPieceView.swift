@@ -29,13 +29,7 @@
           if [.recognised, .whatIsIt, .story].contains(store.step) {
             HStack {
               Spacer()
-              Button {
-                send(.closeTapped)
-              } label: {
-                Text("Close", bundle: .module)
-              }
-              .buttonStyle(.tegola(.quiet))
-              .accessibilityIdentifier("firstPiece.close")
+              ActionButton(.close, id: "firstPiece.close") { send(.closeTapped) }
             }
           }
           switch store.step {
@@ -301,13 +295,7 @@
           .buttonStyle(.tegola(.primary))
           .accessibilityIdentifier("firstPiece.countMeIn")
         } trailing: {
-          Button {
-            send(.notNowTapped)
-          } label: {
-            Text("Not now", bundle: .module)
-          }
-          .buttonStyle(.tegola(.secondary))
-          .accessibilityIdentifier("firstPiece.notNow")
+          ActionButton(.notNow, id: "firstPiece.notNow") { send(.notNowTapped) }
         }
       }
       .padding(TegolaSpace.l)

@@ -767,3 +767,105 @@ What keeps the options open: every add goes through `ShelfCommand.add`, so a cap
 10). A source the server won't call (over its budget, or switched off) needs no contract change: the server answers
 with other sources, or `503` with `Retry-After` when no other source can answer, which the lookup queue already
 retries (D-73).
+
+### D-77 · People: what the Activity tab and a person's page read, and how a return is written
+
+> PLAN F13: "The return asks how it came back, and that goes into history … Each Person has a page with what they hold
+> now and a track record … It's the only tab with a badge, and the badge is gone when nothing is due." D-3: "`lent` and
+> `returned` events carry the person's id and name at the time."
+
+**Gap.** D-3 wants the name at the time so a rename doesn't rewrite history, but v1 has no way to rename a person.
+Board 19's "return rate 4 / 5" doesn't say what it divides by. Board 20 offers three answers to *How did it come
+back?*, where the model had one free-text condition.
+
+**Decision.**
+- **Read models** (`People.swift`, T7.1): `Activity` lists loans out (overdue first, then the soonest due, then no
+  date, the longest out first), what came back, who holds what, and what's borrowed in. Its **badge** counts only
+  overdue loans and is nil at zero. `PersonRecord` gives what the person holds, what they lent you, every loan both
+  ways, **returned out of lent**, and the average whole days out over the loans that came back. With no history it
+  says nothing: no rate, no average. `Shelf.recentPeople` puts the most recently used names first.
+- **The name at the time** comes from the loan's person. Since a person can't be renamed in v1, that's the name they
+  had, and no event field is added. If renaming comes, `returned` and `gaveBack` gain the name then, as optional
+  associated values.
+- **A return** (T7.2) takes `cameBack` (*same shape*, *damaged*, *something missing*, or not said) and the
+  collector's words, trimmed; blank words are none. Both live on the loan's JSON and on the `returned` event, where
+  `cameBack` is optional, so events written before M7 decode unchanged. The history reads *Back from Dara, closed by
+  you · damaged · Sleeve torn*: "closed by you" is how it says one-sided (PD-160).
+
+### D-78 · The system tab bar, and one place for shared actions
+
+> The owner, 2026-11-01: "change the tabbar to the native iOS one; centralize all the button and tabbar action in one
+> place to prevent duplicates in the design system."
+
+**Replaces.** `docs/design/BOARDS.md`'s PD-117 note ("keep the board's geometry"): board 01's drawn bar with the
+raised yellow Scan button is gone. PD-117's five tabs, their order rules (`TabBarLayout`) and Scan presenting rather
+than selecting all stay.
+
+**Decision.**
+- **The tab bar is SwiftUI's `TabView`** with one `Tab` per `AppTab`, in the collector's order, tinted with the
+  accent. Choosing Scan sends `tabTapped(.scan)`, which presents the camera and leaves the selection where it was.
+  The bar, its glass and its safe area are the system's. `TegolaTabBar`, `TabBarItem` and the three tab-bar metrics
+  are removed. Activity's badge (T7.7) will be the system's `.badge`.
+- **`TegolaAction`** (`TegolaDesignSystem/Actions.swift`) defines every tab and every verb more than one screen uses,
+  once: its words (in the design system's catalog, so translated once), its SF Symbol and its usual look. The tabs'
+  items, `ModalBar`'s Close, Cancel and Save, and the shared buttons all read it. **`ActionButton(.save, id:)`** is the
+  button for one, and a screen may ask for another look. A verb only one screen says stays with that screen.
+- `ModalBar` takes no labels: it says Close, or Cancel when it has a Save.
+- UI tests find tabs by their label in the system tab bar (`app.tab("Find")`), since a `Tab`'s identifier doesn't
+  reach the system's button.
+- The catalog's *tabBar* section is now *actions*: every action's item and button.
+
+### D-79 · What a share card shows
+
+> PLAN F14: "**Share the record** (public facts) and **share my copy** (condition, photos, and an asking price only
+> with money on) render a **share card** image … What was paid is never on a card … A wishlist shares as a card list
+> that reveals wants, never holdings (PD-071)."
+
+**Gap.** "Public facts" isn't defined per field. Sorting fields by kind fails: a box's condition, *sealed*, *framed*,
+*completeness*, *graded by* and *missing parts* are choice, yes/no or list fields that describe one copy. v1 has no
+asking-price field (Let go is M8).
+
+**Decision.** `ShareCard` and `WishlistCard` (`TegolaModel/ShareCard.swift`, T7.4):
+- **The record** has the title, the subtype, the spine's subtitle and year, and the fields marked `auto` in the type
+  file: the ones a lookup fills from a catalogue, which are the same for every copy. A type with no `auto` field
+  (watches) shares its spine only. Leaving a fact out is the safe direction.
+- **My copy** adds every other visible field the collector filled, the ladder's grades and the photos.
+- **Never on a card:** any money value, whatever the field, and paid, value, acquired, the notes and the place. A
+  property test over random shelves of every v1 type checks both kinds with money on and off.
+- **The asking price** is typed on the share screen (T7.9) and shows only on *my copy* with money on.
+- **The wishlist card** lists wanted objects (grails first, then by title) with type, subtype, title and year: no
+  price cap, no priority, nothing owned.
+- If a field's public-ness ever needs to differ from `auto`, it gets its own key in the type schema then.
+- **On screen** (T7.9): the object's **Share** opens a sheet with *The record* / *My copy* (my copy only for what's
+  owned), a preview, and the system share sheet with the card as an image. The card is drawn by one view,
+  `ShareCardView`, which Nudge also sends (as the record). The ladder's grades keep the ladder's order.
+
+### D-80 · The Person page, the Activity tab, reminders and the nudge
+
+> PLAN F13: "Each Person has a page with what they hold now and a track record … **Activity** gathers loans out,
+> borrowed objects and overdue loans. It's the only tab with a badge … There's one reminder notification on the due
+> date … **Nudge** opens the share sheet with a friendly line and the object card."
+
+**Gaps.** Board 19's **Lend him something** goes straight to the lend sheet, which needs an object. Board 17's footer
+puts either Nudge or Mark returned on a card, and the overdue one shows only Mark returned. D-61's notifications offer
+was worded for clocks, and appears only when a clock has something to say.
+
+**Decision.**
+- **The Person page** (T7.6) shows the tiles only when there's a loan out to read (*Came back n of m*, and *Average
+  out* once one has come back), then every loan both ways with a chip: *Overdue*, *Out now*, *Returned*, *Theirs, here*,
+  *Given back*. **Lend them something** opens a sheet listing what can be lent (owned, kept, one copy, not out),
+  searchable; picking one turns the same sheet into the lend sheet with the person already chosen.
+- **Activity** (T7.7) has its own stack. Its pills are *Out now*, *Returned* and *By person*; *In the house, not yours*
+  follows whenever something is borrowed. Each card's footer says *Overdue · n days* (rust), *Due today* or *Due in n
+  days* (yellow within a week), or *Out · n days*, with **Nudge** and **Mark returned** on every card: a late loan is
+  the one most worth a nudge. The Today strip's *N overdue* line switches to the tab. The badge is the system's
+  `.badge`, the overdue count, and none at zero.
+- **Reminders** (T7.8) follow the clocks: scheduled when the offer is accepted and each time the Shelf appears, under
+  their own `loan.` prefix so neither kind clears the other. The offer now also appears when a loan has a due date. The
+  reminder reads *Homogenic · Due back from Dara today.*
+- **A loan is due back on a day** (review of M7): the lend sheet stores the last second of the chosen day, so a loan
+  is overdue only once its day is over, and the date picker offers today or later. A loan reminder whose morning has
+  passed is dropped rather than sent late, and **It's home** removes the loan's pending reminder.
+- **The nudge's line** is worded from `Nudge` alone: *Hi Dara! Just checking in on Homogenic: it was due back 7 days
+  ago. No rush, tell me when.* or, before the date, *Hi Max! Hope you're enjoying Kid A. Tell me when you're done with
+  it.* The object's card joins it with T7.9.

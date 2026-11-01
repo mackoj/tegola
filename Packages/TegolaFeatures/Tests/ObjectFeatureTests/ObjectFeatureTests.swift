@@ -2,8 +2,11 @@ import ComposableArchitecture
 import DependenciesTestSupport
 import FeatureTestSupport
 import Foundation
+import LendFeature
 import ObjectEditFeature
+import ReturnFeature
 import SQLiteData
+import ShareFeature
 import TegolaCatalogue
 import TegolaClients
 import TegolaModel
@@ -115,7 +118,45 @@ struct ObjectFeatureTests {
     let store = TestStore(initialState: ObjectFeature.State(id: id)) { ObjectFeature() }
     let object = try #require(store.state.object)
     await store.send(.view(.editTapped)) {
-      $0.edit = ObjectEditFeature.State(object: object, placePath: nil, money: .off)
+      $0.destination = .edit(ObjectEditFeature.State(object: object, placePath: nil, money: .off))
     }
+  }
+
+  /// F13: Lend opens the sheet with the people most recently used first.
+  @Test func lendOpensTheSheet() async throws {
+    let id = try seededObject("Homogenic")
+    let store = TestStore(initialState: ObjectFeature.State(id: id)) { ObjectFeature() }
+    let people = store.state.snapshot.shelf.shelf.recentPeople
+    await store.send(.view(.lendTapped)) {
+      $0.destination = .lend(
+        LendFeature.State(objectID: id, title: "Homogenic", mode: .lend, people: people, now: testNow)
+      )
+    }
+  }
+
+  @Test func markReturnedOpensTheReturnSheet() async throws {
+    let id = try seededObject("Kid A")
+    let store = TestStore(initialState: ObjectFeature.State(id: id)) { ObjectFeature() }
+    let shelf = store.state.snapshot.shelf.shelf
+    let loan = try #require(shelf.openLoan(on: id))
+    let sheet = try #require(ReturnFeature.State(loan: loan.id, shelf: shelf, now: testNow, calendar: .testUTC))
+    await store.send(.view(.returnTapped)) { $0.destination = .returnLoan(sheet) }
+  }
+
+  /// PD-061: giving someone's object back is one tap, and Activity no longer lists it.
+  @Test func giveBackClosesTheBorrowing() async throws {
+    let id = try seededObject("Root")
+    let store = TestStore(initialState: ObjectFeature.State(id: id)) { ObjectFeature() }
+    await store.send(.view(.giveBackTapped))
+    await store.finish()
+    try await store.state.$snapshot.load()
+    #expect(store.state.snapshot.shelf.shelf.openLoan(on: id) == nil)
+    #expect(Activity(shelf: store.state.snapshot.shelf.shelf, now: testNow).borrowed.isEmpty)
+  }
+
+  @Test func shareOpensTheShareSheet() async throws {
+    let id = try seededObject("Kid A")
+    let store = TestStore(initialState: ObjectFeature.State(id: id)) { ObjectFeature() }
+    await store.send(.view(.shareTapped)) { $0.destination = .share(ShareFeature.State(objectID: id)) }
   }
 }

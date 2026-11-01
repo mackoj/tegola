@@ -112,13 +112,7 @@
           .printed(fill: .accentHighlight, radius: TegolaRadius.input, shadow: 0)
         }
         ButtonPair {
-          Button {
-            send(.confirmTapped(row.id))
-          } label: {
-            Text("Confirm", bundle: .module)
-          }
-          .buttonStyle(.tegola(.confirm))
-          .accessibilityIdentifier("review.confirm.\(row.object.title)")
+          ActionButton(.confirm, id: "review.confirm.\(row.object.title)") { send(.confirmTapped(row.id)) }
         } trailing: {
           Button {
             send(.fillInTapped(row.id))
@@ -170,7 +164,7 @@
       case .catalogueNumber: Text("Catalogue number", bundle: .module)
       case .title: Text("Title", bundle: .module)
       case .ocr: Text("Label text", bundle: .module)
-      case .image: Text("Photo", bundle: .module)
+      case .image: TegolaAction.photo.label
       case .region: Text("Region", bundle: .module)
       case .subtype: Text("Platform", bundle: .module)
       case .typoCorrected: Text("Typo corrected", bundle: .module)

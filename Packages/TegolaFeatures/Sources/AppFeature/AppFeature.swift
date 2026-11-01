@@ -1,3 +1,4 @@
+public import ActivityFeature
 public import AddByHandFeature
 public import CaptureFeature
 public import CollectionFeature
@@ -7,6 +8,7 @@ public import FirstPieceFeature
 public import Foundation
 public import ImportFeature
 public import ObjectFeature
+public import PersonFeature
 public import PlacesFeature
 public import ReviewFeature
 import SQLiteData
@@ -21,6 +23,7 @@ import TegolaStorage
 public enum AppPath {
   case collection(CollectionFeature)
   case object(ObjectFeature)
+  case person(PersonFeature)
   case place(PlaceFeature)
   case places(PlacesFeature)
   case review(ReviewFeature)
@@ -41,6 +44,8 @@ public struct AppFeature {
     public var shelfPath = StackState<AppPath.State>()
     public var find = FindFeature.State()
     public var findPath = StackState<AppPath.State>()
+    public var activity = ActivityFeature.State()
+    public var activityPath = StackState<AppPath.State>()
     /// Add by hand: the empty shelf's Type it, and the camera's.
     @Presents public var addByHand: AddByHandFeature.State?
     /// Scan presents instead of selecting a tab (PD-117): the camera (F6, T6.9).
@@ -62,6 +67,8 @@ public struct AppFeature {
   }
 
   public enum Action: ViewAction {
+    case activity(ActivityFeature.Action)
+    case activityPath(StackActionOf<AppPath>)
     case addByHand(PresentationAction<AddByHandFeature.Action>)
     case capture(PresentationAction<CaptureFeature.Action>)
     case importing(PresentationAction<ImportFeature.Action>)
@@ -91,10 +98,29 @@ public struct AppFeature {
   public var body: some ReducerOf<Self> {
     Scope(state: \.shelf, action: \.shelf) { ShelfFeature() }
     Scope(state: \.find, action: \.find) { FindFeature() }
+    Scope(state: \.activity, action: \.activity) { ActivityFeature() }
     Reduce { state, action in
       switch action {
       case .shelf(.delegate(.open(let route))):
         Self.push(route, onto: &state.shelfPath)
+        return .none
+      case .shelf(.delegate(.showActivity)):
+        state.selectedTab = .activity
+        return .none
+      case .activity(.delegate(.open(let route))):
+        Self.push(route, onto: &state.activityPath)
+        return .none
+      case .activity:
+        return .none
+      case .activityPath(.element(_, .collection(.delegate(.open(let route))))),
+        .activityPath(.element(_, .places(.delegate(.open(let route))))),
+        .activityPath(.element(_, .place(.delegate(.open(let route))))),
+        .activityPath(.element(_, .signals(.delegate(.open(let route))))),
+        .activityPath(.element(_, .review(.delegate(.open(let route))))),
+        .activityPath(.element(_, .person(.delegate(.open(let route))))):
+        Self.push(route, onto: &state.activityPath)
+        return .none
+      case .activityPath:
         return .none
       case .shelf(.delegate(.addByHand)):
         state.addByHand = AddByHandFeature.State()
@@ -180,7 +206,8 @@ public struct AppFeature {
         .findPath(.element(_, .places(.delegate(.open(let route))))),
         .findPath(.element(_, .place(.delegate(.open(let route))))),
         .findPath(.element(_, .signals(.delegate(.open(let route))))),
-        .findPath(.element(_, .review(.delegate(.open(let route))))):
+        .findPath(.element(_, .review(.delegate(.open(let route))))),
+        .findPath(.element(_, .person(.delegate(.open(let route))))):
         Self.push(route, onto: &state.findPath)
         return .none
       case .findPath:
@@ -191,7 +218,8 @@ public struct AppFeature {
         .shelfPath(.element(_, .places(.delegate(.open(let route))))),
         .shelfPath(.element(_, .place(.delegate(.open(let route))))),
         .shelfPath(.element(_, .signals(.delegate(.open(let route))))),
-        .shelfPath(.element(_, .review(.delegate(.open(let route))))):
+        .shelfPath(.element(_, .review(.delegate(.open(let route))))),
+        .shelfPath(.element(_, .person(.delegate(.open(let route))))):
         Self.push(route, onto: &state.shelfPath)
         return .none
       case .shelfPath:
@@ -204,6 +232,8 @@ public struct AppFeature {
           state.shelfPath.removeAll()
         } else if tab == state.selectedTab, tab == .find {
           state.findPath.removeAll()
+        } else if tab == state.selectedTab, tab == .activity {
+          state.activityPath.removeAll()
         } else {
           state.selectedTab = tab
         }
@@ -212,6 +242,7 @@ public struct AppFeature {
     }
     .forEach(\.shelfPath, action: \.shelfPath)
     .forEach(\.findPath, action: \.findPath)
+    .forEach(\.activityPath, action: \.activityPath)
     .ifLet(\.$addByHand, action: \.addByHand) { AddByHandFeature() }
     .ifLet(\.$capture, action: \.capture) { CaptureFeature() }
     .ifLet(\.$importing, action: \.importing) { ImportFeature() }
@@ -260,6 +291,8 @@ public struct AppFeature {
       path.append(.signals(SignalsFeature.State()))
     case .review:
       path.append(.review(ReviewFeature.State()))
+    case .person(let id):
+      path.append(.person(PersonFeature.State(id: id)))
     case .wishlist:
       break
     }
