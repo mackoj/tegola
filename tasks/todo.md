@@ -105,6 +105,22 @@ Plan: `tasks/plan.md`, M7.
 - [x] T7.9 Share
 - [x] T7.10 Journey 3, docs, review
 
+## M8 · keeping + you (branch `m8-keeping-you`)
+
+Plan: `tasks/plan.md`, M8.
+
+- [ ] T8.1 Keeping read models: `Wishlist`, `MightLetGo`, `Archive`
+- [ ] T8.2 Export, and the round trip (exit test)
+- [ ] T8.3 The inventory document's model
+- [ ] T8.4 The weekly nudge
+- [ ] T8.5 Settings and analytics storage
+- [ ] T8.6 The wishlist
+- [ ] T8.7 Let go, the archive and Might let go
+- [ ] T8.8 The You tab
+- [ ] T8.9 Export and inventory screens
+- [ ] T8.10 Nudges, analytics, debug
+- [ ] T8.11 Journeys 4 and 6, docs, review
+
 ## Open follow-ups
 
 - Share sheet: open a CSV from Files or Mail into Bring your list (needs document types in the generated Info.plist,
