@@ -3,13 +3,13 @@
 The state of the work for whoever picks it up next: a new session, another agent, or the owner. Read this first, keep
 it short and current.
 
-**Updated:** 2026-11-01. M4's and M5's model halves are done (T4.1–T4.4, T5.1–T5.4); both screens halves wait for
-the Mac.
+**Updated:** 2026-11-01. The model halves of M4, M5 and M6 are done (T4.1–T4.4, T5.1–T5.4, T6.1–T6.7); their
+screens halves wait for the Mac.
 
-**Resume here.** Branch `claude/tegola-rearchitecture-jcq29f` (ahead of `main` by M4 and M5's commits), draft
-PR #12, which covers M4 and M5. Nothing is uncommitted. A cloud session can't go further than this without the Mac:
-every task left in M4 and M5 touches `TegolaFeatures`, snapshots or the app. Its useful work meanwhile is M6's pure
-side (the importers in `TegolaInterchange`, the lookup queue's model) or tegola-server.
+**Resume here.** Branch `claude/tegola-rearchitecture-jcq29f` (ahead of `main` by M4, M5 and M6's commits), draft
+PR #12, which covers all three. Nothing is uncommitted. A cloud session can't go further than this without the Mac:
+every task left in M4, M5 and M6 touches `TegolaFeatures`, `TegolaClients`, snapshots or the app. Its useful work
+meanwhile is tegola-server (M6's match endpoint is what the import's step 4 calls).
 
 ## Where things stand
 
@@ -31,7 +31,21 @@ side (the importers in `TegolaInterchange`, the lookup queue's model) or tegola-
   - **T5.3 testers.** `SettingKey.typeTesters` (`TypeTesters`) and `firstPieceSkipped`; `ShelfSnapshot` reads both,
     with `opensOnFirstPiece`. `Shelf.waiting(for:)`.
   - **T5.4 payoff.** `FirstPiecePayoff` and `Clocks.firstSignalDate`.
-- **Waiting for the Mac:** T4.4b–T4.7 and T5.5–T5.7 touch the features, snapshots and the app.
+- **M6 (capture, lookup, import):** stacked on the same branch and PR. The Linux half is done and verified: 260 tests
+  across the seven pure packages, zero warnings, `swift format lint --strict` clean.
+  - **T6.1 import batches** (D-60). `ShelfCommand.importBatch(ImportBatch)` / `undoBatch(BatchID)`; imported rows are
+    now **unconfirmed** (replaces D-38's reading). Undo, within 30 days, removes only rows nobody touched
+    (`ShelfObject.imported`), soft-deleting their rows. New tables: `importBatches`, and `lookupQueue` (T6.6).
+  - **T6.2 the Importer API** (D-61): `Importer`, `ImporterRegistry.v1`, `ImportPlan` (rows, shelves, guessed,
+    `count(_ notice:)`, `toSort`, `batch()`), `CellExtracting`, and `NoteReader`, the rule-based cell reader.
+  - **T6.3–T6.5 the three importers:** `TemplateImporter` (`TemplateFormat`, D-63), `SpreadsheetImporter` (grid and
+    list, D-62) and `DiscogsCSVImporter` (D-64). **Jeux:** 485 rows on 20 shelves, Imperfect 3, Duplicate 1, Signed 1,
+    12 to sort (2.5%), planned in about 0.3 s on Linux (`ImportIntegrationTests`).
+  - **T6.6** `LookupCandidate`, `EnrichmentProposal` (what `applyLookup` would fill), `LookupQueue`, and
+    `ShelfStore.perform(_:context:lookup:)` (D-65). **T6.7** `LookAlikes` and `MatchOutcome` (D-66).
+  - Also fixed: `ValueText.historyLine`'s switch had no `.signalDismissed` case (from T4.3), which the Mac build
+    would have refused. It now lists that and the two batch events.
+- **Waiting for the Mac:** T4.4b–T4.7, T5.5–T5.7 and T6.8–T6.12 touch the features, clients, snapshots and the app.
 - **tegola-server** (`mackoj/tegola-server`, D-41): its M1 is done. The app needs it from M6 on.
 
 ## What's next
@@ -69,7 +83,22 @@ side (the importers in `TegolaInterchange`, the lookup queue's model) or tegola-
      "First piece · \(story)": give an empty story its own key.
    - **T5.7** the empty shelf's two offers; **T5.8** the first-piece UI test, `docs/UX-FINDINGS.md`, the report and
      the review.
-4. **Later:** M6 (camera, lookup, import), M7 (people), M8 (keeping, You), M9 (polish).
+4. **M6 on the Mac**, after M5's screens (`tasks/plan.md`, M6). Run `scripts/test.sh TegolaStorage` and
+   `scripts/test.sh TegolaFeatures` first: storage gained two migrations and features have never seen the batch events.
+   - **T6.8 `LookupClient`** in `TegolaClients`: map the generated `Candidate` to `LookupCandidate` and the match
+     buckets to `MatchOutcome`; `AppAttestMiddleware`, `RetryMiddleware` (`LookupQueue.Outcome.retryAfter`),
+     `ReachabilityClient`, and the worker that drains `ShelfStore.lookupQueue()` and calls `recordLookup`. Add the
+     `appattest-environment` entitlement (`tasks/todo.md`, open follow-ups).
+   - **T6.9 Capture:** VisionKit; save with `perform(.add(…, origin: .captured), context:, lookup: .barcode(…))`.
+   - **T6.10 Import screens:** `ImporterRegistry.v1.best(for:)`, then `plan(_:catalogue:extraction:)`; the sentence
+     reads `collectionName`, `rows.count`, `types`, `shelves` and the `guessed` chips; **Build my shelf** sends
+     `.importBatch(plan.batch())` with source `.import`; the payoff reads `count(.imperfect)` and the rest; undo is
+     `.undoBatch(receipt.batchID!)` and its summary reads `batchUndone`'s `kept`. `ExtractionClient` implements
+     `CellExtracting` with Foundation Models; without it, pass `NoteReader()`. A sold sheet tab needs a let-go row
+     in `ImportBatch` (D-62). Matching: send rows to `POST /types/{type}/match`, 50 a call.
+   - **T6.11** the review queue (`LookupCandidate.strength`, `EnrichmentProposal.apply(_:)`) and the match sheet
+     (`LookAlikes.choices`, `.command(for:…)`). **T6.12** journey 2, the report, `REVIEW.md`, the review.
+5. **Later:** M7 (people), M8 (keeping, You), M9 (polish).
 
 ## Run it locally (Mac)
 
@@ -157,3 +186,12 @@ The owner approved M2 and M3's readings (D-35, D-38, D-45, D-50, D-51; D-54). Op
 - **D-58:** the `recognise:` words in each type file are a first list. Add the words your testers use.
 - **D-59:** the first piece's story is stored as the collector's words, not as a chip id, so it doesn't change
   language if they switch the app's language later. Say if it should.
+
+Open, for M6:
+
+- **D-60:** imported rows are now unconfirmed, as PD-047 says, so a 485-game import shows "485 to tidy". Page 49
+  says the queue is "never a gate", and **Confirm all** takes strong matches once the server has answered.
+- **D-61:** a listed part doesn't make the unlisted ones Missing, so "(cartouche)" isn't imperfect. That keeps
+  page 49's count at 3; page 49's own Mario 64 example reads it the other way.
+- **D-63:** the template's columns differ from page 49's sample (`subtype` with keys, not `platform`; field keys as
+  extra columns), so one template covers every type.
