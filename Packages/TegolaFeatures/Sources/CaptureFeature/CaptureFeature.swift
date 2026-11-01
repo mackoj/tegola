@@ -94,7 +94,7 @@ public struct CaptureFeature {
   public enum Action: ViewAction {
     case delegate(Delegate)
     case identified(ObjectID, [LookupCandidate]?)
-    case saved(ObjectID, Seen?, identifying: Bool)
+    case saved(ObjectID, Seen?, CollectionID?, identifying: Bool)
     case saveFailed
     case view(View)
 
@@ -102,7 +102,7 @@ public struct CaptureFeature {
     public enum Delegate: Equatable {
       /// Something was queued: the app starts the lookup worker.
       case queued
-      case open(ObjectID)
+      case review
       /// **Type it**: the add form instead of the camera.
       case typeIt
     }
@@ -142,17 +142,20 @@ public struct CaptureFeature {
         switch candidates {
         case .some(let candidates):
           let best = candidates.max { $0.confidence < $1.confidence }
-          state.tray[index].status = best.flatMap { candidate in
-            if case .text(let title) = candidate.values[.title] { .proposed(title) } else { nil }
-          } ?? .nothingFound
+          state.tray[index].status =
+            best.flatMap { candidate in
+              if case .text(let title) = candidate.values[.title] { .proposed(title) } else { nil }
+            } ?? .nothingFound
         case .none:
           // Identify failed (offline, or the server refused): what was read waits in the queue as before.
           state.tray[index].status = .queued
         }
         return .none
 
-      case .saved(let id, let seen, let identifying):
+      case .saved(let id, let seen, let collection, let identifying):
         state.isSaving = false
+        // The next shot goes where this one went: a new collection is made once, not once a shot.
+        if let collection { state.collection = .existing(collection) }
         state.tray.insert(TrayItem(id: id, seen: seen, status: identifying ? .identifying : .queued), at: 0)
         return .none
 
@@ -196,9 +199,9 @@ public struct CaptureFeature {
             }
           }
           if let added = receipt.collectionID { try? settings.set(.lastCollection, added.rawValue.uuidString) }
-          await send(.saved(id, seen, identifying: identify))
-          await send(.delegate(.queued))
-          guard identify, let photo else { return }
+          await send(.saved(id, seen, receipt.collectionID, identifying: identify))
+          // With Identify, what was read goes out with the photo; the worker gets it only if Identify can't answer.
+          guard identify, let photo else { return await send(.delegate(.queued)) }
           let hints = seen?.hints ?? LookupHints()
           do {
             let candidates = try await lookup.identify(type, hints, photo)
@@ -212,14 +215,16 @@ public struct CaptureFeature {
             await send(.identified(id, candidates))
           } catch {
             await send(.identified(id, nil))
+            await send(.delegate(.queued))
           }
         } catch: { error, send in
           reportIssue(error)
           await send(.saveFailed)
         }
 
-      case .view(.trayItemTapped(let id)):
-        return .send(.delegate(.open(id)))
+      case .view(.trayItemTapped):
+        // "Confirm it in Review" (D-75): the review queue, where the tray's objects wait.
+        return .send(.delegate(.review))
 
       case .view(.typeItTapped):
         return .send(.delegate(.typeIt))

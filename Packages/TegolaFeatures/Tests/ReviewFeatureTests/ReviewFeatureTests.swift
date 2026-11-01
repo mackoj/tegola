@@ -55,7 +55,10 @@ func object(_ id: ObjectID) throws -> ShelfObject? {
 )
 struct ReviewFeatureTests {
   @Test func confirmFillsWhatsEmptyAndConfirms() async throws {
-    let id = try captured("Ridge Racer", answer: [candidate("Ridge Racer", release: "r1", confidence: 0.97, publisher: "Namco")])
+    let id = try captured(
+      "Ridge Racer",
+      answer: [candidate("Ridge Racer", release: "r1", confidence: 0.97, publisher: "Namco")]
+    )
     let store = TestStore(initialState: ReviewFeature.State()) { ReviewFeature() }
     store.exhaustivity = .off
     await store.send(.view(.onAppear))
@@ -75,7 +78,10 @@ struct ReviewFeatureTests {
 
   /// Confirm all takes the strong matches and leaves the rest alone (F8).
   @Test func confirmAllIsStrongOnly() async throws {
-    let strong = try captured("Ridge Racer", answer: [candidate("Ridge Racer", release: "r1", confidence: 0.95, publisher: "Namco")])
+    let strong = try captured(
+      "Ridge Racer",
+      answer: [candidate("Ridge Racer", release: "r1", confidence: 0.95, publisher: "Namco")]
+    )
     let weak = try captured("Tekken", answer: [candidate("Tekken", release: "t1", confidence: 0.5, publisher: "Namco")])
     let store = TestStore(initialState: ReviewFeature.State()) { ReviewFeature() }
     store.exhaustivity = .off
@@ -106,6 +112,25 @@ struct ReviewFeatureTests {
     await store.send(.view(.confirmTapped(id)))
     await store.receive(\.loaded)
     #expect(try object(id)?.values[.field("publisher")] == .text("Jaleco"))
+  }
+
+  /// A row that asks, confirmed with nothing picked, is confirmed as written: nothing fills (D-75, review).
+  @Test func aRowThatAsksWithNoPickConfirmsAsWritten() async throws {
+    let id = try captured(
+      "Tetris",
+      answer: [
+        candidate("Tetris", release: "gb", confidence: 0.7, publisher: "Nintendo"),
+        candidate("Tetris Plus", release: "plus", confidence: 0.65, publisher: "Jaleco"),
+      ]
+    )
+    let store = TestStore(initialState: ReviewFeature.State()) { ReviewFeature() }
+    store.exhaustivity = .off
+    await store.send(.view(.onAppear))
+    await store.receive(\.loaded)
+    await store.send(.view(.confirmTapped(id)))
+    await store.receive(\.loaded)
+    #expect(try object(id)?.identity == .confirmed)
+    #expect(try object(id)?.values[.field("publisher")] == nil)
   }
 
   /// A typed value is the collector's: a lookup never overwrites it (promise 1).

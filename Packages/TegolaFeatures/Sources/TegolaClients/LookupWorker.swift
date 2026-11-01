@@ -98,7 +98,12 @@ public enum LookupWorker {
       } catch let LookupFailure.retryAfter(seconds) {
         try queue.record(request.id, .retryAfter(seconds), date.now)
         break
+      } catch LookupFailure.offline {
+        // No network: nothing is spent; the pass stops, and the next one starts when the network is back.
+        return nil
       } catch is CancellationError {
+        throw CancellationError()
+      } catch  where Task.isCancelled {
         throw CancellationError()
       } catch {
         try queue.record(request.id, .failed, date.now)

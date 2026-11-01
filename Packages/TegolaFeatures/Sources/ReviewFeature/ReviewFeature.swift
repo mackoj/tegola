@@ -78,7 +78,11 @@ public struct ReviewFeature {
         return .run { [shelf, lookupQueue] send in
           for command in commands {
             // A lookup's values come from the lookup; the confirmation is the collector's (PD-042).
-            if case .applyLookup = command { _ = try shelf.perform(command, .lookup) } else { _ = try shelf.perform(command) }
+            if case .applyLookup = command {
+              _ = try shelf.perform(command, .lookup)
+            } else {
+              _ = try shelf.perform(command)
+            }
           }
           await send(.loaded(try lookupQueue.load()))
         } catch: { error, _ in
@@ -88,10 +92,12 @@ public struct ReviewFeature {
       case .view(.confirmTapped(let id)):
         guard let row = state.review.rows.first(where: { $0.id == id }) else { return .none }
         let candidate = state.picked[id].flatMap { release in row.candidates.first { $0.releaseID == release } }
+        // A row that asks fills only from the candidate the collector picked; with none picked, it's confirmed as
+        // written (D-75).
         let proposal =
           candidate.map {
             EnrichmentProposal(object: id, candidate: $0, shelf: state.snapshot.shelf, catalogue: catalogue)
-          } ?? row.proposal
+          } ?? (row.asks ? nil : row.proposal)
         // Needs details can't be confirmed without a title: Fill in first.
         guard row.object.identity != .needsDetails || (proposal?.changes[.title] != nil) || !row.object.title.isEmpty
         else { return .send(.delegate(.open(.object(id)))) }

@@ -1,6 +1,6 @@
+import CryptoKit
 public import Dependencies
 import DependenciesMacros
-import CryptoKit
 public import Foundation
 import HTTPTypes
 public import Keychain
@@ -94,7 +94,19 @@ struct AppAttestMiddleware: ClientMiddleware {
     return try await send(request, bytes, baseURL, next)
   }
 
+  /// One signed call at a time: a key is registered once, and assertions reach the server in counter order.
+  static let gate = AsyncGate()
+
   func send(
+    _ request: HTTPRequest,
+    _ bytes: Data?,
+    _ baseURL: URL,
+    _ next: @Sendable (HTTPRequest, HTTPBody?, URL) async throws -> (HTTPResponse, HTTPBody?)
+  ) async throws -> (HTTPResponse, HTTPBody?) {
+    try await Self.gate.run { try await signedSend(request, bytes, baseURL, next) }
+  }
+
+  func signedSend(
     _ request: HTTPRequest,
     _ bytes: Data?,
     _ baseURL: URL,
@@ -153,4 +165,23 @@ struct AppAttestMiddleware: ClientMiddleware {
   static let timestampField = HTTPField.Name("X-Tegola-Timestamp")!
   static let assertionField = HTTPField.Name("X-Tegola-Assertion")!
   static let debugTokenField = HTTPField.Name("X-Tegola-Debug-Token")!
+}
+
+/// A lock for async work: one holder at a time, the rest wait in order. An actor alone isn't enough, since it lets
+/// another call in at every `await`.
+actor AsyncGate {
+  private var busy = false
+  private var waiting: [CheckedContinuation<Void, Never>] = []
+
+  func run<T: Sendable>(_ work: @Sendable () async throws -> T) async throws -> T {
+    if busy {
+      await withCheckedContinuation { waiting.append($0) }
+    } else {
+      busy = true
+    }
+    defer {
+      if waiting.isEmpty { busy = false } else { waiting.removeFirst().resume() }
+    }
+    return try await work()
+  }
 }

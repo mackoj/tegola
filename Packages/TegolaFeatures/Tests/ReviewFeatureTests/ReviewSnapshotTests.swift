@@ -23,7 +23,10 @@
   )
   struct ReviewSnapshotTests {
     @Test func queue() throws {
-      _ = try captured("Ridge Racer", answer: [candidate("Ridge Racer", release: "r1", confidence: 0.97, publisher: "Namco")])
+      _ = try captured(
+        "Ridge Racer",
+        answer: [candidate("Ridge Racer", release: "r1", confidence: 0.97, publisher: "Namco")]
+      )
       _ = try captured(
         "Tetris",
         answer: [

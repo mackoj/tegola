@@ -8,10 +8,11 @@ import OpenAPIRuntime
 import SQLiteData
 import Synchronization
 import TegolaCatalogue
-import TegolaClients
 import TegolaModel
 import TegolaStorage
 import Testing
+
+@testable import TegolaClients
 
 /// A server that answers each call from a script, and remembers what it was asked.
 final class ScriptedServer: ClientTransport, Sendable {
@@ -44,7 +45,8 @@ final class ScriptedServer: ClientTransport, Sendable {
       return answer
     }
     var headers = answer.headers
-    headers[.contentType] = answer.status == .ok || answer.status == .created ? "application/json" : "application/problem+json"
+    headers[.contentType] =
+      answer.status == .ok || answer.status == .created ? "application/json" : "application/problem+json"
     return (HTTPResponse(status: answer.status, headerFields: headers), HTTPBody(answer.json))
   }
 
@@ -122,7 +124,10 @@ struct LookupClientTests {
   @Test func callsAreSignedWithAnAttestedKey() async throws {
     let scripted = ScriptedServer([
       "getAttestChallenge": [
-        .init(status: .ok, json: #"{"challenge": "\#(String(repeating: "c", count: 44))", "expiresAt": "2027-01-15T08:00:00Z"}"#)
+        .init(
+          status: .ok,
+          json: #"{"challenge": "\#(String(repeating: "c", count: 44))", "expiresAt": "2027-01-15T08:00:00Z"}"#
+        )
       ],
       "registerAttestKey": [.init(status: .created, json: "{}")],
       "lookupBarcode": [.init(status: .ok, json: ridgeRacer)],
@@ -163,6 +168,58 @@ struct LookupClientTests {
     let message = "GET\n/v1/types/video-game/barcodes/0711719200020\n\(timestamp)\n\(emptyHash)"
     #expect(assertions.withLock { $0.first } == Data(SHA256.hash(data: Data(message.utf8))))
   }
+
+  /// The signed target is the path with its query, base path included (contract, security step 2).
+  @Test func theQueryIsSignedWithThePath() {
+    let message = AppAttestMiddleware.message(
+      method: "get",
+      target: "/v1/types/music/barcodes/0602547817327?symbology=ean13",
+      timestamp: "2027-01-15T08:00:00Z",
+      body: Data()
+    )
+    let hash = SHA256.hash(data: Data()).map { String(format: "%02x", $0) }.joined()
+    #expect(
+      String(decoding: message, as: UTF8.self)
+        == "GET\n/v1/types/music/barcodes/0602547817327?symbology=ean13\n2027-01-15T08:00:00Z\n\(hash)"
+    )
+  }
+
+  /// A 401 naming an unknown key registers once more, then sends the same body again, signed with the new key.
+  @Test func anUnknownKeyIsRegisteredAgainAndTheCallRetried() async throws {
+    let unknown = #"{"type": "https://api.tegola.app/problems/unknown-key", "title": "Unknown key", "status": 401}"#
+    let scripted = ScriptedServer([
+      "getAttestChallenge": [
+        .init(
+          status: .ok,
+          json: #"{"challenge": "\#(String(repeating: "c", count: 44))", "expiresAt": "2027-01-15T08:00:00Z"}"#
+        )
+      ],
+      "registerAttestKey": [.init(status: .created, json: "{}")],
+      "identifyObject": [.init(status: .unauthorized, json: unknown), .init(status: .ok, json: ridgeRacer)],
+    ])
+    let keys = LockIsolatedKeys()
+    try await withDependencies {
+      $0.keychain = .inMemory()
+      $0.appAttest = AppAttestClient(
+        isSupported: { true },
+        generateKey: { keys.next() },
+        attestKey: { _, _ in Data("attestation".utf8) },
+        generateAssertion: { _, _ in Data("signed".utf8) }
+      )
+    } operation: {
+      @Dependency(\.keychain) var keychain
+      try await keychain.save(Secret("revoked-key"), for: .appAttestKeyID)
+      let client = LookupClient.live(.init(serverURL: server), transport: scripted)
+      let candidates = try await client.identify("video-game", LookupHints(title: "Ridge Racer"), nil)
+      #expect(candidates.count == 1)
+      #expect(try await keychain.load(for: .appAttestKeyID).exposeSecret() == "key-1")
+    }
+    let sent = scripted.requests.withLock { $0 }
+    let identifies = sent.filter { $0.0.path == "/v1/types/video-game/identify" }
+    #expect(identifies.count == 2)
+    #expect(identifies[0].1 == identifies[1].1)
+    #expect(identifies.map { $0.0.headerFields[HTTPField.Name("X-Tegola-Key-ID")!] } == ["revoked-key", "key-1"])
+  }
 }
 
 /// T6.8's worker over the real queue table (D-73).
@@ -186,8 +243,12 @@ struct LookupWorkerTests {
     let store = ShelfStore(migrated: database, catalogue: try Catalogue.bundled())
     let draft = ObjectDraft(type: "video-game", subtype: "ps1", values: [.title: .text("Ridge Racer")])
     let context = PlanContext(at: now, source: .capture, catalogue: store.catalogue, makeID: { uuid() })
-    return try store.perform(.add(draft, to: .new(name: "Games"), origin: .captured), context: context, lookup: .barcode("0711719200020"))
-      .createdObjects[0]
+    return try store.perform(
+      .add(draft, to: .new(name: "Games"), origin: .captured),
+      context: context,
+      lookup: .barcode("0711719200020")
+    )
+    .createdObjects[0]
   }
 
   @Test func anAnswerIsKeptForTheReviewQueue() async throws {
@@ -214,6 +275,19 @@ struct LookupWorkerTests {
     #expect(next == nil)
   }
 
+  /// Offline or cancelled, a request waits without spending an attempt (D-73, review).
+  @Test func offlineSpendsNothing() async throws {
+    _ = try captured()
+    let next = try await withDependencies {
+      $0.lookup.barcode = { _, _, _ in throw LookupFailure.offline }
+    } operation: {
+      try await LookupWorker.drain()
+    }
+    @Dependency(\.lookupQueue) var queue
+    #expect(try queue.load().requests.map(\.attempts) == [0])
+    #expect(next == nil)
+  }
+
   @Test func aFailureSpendsAnAttemptAndAWaitDoesnt() async throws {
     _ = try captured()
     let next = try await withDependencies {
@@ -232,5 +306,15 @@ struct LookupWorkerTests {
       _ = try await LookupWorker.drain()
     }
     #expect(try queue.load().requests.map(\.attempts) == [1])
+  }
+}
+
+/// New key ids, one per call: key-1, key-2…
+final class LockIsolatedKeys: Sendable {
+  private let count = Mutex(0)
+  func next() -> String {
+    count.withLock {
+      $0 += 1; return "key-\($0)"
+    }
   }
 }

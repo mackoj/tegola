@@ -89,7 +89,11 @@
     var scanner: some View {
       #if canImport(VisionKit) && os(iOS)
         if hasScanner {
-          LiveScanner(trigger: shutter, recognised: { send(.recognised($0)) }, shot: { send(.shutterTapped(photo: $0)) })
+          LiveScanner(
+            trigger: shutter,
+            recognised: { send(.recognised($0)) },
+            shot: { send(.shutterTapped(photo: $0)) }
+          )
         } else {
           noCamera
         }
@@ -231,7 +235,11 @@
           report(allItems)
         }
 
-        func dataScanner(_ scanner: DataScannerViewController, didAdd added: [RecognizedItem], allItems: [RecognizedItem]) {
+        func dataScanner(
+          _ scanner: DataScannerViewController,
+          didAdd added: [RecognizedItem],
+          allItems: [RecognizedItem]
+        ) {
           report(allItems)
         }
 
@@ -273,9 +281,15 @@
         let size = CGSize(width: image.size.width * scale, height: image.size.height * scale)
         let format = UIGraphicsImageRendererFormat()
         format.scale = 1
-        return UIGraphicsImageRenderer(size: size, format: format).jpegData(withCompressionQuality: 0.8) { _ in
-          image.draw(in: CGRect(origin: .zero, size: size))
+        // At most 2 MiB, as the contract says (D-71): the quality steps down until it fits.
+        for quality in [0.8, 0.65, 0.5, 0.35] {
+          let data = UIGraphicsImageRenderer(size: size, format: format).jpegData(withCompressionQuality: quality) {
+            _ in
+            image.draw(in: CGRect(origin: .zero, size: size))
+          }
+          if data.count <= 2 * 1024 * 1024 { return data }
         }
+        return nil
       }
     }
   #endif

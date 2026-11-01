@@ -85,6 +85,7 @@ struct CaptureFeatureTests {
     await test.send(.view(.shutterTapped(photo: jpeg))) { $0.identify = false }
     await test.receive(\.saved)
     await test.receive(\.identified)
+    // What was read went out with the photo, not again through the worker.
 
     #expect(sent.value?.0 == LookupHints(text: "TETRIS\nNintendo"))
     #expect(sent.value?.1 == jpeg)
@@ -135,5 +136,30 @@ struct CaptureFeatureTests {
   @Test func nothingIsSavedWithoutAddTo() async throws {
     let test = TestStore(initialState: CaptureFeature.State()) { CaptureFeature() }
     await test.send(.view(.shutterTapped(photo: jpeg)))
+  }
+}
+
+/// F6's done-when on an empty shelf: the first shot of a type makes its collection, and the next shots go into it.
+@MainActor
+@Suite(
+  .dependencies {
+    try $0.seededShelf(seed: false)
+    $0.lookupQueue = .store(ShelfStore(migrated: $0.defaultDatabase, catalogue: $0.catalogue))
+  }
+)
+struct CaptureOnAnEmptyShelfTests {
+  @Test func theFirstShotMakesTheCollectionAndTheNextGoInIt() async throws {
+    let test = TestStore(initialState: CaptureFeature.State()) { CaptureFeature() }
+    test.exhaustivity = .off
+    await test.send(.view(.typeTapped("music"))) { $0.collection = .new(name: "My Music") }
+    await test.send(.view(.shutterTapped(photo: nil)))
+    await test.receive(\.saved)
+    await test.send(.view(.shutterTapped(photo: nil)))
+    await test.receive(\.saved)
+
+    let shelf = try store().shelf()
+    #expect(shelf.collections.values.map(\.name) == ["My Music"])
+    #expect(shelf.objects.count == 2)
+    #expect(try store().lookupQueue().requests.isEmpty)
   }
 }

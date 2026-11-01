@@ -2,17 +2,17 @@ public import AddByHandFeature
 public import CaptureFeature
 public import CollectionFeature
 public import ComposableArchitecture
-public import Foundation
 public import FindFeature
-public import ImportFeature
 public import FirstPieceFeature
+public import Foundation
+public import ImportFeature
 public import ObjectFeature
 public import PlacesFeature
 public import ReviewFeature
 import SQLiteData
-import TegolaClients
 public import ShelfFeature
 public import SignalsFeature
+import TegolaClients
 public import TegolaModel
 import TegolaStorage
 
@@ -70,8 +70,6 @@ public struct AppFeature {
     case firstPiece(PresentationAction<FirstPieceFeature.Action>)
     /// Scan, once the first piece's cover has gone: SwiftUI can't present a sheet while a cover is dismissing.
     case presentScan
-    /// Something was queued for a lookup: the worker starts again, so it goes out now.
-    case lookupsChanged
     case shelf(ShelfFeature.Action)
     case shelfPath(StackActionOf<AppPath>)
     case view(View)
@@ -132,10 +130,10 @@ public struct AppFeature {
           try await clock.sleep(for: .milliseconds(600))
           await send(.presentScan)
         }
-      case .capture(.presented(.delegate(.open(let id)))):
+      case .capture(.presented(.delegate(.review))):
         state.capture = nil
         state.selectedTab = .shelf
-        Self.push(.object(id), onto: &state.shelfPath)
+        Self.push(.review, onto: &state.shelfPath)
         return .none
       case .capture:
         return .none
@@ -149,8 +147,14 @@ public struct AppFeature {
           try await clock.sleep(for: .milliseconds(600))
           await send(.presentScan)
         }
-      case .importing(.presented(.delegate(.queued))):
-        return lookups()
+      case .importing(.presented(.delegate(.match(let rows, let objects)))):
+        // Matching outlives the sheet (D-74): the answers wait for Review; the sheet shows the count if it's open.
+        return .run { send in
+          let matched = try await ImportFeature.match(rows, objects: objects)
+          await send(.importing(.presented(.matchedRows(matched))))
+        } catch: { error, _ in
+          reportIssue(error)
+        }
       case .importing(.presented(.delegate(.finished(let collection)))):
         state.selectedTab = .shelf
         if let collection { Self.push(.collection(collection), onto: &state.shelfPath) }
@@ -165,8 +169,6 @@ public struct AppFeature {
         return .send(.importing(.presented(.view(.fileChosen(name: name, data: data)))))
       case .view(.onAppear):
         return .merge(openOnFirstPiece(&state), lookups())
-      case .lookupsChanged:
-        return lookups()
       case .addByHand:
         return .none
       case .find(.delegate(.open(let route))):

@@ -1,10 +1,10 @@
 public import ComposableArchitecture
 public import Foundation
+import SQLiteData
 import TegolaCatalogue
 public import TegolaClients
 public import TegolaInterchange
 public import TegolaModel
-import SQLiteData
 import TegolaStorage
 
 /// Bringing a list (PLAN F9, page 49; T6.10): pick a file, read it, say in one sentence what it is, build the shelf in
@@ -26,6 +26,7 @@ public struct ImportFeature {
     /// Rows the server matched or asked about, once matching is done.
     public var matched: Int?
     public var undone: Undone?
+    public var isUndoing = false
     public var failed = false
 
     public init() {}
@@ -61,7 +62,8 @@ public struct ImportFeature {
     public enum Delegate: Equatable {
       /// The rows are on the shelf: the app opens their collection.
       case finished(CollectionID?)
-      case queued
+      /// Match these rows in the background: the app runs it, so closing the sheet doesn't stop it (D-74).
+      case match([ImportPlan.Row], [ObjectID])
     }
 
     @CasePathable
@@ -96,7 +98,7 @@ public struct ImportFeature {
         state.objects = objects
         state.step = .payoff
         guard let plan = state.plan else { return .none }
-        return match(plan.rows, objects: objects)
+        return .send(.delegate(.match(plan.rows, objects)))
 
       case .buildFailed:
         state.step = .sentence
@@ -108,7 +110,7 @@ public struct ImportFeature {
 
       case .matchedRows(let count):
         state.matched = count
-        return .send(.delegate(.queued))
+        return .none
 
       case .planned(let plan, let importers):
         state.plan = plan
@@ -124,6 +126,7 @@ public struct ImportFeature {
         return .none
 
       case .undone(let removed, let kept):
+        state.isUndoing = false
         state.undone = State.Undone(removed: removed, kept: kept)
         return .none
 
@@ -166,7 +169,8 @@ public struct ImportFeature {
         return .none
 
       case .view(.undoTapped):
-        guard let batch = state.batch, state.undone == nil else { return .none }
+        guard let batch = state.batch, state.undone == nil, !state.isUndoing else { return .none }
+        state.isUndoing = true
         return .run { [shelf] send in
           let receipt = try shelf.perform(.undoBatch(batch))
           for event in receipt.events {
@@ -196,43 +200,6 @@ public struct ImportFeature {
     } catch: { error, send in
       reportIssue(error)
       await send(.planFailed)
-    }
-  }
-
-  /// Step 4 (49): the rows go to the server 50 at a time, by type. A match or a question is kept on its object as an
-  /// answered lookup, for the review queue; a row nobody knows stays as written (49 Q2). Offline or refused, the rows
-  /// stay as written too: matching never holds the import up.
-  func match(_ rows: [ImportPlan.Row], objects: [ObjectID]) -> Effect<Action> {
-    .run { [lookup, lookupQueue, now] send in
-      let pairs = Array(zip(rows, objects))
-      var answered = 0
-      for (type, group) in Dictionary(grouping: pairs, by: { $0.0.draft.type }) {
-        for start in stride(from: 0, to: group.count, by: 50) {
-          let chunk = Array(group[start..<min(start + 50, group.count)])
-          let requests = chunk.compactMap { row, id -> MatchRow? in
-            guard case .text(let title) = row.draft.values[.title] else { return nil }
-            let subtitle: String? = if case .text(let text) = row.draft.values[.subtitle] { text } else { nil }
-            let year: Int? = if case .year(let year) = row.draft.values[.year] { year } else { nil }
-            return MatchRow(ref: id.rawValue.uuidString, title: title, subtitle: subtitle, year: year, subtype: row.draft.subtype)
-          }
-          guard let outcomes = try? await lookup.match(type, requests) else { continue }
-          for (_, id) in chunk {
-            switch outcomes[id.rawValue.uuidString] {
-            case .matched(let candidate):
-              try lookupQueue.answer(id, [candidate], now)
-              answered += 1
-            case .ambiguous(let candidates):
-              try lookupQueue.answer(id, candidates, now)
-              answered += 1
-            case .unknown, nil:
-              continue
-            }
-          }
-        }
-      }
-      await send(.matchedRows(answered))
-    } catch: { error, _ in
-      reportIssue(error)
     }
   }
 }

@@ -18,7 +18,11 @@
   struct ImportSnapshotTests {
     func jeux() async throws -> ImportFeature.State {
       let input = ImportInput(fileName: "Jeux collection.csv", data: try Fixture.jeuxCollection.data())
-      let plan = try await SpreadsheetImporter().plan(input, catalogue: try Catalogue.bundled(), extraction: NoteReader())
+      let plan = try await SpreadsheetImporter().plan(
+        input,
+        catalogue: try Catalogue.bundled(),
+        extraction: NoteReader()
+      )
       var state = ImportFeature.State()
       state.fileName = "Jeux collection.csv"
       state.plan = plan

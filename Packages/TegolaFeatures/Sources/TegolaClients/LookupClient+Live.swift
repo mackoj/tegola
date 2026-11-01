@@ -37,9 +37,11 @@ extension LookupClient: DependencyKey {
 
   /// The generated client over an ephemeral `URLSession` (no cookies, no cache on disk), signed by
   /// `AppAttestMiddleware`. Registration uses a client without it: those two calls are public.
-  public static func live(_ configuration: LookupConfiguration, transport: (any ClientTransport)? = nil) -> LookupClient {
+  public static func live(_ configuration: LookupConfiguration, transport: (any ClientTransport)? = nil) -> LookupClient
+  {
     @Dependency(\.catalogue) var catalogue
-    let transport = transport ?? URLSessionTransport(configuration: .init(session: URLSession(configuration: .ephemeral)))
+    let transport =
+      transport ?? URLSessionTransport(configuration: .init(session: URLSession(configuration: .ephemeral)))
     let plain = Client(serverURL: configuration.serverURL, transport: transport)
     let signer = AppAttestMiddleware(debugToken: configuration.debugToken) {
       try await AppAttestMiddleware.register(with: plain)
@@ -48,61 +50,93 @@ extension LookupClient: DependencyKey {
     let mapping = LookupMapping(catalogue: catalogue)
     return LookupClient(
       barcode: { type, code, subtype in
-        let output = try await client.lookupBarcode(
-          path: .init(typeID: type.rawValue, code: code),
-          query: .init(subtype: subtype)
-        )
-        switch output {
-        case .ok(let ok): return try mapping.candidates(ok.body.json.candidates)
-        case .tooManyRequests(let wait): throw LookupFailure.retryAfter(TimeInterval(wait.headers.retryAfter ?? 60))
-        case .serviceUnavailable(let wait): throw LookupFailure.retryAfter(TimeInterval(wait.headers.retryAfter ?? 60))
-        case .badRequest: throw LookupFailure.rejected(status: 400)
-        case .unauthorized: throw LookupFailure.rejected(status: 401)
-        case .forbidden: throw LookupFailure.rejected(status: 403)
-        case .undocumented(let status, _): throw status >= 500 ? LookupFailure.unavailable : .rejected(status: status)
+        try await offlineAware {
+          let output = try await client.lookupBarcode(
+            path: .init(typeID: type.rawValue, code: code),
+            query: .init(subtype: subtype)
+          )
+          switch output {
+          case .ok(let ok): return try mapping.candidates(ok.body.json.candidates)
+          case .tooManyRequests(let wait): throw LookupFailure.retryAfter(TimeInterval(wait.headers.retryAfter ?? 60))
+          case .serviceUnavailable(let wait):
+            throw LookupFailure.retryAfter(TimeInterval(wait.headers.retryAfter ?? 60))
+          case .badRequest: throw LookupFailure.rejected(status: 400)
+          case .unauthorized: throw LookupFailure.rejected(status: 401)
+          case .forbidden: throw LookupFailure.rejected(status: 403)
+          case .undocumented(let status, _): throw status >= 500 ? LookupFailure.unavailable : .rejected(status: status)
+          }
         }
       },
       identify: { type, hints, photo in
-        let json = mapping.hints(hints)
-        let body: Operations.IdentifyObject.Input.Body
-        if let photo {
-          body = .multipartForm([
-            .image(.init(payload: .init(body: HTTPBody(photo)))),
-            .hints(.init(payload: .init(body: json))),
-          ])
-        } else {
-          body = .json(json)
-        }
-        let output = try await client.identifyObject(path: .init(typeID: type.rawValue), body: body)
-        switch output {
-        case .ok(let ok): return try mapping.candidates(ok.body.json.candidates)
-        case .tooManyRequests(let wait): throw LookupFailure.retryAfter(TimeInterval(wait.headers.retryAfter ?? 60))
-        case .serviceUnavailable(let wait): throw LookupFailure.retryAfter(TimeInterval(wait.headers.retryAfter ?? 60))
-        case .badRequest: throw LookupFailure.rejected(status: 400)
-        case .unauthorized: throw LookupFailure.rejected(status: 401)
-        case .forbidden: throw LookupFailure.rejected(status: 403)
-        case .contentTooLarge: throw LookupFailure.rejected(status: 413)
-        case .unsupportedMediaType: throw LookupFailure.rejected(status: 415)
-        case .undocumented(let status, _): throw status >= 500 ? LookupFailure.unavailable : .rejected(status: status)
+        try await offlineAware {
+          let json = mapping.hints(hints)
+          let body: Operations.IdentifyObject.Input.Body
+          if let photo {
+            body = .multipartForm([
+              .image(.init(payload: .init(body: HTTPBody(photo)))),
+              .hints(.init(payload: .init(body: json))),
+            ])
+          } else {
+            body = .json(json)
+          }
+          let output = try await client.identifyObject(path: .init(typeID: type.rawValue), body: body)
+          switch output {
+          case .ok(let ok): return try mapping.candidates(ok.body.json.candidates)
+          case .tooManyRequests(let wait): throw LookupFailure.retryAfter(TimeInterval(wait.headers.retryAfter ?? 60))
+          case .serviceUnavailable(let wait):
+            throw LookupFailure.retryAfter(TimeInterval(wait.headers.retryAfter ?? 60))
+          case .badRequest: throw LookupFailure.rejected(status: 400)
+          case .unauthorized: throw LookupFailure.rejected(status: 401)
+          case .forbidden: throw LookupFailure.rejected(status: 403)
+          case .contentTooLarge: throw LookupFailure.rejected(status: 413)
+          case .unsupportedMediaType: throw LookupFailure.rejected(status: 415)
+          case .undocumented(let status, _): throw status >= 500 ? LookupFailure.unavailable : .rejected(status: status)
+          }
         }
       },
       match: { type, rows in
-        let output = try await client.matchBatch(
-          path: .init(typeID: type.rawValue),
-          body: .json(.init(items: rows.map(mapping.item)))
-        )
-        switch output {
-        case .ok(let ok): return try mapping.outcomes(ok.body.json.results)
-        case .tooManyRequests(let wait): throw LookupFailure.retryAfter(TimeInterval(wait.headers.retryAfter ?? 60))
-        case .serviceUnavailable(let wait): throw LookupFailure.retryAfter(TimeInterval(wait.headers.retryAfter ?? 60))
-        case .badRequest: throw LookupFailure.rejected(status: 400)
-        case .unauthorized: throw LookupFailure.rejected(status: 401)
-        case .forbidden: throw LookupFailure.rejected(status: 403)
-        case .contentTooLarge: throw LookupFailure.rejected(status: 413)
-        case .undocumented(let status, _): throw status >= 500 ? LookupFailure.unavailable : .rejected(status: status)
+        try await offlineAware {
+          let output = try await client.matchBatch(
+            path: .init(typeID: type.rawValue),
+            body: .json(.init(items: rows.map(mapping.item)))
+          )
+          switch output {
+          case .ok(let ok): return try mapping.outcomes(ok.body.json.results)
+          case .tooManyRequests(let wait): throw LookupFailure.retryAfter(TimeInterval(wait.headers.retryAfter ?? 60))
+          case .serviceUnavailable(let wait):
+            throw LookupFailure.retryAfter(TimeInterval(wait.headers.retryAfter ?? 60))
+          case .badRequest: throw LookupFailure.rejected(status: 400)
+          case .unauthorized: throw LookupFailure.rejected(status: 401)
+          case .forbidden: throw LookupFailure.rejected(status: 403)
+          case .contentTooLarge: throw LookupFailure.rejected(status: 413)
+          case .undocumented(let status, _): throw status >= 500 ? LookupFailure.unavailable : .rejected(status: status)
+          }
         }
       }
     )
+  }
+}
+
+/// The generated client wraps every error in `ClientError`: a cancelled call, or one that never reached a network,
+/// becomes `LookupFailure.offline` (or a `CancellationError`), so the queue doesn't spend an attempt on it (D-73).
+func offlineAware<T>(_ call: () async throws -> T) async throws -> T {
+  do {
+    return try await call()
+  } catch let failure as LookupFailure {
+    throw failure
+  } catch {
+    let underlying = (error as? ClientError)?.underlyingError ?? error
+    if underlying is CancellationError || Task.isCancelled { throw CancellationError() }
+    if let url = underlying as? URLError {
+      switch url.code {
+      case .cancelled: throw CancellationError()
+      case .notConnectedToInternet, .networkConnectionLost, .timedOut, .cannotFindHost, .cannotConnectToHost,
+        .dataNotAllowed, .internationalRoamingOff:
+        throw LookupFailure.offline
+      default: throw LookupFailure.unavailable
+      }
+    }
+    throw LookupFailure.unavailable
   }
 }
 

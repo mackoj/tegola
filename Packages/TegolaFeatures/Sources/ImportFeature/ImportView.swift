@@ -53,7 +53,10 @@
 
     var pick: some View {
       VStack(alignment: .leading, spacing: TegolaSpace.l) {
-        DisplayTitle([Text("Bring your", bundle: .module), Text("list", bundle: .module)], style: TegolaType.displaySmall)
+        DisplayTitle(
+          [Text("Bring your", bundle: .module), Text("list", bundle: .module)],
+          style: TegolaType.displaySmall
+        )
         Text(
           "A spreadsheet saved as CSV, a Discogs export, or Tegola's own template. Nothing is changed in your file.",
           bundle: .module
@@ -88,7 +91,8 @@
     var sentence: some View {
       if let plan = store.plan {
         let count = plan.rows.count
-        let kind = plan.types.first.flatMap { catalogue.manifest($0) }.map { $0.name.plural.lowercased() }
+        let kind =
+          plan.types.first.flatMap { catalogue.manifest($0) }.map { $0.name.plural.lowercased() }
           ?? String(localized: "objects", bundle: .module)
         let shelves = plan.shelves.count
         VStack(alignment: .leading, spacing: TegolaSpace.m) {
@@ -177,8 +181,14 @@
             Text("\(store.objects.count) objects, unconfirmed until you look", bundle: .module)
               .tegolaTextStyle(TegolaType.heading).foregroundStyle(TegolaRole.text)
               .accessibilityIdentifier("import.payoff.count")
-            line(plan.count(.imperfect), Text("\(plan.count(.imperfect)) with something damaged or missing", bundle: .module))
-            line(plan.count(.duplicate), Text("^[\(plan.count(.duplicate)) second copy](inflect: true)", bundle: .module))
+            line(
+              plan.count(.imperfect),
+              Text("\(plan.count(.imperfect)) with something damaged or missing", bundle: .module)
+            )
+            line(
+              plan.count(.duplicate),
+              Text("^[\(plan.count(.duplicate)) second copy](inflect: true)", bundle: .module)
+            )
             line(plan.count(.signed), Text("\(plan.count(.signed)) signed", bundle: .module))
             line(plan.toSort.count, Text("\(plan.toSort.count) to sort, one tap each", bundle: .module))
             if let matched = store.matched {

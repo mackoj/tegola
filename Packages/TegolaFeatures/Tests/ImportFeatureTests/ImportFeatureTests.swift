@@ -50,7 +50,9 @@ struct ImportFeatureTests {
     } withDependencies: {
       // The server knows Tetris, and nothing else.
       $0.lookup.match = { _, rows in
-        Dictionary(uniqueKeysWithValues: rows.map { ($0.ref, $0.title.hasPrefix("Tetris") ? .matched(tetris) : .unknown) })
+        Dictionary(
+          uniqueKeysWithValues: rows.map { ($0.ref, $0.title.hasPrefix("Tetris") ? .matched(tetris) : .unknown) }
+        )
       }
     }
     test.exhaustivity = .off
@@ -63,14 +65,26 @@ struct ImportFeatureTests {
     await test.send(.view(.renamed("Mes jeux")))
     await test.send(.view(.buildTapped))
     await test.receive(\.built, timeout: .seconds(30))
-    await test.receive(\.matchedRows, timeout: .seconds(30))
+    // Matching is handed to the app, so closing the sheet doesn't stop it (D-74).
+    await test.receive(\.delegate.match, timeout: .seconds(30))
+    let plan = try #require(test.state.plan)
+    let objects = test.state.objects
+    let matched = try await withDependencies {
+      $0.lookup.match = { _, rows in
+        Dictionary(
+          uniqueKeysWithValues: rows.map { ($0.ref, $0.title.hasPrefix("Tetris") ? .matched(tetris) : .unknown) }
+        )
+      }
+    } operation: {
+      try await ImportFeature.match(plan.rows, objects: objects)
+    }
 
     let shelf = try store().shelf()
     #expect(shelf.collections.values.map(\.name) == ["Mes jeux"])
     #expect(shelf.objects.count == 485)
     #expect(shelf.objects.values.allSatisfy { $0.identity == .unconfirmed })
     let answered = try store().lookupQueue().requests.filter { $0.state == .answered }
-    #expect(!answered.isEmpty && answered.count == test.state.matched)
+    #expect(!answered.isEmpty && answered.count == matched)
     #expect(answered.allSatisfy { $0.answer == [tetris] })
   }
 
@@ -92,6 +106,8 @@ struct ImportFeatureTests {
 
     await test.send(.view(.undoTapped))
     await test.receive(\.undone, timeout: .seconds(30))
+    // Undo runs once: another tap does nothing.
+    await test.send(.view(.undoTapped))
     #expect(test.state.undone == .init(removed: 484, kept: 1))
     #expect(try store().shelf().objects.keys.sorted() == [touched])
   }

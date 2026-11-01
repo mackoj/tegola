@@ -72,8 +72,10 @@ public struct MatchRow: Hashable, Sendable {
 public enum LookupFailure: Error, Hashable, Sendable {
   /// `429` or `503`: try again after this many seconds, no attempt spent.
   case retryAfter(TimeInterval)
-  /// The network or the server failed: one attempt spent.
+  /// The server failed: one attempt spent.
   case unavailable
+  /// No network, or the call was cancelled: the request waits, no attempt spent (D-73).
+  case offline
   /// The server refused the request as sent (`400`, `401`, `403`, `413`, `415`): retrying won't help.
   case rejected(status: Int)
 }
