@@ -81,6 +81,8 @@ public struct ShelfFeature {
     public enum Delegate: Equatable {
       /// Add an object by hand (the Scan sheet's Type it).
       case addByHand
+      /// The empty shelf's **Scan your first object**: the first piece's camera (PLAN F2).
+      case scanFirstObject
       case open(Route)
     }
 
@@ -91,6 +93,7 @@ public struct ShelfFeature {
       case notificationsDeclined
       case onAppear
       case placesTapped
+      case scanFirstObjectTapped
       case typeItTapped
     }
   }
@@ -138,6 +141,8 @@ public struct ShelfFeature {
         }
       case .view(.placesTapped):
         return .send(.delegate(.open(.places)))
+      case .view(.scanFirstObjectTapped):
+        return .send(.delegate(.scanFirstObject))
       case .view(.typeItTapped):
         return .send(.delegate(.addByHand))
       }

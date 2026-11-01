@@ -590,3 +590,37 @@ without case, accents, width or extra spaces:
 
 The server's match buckets are `MatchOutcome`: matched, ambiguous, unknown. Only ambiguous goes to the exceptions
 queue, never as a gate; matched is an enrichment proposal the collector confirms; unknown stays as written.
+
+### D-72 · The first piece's screens, and how a piece is described
+
+> PD-166: "the type is inferred rather than asked." PLAN F2: four screens, and *What is it?* says why it can't go on.
+
+**Gap.** Page 46's board is missing from the archive (`docs/design/BOARDS.md`), so its layout, its story chips and
+what *What is it?* offers are unwritten. PLAN §2 gives the inference to Foundation Models, but iOS 26's model reads only
+text, and v1 runs on iOS 26.
+
+**Decision.**
+- **Describing a piece** (`ExtractionClient`, D-62): the model says a name, a few words for what kind of thing it is,
+  and a year when it's printed or well known. `Catalogue.guess(from:)` turns the words into a type; the model never
+  picks one.
+  - On iOS 27, where the on-device model reads images, it gets the photo itself with the text Vision reads from it.
+  - On iOS 26, it gets Vision's text and the image classifier's confident labels instead.
+  - Without Apple Intelligence, a photo gets Vision's labels as words and no name, so *What is it?* asks for one. A
+    typed name stands as it is.
+  - The photo never leaves the phone here: describing is on-device. It's re-encoded at 2048 px, which drops its
+    metadata, before it's stored.
+- **The year** goes on the piece, so its clocks have something to read: page 46's "running since 1998" is the save
+  battery reading the year. Nothing else the model says is written.
+- **What is it?** has the name field, dashed and focused, and *It's…* chips: v1's three types, the guessed type when
+  it hasn't shipped, and Thing (shown as its hobby name, "Something else"). The guess is picked; the collector can pick
+  another. **Next** is disabled until there's a name, and a line under it says so. With no type picked and the model
+  available, **Next** asks the model what kind of thing the name is; with none, the piece is a Thing.
+- **How did it come to you?** offers five chips (A gift, I bought it, Handed down, I found it, Had it since I was a kid)
+  and a line. The story is the chip's words and the line, joined by " · ", in the collector's language (D-63).
+- **The payoff** says the signal (with ESTIMATE) or "Not yet. Soon." with the month it'll change, then the story, three
+  empty slots, **One at a time** and **That's enough for today**. One at a time closes onboarding and opens Scan, once
+  the cover has gone.
+- **The empty shelf** offers **Scan your first object**, which opens the first piece again, and keeps **Type it**.
+  **Bring your list** waits for M6's import.
+- **When it opens:** at launch, while `opensOnFirstPiece`. The app reads the shelf once on appear to decide, and
+  doesn't reopen onboarding later in the session.

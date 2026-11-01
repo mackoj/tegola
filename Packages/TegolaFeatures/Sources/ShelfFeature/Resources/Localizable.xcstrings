@@ -253,6 +253,16 @@
         }
       }
     },
+    "Scan your first object" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scanner ton premier objet"
+          }
+        }
+      }
+    },
     "shelf yet" : {
       "localizations" : {
         "fr" : {
@@ -273,12 +283,12 @@
         }
       }
     },
-    "Start with one piece you love. Type it in, and the shelf grows from there." : {
+    "Start with one piece you love, and the shelf grows from there." : {
       "localizations" : {
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Commencez par une pièce que vous aimez. Tapez-la, et l’étagère grandit à partir de là."
+            "value" : "Commence par une pièce que tu aimes, l’étagère grandit à partir de là."
           }
         }
       }
