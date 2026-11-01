@@ -33,6 +33,9 @@ built in the cloud on top of a different M4 (draft PR #12), were replayed onto i
     `DiscogsCSVImporter` (D-68). The owner's `Jeux collection.csv`: 485 rows on 20 shelves, 12 to sort.
   - **T6.6** `LookupCandidate`, `EnrichmentProposal`, `LookupQueue` and `ShelfStore.perform(_:context:lookup:)`
     (D-69). **T6.7** `LookAlikes` and `MatchOutcome` (D-70).
+- **Lookup contract 0.2.0** (D-71): `identifyObject` (`POST /types/{type}/identify`) takes words, OCR text, a
+  barcode and a photo in any combination, and replaces `searchObjects`. tegola-server must sync the contract and move
+  its search behind identify; its CI fails until it does.
 - **tegola-server** (`mackoj/tegola-server`, D-41): its M1 is done. The app needs it from M6's T6.8 on.
 
 ## What's next
