@@ -91,6 +91,16 @@
         }
       }
     },
+    "Asking" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prix demandé"
+          }
+        }
+      }
+    },
     "Back from %@, closed by you" : {
       "localizations" : {
         "fr" : {
@@ -667,6 +677,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Révisé · %@"
+          }
+        }
+      }
+    },
+    "Shared from Tegola" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partagé depuis Tegola"
           }
         }
       }

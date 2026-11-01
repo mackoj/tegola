@@ -66,7 +66,9 @@ public struct ShareCard: Hashable, Sendable {
     }
     if kind == .myCopy {
       // The condition: one grade per ladder part (PD-013's signature slot).
-      for axis in ladderAxes.sorted() {
+      // In the ladder's own order (media first), not alphabetical.
+      var seen: Set<String> = []
+      for axis in type.signatures.flatMap(\.axes) where seen.insert(axis).inserted {
         add(.axis(axis), type.field(axis)?.field.label ?? axis)
       }
     }

@@ -26,6 +26,7 @@ let package = Package(
     .library(name: "ReturnFeature", targets: ["ReturnFeature"]),
     .library(name: "PersonFeature", targets: ["PersonFeature"]),
     .library(name: "ActivityFeature", targets: ["ActivityFeature"]),
+    .library(name: "ShareFeature", targets: ["ShareFeature"]),
     .library(name: "AddByHandFeature", targets: ["AddByHandFeature"]),
     .library(name: "FirstPieceFeature", targets: ["FirstPieceFeature"]),
     .library(name: "CaptureFeature", targets: ["CaptureFeature"]),
@@ -513,7 +514,7 @@ let package = Package(
     .target(
       name: "ActivityFeature",
       dependencies: [
-        "TegolaClients", "ReturnFeature",
+        "TegolaClients", "ReturnFeature", "ShelfViews",
         .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
         .product(name: "SQLiteData", package: "sqlite-data"),
         .product(name: "TegolaCatalogue", package: "TegolaCatalogue"),
@@ -539,9 +540,37 @@ let package = Package(
       swiftSettings: swiftSettings
     ),
     .target(
+      name: "ShareFeature",
+      dependencies: [
+        "TegolaClients", "ShelfViews",
+        .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+        .product(name: "SQLiteData", package: "sqlite-data"),
+        .product(name: "TegolaCatalogue", package: "TegolaCatalogue"),
+        .product(name: "TegolaModel", package: "TegolaModel"),
+        .product(name: "TegolaStorage", package: "TegolaStorage"),
+        .product(name: "TegolaDesignSystem", package: "TegolaDesignSystem"),
+        .product(name: "TegolaDesignTokens", package: "TegolaDesignSystem"),
+      ],
+      resources: [.process("Resources")],
+      swiftSettings: swiftSettings
+    ),
+    .testTarget(
+      name: "ShareFeatureTests",
+      dependencies: [
+        "ShareFeature", "ShelfViews", "TegolaClients", "FeatureTestSupport",
+        .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+        .product(name: "DependenciesTestSupport", package: "swift-dependencies"),
+        .product(name: "SQLiteData", package: "sqlite-data"),
+        .product(name: "TegolaModel", package: "TegolaModel"),
+        .product(name: "TegolaStorage", package: "TegolaStorage"),
+        .product(name: "TegolaSnapshotTesting", package: "TegolaDesignSystem"),
+      ],
+      swiftSettings: swiftSettings
+    ),
+    .target(
       name: "ObjectFeature",
       dependencies: [
-        "TegolaClients", "ShelfViews", "ObjectEditFeature", "LendFeature", "ReturnFeature",
+        "TegolaClients", "ShelfViews", "ObjectEditFeature", "LendFeature", "ReturnFeature", "ShareFeature",
         .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
         .product(name: "SQLiteData", package: "sqlite-data"),
         .product(name: "TegolaCatalogue", package: "TegolaCatalogue"),
@@ -556,7 +585,8 @@ let package = Package(
     .testTarget(
       name: "ObjectFeatureTests",
       dependencies: [
-        "ObjectFeature", "ObjectEditFeature", "LendFeature", "ReturnFeature", "TegolaClients", "FeatureTestSupport",
+        "ObjectFeature", "ObjectEditFeature", "LendFeature", "ReturnFeature", "ShareFeature", "TegolaClients",
+        "FeatureTestSupport",
         .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
         .product(name: "DependenciesTestSupport", package: "swift-dependencies"),
         .product(name: "SQLiteData", package: "sqlite-data"),

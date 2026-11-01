@@ -58,6 +58,16 @@ import Testing
       ]
     )
     #expect(mine.facts.last?.label == "Box")
+    // The grades keep the ladder's order.
+    let graded = try harness.add(
+      subtype: "saturn",
+      values: [.axis("mediaCondition"): .text("Near mint"), .axis("boxCondition"): .text("Good")]
+    )
+    #expect(
+      try card(.myCopy, graded, in: harness, money: .off).facts.map(\.key).filter {
+        if case .axis = $0 { true } else { false }
+      } == [.axis("mediaCondition"), .axis("boxCondition")]
+    )
     #expect(mine.photos.count == 1)
   }
 

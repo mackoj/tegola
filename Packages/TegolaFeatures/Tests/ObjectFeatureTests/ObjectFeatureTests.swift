@@ -5,6 +5,7 @@ import Foundation
 import LendFeature
 import ObjectEditFeature
 import ReturnFeature
+import ShareFeature
 import SQLiteData
 import TegolaCatalogue
 import TegolaClients
@@ -151,5 +152,11 @@ struct ObjectFeatureTests {
     try await store.state.$snapshot.load()
     #expect(store.state.snapshot.shelf.shelf.openLoan(on: id) == nil)
     #expect(Activity(shelf: store.state.snapshot.shelf.shelf, now: testNow).borrowed.isEmpty)
+  }
+
+  @Test func shareOpensTheShareSheet() async throws {
+    let id = try seededObject("Kid A")
+    let store = TestStore(initialState: ObjectFeature.State(id: id)) { ObjectFeature() }
+    await store.send(.view(.shareTapped)) { $0.destination = .share(ShareFeature.State(objectID: id)) }
   }
 }

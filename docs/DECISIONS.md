@@ -801,6 +801,9 @@ asking-price field (Let go is M8).
 - **The wishlist card** lists wanted objects (grails first, then by title) with type, subtype, title and year: no
   price cap, no priority, nothing owned.
 - If a field's public-ness ever needs to differ from `auto`, it gets its own key in the type schema then.
+- **On screen** (T7.9): the object's **Share** opens a sheet with *The record* / *My copy* (my copy only for what's
+  owned), a preview, and the system share sheet with the card as an image. The card is drawn by one view,
+  `ShareCardView`, which Nudge also sends (as the record). The ladder's grades keep the ladder's order.
 
 ### D-79 · The Person page, the Activity tab, reminders and the nudge
 

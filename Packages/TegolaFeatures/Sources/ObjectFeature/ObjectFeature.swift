@@ -3,6 +3,7 @@ public import Foundation
 public import LendFeature
 public import ObjectEditFeature
 public import ReturnFeature
+public import ShareFeature
 public import SQLiteData
 import TegolaCatalogue
 import TegolaClients
@@ -20,6 +21,7 @@ public struct ObjectFeature {
     case edit(ObjectEditFeature)
     case lend(LendFeature)
     case returnLoan(ReturnFeature)
+    case share(ShareFeature)
   }
 
   @ObservableState
@@ -102,6 +104,7 @@ public struct ObjectFeature {
       case photoTapped
       case remedyTapped(Signal.Remedy)
       case returnTapped
+      case shareTapped
     }
   }
 
@@ -158,6 +161,9 @@ public struct ObjectFeature {
           let sheet = ReturnFeature.State(loan: loan.id, shelf: shelf, now: now, calendar: calendar)
         else { return .none }
         state.destination = .returnLoan(sheet)
+        return .none
+      case .view(.shareTapped):
+        state.destination = .share(ShareFeature.State(objectID: state.id))
         return .none
       case .view(.mightLetGoTapped):
         guard let object = state.object else { return .none }

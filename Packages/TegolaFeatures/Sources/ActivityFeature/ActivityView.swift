@@ -1,6 +1,7 @@
 #if canImport(SwiftUI)
   public import ComposableArchitecture
   import ReturnFeature
+  import ShelfViews
   public import SwiftUI
   import TegolaCatalogue
   import TegolaClients
@@ -168,8 +169,21 @@
     func actions(_ loan: Loan) -> some View {
       if let nudge = Nudge(loan: loan.id, shelf: store.snapshot.shelf, now: now, calendar: calendar) {
         // F13: Nudge opens the share sheet with a friendly line; there's no link to send in v1 (PD-160).
-        ShareLink(item: Self.line(for: nudge)) {
-          TegolaAction.nudge.label.tegolaTextStyle(TegolaType.label).underline().fixedSize()
+        // With the object's record card (F13): what they have, as a picture, and never a price (D-78).
+        Group {
+          if let card = recordCard(loan), let image = card.rendered() {
+            ShareLink(
+              item: image,
+              message: Text(verbatim: Self.line(for: nudge)),
+              preview: SharePreview(Text(verbatim: nudge.title), image: image)
+            ) {
+              TegolaAction.nudge.label.tegolaTextStyle(TegolaType.label).underline().fixedSize()
+            }
+          } else {
+            ShareLink(item: Self.line(for: nudge)) {
+              TegolaAction.nudge.label.tegolaTextStyle(TegolaType.label).underline().fixedSize()
+            }
+          }
         }
         .buttonStyle(.plain)
         .frame(minHeight: TegolaMetrics.minimumHitTarget)
@@ -183,6 +197,16 @@
       .buttonStyle(.plain)
       .frame(minHeight: TegolaMetrics.minimumHitTarget)
       .accessibilityIdentifier("activity.return.\(title(loan))")
+    }
+
+    /// The object's record card, the one Share the record sends.
+    func recordCard(_ loan: Loan) -> ShareCardView? {
+      let shelf = store.snapshot.shelf
+      guard let object = shelf.objects[loan.objectID], let manifest = catalogue.manifest(object.typeID),
+        let type = try? catalogue.resolve(object.typeID, subtype: object.subtype)
+      else { return nil }
+      let card = ShareCard(.record, object: object, type: type, manifest: manifest, shelf: shelf, money: .off)
+      return ShareCardView(card: card, manifest: manifest, type: type)
     }
 
     func row(_ loan: Loan, meta: Text, notYours: Bool) -> some View {

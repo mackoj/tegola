@@ -102,7 +102,7 @@ Plan: `tasks/plan.md`, M7.
 - [x] T7.6 The Person screen
 - [x] T7.7 Activity
 - [x] T7.8 Reminders and Nudge
-- [ ] T7.9 Share
+- [x] T7.9 Share
 - [ ] T7.10 Journey 3, docs, review
 
 ## Open follow-ups
@@ -111,3 +111,4 @@ Plan: `tasks/plan.md`, M7.
   D-74).
 - The column mapper behind Something's off, for a spreadsheet whose headers no alias names (D-74).
 - Cell extraction with the on-device model, once measured against Jeux (D-74).
+- The wishlist shared as a card list (F14, PD-071): `WishlistCard` is ready; it needs M8's wishlist screen.

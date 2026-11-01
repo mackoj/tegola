@@ -3,6 +3,7 @@
   import LendFeature
   import ObjectEditFeature
   import ReturnFeature
+  import ShareFeature
   import ShelfViews
   import PhotosUI
   public import SwiftUI
@@ -89,6 +90,9 @@
       }
       .sheet(item: $store.scope(state: \.destination?.returnLoan, action: \.destination.returnLoan)) { sheet in
         ReturnView(store: sheet)
+      }
+      .sheet(item: $store.scope(state: \.destination?.share, action: \.destination.share)) { sheet in
+        ShareView(store: sheet)
       }
       .photosPicker(
         isPresented: Binding(get: { store.isPickingPhoto }, set: { if !$0 { send(.photoPickerDismissed) } }),
@@ -300,6 +304,8 @@
         if slots.actions.contains(.giveBack) {
           ActionButton(.giveBack, id: "object.giveBack") { send(.giveBackTapped) }
         }
+        // F14: every object can be shared as its record; what's owned, as my copy too.
+        ActionButton(.share, kind: .secondary, id: "object.share") { send(.shareTapped) }
         if object.counts {
           Button {
             send(.mightLetGoTapped)
