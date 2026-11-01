@@ -548,3 +548,25 @@ is how Discogs tells two artists apart. `Released` of 0 and `Catalog#` of "none"
 Uncategorized), the rating, the release id, the date added and any custom field go into the note: none is a Music
 field, and **Date Added** is when the release was catalogued on Discogs, never `acquired` (D-14). The release id is
 there for matching to use (T6.6).
+
+### D-69 · Candidates, enrichment and the lookup queue in the model
+
+> PLAN §7: "A result never writes. It creates an enrichment proposal … applying it is a `ShelfCommand.applyEnrichment`
+> that only fills empty fields (PD-045)." "At most 5 attempts, then the row goes to "needs details"."
+
+**Decision.**
+
+- **`LookupCandidate`** is the contract's `Candidate` in the model's terms: release id, type and subtype, the values
+  as the object would hold them, confidence, reasons and sources. `TegolaClients` maps one to the other (T6.8), so no
+  screen sees a generated type. Its **strength** is strong from 0.9, likely from 0.6, weak below; only strong is in
+  **Confirm all** (F8). The cut-offs are constants until recorded answers say otherwise.
+- **An enrichment proposal is what `applyLookup` would write**, computed by planning it on the current shelf: so the
+  rule that a lookup fills only empty keys and its own AUTO ones, never a typed or cleared key, `acquired`, money or a
+  grade (promise 1), lives in one place. Keys the object's type doesn't have, and every candidate of another type,
+  are left out: that's not enrichment but a different identity, which F7 asks about. Applying a proposal is
+  `applyLookup` with the keys the collector kept, from the lookup source, so they stay AUTO until touched. There is
+  no separate `applyEnrichment` command.
+- **`LookupQueue`** is pure: oldest first, five attempts with a 30-second backoff that doubles, then *needs details*.
+  A `429` or `503` waits for its `Retry-After` without spending an attempt. Its state isn't shelf history, so it's
+  a `lookupQueue` table, not events. `ShelfStore.perform(_:context:lookup:)` queues a capture's identifier in the
+  same transaction as the object it added; a request goes when its object does.
