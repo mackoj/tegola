@@ -136,6 +136,9 @@ public struct Loan: Hashable, Sendable, Codable, Identifiable {
     case collector, both
   }
 
+  /// Closed by the collector alone: the history says the loan was one-sided (PD-160, F13).
+  public var isOneSided: Bool { closedBy == .collector }
+
   public let id: LoanID
   public let objectID: ObjectID
   public let personID: PersonID
@@ -145,8 +148,15 @@ public struct Loan: Hashable, Sendable, Codable, Identifiable {
   public let openedAt: Date
   public var closedAt: Date?
   public var closedBy: ClosedBy?
-  /// The condition it came back in, when the collector says (PD-148).
+  /// How it came back, when the collector says (board 20, PD-148).
+  public var cameBack: CameBack?
+  /// The collector's words about how it came back, for the record (PD-148).
   public var returnCondition: String?
+
+  /// How a loan came back (board 20): the three answers to *How did it come back?*.
+  public enum CameBack: String, Hashable, Sendable, Codable, CaseIterable {
+    case sameShape, damaged, somethingMissing
+  }
 
   public var isOpen: Bool { closedAt == nil }
 }

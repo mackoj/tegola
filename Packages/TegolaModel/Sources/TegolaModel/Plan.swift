@@ -206,10 +206,18 @@ struct Planner {
       )
     case .lend(let id, let choice, let due, let note):
       try lend(id, to: choice, due: due, note: note)
-    case .returnLoan(let loanID, let condition):
+    case .returnLoan(let loanID, let cameBack, let condition):
       guard let loan = shelf.loans[loanID] else { throw .unknownLoan(loanID) }
       guard loan.isOpen, loan.direction == .out else { throw .notOnLoan }
-      emit(.returned(loanID, objectID: loan.objectID, condition: condition))
+      let words = condition?.trimmingCharacters(in: .whitespacesAndNewlines)
+      emit(
+        .returned(
+          loanID,
+          objectID: loan.objectID,
+          condition: words?.isEmpty == false ? words : nil,
+          cameBack: cameBack
+        )
+      )
     case .markBorrowed(let id, let choice):
       let object = try object(id)
       guard object.letGo == nil else { throw .alreadyLetGo }
@@ -606,6 +614,7 @@ struct Planner {
       openedAt: context.at,
       closedAt: nil,
       closedBy: nil,
+      cameBack: nil,
       returnCondition: nil
     )
   }
@@ -692,10 +701,11 @@ extension Shelf {
       loans[loan.id] = loan
       persons[loan.personID]?.lastUsedAt = at
       touch(loan.objectID) { $0.ownership = .borrowed }
-    case .returned(let id, _, let condition):
+    case .returned(let id, _, let condition, let cameBack):
       loans[id]?.closedAt = at
       loans[id]?.closedBy = .collector
       loans[id]?.returnCondition = condition
+      loans[id]?.cameBack = cameBack
     case .gaveBack(let id, _):
       loans[id]?.closedAt = at
       loans[id]?.closedBy = .collector

@@ -51,7 +51,8 @@ public struct ShelfEvent: Hashable, Sendable, Codable, Identifiable {
     case moved(ObjectID, to: CollectionID)
     case lent(Loan)
     case borrowed(Loan)
-    case returned(LoanID, objectID: ObjectID, condition: String?)
+    /// `cameBack` is nil in events written before M7 (T7.2) and when the collector didn't say.
+    case returned(LoanID, objectID: ObjectID, condition: String?, cameBack: Loan.CameBack? = nil)
     case gaveBack(LoanID, objectID: ObjectID)
     /// Something done to the object, in the collector's words: serviced, cleaned, played.
     case logged(ObjectID, kind: String, note: String)
@@ -132,7 +133,7 @@ public struct ShelfEvent: Hashable, Sendable, Codable, Identifiable {
         id
       case .lent(let loan), .borrowed(let loan): loan.objectID
       case .photoAttached(let photo): photo.objectID
-      case .returned(_, let id, _), .gaveBack(_, let id): id
+      case .returned(_, let id, _, _), .gaveBack(_, let id): id
       case .promoted(let id, _): id
       }
     }

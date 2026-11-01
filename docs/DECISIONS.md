@@ -732,3 +732,27 @@ capture is saved before any network (PD-046), so by the time a match arrives the
   and **Add as new** are what confirming already does, so the row doesn't repeat them.
 - **Where it opens:** the Today strip's *N to tidy* line (`Route.review`), and the capture tray's "Confirm it in
   Review".
+
+### D-76 · People: what the Activity tab and a person's page read, and how a return is written
+
+> PLAN F13: "The return asks how it came back, and that goes into history … Each Person has a page with what they hold
+> now and a track record … It's the only tab with a badge, and the badge is gone when nothing is due." D-3: "`lent` and
+> `returned` events carry the person's id and name at the time."
+
+**Gap.** D-3 wants the name at the time so a rename doesn't rewrite history, but v1 has no way to rename a person.
+Board 19's "return rate 4 / 5" doesn't say what it divides by. Board 20 offers three answers to *How did it come
+back?*, where the model had one free-text condition.
+
+**Decision.**
+- **Read models** (`People.swift`, T7.1): `Activity` lists loans out (overdue first, then the soonest due, then no
+  date, the longest out first), what came back, who holds what, and what's borrowed in. Its **badge** counts only
+  overdue loans and is nil at zero. `PersonRecord` gives what the person holds, what they lent you, every loan both
+  ways, **returned out of lent**, and the average whole days out over the loans that came back. With no history it
+  says nothing: no rate, no average. `Shelf.recentPeople` puts the most recently used names first.
+- **The name at the time** comes from the loan's person. Since a person can't be renamed in v1, that's the name they
+  had, and no event field is added. If renaming comes, `returned` and `gaveBack` gain the name then, as optional
+  associated values.
+- **A return** (T7.2) takes `cameBack` (*same shape*, *damaged*, *something missing*, or not said) and the
+  collector's words, trimmed; blank words are none. Both live on the loan's JSON and on the `returned` event, where
+  `cameBack` is optional, so events written before M7 decode unchanged. The history reads *Back from Dara, closed by
+  you · damaged · Sleeve torn*: "closed by you" is how it says one-sided (PD-160).

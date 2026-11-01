@@ -175,8 +175,12 @@ struct Harness {
       try harness.perform(.lend(id, to: .existing(loan.personID), due: nil, note: ""))
     }
     #expect(throws: ShelfRuleViolation.alreadyOnLoan) { try harness.perform(.letGo(id, .gifted)) }
-    try harness.perform(.returnLoan(loan.id, condition: "Good"))
-    #expect(harness.shelf.loans[loan.id]?.closedBy == .collector)
+    try harness.perform(.returnLoan(loan.id, cameBack: .damaged, condition: "  Sleeve torn  "))
+    let closed = try #require(harness.shelf.loans[loan.id])
+    #expect(closed.closedBy == .collector)
+    #expect(closed.isOneSided)
+    #expect(closed.cameBack == .damaged)
+    #expect(closed.returnCondition == "Sleeve torn")
     #expect(throws: ShelfRuleViolation.notOnLoan) { try harness.perform(.returnLoan(loan.id, condition: nil)) }
     try harness.perform(.letGo(id, .sold(price: nil)))
     #expect(throws: ShelfRuleViolation.alreadyLetGo) {

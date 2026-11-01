@@ -95,7 +95,7 @@ Plan: `tasks/plan.md`, M6. Report: `docs/milestones/M6.md`.
 Plan: `tasks/plan.md`, M7.
 
 - [x] T7.1 People read models: `PersonRecord`, `Activity`, the badge, recent names
-- [ ] T7.2 Return details, and the person's name in the history (D-3)
+- [x] T7.2 Return details, and the person's name in the history (D-3)
 - [ ] T7.3 Loan reminders and the nudge's line
 - [ ] T7.4 Share cards (never what was paid)
 - [ ] T7.5 Lend and Return sheets
