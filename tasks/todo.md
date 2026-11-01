@@ -82,7 +82,7 @@ Plan: `tasks/plan.md`, M6. Report: `docs/milestones/M6.md`.
 
 - [x] T6.1 Import batches: `importBatch`, `undoBatch`, unconfirmed rows
 - [x] T6.2 The Importer API, the registry and `NoteReader`
-- [ ] T6.3 `TemplateImporter`
+- [x] T6.3 `TemplateImporter`
 - [x] T6.4 `SpreadsheetImporter` (exit test stand-in: `Jeux collection.csv`)
 - [ ] T6.5 `DiscogsCSVImporter`
 - [ ] T6.6 Lookup queue and enrichment proposals

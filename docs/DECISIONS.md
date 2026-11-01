@@ -495,3 +495,22 @@ invent: "Mario 64 (boite endommagé + cartouche)" gets *manual: missing*, which 
   adds with the screens; until then it imports as owned.
 - **Every row is one `plan` takes.** `RowBuilder` dry-runs each draft; one it would refuse falls back to its cell,
   as written, as the title. Jeux has none.
+
+### D-63 · The `tegola.csv` template's columns
+
+> 49 §03B: "A template we publish, with one row per item and fixed headers. … it's the same format the app exports."
+> Its sample: `type,platform,title,region,parts,condition,signed_by,note`.
+
+**Gap.** Page 49's columns are a video game's. Export (M8) has to write every type's fields, and a template that
+changed per type wouldn't be one template.
+
+**Decision.** `TemplateFormat.columns` are fixed, in this order: `type, subtype, title, subtitle, year, parts,
+condition, signed_by, contains, note`. A file may leave out any of them except `type` and `title`, but keeps the
+order. Every header after them is a field key of the row's type (`region`, `catalogNumber`), so Export adds a column
+for each field it has to write and the importer needs no change. `type` is the type's id and `subtype` its key, never
+a label: the template is for round trips, not for typing by hand. `parts`, `signed_by` and `contains` are lists
+split by `|`; `condition` is the object's grade, or `axis:grade` pairs for a ladder (`boxCondition:Poor`). A value
+that doesn't fit its field goes into the note as `header: value`, nothing is guessed, and nothing goes through the
+cell reader. An unknown type is a Thing with `type: …` in its note; a type that hasn't shipped is a Thing waiting
+for it (D-59). M8 adds what Export needs beyond these (ownership, quantity, place, the money and dates the collector
+typed) as fixed columns after `note`, on both sides at once.
