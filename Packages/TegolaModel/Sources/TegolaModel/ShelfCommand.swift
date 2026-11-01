@@ -47,7 +47,10 @@ public enum ShelfCommand: Hashable, Sendable {
   /// Story 109: a near-duplicate place folds into the one the collector keeps.
   case mergePlaces(PlaceID, into: PlaceID)
   // Not yet: openBottle (wine isn't a v1 type),
-  // importBatch and undoBatch (M6). `plan` doesn't know them, so a screen can't send them.
+  /// A list the collector agreed to import: one collection, every row unconfirmed (PD-047), one batch.
+  case importBatch(ImportBatch)
+  /// Within 30 days: removes the batch's objects nobody touched since, and keeps the rest (PD-047, D-12).
+  case undoBatch(BatchID)
 }
 
 /// A new object as a form, a capture or an import row describes it.

@@ -434,3 +434,31 @@ say yet.
   clock reads *good*, it's the soonest `changesAt`, the day one turns *watch*: page 46's wine, "Not yet. Soon." A
   piece with no clock, or none with anything to read, shows its story alone. The clock notifications (D-61) read the
   same `changesAt`.
+
+### D-64 · An import's rows, and what its undo removes
+
+> PD-047: "Import never overwrites, merges or invents. … Nothing is marked confirmed. The whole batch can be undone
+> for 30 days." PLAN F9: "The import creates **one collection** named after the file."
+
+**Gap.** D-38 read an imported row as confirmed ("the collector's own list, mapped by them") and left M6 to change
+it. D-12 says undo keeps what the collector touched, but not what touching is, and the projection never removed
+anything.
+
+**Decision.**
+
+- **Unconfirmed.** Every imported row lands unconfirmed, as PD-042 and PD-047 say; this replaces D-38's reading for
+  `.imported`. A collector-typed object and the first piece stay confirmed.
+- **One command.** `ShelfCommand.importBatch(ImportBatch)` makes one collection (typed when every row is one type,
+  mixed otherwise), a `batchImported` record, and an `added` per row, all carrying one batch id. A row the rules
+  refuse refuses the batch, so nothing is half-imported: an importer's job is to send only rows `plan` accepts, with
+  anything it couldn't read kept in the note.
+- **Touched** means any event on the object from the collector or a capture after it was added: an edit, a photo, a
+  place, a loan, a confirmation, a care line, a copy taken out of a count. A lookup's answer and the import itself
+  don't count. The object carries it (`ShelfObject.imported`), so `plan` stays a function of the shelf.
+- **Undo** is the collector's, within 30 days of 24 hours (`ImportBatchRecord.undoWindow`), once. It appends one
+  `batchUndone` event naming the objects it removed and the ones it kept, so the summary can say "3 kept because you
+  changed them". The removed objects leave the projection; their rows are marked `deletedAt`, never dropped, and the
+  log keeps every event. The batch's collection goes too once nothing is left in it. This is the one way an object
+  leaves the shelf, and the promise tests check it removes only untouched rows of that batch.
+- **`importBatches`** is clctn's table less the mapping and the report, which are the importer's plan and aren't
+  kept. It has no foreign key to its collection, which an undo can remove.

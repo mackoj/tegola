@@ -56,8 +56,8 @@ public struct ShelfStore: Sendable {
       for event in events {
         try EventRow.insert { EventRow(event) }.execute(db)
       }
-      try Self.writeChanges(from: before, to: after, db)
-      return CommandReceipt(events: events, batchID: context.batchID)
+      try Self.writeChanges(from: before, to: after, at: context.at, db)
+      return CommandReceipt(events: events, batchID: events.first?.batchID ?? context.batchID)
     }
   }
 
@@ -106,7 +106,8 @@ public struct ShelfStore: Sendable {
       try WorkRow.delete().execute(db)
       try PlaceRow.delete().execute(db)
       try PersonRow.delete().execute(db)
-      try Self.writeChanges(from: Shelf(), to: apply(log, to: Shelf()), db)
+      try ImportBatchRow.delete().execute(db)
+      try Self.writeChanges(from: Shelf(), to: apply(log, to: Shelf()), at: log.last?.at ?? .distantPast, db)
     }
   }
 
@@ -118,11 +119,11 @@ public struct ShelfStore: Sendable {
 
   static func loadShelf(_ db: Database) throws -> Shelf {
     var shelf = Shelf()
-    for row in try CollectionRow.fetchAll(db) {
+    for row in try CollectionRow.where({ $0.deletedAt.is(nil) }).fetchAll(db) {
       let value = try StoredJSON.decode(ShelfCollection.self, from: row.data)
       shelf.collections[value.id] = value
     }
-    for row in try ObjectRow.fetchAll(db) {
+    for row in try ObjectRow.where({ $0.deletedAt.is(nil) }).fetchAll(db) {
       let value = try StoredJSON.decode(ShelfObject.self, from: row.data)
       shelf.objects[value.id] = value
     }
@@ -146,13 +147,17 @@ public struct ShelfStore: Sendable {
       let value = try StoredJSON.decode(Loan.self, from: row.data)
       shelf.loans[value.id] = value
     }
+    for row in try ImportBatchRow.fetchAll(db) {
+      let value = try StoredJSON.decode(ImportBatchRecord.self, from: row.data)
+      shelf.batches[value.id] = value
+    }
     shelf.lastSeq = try EventRow.select { $0.seq.max() }.fetchOne(db).flatMap { $0 } ?? 0
     return shelf
   }
 
-  /// Upserts every row that differs between two shelves. Nothing is deleted: history only appends, and nothing
-  /// leaves the projection (PD-051, PD-151). Parents before children, for the foreign keys.
-  static func writeChanges(from before: Shelf, to after: Shelf, _ db: Database) throws {
+  /// Upserts every row that differs between two shelves, parents before children for the foreign keys. Nothing is
+  /// deleted (PD-051, PD-151): what an import's undo removes is marked `deletedAt` and no longer read (D-12).
+  static func writeChanges(from before: Shelf, to after: Shelf, at: Date, _ db: Database) throws {
     for (id, value) in after.collections where before.collections[id] != value {
       try CollectionRow.upsert { CollectionRow(value) }.execute(db)
     }
@@ -173,6 +178,15 @@ public struct ShelfStore: Sendable {
     }
     for (id, value) in after.loans where before.loans[id] != value {
       try LoanRow.upsert { LoanRow(value) }.execute(db)
+    }
+    for (id, value) in after.batches where before.batches[id] != value {
+      try ImportBatchRow.upsert { ImportBatchRow(value) }.execute(db)
+    }
+    for id in before.objects.keys where after.objects[id] == nil {
+      try ObjectRow.find(id.rawValue).update { $0.deletedAt = #bind(at) }.execute(db)
+    }
+    for id in before.collections.keys where after.collections[id] == nil {
+      try CollectionRow.find(id.rawValue).update { $0.deletedAt = #bind(at) }.execute(db)
     }
   }
 }
@@ -275,6 +289,21 @@ extension PhotoRow {
       fileName: value.fileName,
       takenAt: value.takenAt,
       deletedAt: nil,
+      data: StoredJSON.encode(value)
+    )
+  }
+}
+
+extension ImportBatchRow {
+  init(_ value: ImportBatchRecord) {
+    self.init(
+      id: value.id.rawValue,
+      importer: value.importer,
+      fileName: value.fileName,
+      collectionID: value.collectionID.rawValue,
+      rowCount: value.rowCount,
+      createdAt: value.at,
+      undoneAt: value.undoneAt,
       data: StoredJSON.encode(value)
     )
   }
