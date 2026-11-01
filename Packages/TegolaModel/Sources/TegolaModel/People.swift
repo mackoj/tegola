@@ -113,3 +113,79 @@ private func byName(_ lhs: String, _ rhs: String, _ lhsID: PersonID, _ rhsID: Pe
   case .orderedSame: (lhs, lhsID) < (rhs, rhsID)
   }
 }
+
+/// One loan reminder (F13: "one reminder notification on the due date"): an open loan out with a due date that hasn't
+/// passed. The client delivers it that morning and words it; this says which, for what and when.
+public struct LoanReminder: Hashable, Sendable, Identifiable {
+  public let id: LoanID
+  public let objectID: ObjectID
+  /// The object's title.
+  public let title: String
+  /// Who has it.
+  public let person: String
+  /// The due date: the day the reminder is for.
+  public let at: Date
+}
+
+extension Shelf {
+  /// At most this many loan reminders are pending: with the clocks' 50, within the 64 the system keeps.
+  public static let loanReminderLimit = 14
+
+  /// The reminders to schedule now: one per open loan out whose due day is today or later, soonest first, at most
+  /// `loanReminderLimit`. A returned loan, one with no date and one already overdue have none: the overdue ones are
+  /// on Activity's badge instead.
+  public func loanReminders(at now: Date, calendar: Calendar) -> [LoanReminder] {
+    let today = calendar.startOfDay(for: now)
+    return
+      liveLoans
+      .compactMap { loan -> LoanReminder? in
+        guard loan.isOpen, loan.direction == .out, let due = loan.dueAt, calendar.startOfDay(for: due) >= today,
+          let object = objects[loan.objectID]
+        else { return nil }
+        return LoanReminder(
+          id: loan.id,
+          objectID: object.id,
+          title: object.title,
+          person: persons[loan.personID]?.name ?? "",
+          at: due
+        )
+      }
+      .sorted { ($0.at, $0.id) < ($1.at, $1.id) }
+      .prefix(Self.loanReminderLimit)
+      .map { $0 }
+  }
+}
+
+/// What a nudge says (F13, board 21): the object, who has it, how long it's been out and how late it is. The share
+/// sheet's friendly line is worded from these, and nothing else: no value, no price, nothing paid (promise 5).
+public struct Nudge: Hashable, Sendable {
+  public let title: String
+  public let person: String
+  /// Whole days since it went out.
+  public let daysOut: Int
+  /// Whole days past the due date; nil when it isn't overdue or has no date.
+  public let daysOverdue: Int?
+
+  public init(title: String, person: String, daysOut: Int, daysOverdue: Int?) {
+    self.title = title
+    self.person = person
+    self.daysOut = daysOut
+    self.daysOverdue = daysOverdue
+  }
+
+  /// Nil unless the loan is open and out: there's nobody to nudge about something back home or borrowed.
+  public init?(loan id: LoanID, shelf: Shelf, now: Date, calendar: Calendar) {
+    guard let loan = shelf.loans[id], loan.isOpen, loan.direction == .out, let object = shelf.objects[loan.objectID]
+    else { return nil }
+    func days(from start: Date) -> Int {
+      calendar.dateComponents([.day], from: calendar.startOfDay(for: start), to: calendar.startOfDay(for: now)).day
+        ?? 0
+    }
+    self.init(
+      title: object.title,
+      person: shelf.persons[loan.personID]?.name ?? "",
+      daysOut: max(0, days(from: loan.openedAt)),
+      daysOverdue: loan.isOverdue(at: now) ? loan.dueAt.map { max(0, days(from: $0)) } : nil
+    )
+  }
+}

@@ -96,7 +96,7 @@ Plan: `tasks/plan.md`, M7.
 
 - [x] T7.1 People read models: `PersonRecord`, `Activity`, the badge, recent names
 - [x] T7.2 Return details, and the person's name in the history (D-3)
-- [ ] T7.3 Loan reminders and the nudge's line
+- [x] T7.3 Loan reminders and the nudge's line
 - [ ] T7.4 Share cards (never what was paid)
 - [ ] T7.5 Lend and Return sheets
 - [ ] T7.6 The Person screen
