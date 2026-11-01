@@ -45,7 +45,7 @@ public struct ShelfSummary: Hashable, Sendable {
   /// The Places line shows once two places exist (F10).
   public let showsPlaces: Bool
 
-  public init(shelf: Shelf, money: MoneyVisibility, now: Date, statuses: [ObjectID: ObjectStatus] = [:]) {
+  public init(shelf: Shelf, money: MoneyVisibility, now: Date, readings: [ObjectID: StatusReading] = [:]) {
     let objects = Array(shelf.objects.values)
     count = TegolaModel.count(objects)
     let totals = Money.totals(
@@ -53,7 +53,7 @@ public struct ShelfSummary: Hashable, Sendable {
     )
     // With money on but nothing valued yet, there's no figure to show: the count stands instead.
     value = money == .on && !totals.isEmpty ? totals : nil
-    today = TodayStrip(shelf: shelf, now: now, statuses: statuses)
+    today = TodayStrip(shelf: shelf, now: now, readings: readings)
     let lentOut = Set(shelf.loans.values.filter { $0.isOpen && $0.direction == .out }.map(\.objectID))
     collections = shelf.collections.values
       .map { collection in
@@ -78,7 +78,7 @@ public struct TodayStrip: Hashable, Sendable {
   public enum Line: Hashable, Sendable {
     /// Objects waiting to be confirmed or given details.
     case toTidy(Int)
-    /// Objects whose status is watch or act.
+    /// Objects with a signal at watch or act: a clock or an overdue loan (`StatusReading.isSignal`).
     case needAttention(Int)
     /// Loans past their due date.
     case overdue(Int)
@@ -86,10 +86,10 @@ public struct TodayStrip: Hashable, Sendable {
 
   public let lines: [Line]
 
-  public init(shelf: Shelf, now: Date, statuses: [ObjectID: ObjectStatus]) {
+  public init(shelf: Shelf, now: Date, readings: [ObjectID: StatusReading]) {
     let live = shelf.objects.values.filter { $0.letGo == nil }
     let tidy = live.filter { $0.identity != .confirmed }.count
-    let attention = live.filter { statuses[$0.id]?.needsAttention == true }.count
+    let attention = live.filter { readings[$0.id]?.isSignal == true }.count
     let overdue = shelf.loans.values.filter {
       $0.isOpen && $0.direction == .out && ($0.dueAt.map { $0 < now } ?? false)
     }

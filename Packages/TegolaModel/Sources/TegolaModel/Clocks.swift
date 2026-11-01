@@ -115,13 +115,19 @@ private struct Context {
     let warns = adding(.year, lifespan - warn, to: fitted)
     if now >= dies {
       return ClockSignal(
-        clock: "saveBattery", status: .act,
-        reason: .batteryPastLifespan(fitted: year(fitted), lifespanYears: lifespan), changesAt: nil)
+        clock: "saveBattery",
+        status: .act,
+        reason: .batteryPastLifespan(fitted: year(fitted), lifespanYears: lifespan),
+        changesAt: nil
+      )
     }
     if now >= warns {
       return ClockSignal(
-        clock: "saveBattery", status: .watch,
-        reason: .batteryAging(fitted: year(fitted), lifespanYears: lifespan), changesAt: dies)
+        clock: "saveBattery",
+        status: .watch,
+        reason: .batteryAging(fitted: year(fitted), lifespanYears: lifespan),
+        changesAt: dies
+      )
     }
     return nil
   }
@@ -133,7 +139,11 @@ private struct Context {
     let due = adding(.year, years, to: since)
     guard now >= due else { return nil }
     return ClockSignal(
-      clock: clock, status: .watch, reason: .checkDue(since: year(since), everyYears: years), changesAt: nil)
+      clock: clock,
+      status: .watch,
+      reason: .checkDue(since: year(since), everyYears: years),
+      changesAt: nil
+    )
   }
 
   func codeExpiry(warnDays: Int) -> ClockSignal? {
@@ -157,14 +167,25 @@ private struct Context {
       return nil
     case ..<from:
       return ClockSignal(
-        clock: "drinkingWindow", status: .watch, reason: .windowOpensSoon(from: from), changesAt: startOf(from))
+        clock: "drinkingWindow",
+        status: .watch,
+        reason: .windowOpensSoon(from: from),
+        changesAt: startOf(from)
+      )
     case ...(to - warn):
       return ClockSignal(
-        clock: "drinkingWindow", status: .good, reason: .windowOpen(from: from, to: to),
-        changesAt: startOf(to - warn + 1))
+        clock: "drinkingWindow",
+        status: .good,
+        reason: .windowOpen(from: from, to: to),
+        changesAt: startOf(to - warn + 1)
+      )
     case ...to:
       return ClockSignal(
-        clock: "drinkingWindow", status: .watch, reason: .windowClosing(to: to), changesAt: startOf(to + 1))
+        clock: "drinkingWindow",
+        status: .watch,
+        reason: .windowClosing(to: to),
+        changesAt: startOf(to + 1)
+      )
     default:
       return ClockSignal(clock: "drinkingWindow", status: .act, reason: .windowPast(to: to), changesAt: nil)
     }
@@ -178,12 +199,18 @@ private struct Context {
     let overdue = adding(.month, intervalMonths * 2, to: since)
     if now >= overdue {
       return ClockSignal(
-        clock: "serviceRisk", status: .act,
-        reason: .serviceOverdue(since: year(since), intervalMonths: intervalMonths), changesAt: nil)
+        clock: "serviceRisk",
+        status: .act,
+        reason: .serviceOverdue(since: year(since), intervalMonths: intervalMonths),
+        changesAt: nil
+      )
     }
     guard now >= due else { return nil }
     return ClockSignal(
-      clock: "serviceRisk", status: .watch,
-      reason: .serviceDue(since: year(since), intervalMonths: intervalMonths), changesAt: overdue)
+      clock: "serviceRisk",
+      status: .watch,
+      reason: .serviceDue(since: year(since), intervalMonths: intervalMonths),
+      changesAt: overdue
+    )
   }
 }

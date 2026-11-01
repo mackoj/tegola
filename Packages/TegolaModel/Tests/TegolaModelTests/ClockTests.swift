@@ -9,10 +9,27 @@ func clockObject(values: [FieldKey: FieldValue] = [:], latestLog: [String: Date]
   ShelfObject(
     id: ObjectID(UUID(uuidString: "00000000-0000-0000-0000-000000000001")!),
     collectionID: CollectionID(UUID(uuidString: "00000000-0000-0000-0000-000000000002")!),
-    typeID: "video-game", subtype: "game-boy", workID: nil, values: values, auto: [], typed: [], placeID: nil,
-    bulk: .rows, quantity: 1, ownership: .owned, identity: .confirmed, isGrail: false, mightLetGo: false,
-    priority: nil, priceCap: nil, letGo: nil, promotedFrom: nil, latestLog: latestLog,
-    createdAt: Date(timeIntervalSince1970: 0), updatedAt: Date(timeIntervalSince1970: 0))
+    typeID: "video-game",
+    subtype: "game-boy",
+    workID: nil,
+    values: values,
+    auto: [],
+    typed: [],
+    placeID: nil,
+    bulk: .rows,
+    quantity: 1,
+    ownership: .owned,
+    identity: .confirmed,
+    isGrail: false,
+    mightLetGo: false,
+    priority: nil,
+    priceCap: nil,
+    letGo: nil,
+    promotedFrom: nil,
+    latestLog: latestLog,
+    createdAt: Date(timeIntervalSince1970: 0),
+    updatedAt: Date(timeIntervalSince1970: 0)
+  )
 }
 
 let utc: Calendar = {
@@ -53,7 +70,8 @@ func signal(_ clock: String, _ object: ShelfObject, at now: Date) -> ClockSignal
     #expect(signal("saveBattery", typed, at: day(2024))?.reason == .batteryAging(fitted: 2001, lifespanYears: 25))
     let both = clockObject(
       values: [.year: .year(1995), .field("saveBattery"): .date(day(2001))],
-      latestLog: [CareKind.batterySwapped: day(2020)])
+      latestLog: [CareKind.batterySwapped: day(2020)]
+    )
     #expect(signal("saveBattery", both, at: day(2026)) == nil)
   }
 
@@ -98,9 +116,11 @@ func signal(_ clock: String, _ object: ShelfObject, at now: Date) -> ClockSignal
 @Suite struct DrinkingWindowClockTests {
   let bottle = clockObject(values: [.field("drinkingWindow"): .yearRange(from: 2030, to: 2042)])
 
-  @Test(arguments: [
-    (2028, nil), (2029, ObjectStatus.watch), (2030, .good), (2041, .good), (2042, .watch), (2043, .act),
-  ] as [(Int, ObjectStatus?)])
+  @Test(
+    arguments: [
+      (2028, nil), (2029, ObjectStatus.watch), (2030, .good), (2041, .good), (2042, .watch), (2043, .act),
+    ] as [(Int, ObjectStatus?)]
+  )
   func throughTheWindow(_ year: Int, _ status: ObjectStatus?) {
     #expect(signal("drinkingWindow", bottle, at: day(year, 6))?.status == status)
   }

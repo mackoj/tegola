@@ -32,15 +32,17 @@ import Testing
 
   @Test func theTodayStripShowsOnlyItsNonEmptyLines() throws {
     var harness = Harness()
-    #expect(TodayStrip(shelf: harness.shelf, now: Harness.start, statuses: [:]).lines.isEmpty)
+    #expect(TodayStrip(shelf: harness.shelf, now: Harness.start, readings: [:]).lines.isEmpty)
     let id = try harness.add()
     _ = try harness.add(origin: .captured)
     try harness.perform(.lend(id, to: .new(name: "Dara"), due: Harness.start + 3600, note: ""))
     let later = Harness.start + 7200
-    #expect(TodayStrip(shelf: harness.shelf, now: later, statuses: [:]).lines == [.toTidy(1), .overdue(1)])
+    #expect(TodayStrip(shelf: harness.shelf, now: later, readings: [:]).lines == [.toTidy(1), .overdue(1)])
+    let readings = StatusReading.all(shelf: harness.shelf, catalogue: Harness.catalogue, now: later, calendar: utc)
+    // The overdue loan is a signal; the unconfirmed capture is counted as to tidy, not again as needing attention.
     #expect(
-      TodayStrip(shelf: harness.shelf, now: Harness.start, statuses: [id: .watch]).lines
-        == [.toTidy(1), .needAttention(1)]
+      TodayStrip(shelf: harness.shelf, now: later, readings: readings).lines
+        == [.toTidy(1), .needAttention(1), .overdue(1)]
     )
   }
 
