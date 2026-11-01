@@ -6,7 +6,7 @@ public import TegolaCatalogue
 public struct LookupCandidate: Hashable, Sendable, Codable {
   /// Why it was proposed, which the review queue says (PD-150). The contract's `Reason.kind`.
   public enum Reason: String, Hashable, Sendable, Codable, CaseIterable {
-    case barcode, catalogueNumber, title, ocr, region, subtype, typoCorrected, bundleSplit
+    case barcode, catalogueNumber, title, ocr, image, region, subtype, typoCorrected, bundleSplit
   }
 
   /// Where its data came from, with the words a source requires next to it.
@@ -114,7 +114,7 @@ public struct LookupQueue: Hashable, Sendable, Codable {
     public enum Identifier: Hashable, Sendable, Codable {
       case barcode(String)
       case catalogueNumber(String)
-      /// OCR or typed text, for `POST /types/{type}/search`.
+      /// OCR or typed text, for `POST /types/{type}/identify` (D-71).
       case text(String)
     }
 

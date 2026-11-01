@@ -6,7 +6,7 @@ it short and current.
 **Updated:** 2026-11-01, after M5 finished on `m5-first-piece`.
 
 **Resume here: M6's Mac half (T6.8–T6.12), after M5's PR merges.** M5 is done on `m5-first-piece`
-(`docs/milestones/M5.md`). PR #15 (lookup contract 0.2.0, D-71) waits for tegola-server, which takes that work on.
+(`docs/milestones/M5.md`). Lookup contract 0.2.0 (D-71) is merged (PR #15); tegola-server takes that work on.
 
 ## Where things stand
 
@@ -32,6 +32,9 @@ it short and current.
     `DiscogsCSVImporter` (D-68). The owner's `Jeux collection.csv`: 485 rows on 20 shelves, 12 to sort.
   - **T6.6** `LookupCandidate`, `EnrichmentProposal`, `LookupQueue` and `ShelfStore.perform(_:context:lookup:)`
     (D-69). **T6.7** `LookAlikes` and `MatchOutcome` (D-70).
+- **Lookup contract 0.2.0** (D-71): `identifyObject` (`POST /types/{type}/identify`) takes words, OCR text, a
+  barcode and a photo in any combination, and replaces `searchObjects`. tegola-server must sync the contract and move
+  its search behind identify; its CI fails until it does.
 - **tegola-server** (`mackoj/tegola-server`, D-41): its M1 is done. The app needs it from M6's T6.8 on.
 
 ## What's next

@@ -48,6 +48,47 @@ import Testing
     #expect(results[0].candidates.first?.reasons.map(\.kind) == [.typoCorrected, .subtype])
   }
 
+  /// Words alone go as JSON (D-71).
+  @Test func identifyWithWordsSendsJSON() async throws {
+    let transport = RecordedTransport(status: .ok, file: "identifyObject-200")
+    let client = Client(serverURL: URL(string: "https://api.test/v1")!, transport: transport)
+
+    let response = try await client.identifyObject(
+      path: .init(typeID: "video-game"),
+      body: .json(.init(title: "Ridge Racer", subtype: "ps1", region: "PAL"))
+    )
+    #expect(try response.ok.body.json.candidates.first?.title == "Ridge Racer")
+    let request = try #require(transport.requests.first)
+    #expect(request.method == .post)
+    #expect(request.path == "/v1/types/video-game/identify")
+    #expect(request.headerFields[.contentType]?.hasPrefix("application/json") == true)
+  }
+
+  /// A photo goes as multipart, with the hints beside it, and a candidate it supports says so (D-71).
+  @Test func identifyWithAPhotoSendsMultipartAndReadsTheImageReason() async throws {
+    let transport = RecordedTransport(status: .ok, file: "identifyObject-200")
+    let client = Client(serverURL: URL(string: "https://api.test/v1")!, transport: transport)
+    let jpeg = Data([0xFF, 0xD8, 0xFF, 0xD9])
+
+    let response = try await client.identifyObject(
+      path: .init(typeID: "video-game"),
+      body: .multipartForm([
+        .image(.init(payload: .init(body: HTTPBody(jpeg)))),
+        .hints(
+          .init(
+            payload: .init(
+              body: .init(text: "RIDGE RACER\nSCES-00001", barcode: .init(code: "0711719200020", symbology: .ean13))
+            )
+          )
+        ),
+      ])
+    )
+    let candidate = try #require(try response.ok.body.json.candidates.first)
+    #expect(candidate.reasons.map(\.kind) == [.image, .ocr])
+    let request = try #require(transport.requests.first)
+    #expect(request.headerFields[.contentType]?.hasPrefix("multipart/form-data; boundary=") == true)
+  }
+
   @Test func tooManyRequestsCarriesRetryAfter() async throws {
     let transport = RecordedTransport(
       status: .tooManyRequests,
@@ -57,7 +98,7 @@ import Testing
     )
     let client = Client(serverURL: URL(string: "https://api.test/v1")!, transport: transport)
 
-    let response = try await client.searchObjects(
+    let response = try await client.identifyObject(
       path: .init(typeID: "board-games"),
       body: .json(.init(title: "Catan"))
     )
