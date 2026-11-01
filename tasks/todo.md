@@ -49,7 +49,7 @@ Plan: `tasks/plan.md`, M3. Report: `docs/milestones/M3.md`.
 
 Plan: `tasks/plan.md`, M4. Report: `docs/milestones/M4.md`.
 
-- [ ] T4.1 Clock functions: `Signal`, one function per library clock, the save-battery tests
+- [x] T4.1 Clock functions: `Signal`, one function per library clock, the save-battery tests
 - [ ] T4.2 Type files and the library: `discRot-pending`, `codeExpires` and `codeExpiry`, `unfinished`
 - [ ] T4.3 Status derivation, and real statuses for `ShelfSummary` and `TodayStrip`
 - [ ] T4.4 Dismissals: command, event, plan rules, projection
