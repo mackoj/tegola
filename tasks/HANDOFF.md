@@ -5,14 +5,16 @@ it short and current.
 
 **Updated:** 2026-11-01, after M6 finished on `m6-capture-lookup-import`.
 
-**Resume here: M7 (people), once M5 and M6 are merged.** Lookup contract 0.2.0 is merged (PR #15, D-71), and
-tegola-server takes it on. Two PRs wait, in this order:
-- #16, M5 (`docs/milestones/M5.md`);
-- M6, on `m6-capture-lookup-import`, stacked on #16 (`docs/milestones/M6.md`).
+**Resume here: M7 (people).** M5 and M6 are merged (#16, #17). Lookup contract 0.2.0 is merged (PR #15, D-71), and
+tegola-server serves it.
+
+**Owner, open:** D-76, who pays for paid lookup sources (a subscription, type packs, a free-tier cap) and the
+server's per-install pseudonym for cost per collector. It's tegola-server's D-27 and M5 on the server side; nothing
+changes in the app until the owner decides.
 
 ## Where things stand
 
-- **Spec:** approved (`docs/PLAN.md`, answers in §10). Decisions: D-1 to D-70.
+- **Spec:** approved (`docs/PLAN.md`, answers in §10). Decisions: D-1 to D-76.
 - **M1 to M4:** merged (PRs #5, #8, #9, #13; `docs/milestones/M1.md` to `M4.md`).
 - **M6 (capture, lookup, import):** done. The Mac half:
   - the lookup client with App Attest, and the queue's worker (T6.8, D-73);
