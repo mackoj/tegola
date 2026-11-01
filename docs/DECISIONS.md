@@ -732,3 +732,38 @@ capture is saved before any network (PD-046), so by the time a match arrives the
   and **Add as new** are what confirming already does, so the row doesn't repeat them.
 - **Where it opens:** the Today strip's *N to tidy* line (`Route.review`), and the capture tray's "Confirm it in
   Review".
+
+### D-76 · Paid lookup sources and cost per collector: an open proposal
+
+> The owner's "Data Providers" proposal (November 2026), sections 05–06. The server side is adopted as
+> tegola-server's D-27, and the proposal is kept there (`docs/proposals/data-providers.dc.html`).
+
+**Gap.** tegola-server will meter every lookup, and some of its sources will be paid (owner, 2026-11-01). The
+proposal also says who pays:
+- absorb a type's data cost under a ceiling (15 % of a €50 yearly subscription), with a monthly free-tier lookup cap
+  per type;
+- sell a yearly type pack ("Wine data") for a type above the ceiling;
+- no lookup credits.
+
+To measure cost per collector, the server's ledger keeps a per-install pseudonym:
+`HMAC(App Attest key id, monthly salt)`.
+
+**Conflicts.**
+- **A subscription or type packs** vs D-25 (no subscription in v1) and PD-112 and PD-113 (the payment shape is
+  deferred).
+- **A free-tier lookup cap** vs PD-112 (the free/paid split is deferred) and PD-118 (no visible meter).
+- **The ledger's pseudonym** vs ADR-0001 (no account) and PD-094 (no server copy of the shelf). It names no one and
+  holds nothing about the shelf. It changes every month: the salt is random and destroyed when the month ends. Raw
+  rows go after 35 days, and monthly totals by type stay. The owner asked for the data ("make the data, I will find a
+  way to group it later"), so the server will record it (tegola-server T5.5).
+
+**Decision.** Nothing in the app changes. The owner's open calls:
+1. A subscription or type packs: in v1, or later? D-25 stands until then.
+2. A free-tier lookup cap per type: wanted? If so, how does it show without a meter (PD-118)?
+3. Which types will have a paid source? None does today: MusicBrainz, IGDB, ScreenScraper, BoardGameGeek and
+   Wikidata are free, ScreenScraper with donation tiers for more quota. Wine isn't a v1 type (D-23).
+
+What keeps the options open: every add goes through `ShelfCommand.add`, so a cap lands in one place (PLAN §2, row
+10). A source the server won't call (over its budget, or switched off) needs no contract change: the server answers
+with other sources, or `503` with `Retry-After` when no other source can answer, which the lookup queue already
+retries (D-73).
