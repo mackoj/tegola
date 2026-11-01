@@ -4,6 +4,10 @@ name:
   singular: Stamp
   plural: Stamps
   collection: Stamps
+# Words that name the type in a photo's description or a typed line: the first piece's
+# type is inferred from them, not asked (PD-166, D-62).
+recognise: [stamp, postage stamp, philately, first day cover, penny black]
+
 mark: PHIL
 icon: seal
 gradient: [teal, yellow]

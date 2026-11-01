@@ -4,6 +4,10 @@ name:
   singular: Pair
   plural: Pairs
   collection: Sneakers
+# Words that name the type in a photo's description or a typed line: the first piece's
+# type is inferred from them, not asked (PD-166, D-62).
+recognise: [sneaker, sneakers, trainers, air jordan, nike dunk, air max, yeezy]
+
 mark: US10
 icon: shoe
 gradient: [yellow, orange]

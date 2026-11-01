@@ -385,3 +385,23 @@ A clock with nothing to read gives no signal: no year, no date, no known service
 - **What's scheduled:** one notification per signal's next change (`changesAt`): the day it turns *watch* or *act*, at 10:00 in the collector's calendar, or a minute later if that's today and 10:00 has passed. A dismissed signal is scheduled for the day it would get more urgent than when it was dismissed, the day it shows again. It's titled with the object and says an estimate thinks it's due, nothing more. At most 50, the soonest, because iOS keeps 64 pending.
 - **Following the signals.** With the offer accepted, each time the Shelf home appears the clock notifications are replaced from the signals then. A swap, a backup, a dismissal or an edit since the last time moves or removes them. Other kinds (loan due, M7; the weekly nudge, M8) use their own id prefix and aren't touched.
 - **Opt-in clocks** are a setting too (`optedInClocks`), read with the shelf. Its toggle waits for You (M8).
+
+### D-62 · How the first piece's type is guessed
+
+> PD-166: "the type is inferred rather than asked."
+
+**Gap.** PLAN §2 gives the inference to `ExtractionClient` (Foundation Models), but a model that answers with a type
+id can only pick among ids it's told about, and it can't say what a type is called in a description it didn't write.
+Without Apple Intelligence, there's nothing to infer with at all.
+
+**Decision.** The type files say what names them. Each has a `recognise:` list of words ("wristwatch", "board game"),
+and each subtype has its own ("n64", "nintendo 64"). `Catalogue.guess(from:)` scores a description against them: one
+point per word found, matched whole and in order, without case or accents, plus the best subtype's points. The model
+only describes the piece in words. The same guess reads the text a capture recognises, or what a collector types in
+*What is it?*.
+
+- **Nothing named, or two types named equally, is no guess.** The screen asks *What is it?* rather than picking.
+- **Thing is never guessed.** It's what's left when nothing is.
+- **No word names two types.** A shared word would make one of them unguessable; a test refuses it.
+- **Every type is guessable, enabled or not.** A guess says whether its type has shipped, so a watch is recognised
+  as a watch and saved as a Thing that waits for the type (46, 2B; D-63).

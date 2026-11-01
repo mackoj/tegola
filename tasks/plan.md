@@ -108,8 +108,24 @@ Four places where the code and the spec disagree today. Each gets a D-entry with
 
 ## M5 · launch types + first piece (P3)
 
-Exit test: 5 of 6 testers finish onboarding with one complete object. Music, Video games, Board games, Thing as data;
-first-piece onboarding (46); type inference via `ExtractionClient`.
+Exit test (page 52): 5 of 6 testers finish onboarding with one complete object and can say what the app will tell
+them. That's a test with people, run by the owner; `docs/UX-FINDINGS.md` is where it's written down. The automated
+stand-in is the first-piece journey as a UI test. The four launch types are data since M2 (D-23).
+
+Branch: the session's branch, stacked on M4's model half (the payoff reads M4's clocks). T5.1 to T5.4 are pure model
+and storage work, so they build and test on Linux. T5.5 to T5.8 touch the features, the on-device model and the app,
+so they need the Mac.
+
+| Task | Acceptance | Verify |
+|---|---|---|
+| T5.1 Type guess | Each type file names the words that recognise it, and its subtypes theirs (`recognise:`, decoder and schema). `Catalogue.guess(from:)` turns a description ("Omega Seamaster, 1968") into a type and subtype, says whether the type is enabled, and gives nothing on no words or a tie. Thing is never guessed. No word names two types (D-62) | Linux: `TypeGuessTests`; `scripts/validate-types.sh` |
+| T5.2 First-piece rules | A first piece is the shelf's first object; its story is a chip and an optional line, kept as data so it reads in the reader's language, and it's the first history line, never `acquired` (PD-165). A piece of a type that hasn't shipped is saved as a Thing that remembers the type it's waiting for (46, 2B; D-63). It lands in the collection its type names (PD-137) | Linux: `PlanTests`, `FirstPieceTests`, storage replay |
+| T5.3 Type testers | **Count me in** is a setting, the set of types the collector tests (PD-031). The pieces waiting for a type are a read model, so when the type ships they're offered the migration first (the migration is v1.x) | Linux: `ShelfStoreTests`, `ReadModelTests` |
+| T5.4 The payoff | `FirstPiecePayoff`: the piece, the first thing its clocks say (any status, good included: "Not yet. Soon."), and its story. Page 46's two examples are tests | Linux: `FirstPieceTests` |
+| T5.5 `ExtractionClient` | Foundation Models' guided generation describes a photo or a typed line as a name and words; `guess(from:)` maps them. Without Apple Intelligence it's unavailable, and the screen asks *What is it?*. `unimplemented` by default, recorded outputs in tests | Mac: TestStore with recorded outputs |
+| T5.6 Onboarding | `FirstPieceFeature`'s four screens (PLAN F2): one question with the camera, **Type it**, **Library**, **Just look around first**; recognise, then *How did it come to you?*; type not shipped, with **Count me in** / **Not now**; the payoff, **One at a time** and **That's enough for today** (no sweep in v1). The app opens on it while the shelf is empty and it hasn't been skipped | Mac: TestStore, snapshots of every screen and state |
+| T5.7 The empty shelf | **Scan your first object** and **Bring your list** (Add's import, from M6; hidden until then). No sample data (PD-102) | Mac: snapshot |
+| T5.8 Journey and review | The first piece as a UI test (journey 1's first step). DECISIONS, the M5 report, HANDOFF, `docs/UX-FINDINGS.md` set up for the six testers, a separate review agent | Mac: `scripts/test.sh app`; read-through |
 
 ## M6 · capture, lookup, import (P4)
 

@@ -5,6 +5,10 @@ name:
   singular: Release
   plural: Releases
   collection: My Music
+# Words that name the type in a photo's description or a typed line: the first piece's
+# type is inferred from them, not asked (PD-166, D-62).
+recognise: [record, album, music]
+
 mark: "33⅓"            # overridden per medium below
 icon: opticaldisc
 gradient: [teal, cobalt]
@@ -107,6 +111,7 @@ fields:
 subtypes:
   - key: vinyl
     label: Vinyl
+    recognise: [vinyl, lp, 12 inch, 7 inch, 45 rpm]
     presets:
       medium: Vinyl
       format: ["LP", "2×LP", "7\"", "10\"", "12\"", Box set]
@@ -116,6 +121,7 @@ subtypes:
       - { key: rpm, label: Speed, type: choice, options: ["33⅓", "45", "78"], auto: true }
   - key: cd
     label: CD
+    recognise: [cd, compact disc]
     presets:
       medium: CD
       format: ["CD", "2×CD", "3×CD", "CD Single", "Maxi-single", "Box set"]
@@ -130,6 +136,7 @@ subtypes:
       - { key: sparsCode, label: SPARS code, type: choice, options: [AAD, ADD, DDD, Unknown], auto: true }
   - key: cassette
     label: Cassette
+    recognise: [cassette, cassette tape, k7]
     presets:
       medium: Cassette
       format: [Cassette, "2×Cassette", Single, Maxi-single, Box set, Demo]

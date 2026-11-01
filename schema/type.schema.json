@@ -82,6 +82,10 @@
       "items": { "type": "string", "pattern": "^(saveBattery|discRot|mediaRot|codeExpiry|drinkingWindow|serviceRisk|unfinished)(-pending)?$" }
     },
     "subtypes": { "type": "array", "items": { "$ref": "#/$defs/subtype" } },
+    "recognise": {
+      "description": "Words that name the type in a photo's description or a typed line, so the first piece's type is inferred, not asked (PD-166, D-62). Thing has none.",
+      "$ref": "#/$defs/strings"
+    },
     "supersedes": {
       "type": "array",
       "items": {
@@ -148,7 +152,8 @@
             "oneOf": [{ "$ref": "#/$defs/scalar" }, { "type": "array", "items": { "$ref": "#/$defs/scalar" } }]
           }
         },
-        "adds": { "type": "array", "items": { "$ref": "#/$defs/field" } }
+        "adds": { "type": "array", "items": { "$ref": "#/$defs/field" } },
+        "recognise": { "description": "Words that name this subtype (n64, nintendo 64).", "$ref": "#/$defs/strings" }
       }
     }
   }

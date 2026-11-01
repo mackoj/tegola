@@ -60,6 +60,19 @@ Plan: `tasks/plan.md`, M4. Report: `docs/milestones/M4.md`.
 - [x] T4.9 Seed toward 120 objects, and the 200-object signal test
 - [x] T4.10 Journey 5, docs, review
 
+## M5 · launch types + first piece
+
+Plan: `tasks/plan.md`, M5. Report: `docs/milestones/M5.md`.
+
+- [x] T5.1 Type guess
+- [ ] T5.2 First-piece rules
+- [ ] T5.3 Type testers
+- [ ] T5.4 The payoff
+- [ ] T5.5 `ExtractionClient` (Mac)
+- [ ] T5.6 Onboarding (Mac)
+- [ ] T5.7 The empty shelf (Mac)
+- [ ] T5.8 Journey and review
+
 ## Open follow-ups
 
 - Generate App Attest's `appattest-environment` entitlement with M6, when the lookup client first runs on a device.

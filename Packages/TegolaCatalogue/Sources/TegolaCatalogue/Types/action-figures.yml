@@ -4,6 +4,10 @@ name:
   singular: Figure
   plural: Figures
   collection: Action Figures
+# Words that name the type in a photo's description or a typed line: the first piece's
+# type is inferred from them, not asked (PD-166, D-62).
+recognise: [action figure, figurine, funko, gi joe, transformers, masters of the universe, star wars figure]
+
 mark: "1/12"
 icon: figure.stand
 gradient: [orange, pink]
