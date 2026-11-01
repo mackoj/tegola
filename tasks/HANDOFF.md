@@ -3,69 +3,75 @@
 The state of the work for whoever picks it up next: a new session, another agent, or the owner. Read this first, keep
 it short and current.
 
-**Updated:** 2026-11-01, after M4 finished on `m4-signals`.
+**Updated:** 2026-11-01, after M4 merged and M5 and M6's model halves were brought onto it.
 
-**Resume here: two branches diverged from `main` overnight, and only one M4 can merge.** Nothing is merged; nothing
-is uncommitted on either.
-
-| | **PR #13** · `m4-signals` (Mac session) | **PR #12** (draft) · `claude/tegola-rearchitecture-jcq29f` (cloud session) |
-|---|---|---|
-| M4 | All of T4.1–T4.10: model, screens, notifications, seed, journey 5. `scripts/ci.sh` green (app, iOS snapshots, journeys) and `linux-core` green | Model half only (T4.1–T4.4), its own design: `ClockSignal`, `StatusReading`, `latestLog`, `dismissSignal(id, clock:, status:)` |
-| M5 | — | Linux half, T5.1–T5.4: type guess, first-piece rules, testers, payoff |
-| M6 | — | Linux half, T6.1–T6.7: import batches, the Importer API, the three importers, lookup queue, look-alikes |
-| Decisions | D-56 to D-61 | D-56 to D-66: **the same numbers mean different things** |
-| 200-object list | 13 signals, pinned in `SignalShelfTests` | 41 signals, `docs/testing/signals-200.md` |
-
-## The owner's choice, and the recommended path
-
-**Recommended: merge #13, then rebase #12's M5 and M6 onto it.** #13 is the complete, Mac-verified M4. #12's M4 is
-the model half of the same tasks, built differently. Its M5 and M6 work is new and worth keeping. The rebase, for
-whoever does it (a Mac session, since it touches `ValueText` and the seed's tests):
-1. After #13 merges, branch from `main` and cherry-pick #12's commits from "M5 T5.1" on. Drop its six M4 commits
-   (up to "M4: D-57, and the handoff for the Mac half").
-2. **Renumber its decisions.** Its D-58 to D-66 become D-62 onwards. Its D-56 and D-57 are M4's and go with its M4
-   commits. Update every citation in code comments and docs.
-3. **Port it to #13's model:**
-   - `ClockSignal` becomes `Signal`; `StatusReading` becomes `ObjectStatus.derive` with `ShelfSignals`;
-     `latestLog` becomes `signalState`; `CareKind.batterySwapped` becomes a `serviced` log;
-   - M5's `Clocks.firstSignalDate` reads `Signal.changesAt`;
-   - M6's `ValueText` history cases join #13's (`signalDismissed` is already there).
-4. **The 200-object lists disagree:** 41 signals against 13. #12's counts tapes from the year they were made, which
-   #13 found floods the feed (D-58 here). Keep #13's.
-5. Run `scripts/ci.sh` on the Mac, then open one PR for M5 and M6's model halves.
-
-**The alternative** is to keep #12's M4 model and port #13's screens onto it. That's more work, and nothing about
-#12's M4 has run on a Mac.
-
-**One reading in #12 needs the owner either way:** its D-60 makes imported rows **unconfirmed**. That reverses D-38,
-which the owner approved (D-54).
+**Resume here: M5's screens (T5.5–T5.7), on the Mac.** M4 is merged (PR #13). The model halves of M5 and M6, first
+built in the cloud on top of a different M4 (draft PR #12), were replayed onto it on `m5-m6-model-halves`:
+- #12's six M4 commits were dropped;
+- its decisions were renumbered: its D-58 to D-66 are now **D-62 to D-70**;
+- its code was ported to M4's names: `Signal`, `signalState`, `serviced` logs, `ObjectStatus.derive`.
 
 ## Where things stand
 
-- **Spec:** approved (`docs/PLAN.md`, answers in §10). Decisions on `m4-signals`: D-1 to D-61.
-- **M1, M2, M3:** merged (PRs #5, #8, #9; `docs/milestones/M1.md` to `M3.md`).
-- **M4 (signals), on `m4-signals`, PR #13:** `docs/milestones/M4.md`.
-  - Clocks as signals with their reasons, always **Estimate**.
-  - Status derivation, and the object's status slot with Dismiss and the remedies.
-  - The signal feed from the Today strip, and status filters.
-  - Clock notifications, offered once.
-  - A 105-object seed with exactly one signal (journey 5).
-  - A separate review's findings, all fixed.
-- **tegola-server** (`mackoj/tegola-server`, D-41): its M1 is done. The app needs it from M6 on.
+- **Spec:** approved (`docs/PLAN.md`, answers in §10). Decisions: D-1 to D-70.
+- **M1 to M4:** merged (PRs #5, #8, #9, #13; `docs/milestones/M1.md` to `M4.md`).
+- **M5 (launch types, first piece): the model half** is done (T5.1–T5.4):
+  - **T5.1 type guess.** Type files have `recognise:` words; `Catalogue.guess(from:)` (D-62).
+  - **T5.2 first-piece rules.** `ShelfCommand.firstPiece(draft, story:catalogue:)`, `notTheFirstPiece`. A type that
+    hasn't shipped becomes a Thing with `awaitingType`, through `ObjectDraft.recognised(as:)` (D-63).
+  - **T5.3 testers.** Settings `typeTesters` (`TypeTesters`) and `firstPieceSkipped`. `ShelfSnapshot` reads both and
+    says `opensOnFirstPiece`. `Shelf.waiting(for:)` lists the Things waiting for a type.
+  - **T5.4 payoff.** `FirstPiecePayoff`: the most urgent signal that needs attention, or else the soonest
+    `Signal.changesAt` of a clock reading *good* ("Not yet. Soon.").
+- **M6 (capture, lookup, import): the model half** is done (T6.1–T6.7):
+  - **T6.1 import batches** (D-64). `ShelfCommand.importBatch(ImportBatch)` and `undoBatch(BatchID)`. Imported rows
+    land **unconfirmed** (PD-047; D-38 allowed this). Undo, within 30 days, removes only the rows nobody touched
+    (`ShelfObject.imported`) and soft-deletes them. New tables: `importBatches`, and `lookupQueue` (T6.6).
+  - **T6.2 the Importer API** (D-65): `Importer`, `ImporterRegistry.v1`, `ImportPlan`, `CellExtracting`, and
+    `NoteReader`, the rule-based cell reader.
+  - **T6.3–T6.5 the three importers:** `TemplateImporter` (D-67), `SpreadsheetImporter` (grid and list, D-66) and
+    `DiscogsCSVImporter` (D-68). The owner's `Jeux collection.csv`: 485 rows on 20 shelves, 12 to sort.
+  - **T6.6** `LookupCandidate`, `EnrichmentProposal`, `LookupQueue` and `ShelfStore.perform(_:context:lookup:)`
+    (D-69). **T6.7** `LookAlikes` and `MatchOutcome` (D-70).
+- **tegola-server** (`mackoj/tegola-server`, D-41): its M1 is done. The app needs it from M6's T6.8 on.
 
 ## What's next
 
 1. **Owner:**
-   - choose between #12 and #13 (above);
    - M4's readings: D-56's thresholds, D-58 (a tape's clock starts at its first backup), D-61 (the offer is a card);
-   - #12's D-60 against D-38;
-   - the exit tests with people: M3's 30 objects, and M4's 8 of 10 signals.
-2. **The rebase** above, once #13 is merged.
-3. **Then the Mac halves:**
-   - M5: T5.5–T5.7, the first-piece screens;
-   - M6: T6.8–T6.12, the camera, lookup and import screens.
-
-   #12's `tasks/plan.md` and `tasks/todo.md` break them down.
+   - D-64: imported rows are unconfirmed, which takes up the option D-38 left open (keep or reverse);
+   - the exit tests with people: M3's 30 objects, M4's 8 of 10 signals.
+2. **M5 on the Mac** (`tasks/plan.md`, M5):
+   - **T5.5 `ExtractionClient`** in `TegolaClients`. Foundation Models' guided generation describes a photo or a typed
+     line as a name and words, and `catalogue.guess(from:)` maps the words to a type. It's unavailable without Apple
+     Intelligence. Its test value is `unimplemented`.
+   - **T5.6 `FirstPieceFeature`**, PLAN F2's four screens. `AppFeature` opens on it when
+     `snapshot.opensOnFirstPiece`.
+     - **Just look around first** sets `firstPieceSkipped` to `"true"`.
+     - The write is `.firstPiece(ObjectDraft.recognised(as: guess.type, …), story:, catalogue:)`.
+     - **Count me in** sets `typeTesters` to `snapshot.typeTesters.adding(type).setting`.
+     - The payoff reads `FirstPiecePayoff(object:type:now:calendar:)`, with the calendar from `\.calendar`, and its
+       words come from `ShelfViews/SignalText.swift`.
+     - History's line for the `firstPiece` origin needs a key for an empty story.
+   - **T5.7** the empty shelf's two offers. **T5.8** the first-piece UI test, `docs/UX-FINDINGS.md`, the report and the
+     review.
+3. **M6 on the Mac** (`tasks/plan.md`, M6), after M5's screens:
+   - **T6.8 `LookupClient`** in `TegolaClients`:
+     - it maps the generated `Candidate` to `LookupCandidate`, and the match buckets to `MatchOutcome`;
+     - it needs `AppAttestMiddleware`, `RetryMiddleware` (`LookupQueue.Outcome.retryAfter`) and `ReachabilityClient`;
+     - a worker drains `ShelfStore.lookupQueue()` and calls `recordLookup`;
+     - add the `appattest-environment` entitlement (`tasks/todo.md`).
+   - **T6.9 Capture:** VisionKit. A capture saves with `perform(.add(…, origin: .captured), context:, lookup:
+     .barcode(…))`.
+   - **T6.10 Import screens:**
+     - `ImporterRegistry.v1.best(for:)`, then `plan(_:catalogue:extraction:)`. The sentence reads `collectionName`,
+       `rows.count`, `types`, `shelves` and the `guessed` chips.
+     - **Build my shelf** sends `.importBatch(plan.batch())` with source `.import`. Undo is `.undoBatch(id)`, and its
+       summary reads `batchUndone`'s `kept`.
+     - `ExtractionClient` implements `CellExtracting`; without Apple Intelligence, pass `NoteReader()`.
+     - Matching sends rows to `POST /types/{type}/match`, 50 a call.
+   - **T6.11** the review queue (`LookupCandidate.strength`, `EnrichmentProposal.apply(_:)`) and the match sheet
+     (`LookAlikes.choices`). **T6.12** journey 2, the report, `REVIEW.md`, the review.
 4. **Later:** M7 (people), M8 (keeping, You: the `unfinished` toggle lives there), M9 (polish).
 
 ## Run it locally (Mac)
@@ -138,6 +144,10 @@ scripts/ci.sh                          # the full gate → build/ci-summary.md (
   - Fetch the `amd64` layers of `mirror.gcr.io/library/swift:6.4.2-noble` into `/opt/swiftroot` and `chroot` into it,
     with the repo, `/proc`, `/dev`, `resolv.conf`, the proxy CA and the proxy environment.
   - `scripts/test-linux.sh` then runs the pure packages and storage (install `libsqlite3-dev` first).
+  - The proxy port changes between sessions, so read `$HTTPS_PROXY` when you chroot. The proxy is HTTPS only: switch
+    the rootfs's `ubuntu.sources` to `https://` and run apt with `-o APT::Sandbox::User=root -o
+    Acquire::https::CAInfo=<the proxy CA>`. After a container restart, redo the bind mounts.
+  - Plain `grep -r` over `Packages/` walks the `.build` folders: search `Packages/*/Sources` and `Packages/*/Tests`.
   - Feature, app and snapshot tests are Mac-only (D-32).
 - **Reviews:** a separate review agent reads each milestone against the plan before its PR. Keep its scope narrow, and
   keep it off the simulator while a UI run is going.
@@ -153,4 +163,5 @@ scripts/ci.sh                          # the full gate → build/ci-summary.md (
 
 ## Owner questions
 
-Open: #12 or #13 for M4; M4's readings (D-56, D-58, D-61); #12's D-60, which reverses the approved D-38. The owner approved M2 and M3's (D-35, D-38, D-45, D-50, D-51; D-54).
+Open: M4's readings (D-56, D-58, D-61); D-64's unconfirmed imports. The owner approved M2 and M3's (D-35, D-38,
+D-45, D-50, D-51; D-54).

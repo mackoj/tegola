@@ -112,7 +112,7 @@ Exit test (page 52): 5 of 6 testers finish onboarding with one complete object a
 them. That's a test with people, run by the owner; `docs/UX-FINDINGS.md` is where it's written down. The automated
 stand-in is the first-piece journey as a UI test. The four launch types are data since M2 (D-23).
 
-Branch: the session's branch, stacked on M4's model half (the payoff reads M4's clocks). T5.1 to T5.4 are pure model
+Branch: `m5-m6-model-halves` for T5.1 to T5.4, on top of M4 (the payoff reads M4's signals). They're pure model
 and storage work, so they build and test on Linux. T5.5 to T5.8 touch the features, the on-device model and the app,
 so they need the Mac.
 
@@ -133,9 +133,9 @@ Exit test (page 52): `Jeux collection.csv` (485 games) imports in under 3 minute
 fix. The automated stand-in is `ImportIntegrationTests` over the real file (every cell kept, the counts, the payoff)
 plus journey 2 (*Bring your list*) as a UI test; the 3 minutes are measured on a device with the on-device model.
 
-Branch: the session's branch, stacked on M4 and M5. T6.1 to T6.7 are model, storage and parser work, so they build
-and test on Linux. T6.8 to T6.12 touch the clients, the camera, the on-device model, the screens and the app, so they
-need the Mac.
+Branch: `m5-m6-model-halves` for T6.1 to T6.7, with M5's model half. They're model, storage and parser work, so
+they build and test on Linux. T6.8 to T6.12 touch the clients, the camera, the on-device model, the screens and the
+app, so they need the Mac.
 
 | Task | Acceptance | Verify |
 |---|---|---|
