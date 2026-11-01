@@ -66,6 +66,17 @@
   extension ObjectStatus {
     /// The swatch it's drawn in: the five are the same everywhere (PD-016).
     public var swatch: StatusSwatch { StatusSwatch(rawValue: rawValue) ?? .fine }
+
+    /// The swatch's name, for a filter: fine · good · watch · act · gone.
+    public var label: Text {
+      switch self {
+      case .fine: Text("Fine", bundle: .module)
+      case .good: Text("Good", bundle: .module)
+      case .watch: Text("Watch", bundle: .module)
+      case .act: Text("Act", bundle: .module)
+      case .gone: Text("Gone", bundle: .module)
+      }
+    }
   }
 
   /// The mono word every computed state carries (One Roof, "the estimate label").

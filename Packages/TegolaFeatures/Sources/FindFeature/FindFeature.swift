@@ -18,6 +18,19 @@ public struct FindFeature {
 
     public init() {}
 
+    /// The hits for the query now, with the statuses the status chip filters on.
+    public var hits: [SearchHit] {
+      @Dependency(\.catalogue) var catalogue
+      @Dependency(\.date.now) var now
+      return search(query, in: snapshot.shelf, catalogue: catalogue, statuses: snapshot.signals(at: now).statuses)
+    }
+
+    /// The status chips: the statuses some object has now.
+    public var statusChoices: [ObjectStatus] {
+      @Dependency(\.date.now) var now
+      return snapshot.statusChoices(at: now)
+    }
+
     /// The reducer's own state; the snapshot is the database's (D-47).
     public static func == (lhs: Self, rhs: Self) -> Bool { lhs.query == rhs.query }
   }
@@ -37,6 +50,7 @@ public struct FindFeature {
       case lentOutTapped
       case placeTapped(PlaceID?)
       case resultTapped(ObjectID)
+      case statusTapped(ObjectStatus)
       case textChanged(String)
       case typeTapped(TypeManifest.ID)
       case viewTapped(SavedView?)
@@ -64,6 +78,9 @@ public struct FindFeature {
         return .none
       case .view(.resultTapped(let id)):
         return .send(.delegate(.open(.object(id))))
+      case .view(.statusTapped(let status)):
+        state.query.status = state.query.status == status ? nil : status
+        return .none
       case .view(.textChanged(let text)):
         state.query.text = text
         return .none

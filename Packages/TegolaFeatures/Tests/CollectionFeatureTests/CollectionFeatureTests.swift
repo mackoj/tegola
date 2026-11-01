@@ -28,6 +28,19 @@ struct CollectionFeatureTests {
     #expect(store.state.objects.map(\.title) == ["Homogenic", "Kid A", "Nebraska", "Selected Ambient Works"])
   }
 
+  /// The status filter (D-59): a due cartridge is the collection's only *watch*.
+  @Test func rowsFilterByStatus() async throws {
+    let due = try dueCartridge()
+    let id = try collection(named: "The Library")
+    let store = TestStore(initialState: CollectionFeature.State(id: id)) { CollectionFeature() }
+    try await store.state.$snapshot.load()
+    #expect(store.state.statusChoices == [.watch, .good])
+    await store.send(.view(.statusTapped(.watch))) { $0.status = .watch }
+    #expect(store.state.objects.map(\.id) == [due])
+    await store.send(.view(.statusTapped(nil))) { $0.status = nil }
+    #expect(store.state.objects.count > 1)
+  }
+
   @Test func letGoObjectsLeaveTheList() async throws {
     let id = try collection(named: "Board games")
     let store = TestStore(initialState: CollectionFeature.State(id: id)) {

@@ -2,6 +2,7 @@ import ComposableArchitecture
 import DependenciesTestSupport
 import FeatureTestSupport
 import Foundation
+import SQLiteData
 import TegolaCatalogue
 import TegolaClients
 import TegolaModel
@@ -16,6 +17,17 @@ struct FindFeatureTests {
   func results(_ store: TestStoreOf<FindFeature>) -> [SearchHit] {
     @Dependency(\.catalogue) var catalogue
     return search(store.state.query, in: store.state.snapshot.shelf, catalogue: catalogue)
+  }
+
+  /// The status chip (D-59): only what's due shows under *watch*.
+  @Test func theStatusChipFiltersByDerivedStatus() async throws {
+    let due = try dueCartridge()
+    let store = TestStore(initialState: FindFeature.State()) { FindFeature() }
+    try await store.state.$snapshot.load()
+    #expect(store.state.statusChoices.contains(.watch))
+    await store.send(.view(.statusTapped(.watch))) { $0.query.status = .watch }
+    #expect(store.state.hits.map(\.object) == [due])
+    await store.send(.view(.statusTapped(.watch))) { $0.query.status = nil }
   }
 
   /// F11's done-when: chips stack, and each result names the field that matched.

@@ -13,6 +13,14 @@ extension ShelfSnapshot {
     return ShelfSignals(shelf: shelf, catalogue: catalogue, now: now, calendar: calendar)
   }
 
+  /// The statuses worth filtering by: the ones some object on the shelf has now, most urgent first. *Fine* is the
+  /// absence of news and *gone* is the archive's, so neither is a filter.
+  public func statusChoices(at now: Date, among ids: Set<ObjectID>? = nil) -> [ObjectStatus] {
+    let statuses = signals(at: now).statuses
+    let present = Set(statuses.filter { ids?.contains($0.key) ?? true }.values)
+    return ObjectStatus.allCases.filter { $0 != .fine && $0 != .gone && present.contains($0) }.sorted()
+  }
+
   /// One object's showing signals at `now`, without reading the rest of the shelf.
   public func signals(for id: ObjectID, at now: Date) -> [Signal] {
     @Dependency(\.catalogue) var catalogue

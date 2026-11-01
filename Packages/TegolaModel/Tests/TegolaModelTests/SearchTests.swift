@@ -55,6 +55,23 @@ import Testing
     )
   }
 
+  /// The status chip filters on derived statuses: a due cartridge is the only *watch*.
+  @Test func theStatusChipFiltersOnDerivedStatuses() throws {
+    var (harness, _, _) = try shelf()
+    let due = try SaveBatteryClockTests.cartridge(&harness, year: 1994)
+    let statuses = ShelfSignals(
+      shelf: harness.shelf,
+      catalogue: Harness.catalogue,
+      now: harness.clock,
+      calendar: .utc
+    ).statuses
+    let watch = search(SearchQuery(status: .watch), in: harness.shelf, catalogue: Harness.catalogue, statuses: statuses)
+    #expect(watch.map(\.object) == [due])
+    #expect(!SearchQuery(status: .watch).isEmpty)
+    let fine = search(SearchQuery(status: .fine), in: harness.shelf, catalogue: Harness.catalogue, statuses: statuses)
+    #expect(fine.count == 2)
+  }
+
   @Test func filtersStack() throws {
     var (harness, kidA, silvergun) = try shelf()
     try harness.perform(.lend(kidA, to: .new(name: "Max"), due: nil, note: ""))

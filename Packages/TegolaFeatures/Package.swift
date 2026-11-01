@@ -107,7 +107,7 @@ let package = Package(
     .target(
       name: "CollectionFeature",
       dependencies: [
-        "TegolaClients",
+        "TegolaClients", "ShelfViews",
         .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
         .product(name: "SQLiteData", package: "sqlite-data"),
         .product(name: "TegolaCatalogue", package: "TegolaCatalogue"),
@@ -193,7 +193,7 @@ let package = Package(
     .target(
       name: "FindFeature",
       dependencies: [
-        "TegolaClients",
+        "TegolaClients", "ShelfViews",
         .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
         .product(name: "SQLiteData", package: "sqlite-data"),
         .product(name: "TegolaCatalogue", package: "TegolaCatalogue"),

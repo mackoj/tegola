@@ -71,6 +71,16 @@
         }
       }
     },
+    "Act" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "À traiter"
+          }
+        }
+      }
+    },
     "Added" : {
       "localizations" : {
         "fr" : {
@@ -259,6 +269,16 @@
         }
       }
     },
+    "Fine" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rien à signaler"
+          }
+        }
+      }
+    },
     "First piece · %@" : {
       "localizations" : {
         "fr" : {
@@ -285,6 +305,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rendu"
+          }
+        }
+      }
+    },
+    "Gone" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parti"
+          }
+        }
+      }
+    },
+    "Good" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bon"
           }
         }
       }
@@ -693,6 +733,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Valeur"
+          }
+        }
+      }
+    },
+    "Watch" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "À surveiller"
           }
         }
       }
