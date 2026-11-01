@@ -444,3 +444,28 @@ anything.
   leaves the shelf, and the promise tests check it removes only untouched rows of that batch.
 - **`importBatches`** is clctn's table less the mapping and the report, which are the importer's plan and aren't
   kept. It has no foreign key to its collection, which an undo can remove.
+
+### D-61 · How a cell's notes are read without the on-device model
+
+> 49, "Cell → item": "It must never invent a value: anything it can't read goes into note, untouched." PLAN F9:
+> "parts and condition from the notes, signed, bundles split by "/", "doublon" as a second copy, digital kept apart."
+
+**Gap.** Page 49 shows what nine of Jeux's cells become, but not the rules behind them, and some of its readings
+invent: "Mario 64 (boite endommagé + cartouche)" gets *manual: missing*, which the cell never says, and a typo is
+"fixed" in the title.
+
+**Decision.** `CellExtracting` is the reader's interface. Foundation Models implement it on the Mac (T6.10);
+`NoteReader` is the rule-based one, used without Apple Intelligence and pinned by the tests. Its readings:
+
+- **The title** is the text outside the brackets, as written: typos are matching's to fix (T6.6), never the reader's.
+- **A listed part** ("cartouche + manuel") fills the type's What's inside slot when it has one, and a cart or disc the
+  media field when no subtype presets it. **An unlisted part is not Missing**: a loose cart isn't written as missing
+  its box. That keeps Jeux's Imperfect count at page 49's three instead of every loose cart.
+- **Damage** ("endommagé", "abîmé", "ko", "HS") grades the part's ladder axis at the scale's worst step (Poor), and
+  **"manque <part>"** grades it Missing. A missing thing that isn't a part ("manque cd audio") is noticed as imperfect
+  and stays in the note.
+- **"dédicace JDG"** is the item level's Signed, by JDG. **"doublon"** is a second copy, its own object, noticed as
+  a duplicate. **"/"** in the title is a bundle (`contains`); "+" in a title isn't ("Tony Hawks 1+2").
+- **"digital"** is noticed and asked about in the exceptions queue (keep, wishlist, leave out; 43 Q4), and stays in
+  the note, since no field says it.
+- **Anything else** ("platinum", "four players", "cartouche x2") goes into the note, as written, joined by " + ".

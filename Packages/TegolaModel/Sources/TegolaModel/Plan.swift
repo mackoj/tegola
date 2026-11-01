@@ -704,7 +704,9 @@ extension Shelf {
       batches[id]?.undoneAt = at
       for objectID in removed { objects[objectID] = nil }
       // The collection the import made goes too, once nothing is left in it.
-      if let collectionID = batches[id]?.collectionID, !objects.values.contains(where: { $0.collectionID == collectionID }) {
+      if let collectionID = batches[id]?.collectionID,
+        !objects.values.contains(where: { $0.collectionID == collectionID })
+      {
         collections[collectionID] = nil
       }
     }

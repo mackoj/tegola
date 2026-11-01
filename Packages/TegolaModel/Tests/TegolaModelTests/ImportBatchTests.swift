@@ -119,7 +119,9 @@ import Testing
       rows: [ObjectDraft(type: "thing", values: [.title: .text("Câble péritel")], bulk: .quantity, quantity: 3)]
     )
     let events = try harness.perform(.importBatch(batch), as: .import)
-    let id = try #require(events.compactMap { if case .added(let object, _) = $0.kind { object.id } else { nil } }.first)
+    let id = try #require(
+      events.compactMap { if case .added(let object, _) = $0.kind { object.id } else { nil } }.first
+    )
     let promoted = try harness.perform(.promote(id))
     guard case .promoted(_, let copy) = promoted.first?.kind else { Issue.record("no copy"); return }
     #expect(copy.imported == nil)
