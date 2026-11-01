@@ -6,7 +6,7 @@ it short and current.
 **Updated:** 2026-11-01. M4's and M5's model halves are done (T4.1–T4.4, T5.1–T5.4); both screens halves wait for
 the Mac.
 
-**Resume here.** Branch `claude/tegola-rearchitecture-jcq29f` (8 commits ahead of `main`, last `924f6e2`), draft
+**Resume here.** Branch `claude/tegola-rearchitecture-jcq29f` (ahead of `main` by M4 and M5's commits), draft
 PR #12, which covers M4 and M5. Nothing is uncommitted. A cloud session can't go further than this without the Mac:
 every task left in M4 and M5 touches `TegolaFeatures`, snapshots or the app. Its useful work meanwhile is M6's pure
 side (the importers in `TegolaInterchange`, the lookup queue's model) or tegola-server.
