@@ -53,10 +53,10 @@ import Testing
     #expect(Self.read("Heavy rain / beyond 2 souls").works == ["Heavy rain", "beyond 2 souls"])
   }
 
-  @Test func doublonIsASecondCopy() {
+  /// The file has "Fantasy zone (cartouche)" too: the doublon is this cell, the second copy.
+  @Test func doublonMarksTheSecondCopy() {
     let cell = Self.read("Fantasy zone (cartouche) doublon")
     #expect(cell.title == "Fantasy zone")
-    #expect(cell.copies == 2)
     #expect(cell.noticed == [.duplicate])
   }
 
@@ -78,7 +78,7 @@ import Testing
     let cell = Self.read("Tennis (four players) (cartouche x2)")
     #expect(cell.title == "Tennis")
     #expect(cell.values[.notes] == .text("four players + cartouche x2"))
-    #expect(cell.copies == 1 && cell.noticed.isEmpty)
+    #expect(cell.noticed.isEmpty)
     // A typo stays: matching fixes titles, never the reader.
     #expect(Self.read("Donckey Kong Country 2").title == "Donckey Kong Country 2")
     #expect(Self.read("Donckey Kong Country 2").values.isEmpty)

@@ -17,19 +17,15 @@ public struct ExtractedCell: Hashable, Sendable {
   public var title: String
   /// Everything read but the title: parts, grades, signed, a bundle's works, and the note.
   public var values: [FieldKey: FieldValue]
-  /// Two for "doublon": the second copy is its own object, noticed as a duplicate.
-  public var copies: Int
   public var noticed: Set<ImportPlan.Notice>
 
   public init(
     title: String,
     values: [FieldKey: FieldValue] = [:],
-    copies: Int = 1,
     noticed: Set<ImportPlan.Notice> = []
   ) {
     self.title = title
     self.values = values
-    self.copies = copies
     self.noticed = noticed
   }
 
