@@ -103,7 +103,7 @@ Plan: `tasks/plan.md`, M7.
 - [x] T7.7 Activity
 - [x] T7.8 Reminders and Nudge
 - [x] T7.9 Share
-- [ ] T7.10 Journey 3, docs, review
+- [x] T7.10 Journey 3, docs, review
 
 ## Open follow-ups
 

@@ -2,6 +2,7 @@ public import Dependencies
 import DependenciesMacros
 public import Foundation
 import Synchronization
+public import TegolaModel
 
 #if canImport(UserNotifications)
   import UserNotifications
@@ -31,8 +32,11 @@ public struct NotificationsClient: Sendable {
   public var requestAuthorization: @Sendable () async throws -> Bool
   /// Replaces every pending clock notification with these.
   public var replaceClockNotifications: @Sendable (_ notifications: [LocalNotification]) async throws -> Void
-  /// Replaces every pending loan reminder with these (F13: one on each due date).
+  /// Replaces every pending loan reminder with these (F13: one on each due date). A reminder whose morning has
+  /// passed is dropped, never sent late: it was delivered then, or the loan came after it.
   public var replaceLoanReminders: @Sendable (_ notifications: [LocalNotification]) async throws -> Void
+  /// Removes a loan's pending reminder, when it comes back before its day.
+  public var removeLoanReminder: @Sendable (_ loan: LoanID) async -> Void
 }
 
 extension NotificationsClient: DependencyKey {
@@ -49,22 +53,37 @@ extension NotificationsClient: DependencyKey {
         requestAuthorization: {
           try await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound])
         },
-        replaceClockNotifications: { try await replace(prefix: clockPrefix, with: $0) },
-        replaceLoanReminders: { try await replace(prefix: loanPrefix, with: $0) }
+        replaceClockNotifications: { try await replace(prefix: clockPrefix, with: $0, late: .soon) },
+        replaceLoanReminders: { try await replace(prefix: loanPrefix, with: $0, late: .drop) },
+        removeLoanReminder: { loan in
+          UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [loanID(loan)])
+        }
       )
     #else
       return NotificationsClient(
         requestAuthorization: { false },
         replaceClockNotifications: { _ in },
-        replaceLoanReminders: { _ in }
+        replaceLoanReminders: { _ in },
+        removeLoanReminder: { _ in }
       )
     #endif
+  }
+
+  /// A loan reminder's id: the prefix and the loan.
+  public static func loanID(_ loan: LoanID) -> String { "\(loanPrefix)\(loan)" }
+
+  /// What happens to a notification whose morning has already passed today.
+  enum Late {
+    /// A minute from now rather than never: a clock's change is news whenever it's read.
+    case soon
+    /// Not at all: a loan's reminder was delivered that morning, and rescheduling it would send it again.
+    case drop
   }
 
   #if canImport(UserNotifications)
     /// Removes the pending notifications whose id starts with `prefix`, then schedules these, each on its day's
     /// morning in the collector's calendar.
-    static func replace(prefix: String, with notifications: [LocalNotification]) async throws {
+    static func replace(prefix: String, with notifications: [LocalNotification], late: Late) async throws {
       @Dependency(\.calendar) var calendar
       @Dependency(\.date) var date
       let center = UNUserNotificationCenter.current()
@@ -76,13 +95,14 @@ extension NotificationsClient: DependencyKey {
         content.body = notification.body
         var day = calendar.dateComponents([.year, .month, .day], from: notification.at)
         day.hour = morning
-        // Due today, after the morning has passed: a minute from now rather than never.
-        let trigger: UNNotificationTrigger =
-          if let fire = calendar.date(from: day), fire > date.now {
-            UNCalendarNotificationTrigger(dateMatching: day, repeats: false)
-          } else {
-            UNTimeIntervalNotificationTrigger(timeInterval: 60, repeats: false)
-          }
+        let trigger: UNNotificationTrigger
+        if let fire = calendar.date(from: day), fire > date.now {
+          trigger = UNCalendarNotificationTrigger(dateMatching: day, repeats: false)
+        } else if late == .soon {
+          trigger = UNTimeIntervalNotificationTrigger(timeInterval: 60, repeats: false)
+        } else {
+          continue
+        }
         try await center.add(UNNotificationRequest(identifier: notification.id, content: content, trigger: trigger))
       }
     }
@@ -95,7 +115,8 @@ extension NotificationsClient: DependencyKey {
     NotificationsClient(
       requestAuthorization: { granted },
       replaceClockNotifications: { notifications in log.record(notifications) },
-      replaceLoanReminders: { notifications in log.recordLoans(notifications) }
+      replaceLoanReminders: { notifications in log.recordLoans(notifications) },
+      removeLoanReminder: { loan in log.recordRemoval(loan) }
     )
   }
 }
@@ -116,6 +137,13 @@ public final class NotificationLog: Sendable {
   public var loanReplacements: [[LocalNotification]] { loanCalls.withLock { $0 } }
 
   func recordLoans(_ notifications: [LocalNotification]) { loanCalls.withLock { $0.append(notifications) } }
+
+  let removals = Mutex<[LoanID]>([])
+
+  /// The loans whose reminder was removed, in order.
+  public var removedLoans: [LoanID] { removals.withLock { $0 } }
+
+  func recordRemoval(_ loan: LoanID) { removals.withLock { $0.append(loan) } }
 }
 
 extension DependencyValues {

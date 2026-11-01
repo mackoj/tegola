@@ -6,7 +6,7 @@ import TegolaClients
 public import TegolaModel
 public import TegolaStorage
 
-/// Sharing one object (F14, D-78): **Share the record** or **Share my copy**, as a card image through the share sheet.
+/// Sharing one object (F14, D-79): **Share the record** or **Share my copy**, as a card image through the share sheet.
 /// One-sided: no link, nothing to revoke (PD-160). My copy is offered only for something the collector owns, and an
 /// asking price only with money on.
 @Reducer

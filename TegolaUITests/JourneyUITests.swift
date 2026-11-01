@@ -99,6 +99,56 @@ final class JourneyUITests: XCTestCase {
     XCTAssertFalse(app.buttons["today.needAttention"].firstMatch.exists)
   }
 
+  /// Journey 3, *Lend at the door* (PLAN §4.4, F13): object → Lend → "Dara" → due in 2 weeks → overdue on a moved
+  /// clock → Return → the history names Dara and says the loan was closed one-sided.
+  @MainActor
+  func testLendAtTheDoor() {
+    let app = XCUIApplication()
+    let base = ["-AppleLanguages", "(en)", "-AppleLocale", "en_GB"]
+    app.launchArguments = ["--reset", "--seed"] + base
+    app.launch()
+
+    // The object, then Lend: a new name, two weeks (the default), Hand it over. Three taps and a name.
+    let collection = app.buttons["shelf.collection.My Music"]
+    XCTAssertTrue(collection.waitForExistence(timeout: 10))
+    collection.tap()
+    app.buttons["collection.object.Homogenic"].tap()
+    app.buttons["object.lend"].firstMatch.tap()
+    app.buttons["lend.new"].firstMatch.tap()
+    let name = app.textFields["lend.name"]
+    XCTAssertTrue(name.waitForExistence(timeout: 5))
+    name.tap()
+    name.typeText("Dara")
+    app.buttons["lend.handOver"].firstMatch.tap()
+    XCTAssertTrue(app.staticTexts["Lent to Dara"].firstMatch.waitForExistence(timeout: 5))
+
+    // Fifteen days later: the loan is overdue, on the Today strip and on Activity.
+    app.terminate()
+    app.launchArguments = ["--days-ahead", "15"] + base
+    app.launch()
+    let overdue = app.buttons["today.overdue"].firstMatch
+    XCTAssertTrue(overdue.waitForExistence(timeout: 10))
+    XCTAssertTrue(overdue.label.contains("1 overdue"), overdue.label)
+    overdue.tap()
+
+    // Activity: Mark returned, how it came back, It's home.
+    let markReturned = app.buttons["activity.return.Homogenic"].firstMatch
+    XCTAssertTrue(markReturned.waitForExistence(timeout: 5))
+    markReturned.tap()
+    let home = app.buttons["return.itsHome"].firstMatch
+    XCTAssertTrue(home.waitForExistence(timeout: 5))
+    home.tap()
+
+    // The history names Dara, and says the collector closed it alone.
+    let row = app.buttons["activity.row.Homogenic"].firstMatch
+    app.buttons["activity.filter.returned"].firstMatch.tap()
+    XCTAssertTrue(row.waitForExistence(timeout: 5))
+    row.tap()
+    let line = app.staticTexts["Back from Dara, closed by you · same shape"].firstMatch
+    XCTAssertTrue(line.waitForExistence(timeout: 5))
+    XCTAssertTrue(app.staticTexts["Lent to Dara"].firstMatch.exists)
+  }
+
   /// Journey 2, *Bring your list* (PLAN F9, T6.12): the owner's `Jeux collection.csv` becomes one sentence, a shelf
   /// in one write, and a payoff that can be undone. `--import-fixture` stands for the file picker, which a UI test
   /// can't drive. Matching needs tegola-server, which the simulator doesn't reach: the rows stay as written.

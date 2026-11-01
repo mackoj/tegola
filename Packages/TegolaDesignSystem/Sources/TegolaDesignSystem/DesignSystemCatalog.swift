@@ -207,7 +207,7 @@
       }
     }
 
-    /// Every shared action (D-77): its item (symbol and words, as a tab shows it) and its button in its usual look.
+    /// Every shared action (D-78): its item (symbol and words, as a tab shows it) and its button in its usual look.
     @MainActor static var actions: some View {
       VStack(alignment: .leading, spacing: TegolaSpace.s) {
         ForEach(TegolaAction.allCases, id: \.self) { action in

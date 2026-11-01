@@ -11,6 +11,8 @@
     var screen: String?
     /// A file to open Bring your list with (journey 2): the system file picker can't be driven by a UI test.
     var importFixture: String?
+    /// Days to move the clock forward (journey 3: a loan comes due).
+    var daysAhead = 0
 
     init(_ arguments: [String]) {
       var iterator = arguments.dropFirst().makeIterator()
@@ -20,6 +22,7 @@
         case "--seed": seed = true
         case "--screen": screen = iterator.next()
         case "--import-fixture": importFixture = iterator.next()
+        case "--days-ahead": daysAhead = iterator.next().flatMap { Int($0) } ?? 0
         default: continue
         }
       }
@@ -27,7 +30,7 @@
 
     /// Opens the database as the arguments ask.
     func apply() {
-      AppBootstrap.prepare(reset: reset, seed: seed)
+      AppBootstrap.prepare(reset: reset, seed: seed, daysAhead: daysAhead)
     }
   }
 #endif

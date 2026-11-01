@@ -31,7 +31,11 @@ struct LendFeatureTests {
       people: try shelfNow().recentPeople,
       now: testNow
     )
-    return TestStore(initialState: state) { LendFeature() } withDependencies: { $0.dismiss = DismissEffect {} }
+    return TestStore(initialState: state) {
+      LendFeature()
+    } withDependencies: {
+      $0.dismiss = DismissEffect {}
+    }
   }
 
   /// F13: lend in three taps — a name, a date, Hand it over. Two weeks is the default date.
@@ -48,7 +52,11 @@ struct LendFeatureTests {
     let shelf = try shelfNow()
     let loan = try #require(shelf.openLoan(on: store.state.objectID))
     #expect(shelf.persons[loan.personID]?.name == "Dara")
-    #expect(loan.dueAt == Calendar.testUTC.date(byAdding: .day, value: 14, to: testNow))
+    // Due back on a day: the last second of the fourteenth day from now.
+    let day = Calendar.testUTC.date(byAdding: .day, value: 14, to: testNow)!
+    #expect(loan.dueAt == LendFeature.endOfDay(day, calendar: .testUTC))
+    #expect(Calendar.testUTC.isDate(loan.dueAt!, inSameDayAs: day))
+    #expect(!loan.isOverdue(at: Calendar.testUTC.startOfDay(for: day) + 86_000))
     #expect(loan.note == "")
   }
 
@@ -63,7 +71,8 @@ struct LendFeatureTests {
 
     let loan = try #require(try shelfNow().openLoan(on: store.state.objectID))
     #expect(loan.personID == max.id)
-    #expect(loan.dueAt == Calendar.testUTC.date(byAdding: .month, value: 1, to: testNow))
+    let day = Calendar.testUTC.date(byAdding: .month, value: 1, to: testNow)!
+    #expect(loan.dueAt == LendFeature.endOfDay(day, calendar: .testUTC))
     #expect(loan.note == "For the drive")
   }
 

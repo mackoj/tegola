@@ -5,8 +5,8 @@ import Foundation
 import LendFeature
 import ObjectEditFeature
 import ReturnFeature
-import ShareFeature
 import SQLiteData
+import ShareFeature
 import TegolaCatalogue
 import TegolaClients
 import TegolaModel

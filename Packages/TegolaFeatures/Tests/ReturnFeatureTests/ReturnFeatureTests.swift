@@ -18,14 +18,19 @@ func shelfNow() throws -> Shelf {
 @MainActor
 @Suite(.dependencies { try $0.seededShelf() })
 struct ReturnFeatureTests {
+  let log = NotificationLog()
+
   /// The seed lends Kid A to Max with no date.
   func store() throws -> (TestStoreOf<ReturnFeature>, LoanID) {
     let shelf = try shelfNow()
     let kidA = try #require(shelf.objects.values.first { $0.title == "Kid A" })
     let loan = try #require(shelf.openLoan(on: kidA.id))
     let state = try #require(ReturnFeature.State(loan: loan.id, shelf: shelf, now: testNow, calendar: .testUTC))
-    let store = TestStore(initialState: state) { ReturnFeature() } withDependencies: {
+    let store = TestStore(initialState: state) {
+      ReturnFeature()
+    } withDependencies: {
       $0.dismiss = DismissEffect {}
+      $0.notifications = .recording(into: log)
     }
     return (store, loan.id)
   }
@@ -52,6 +57,7 @@ struct ReturnFeatureTests {
     #expect(loan.isOneSided)
     #expect(loan.cameBack == .damaged)
     #expect(loan.returnCondition == "Sleeve torn")
+    #expect(log.removedLoans == [loanID])
   }
 
   @Test func tappingTheChosenAnswerAgainLeavesItUnsaid() async throws {

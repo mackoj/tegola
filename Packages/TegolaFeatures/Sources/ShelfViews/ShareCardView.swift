@@ -4,8 +4,9 @@
   import TegolaDesignSystem
   public import TegolaDesignTokens
   public import TegolaModel
+  import UniformTypeIdentifiers
 
-  /// The share card (F14, D-78) as an image people receive: the type's tint and mark, the title, the facts, and on
+  /// The share card (F14, D-79) as an image people receive: the type's tint and mark, the title, the facts, and on
   /// *my copy* the hero photo and an asking price. It shows only what `ShareCard` holds, so what was paid can't reach
   /// it. Drawn at a fixed width for the renderer.
   public struct ShareCardView: View {
@@ -93,6 +94,39 @@
         return renderer.uiImage.map(Image.init(uiImage:))
       #else
         return renderer.nsImage.map(Image.init(nsImage:))
+      #endif
+    }
+  }
+
+  /// A share card the share sheet renders only when it's sent (review of M7, finding 7): a list of loans doesn't draw
+  /// every card each time it redraws.
+  public struct ShareCardImage: Transferable, Sendable {
+    let card: ShareCard
+    let manifest: TypeManifest?
+    let type: EffectiveType?
+
+    public init(card: ShareCard, manifest: TypeManifest?, type: EffectiveType?) {
+      self.card = card
+      self.manifest = manifest
+      self.type = type
+    }
+
+    public static var transferRepresentation: some TransferRepresentation {
+      DataRepresentation(exportedContentType: .png) { item in
+        guard let data = await item.png() else { throw CocoaError(.fileWriteUnknown) }
+        return data
+      }
+    }
+
+    @MainActor
+    func png() -> Data? {
+      let view = ShareCardView(card: card, manifest: manifest, type: type).tegolaTheme(.board)
+      let renderer = ImageRenderer(content: view)
+      renderer.scale = 3
+      #if canImport(UIKit)
+        return renderer.uiImage?.pngData()
+      #else
+        return renderer.nsImage?.tiffRepresentation
       #endif
     }
   }

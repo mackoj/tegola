@@ -140,13 +140,21 @@ public struct LendFeature {
     }
   }
 
-  /// The due date the choice names, from now, in the collector's calendar.
+  /// The due date the choice names, in the collector's calendar. A loan is due back on a day, not at a time: the date
+  /// stored is the last moment of that day, so it's overdue only once the day is over (review of M7, finding 1).
   func dueDate(_ state: State) -> Date? {
-    switch state.due {
-    case .twoWeeks: calendar.date(byAdding: .day, value: 14, to: now)
-    case .oneMonth: calendar.date(byAdding: .month, value: 1, to: now)
-    case .date: state.date
-    case .none: nil
-    }
+    let day: Date? =
+      switch state.due {
+      case .twoWeeks: calendar.date(byAdding: .day, value: 14, to: now)
+      case .oneMonth: calendar.date(byAdding: .month, value: 1, to: now)
+      case .date: max(state.date, now)
+      case .none: nil
+      }
+    return day.flatMap { Self.endOfDay($0, calendar: calendar) }
+  }
+
+  /// The last second of `date`'s day.
+  static func endOfDay(_ date: Date, calendar: Calendar) -> Date? {
+    calendar.date(byAdding: DateComponents(day: 1, second: -1), to: calendar.startOfDay(for: date))
   }
 }

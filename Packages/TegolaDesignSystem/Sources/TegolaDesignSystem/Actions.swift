@@ -2,7 +2,7 @@
   public import SwiftUI
 
   /// Every tab and every verb that more than one screen uses, defined once: its words, its SF Symbol and its usual
-  /// look (D-77). Screens name the action; they don't spell its label again, so "Save" is one key in one catalog,
+  /// look (D-78). Screens name the action; they don't spell its label again, so "Save" is one key in one catalog,
   /// translated once, and a tab and a button for the same thing can't drift apart.
   ///
   /// A verb that only one screen says (*Hand it over*, *Build my shelf*) stays with that screen.

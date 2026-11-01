@@ -1,6 +1,6 @@
 public import TegolaCatalogue
 
-/// A share card (F14, D-78): the image the share sheet sends. Sharing is one-sided in v1: a card is rendered on the
+/// A share card (F14, D-79): the image the share sheet sends. Sharing is one-sided in v1: a card is rendered on the
 /// phone and sent, with no link behind it (PD-160).
 ///
 /// What was paid is never on a card, of either kind, with money on or off (F14's *Done when*). The rule is
@@ -33,6 +33,10 @@ public struct ShareCard: Hashable, Sendable {
   /// Only on *my copy*, only with money on.
   public let askingPrice: Money?
 
+  /// The label for a single condition grade. Type files have no spine label for it; like the type's own labels, it's
+  /// data in English.
+  public static let conditionLabel = "Condition"
+
   public init(
     _ kind: Kind,
     object: ShelfObject,
@@ -50,7 +54,12 @@ public struct ShareCard: Hashable, Sendable {
     func add(_ key: FieldKey, _ label: String?) {
       // Promise 5 and F14: whatever the field, no money value goes on a card.
       guard let label, let value = object.values[key] else { return }
-      if case .money = value { return }
+      switch value {
+      // Promise 5: no money. A log's entries can hold an appraisal or a cost, and a card only says "n entries" of
+      // them anyway, so no list of entries goes on a card either (review of M7, finding 6).
+      case .money, .entries: return
+      default: break
+      }
       facts.append(Fact(key: key, label: label, value: value))
     }
     // The spine's public roles. Acquired, paid and value are the collector's own, never shared.
@@ -65,7 +74,9 @@ public struct ShareCard: Hashable, Sendable {
       add(.field(field.key), field.label)
     }
     if kind == .myCopy {
-      // The condition: one grade per ladder part (PD-013's signature slot).
+      // The condition: one grade for a type without a ladder (records, books, watches; review of M7, finding 3), or
+      // one grade per ladder part (PD-013's signature slot).
+      if ladderAxes.isEmpty { add(.condition, Self.conditionLabel) }
       // In the ladder's own order (media first), not alphabetical.
       var seen: Set<String> = []
       for axis in type.signatures.flatMap(\.axes) where seen.insert(axis).inserted {

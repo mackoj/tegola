@@ -49,6 +49,7 @@ public struct ReturnFeature {
   }
 
   @Dependency(\.dismiss) var dismiss
+  @Dependency(\.notifications) var notifications
   @Dependency(\.shelf) var shelf
 
   public init() {}
@@ -68,10 +69,13 @@ public struct ReturnFeature {
       case .view(.cancelTapped):
         return .run { [dismiss] _ in await dismiss() }
       case .view(.itsHomeTapped):
-        let command = ShelfCommand.returnLoan(state.loanID, cameBack: state.cameBack, condition: state.words)
-        return .run { [shelf] send in
+        let loan = state.loanID
+        let command = ShelfCommand.returnLoan(loan, cameBack: state.cameBack, condition: state.words)
+        return .run { [shelf, notifications] send in
           do {
             _ = try shelf.perform(command)
+            // It's home: its reminder must not still come (review of M7, finding 4).
+            await notifications.removeLoanReminder(loan)
             await send(.succeeded)
           } catch let violation as ShelfRuleViolation {
             await send(.refused(violation))

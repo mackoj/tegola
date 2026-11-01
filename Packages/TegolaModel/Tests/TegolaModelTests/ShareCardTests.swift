@@ -5,7 +5,7 @@ import Testing
 
 @testable import TegolaModel
 
-/// T7.4: share cards (F14, D-78). No card, of either kind, with money on or off, carries what was paid.
+/// T7.4: share cards (F14, D-79). No card, of either kind, with money on or off, carries what was paid.
 @Suite struct ShareCardTests {
   static let euro = Currency("EUR")!
   static let paid = Money(minorUnits: 12_000, currency: euro)
@@ -71,6 +71,14 @@ import Testing
     #expect(mine.photos.count == 1)
   }
 
+  /// Review of M7, finding 3: a type without a ladder still shares its condition on my copy, never on the record.
+  @Test func myCopyCarriesTheConditionOfATypeWithoutALadder() throws {
+    var harness = Harness()
+    let id = try harness.add("music", "Kid A", subtype: "vinyl", values: [.condition: .text("Near Mint")])
+    #expect(try card(.myCopy, id, in: harness, money: .off).facts.contains { $0.key == .condition })
+    #expect(try !card(.record, id, in: harness, money: .off).facts.contains { $0.key == .condition })
+  }
+
   @Test func anAskingPriceShowsOnlyOnMyCopyWithMoneyOn() throws {
     var harness = Harness()
     let id = try harness.add()
@@ -98,6 +106,7 @@ import Testing
             let shared = try card(kind, id, in: harness, money: money)
             for fact in shared.facts {
               if case .money = fact.value { Issue.record("money on a card: \(fact.key), seed \(seed)") }
+              if case .entries = fact.value { Issue.record("entries on a card: \(fact.key), seed \(seed)") }
               #expect(!private_.contains(fact.key), "\(fact.key) on a card, seed \(seed)")
             }
             #expect(shared.askingPrice == nil)

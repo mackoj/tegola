@@ -21,6 +21,6 @@ final class AppShellUITests: XCTestCase {
 }
 
 extension XCUIApplication {
-  /// A tab in the system tab bar, by its English label (the tests launch in English; D-77).
+  /// A tab in the system tab bar, by its English label (the tests launch in English; D-78).
   func tab(_ label: String) -> XCUIElement { tabBars.buttons[label] }
 }

@@ -48,7 +48,7 @@
       func lentTo(_ name: String) -> Text { Text("Lent to \(name)", bundle: .module) }
       func borrowedFrom(_ name: String) -> Text { Text("Borrowed from \(name)", bundle: .module) }
       // The person a loan was with: names can't be changed in v1, so the loan's person is the name at the time (D-3,
-      // D-76).
+      // D-77).
       func person(of loan: LoanID) -> String { shelf.loans[loan].map(person) ?? "" }
       func givenBackTo(_ name: String) -> Text { Text("Given back to \(name)", bundle: .module) }
       return switch kind {

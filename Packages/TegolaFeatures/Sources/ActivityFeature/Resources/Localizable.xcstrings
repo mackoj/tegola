@@ -75,6 +75,46 @@
         }
       }
     },
+    "%lld days" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld day"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld days"
+                }
+              }
+            }
+          }
+        },
+        "fr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld jour"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld jours"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "%lld lent" : {
       "localizations" : {
         "fr" : {
@@ -193,18 +233,18 @@
         }
       }
     },
-    "Hi %@! Just checking in on %@: it was due back %lld days ago. No rush, tell me when." : {
+    "Hi %@! Just checking in on %@: it was due back %@ ago. No rush, tell me when." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Hi %1$@! Just checking in on %2$@: it was due back %3$lld days ago. No rush, tell me when."
+            "value" : "Hi %1$@! Just checking in on %2$@: it was due back %3$@ ago. No rush, tell me when."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Salut %1$@ ! Petit mot pour %2$@ : il devait revenir il y a %3$lld jours. Rien ne presse, dis-moi."
+            "value" : "Salut %1$@ ! Petit mot pour %2$@ : il devait revenir il y a %3$@. Rien ne presse, dis-moi."
           }
         }
       }

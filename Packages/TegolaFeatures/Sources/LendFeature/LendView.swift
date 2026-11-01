@@ -9,6 +9,7 @@
   @ViewAction(for: LendFeature.self)
   public struct LendView: View {
     @Bindable public var store: StoreOf<LendFeature>
+    @Dependency(\.date.now) var now
     @Environment(\.tegolaTheme) private var theme
 
     public init(store: StoreOf<LendFeature>) {
@@ -87,8 +88,10 @@
         }
       }
       if store.due == .date {
+        // A loan is due back today or later, never in the past.
         DatePicker(
           selection: Binding(get: { store.date }, set: { send(.dateChanged($0)) }),
+          in: now...,
           displayedComponents: .date,
           label: { Text("Back by", bundle: .module) }
         )

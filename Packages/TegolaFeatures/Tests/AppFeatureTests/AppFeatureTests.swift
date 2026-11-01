@@ -6,11 +6,11 @@ import ComposableArchitecture
 import DependenciesTestSupport
 import FeatureTestSupport
 import FirstPieceFeature
+import Foundation
 import ObjectFeature
 import PersonFeature
 import ShelfFeature
 import SignalsFeature
-import Foundation
 import TegolaClients
 import TegolaModel
 import TegolaStorage

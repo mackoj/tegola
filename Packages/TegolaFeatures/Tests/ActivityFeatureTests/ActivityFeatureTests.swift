@@ -82,5 +82,9 @@ struct ActivityFeatureTests {
       ActivityView.line(for: Nudge(title: "Kid A", person: "Max", daysOut: 3, daysOverdue: nil))
         == "Hi Max! Hope you're enjoying Kid A. Tell me when you're done with it."
     )
+    #expect(
+      ActivityView.line(for: Nudge(title: "Kid A", person: "Max", daysOut: 15, daysOverdue: 1))
+        == "Hi Max! Just checking in on Kid A: it was due back 1 day ago. No rush, tell me when."
+    )
   }
 }

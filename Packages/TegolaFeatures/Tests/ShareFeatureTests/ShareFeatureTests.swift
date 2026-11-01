@@ -35,10 +35,12 @@ func moneyOn() throws {
 }
 
 @MainActor
-@Suite(.dependencies {
-  try $0.seededShelf()
-  $0.locale = Locale(identifier: "fr_FR")
-})
+@Suite(
+  .dependencies {
+    try $0.seededShelf()
+    $0.locale = Locale(identifier: "fr_FR")
+  }
+)
 struct ShareFeatureTests {
   @Test func theRecordIsTheDefaultAndCarriesNoMoney() throws {
     let id = try paySilvergun()

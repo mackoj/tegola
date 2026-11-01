@@ -169,13 +169,13 @@
     func actions(_ loan: Loan) -> some View {
       if let nudge = Nudge(loan: loan.id, shelf: store.snapshot.shelf, now: now, calendar: calendar) {
         // F13: Nudge opens the share sheet with a friendly line; there's no link to send in v1 (PD-160).
-        // With the object's record card (F13): what they have, as a picture, and never a price (D-78).
+        // With the object's record card (F13): what they have, as a picture, and never a price (D-79).
         Group {
-          if let card = recordCard(loan), let image = card.rendered() {
+          if let card = recordCard(loan) {
             ShareLink(
-              item: image,
+              item: card,
               message: Text(verbatim: Self.line(for: nudge)),
-              preview: SharePreview(Text(verbatim: nudge.title), image: image)
+              preview: SharePreview(Text(verbatim: nudge.title))
             ) {
               TegolaAction.nudge.label.tegolaTextStyle(TegolaType.label).underline().fixedSize()
             }
@@ -200,13 +200,13 @@
     }
 
     /// The object's record card, the one Share the record sends.
-    func recordCard(_ loan: Loan) -> ShareCardView? {
+    func recordCard(_ loan: Loan) -> ShareCardImage? {
       let shelf = store.snapshot.shelf
       guard let object = shelf.objects[loan.objectID], let manifest = catalogue.manifest(object.typeID),
         let type = try? catalogue.resolve(object.typeID, subtype: object.subtype)
       else { return nil }
       let card = ShareCard(.record, object: object, type: type, manifest: manifest, shelf: shelf, money: .off)
-      return ShareCardView(card: card, manifest: manifest, type: type)
+      return ShareCardImage(card: card, manifest: manifest, type: type)
     }
 
     func row(_ loan: Loan, meta: Text, notYours: Bool) -> some View {
@@ -253,8 +253,10 @@
       let person = nudge.person
       let title = nudge.title
       if let late = nudge.daysOverdue {
+        // The span is its own key so it can be plural: "1 day", "7 days" (review of M7, finding 5).
+        let span = String(localized: "\(late) days", bundle: .module)
         return String(
-          localized: "Hi \(person)! Just checking in on \(title): it was due back \(late) days ago. No rush, tell me when.",
+          localized: "Hi \(person)! Just checking in on \(title): it was due back \(span) ago. No rush, tell me when.",
           bundle: .module
         )
       }
@@ -300,7 +302,7 @@
       if let due = loan.dueAt {
         let left = days(now, due)
         if loan.isOverdue(at: now) {
-          let late = max(1, -left)
+          let late = max(0, -left)
           label = Text("Overdue · \(late) days", bundle: .module)
           fill = .accentLoss
           ink = .onAccentLoss

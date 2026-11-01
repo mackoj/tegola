@@ -3,8 +3,8 @@ public import Foundation
 public import LendFeature
 public import ObjectEditFeature
 public import ReturnFeature
-public import ShareFeature
 public import SQLiteData
+public import ShareFeature
 import TegolaCatalogue
 import TegolaClients
 public import TegolaModel

@@ -76,7 +76,7 @@ public struct ShelfFeature {
       return snapshot.shelf.loanReminders(at: now, calendar: calendar).map { reminder in
         let person = reminder.person
         return LocalNotification(
-          id: "\(NotificationsClient.loanPrefix)\(reminder.id)",
+          id: NotificationsClient.loanID(reminder.id),
           title: reminder.title,
           body: String(localized: "Due back from \(person) today.", bundle: .module),
           at: reminder.at

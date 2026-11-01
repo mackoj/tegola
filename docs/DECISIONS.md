@@ -733,7 +733,7 @@ capture is saved before any network (PD-046), so by the time a match arrives the
 - **Where it opens:** the Today strip's *N to tidy* line (`Route.review`), and the capture tray's "Confirm it in
   Review".
 
-### D-76 · People: what the Activity tab and a person's page read, and how a return is written
+### D-77 · People: what the Activity tab and a person's page read, and how a return is written
 
 > PLAN F13: "The return asks how it came back, and that goes into history … Each Person has a page with what they hold
 > now and a track record … It's the only tab with a badge, and the badge is gone when nothing is due." D-3: "`lent` and
@@ -757,7 +757,7 @@ back?*, where the model had one free-text condition.
   `cameBack` is optional, so events written before M7 decode unchanged. The history reads *Back from Dara, closed by
   you · damaged · Sleeve torn*: "closed by you" is how it says one-sided (PD-160).
 
-### D-77 · The system tab bar, and one place for shared actions
+### D-78 · The system tab bar, and one place for shared actions
 
 > The owner, 2026-11-01: "change the tabbar to the native iOS one; centralize all the button and tabbar action in one
 > place to prevent duplicates in the design system."
@@ -780,7 +780,7 @@ than selecting all stay.
   reach the system's button.
 - The catalog's *tabBar* section is now *actions*: every action's item and button.
 
-### D-78 · What a share card shows
+### D-79 · What a share card shows
 
 > PLAN F14: "**Share the record** (public facts) and **share my copy** (condition, photos, and an asking price only
 > with money on) render a **share card** image … What was paid is never on a card … A wishlist shares as a card list
@@ -805,7 +805,7 @@ asking-price field (Let go is M8).
   owned), a preview, and the system share sheet with the card as an image. The card is drawn by one view,
   `ShareCardView`, which Nudge also sends (as the record). The ladder's grades keep the ladder's order.
 
-### D-79 · The Person page, the Activity tab, reminders and the nudge
+### D-80 · The Person page, the Activity tab, reminders and the nudge
 
 > PLAN F13: "Each Person has a page with what they hold now and a track record … **Activity** gathers loans out,
 > borrowed objects and overdue loans. It's the only tab with a badge … There's one reminder notification on the due
@@ -828,6 +828,9 @@ was worded for clocks, and appears only when a clock has something to say.
 - **Reminders** (T7.8) follow the clocks: scheduled when the offer is accepted and each time the Shelf appears, under
   their own `loan.` prefix so neither kind clears the other. The offer now also appears when a loan has a due date. The
   reminder reads *Homogenic · Due back from Dara today.*
+- **A loan is due back on a day** (review of M7): the lend sheet stores the last second of the chosen day, so a loan
+  is overdue only once its day is over, and the date picker offers today or later. A loan reminder whose morning has
+  passed is dropped rather than sent late, and **It's home** removes the loan's pending reminder.
 - **The nudge's line** is worded from `Nudge` alone: *Hi Dara! Just checking in on Homogenic: it was due back 7 days
   ago. No rush, tell me when.* or, before the date, *Hi Max! Hope you're enjoying Kid A. Tell me when you're done with
   it.* The object's card joins it with T7.9.

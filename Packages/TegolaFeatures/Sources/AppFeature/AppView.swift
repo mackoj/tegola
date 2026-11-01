@@ -19,7 +19,7 @@
   import TegolaModel
   import TegolaStorage
 
-  /// The root view: the system tab bar, one stack per tab (D-77). Activity and You get their screens in M7 and M8;
+  /// The root view: the system tab bar, one stack per tab (D-78). Activity and You get their screens in M7 and M8;
   /// until then they show their title. Scan presents the camera rather than selecting (PD-117).
   @ViewAction(for: AppFeature.self)
   public struct AppView: View {
@@ -153,7 +153,7 @@
   }
 
   extension AppTab {
-    /// The shared action a tab is: its words and symbol (D-77).
+    /// The shared action a tab is: its words and symbol (D-78).
     var action: TegolaAction {
       switch self {
       case .shelf: .shelf
