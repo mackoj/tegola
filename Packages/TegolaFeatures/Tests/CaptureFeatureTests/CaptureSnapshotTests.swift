@@ -3,6 +3,7 @@
   import DependenciesTestSupport
   import FeatureTestSupport
   import SwiftUI
+  import TegolaCatalogue
   import TegolaModel
   import TegolaSnapshotTesting
   import Testing
@@ -24,9 +25,9 @@
       state.seen = .barcode("045496730437")
       state.identify = true
       state.tray = [
-        .init(id: ObjectID(rawValue: UUID(0)), seen: .barcode("045496730437"), status: .proposed("Tetris")),
-        .init(id: ObjectID(rawValue: UUID(1)), seen: nil, status: .queued),
-        .init(id: ObjectID(rawValue: UUID(2)), seen: .text("ZELDA"), status: .nothingFound),
+        .init(id: ObjectID(UUID(0)), seen: .barcode("045496730437"), status: .proposed("Tetris")),
+        .init(id: ObjectID(UUID(1)), seen: nil, status: .queued),
+        .init(id: ObjectID(UUID(2)), seen: .text("ZELDA"), status: .nothingFound),
       ]
       let store = Store(initialState: state) { CaptureFeature() }
       assertScreenSnapshot(of: CaptureView(store: store), named: "tray", suite: "capture", height: 1300)

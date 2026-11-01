@@ -85,11 +85,14 @@ Plan: `tasks/plan.md`, M6. Report: `docs/milestones/M6.md`.
 - [x] T6.6 Lookup queue and enrichment proposals
 - [x] T6.7 Matches, look-alikes, the exceptions queue's outcomes
 - [x] T6.8 `LookupClient`, App Attest and the worker
-- [ ] T6.9 Capture (Mac)
-- [ ] T6.10 Import screens and `ExtractionClient`'s cells (Mac)
-- [ ] T6.11 Review queue and match screens (Mac)
+- [x] T6.9 Capture
+- [x] T6.10 Import screens (cells: NoteReader, D-74)
+- [x] T6.11 Review queue and matches
 - [ ] T6.12 Journey 2, docs, review
 
 ## Open follow-ups
 
-- Generate App Attest's `appattest-environment` entitlement with M6, when the lookup client first runs on a device.
+- Share sheet: open a CSV from Files or Mail into Bring your list (needs document types in the generated Info.plist,
+  D-74).
+- The column mapper behind Something's off, for a spreadsheet whose headers no alias names (D-74).
+- Cell extraction with the on-device model, once measured against Jeux (D-74).

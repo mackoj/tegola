@@ -58,6 +58,8 @@
           .buttonStyle(.plain)
           .accessibilityIdentifier("add.type.\(manifest.id.rawValue)")
         }
+        DashedButton(Text("Import a list", bundle: .module)) { send(.importListTapped) }
+          .accessibilityIdentifier("add.importList")
       }
     }
 

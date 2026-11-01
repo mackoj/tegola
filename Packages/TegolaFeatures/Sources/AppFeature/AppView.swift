@@ -3,9 +3,11 @@
   import CaptureFeature
   import CollectionFeature
   import FindFeature
+  import ImportFeature
   import FirstPieceFeature
   import ObjectFeature
   import PlacesFeature
+  import ReviewFeature
   import SignalsFeature
   public import ComposableArchitecture
   import ShelfFeature
@@ -46,6 +48,9 @@
       .sheet(item: $store.scope(state: \.capture, action: \.capture)) { capture in
         CaptureView(store: capture)
       }
+      .sheet(item: $store.scope(state: \.importing, action: \.importing)) { importing in
+        ImportView(store: importing)
+      }
       #if os(iOS)
         .fullScreenCover(item: $store.scope(state: \.firstPiece, action: \.firstPiece)) { first in
           FirstPieceView(store: first)
@@ -76,6 +81,8 @@
           PlacesView(store: store)
         case .signals(let store):
           SignalsView(store: store)
+        case .review(let store):
+          ReviewView(store: store)
         }
       }
     }
@@ -93,6 +100,7 @@
         case .place(let store): PlaceView(store: store)
         case .places(let store): PlacesView(store: store)
         case .signals(let store): SignalsView(store: store)
+        case .review(let store): ReviewView(store: store)
         }
       }
     }

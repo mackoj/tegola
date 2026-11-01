@@ -33,7 +33,7 @@
             addTo
             if store.type != nil {
               scanner
-                .frame(height: 340)
+                .frame(height: hasScanner ? 300 : 120)
                 .clipShape(RoundedRectangle(cornerRadius: TegolaRadius.cardLarge))
                 .printed(radius: TegolaRadius.cardLarge)
               seenLine

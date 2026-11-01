@@ -173,6 +173,16 @@
         }
       }
     },
+    "Bring your list" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apportez votre liste"
+          }
+        }
+      }
+    },
     "Catalogued" : {
       "localizations" : {
         "fr" : {

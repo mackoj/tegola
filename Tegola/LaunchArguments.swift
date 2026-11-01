@@ -9,6 +9,8 @@
     var reset = false
     var seed = false
     var screen: String?
+    /// A file to open Bring your list with (journey 2): the system file picker can't be driven by a UI test.
+    var importFixture: String?
 
     init(_ arguments: [String]) {
       var iterator = arguments.dropFirst().makeIterator()
@@ -17,6 +19,7 @@
         case "--reset": reset = true
         case "--seed": seed = true
         case "--screen": screen = iterator.next()
+        case "--import-fixture": importFixture = iterator.next()
         default: continue
         }
       }

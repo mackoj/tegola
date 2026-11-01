@@ -685,3 +685,50 @@ it, and PLAN §7 doesn't say where the server's address and a simulator's debug 
 - **Configuration.** Release builds call the production host. Debug builds read `TEGOLA_LOOKUP_URL` and
   `TEGOLA_DEBUG_TOKEN` from the scheme's environment, so no token is ever in the bundle; with a token, calls carry
   it instead of an assertion (contract, security step 3).
+
+### D-74 · Bringing a list on the phone
+
+> PLAN F9: "the one sentence with rename, **Build my shelf**, **Something's off** (the column mapper), the payoff,
+> undo." T6.10: "`ExtractionClient`'s cell extraction (Foundation Models, 20–30 cells a call) behind `CellExtracting`."
+
+**Gap.** F9 doesn't say which reader runs on a device with Apple Intelligence, what **Something's off** offers before
+a column mapper exists, or where the server's match answers go.
+
+**Decision.**
+- **Cells are read by `NoteReader` on every device, for now.** It meets the exit numbers on Jeux (485 rows, 12 to sort,
+  2.5%), it's pinned by its tests, and it never invents a value (D-65). The on-device model would be a second reader
+  whose mistakes no test can pin; it waits until it's measured against Jeux and found to do better. `CellExtracting`
+  stays the seam.
+- **Something's off** offers the other importers that recognise the file (template, Discogs, spreadsheet). The column
+  mapper, for a spreadsheet whose headers no alias names, is a follow-up.
+- **One write.** **Build my shelf** sends `importBatch` from the import source, with the collection as renamed; every
+  row lands unconfirmed (D-64). The payoff counts what the notes said (damaged or missing, second copies, signed), the
+  rows to sort, and, once matching is done, the rows the server matched. **Undo** is the batch's `undoBatch`, and says
+  how many it kept because the collector changed them.
+- **Matching runs after the write,** 50 rows a call per type. A match or a question is kept on its object as an
+  answered lookup (D-73), so the review queue shows it; a row nobody knows, and every row when the server can't be
+  reached, stays as written (49 Q2). Matching never holds the import up.
+- **Where it starts:** Add's **Import a list** and the empty shelf's **Bring your list**. Opening a file from the
+  share sheet needs document types in the app's Info.plist, which the generated project doesn't write yet: a follow-up.
+- **Journey 2's UI test** opens the import with `--import-fixture <path>` in debug builds, since a UI test can't drive
+  the system file picker.
+
+### D-75 · The review queue, and "you already own this"
+
+> PLAN F8: "grouped rows with why, **Confirm**, **Fill in**, **Confirm all** for strong matches only." F7: "Every match
+> says, unprompted, whether you already own it … never a merge (PD-151)."
+
+**Gap.** F7's three choices (open yours, another copy, add as new) are for an object about to be added. Since M6 a
+capture is saved before any network (PD-046), so by the time a match arrives the object is already on the shelf.
+
+**Decision.**
+- **`ReviewQueue`** (model, pure) lists every unconfirmed or needs-details object with its answers, most confident
+  first. Groups: **strong** (a strong candidate that fills something: the only rows **Confirm all** takes), **to look
+  at** (any other answer; two or more ask "Which one?"), and **as you wrote them** (nothing proposed).
+- **Confirm** applies the chosen candidate's proposal from the lookup source (only empty keys; AUTO until touched,
+  PD-045), then confirms from the collector. A needs-details object with no title goes to **Fill in** instead.
+- **"You already have this one"** shows on a row whose candidate matches an owned object, with **Open yours**. Nothing
+  is merged or removed: if it's the same thing, the collector lets the new one go from its screen. **Another copy**
+  and **Add as new** are what confirming already does, so the row doesn't repeat them.
+- **Where it opens:** the Today strip's *N to tidy* line (`Route.review`), and the capture tray's "Confirm it in
+  Review".

@@ -67,12 +67,15 @@ public struct AddByHandFeature {
     @CasePathable
     public enum Delegate: Equatable {
       case added(ObjectID)
+      /// **Import a list** (49 Q3: importing starts from Add).
+      case importList
     }
 
     public enum View: Equatable {
       case addTapped(String)
       case changeTypeTapped
       case closeTapped
+      case importListTapped
       case collectionTapped(CollectionChoice)
       case placeChanged(String)
       case saveTapped(addAnother: Bool)
@@ -122,6 +125,8 @@ public struct AddByHandFeature {
         return .none
       case .view(.closeTapped):
         return .run { [dismiss] _ in await dismiss() }
+      case .view(.importListTapped):
+        return .send(.delegate(.importList))
       case .view(.collectionTapped(let choice)):
         state.collection = choice
         return .none

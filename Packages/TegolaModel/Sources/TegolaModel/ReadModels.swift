@@ -10,6 +10,8 @@ public enum Route: Hashable, Sendable {
   case place(PlaceID)
   /// The signal feed: what needs attention (F15).
   case signals
+  /// The review queue: what's left to confirm, with what lookups proposed (F8).
+  case review
   case wishlist
 }
 

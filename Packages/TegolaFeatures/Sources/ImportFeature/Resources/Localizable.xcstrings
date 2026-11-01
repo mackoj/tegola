@@ -1,0 +1,324 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "%lld %@ on %lld shelves, into a collection called" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld %2$@ on %3$lld shelves, into a collection called"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld %2$@ sur %3$lld étagères, dans une collection appelée"
+          }
+        }
+      }
+    },
+    "%lld %@, into a collection called" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld %2$@, into a collection called"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld %2$@, dans une collection appelée"
+          }
+        }
+      }
+    },
+    "%lld matched, to confirm in Review" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld trouvés, à confirmer dans À revoir"
+          }
+        }
+      }
+    },
+    "%lld objects, unconfirmed until you look" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld objets, non confirmés tant que vous n’avez pas regardé"
+          }
+        }
+      }
+    },
+    "%lld signed" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld dédicacés"
+          }
+        }
+      }
+    },
+    "%lld to sort, one tap each" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld à trier, un geste chacun"
+          }
+        }
+      }
+    },
+    "%lld with something damaged or missing" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld avec quelque chose d’abîmé ou de manquant"
+          }
+        }
+      }
+    },
+    "^[%lld second copy](inflect: true)" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "^[%lld double](inflect: true)"
+          }
+        }
+      }
+    },
+    "A spreadsheet" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un tableur"
+          }
+        }
+      }
+    },
+    "A spreadsheet saved as CSV, a Discogs export, or Tegola's own template. Nothing is changed in your file." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un tableur enregistré en CSV, un export Discogs, ou le modèle de Tegola. Votre fichier n’est pas modifié."
+          }
+        }
+      }
+    },
+    "Bring your" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apportez votre"
+          }
+        }
+      }
+    },
+    "Bring your list" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apportez votre liste"
+          }
+        }
+      }
+    },
+    "Build my shelf" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Construire mon étagère"
+          }
+        }
+      }
+    },
+    "Building your shelf…" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Construction de votre étagère…"
+          }
+        }
+      }
+    },
+    "Choose a file" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisir un fichier"
+          }
+        }
+      }
+    },
+    "Close" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fermer"
+          }
+        }
+      }
+    },
+    "Discogs export" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Export Discogs"
+          }
+        }
+      }
+    },
+    "list" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "liste"
+          }
+        }
+      }
+    },
+    "objects" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "objets"
+          }
+        }
+      }
+    },
+    "On your shelf" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sur votre étagère"
+          }
+        }
+      }
+    },
+    "Read as" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lu comme"
+          }
+        }
+      }
+    },
+    "Reading your list…" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lecture de votre liste…"
+          }
+        }
+      }
+    },
+    "See my shelf" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voir mon étagère"
+          }
+        }
+      }
+    },
+    "Something's off? Read it as" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quelque chose cloche ? Le lire comme"
+          }
+        }
+      }
+    },
+    "Tegola template" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modèle Tegola"
+          }
+        }
+      }
+    },
+    "That didn't save. Try once more." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ça n’a pas été enregistré. Réessayez."
+          }
+        }
+      }
+    },
+    "That file has nothing Tegola can read. Try a CSV." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tegola ne peut rien lire dans ce fichier. Essayez un CSV."
+          }
+        }
+      }
+    },
+    "They land unconfirmed, as you wrote them. Nothing is merged or invented, and you can undo the whole import for 30 days." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ils arrivent non confirmés, tels que vous les avez écrits. Rien n’est fusionné ni inventé, et vous pouvez annuler tout l’import pendant 30 jours."
+          }
+        }
+      }
+    },
+    "Undo this import" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annuler cet import"
+          }
+        }
+      }
+    },
+    "Undone: %lld removed, %lld kept because you changed them." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Undone: %1$lld removed, %2$lld kept because you changed them."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annulé : %1$lld retirés, %2$lld gardés parce que vous les avez modifiés."
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

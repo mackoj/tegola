@@ -1,7 +1,166 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-
+    "%lld saved" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld enregistrés"
+          }
+        }
+      }
+    },
+    "→ %@ (new)" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "→ %@ (nouvelle)"
+          }
+        }
+      }
+    },
+    "Add to" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter à"
+          }
+        }
+      }
+    },
+    "Barcode %@" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Code-barres %@"
+          }
+        }
+      }
+    },
+    "Close" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fermer"
+          }
+        }
+      }
+    },
+    "Identify?" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identifier ?"
+          }
+        }
+      }
+    },
+    "Maybe %@? Confirm it in Review." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peut-être %@ ? Confirmez-le dans À revoir."
+          }
+        }
+      }
+    },
+    "No camera here. Type it instead." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pas d’appareil photo ici. Tapez-le plutôt."
+          }
+        }
+      }
+    },
+    "Point it at a barcode or a label." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visez un code-barres ou une étiquette."
+          }
+        }
+      }
+    },
+    "Save this one" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enregistrer celui-ci"
+          }
+        }
+      }
+    },
+    "Saved · identifying…" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enregistré · identification…"
+          }
+        }
+      }
+    },
+    "Saved · looking it up when there's a signal" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enregistré · recherche dès qu’il y a du réseau"
+          }
+        }
+      }
+    },
+    "Saved · needs details" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enregistré · à compléter"
+          }
+        }
+      }
+    },
+    "Scan" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scanner"
+          }
+        }
+      }
+    },
+    "Sends this photo to look it up. Off again after the shot." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Envoie cette photo pour la rechercher. Se désactive après la prise."
+          }
+        }
+      }
+    },
+    "Type it" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La taper"
+          }
+        }
+      }
+    }
   },
   "version" : "1.0"
 }

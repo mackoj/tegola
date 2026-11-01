@@ -83,17 +83,21 @@ public struct ShelfFeature {
       case addByHand
       /// The empty shelf's **Scan your first object**: the first piece's camera (PLAN F2).
       case scanFirstObject
+      /// **Bring your list**: Add's import (F2, F9).
+      case bringList
       case open(Route)
     }
 
     public enum View: Equatable {
       case collectionTapped(CollectionID)
       case needAttentionTapped
+      case toTidyTapped
       case notificationsAccepted
       case notificationsDeclined
       case onAppear
       case placesTapped
       case scanFirstObjectTapped
+      case bringListTapped
       case typeItTapped
     }
   }
@@ -113,6 +117,8 @@ public struct ShelfFeature {
         return .send(.delegate(.open(.collection(id))))
       case .view(.needAttentionTapped):
         return .send(.delegate(.open(.signals)))
+      case .view(.toTidyTapped):
+        return .send(.delegate(.open(.review)))
       case .view(.notificationsAccepted):
         let scheduled = state.clockNotifications(at: now)
         return .run { [notifications, settings] _ in
@@ -141,6 +147,8 @@ public struct ShelfFeature {
         }
       case .view(.placesTapped):
         return .send(.delegate(.open(.places)))
+      case .view(.bringListTapped):
+        return .send(.delegate(.bringList))
       case .view(.scanFirstObjectTapped):
         return .send(.delegate(.scanFirstObject))
       case .view(.typeItTapped):
