@@ -73,6 +73,23 @@ Plan: `tasks/plan.md`, M5. Report: `docs/milestones/M5.md`.
 - [ ] T5.7 The empty shelf (Mac)
 - [ ] T5.8 Journey and review
 
+## M6 · capture, lookup, import
+
+Plan: `tasks/plan.md`, M6. Report: `docs/milestones/M6.md`.
+
+- [ ] T6.1 Import batches: `importBatch`, `undoBatch`, unconfirmed rows
+- [ ] T6.2 The Importer API and the registry
+- [ ] T6.3 `TemplateImporter`
+- [ ] T6.4 `SpreadsheetImporter` (exit test stand-in: `Jeux collection.csv`)
+- [ ] T6.5 `DiscogsCSVImporter`
+- [ ] T6.6 Lookup queue and enrichment proposals
+- [ ] T6.7 Matches, look-alikes, the exceptions queue
+- [ ] T6.8 `LookupClient` and its middlewares (Mac)
+- [ ] T6.9 Capture (Mac)
+- [ ] T6.10 Import screens and `ExtractionClient`'s cells (Mac)
+- [ ] T6.11 Review queue and match screens (Mac)
+- [ ] T6.12 Journey 2, docs, review
+
 ## Open follow-ups
 
 - Generate App Attest's `appattest-environment` entitlement with M6, when the lookup client first runs on a device.
