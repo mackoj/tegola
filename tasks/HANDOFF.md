@@ -3,43 +3,32 @@
 The state of the work for whoever picks it up next: a new session, another agent, or the owner. Read this first, keep
 it short and current.
 
-**Updated:** 2026-11-01, M3 merged into `main` (PR #9). M4 is next.
+**Updated:** 2026-11-01, M4 done on `m4-signals` (PR into `main`). M5 is next.
 
 ## Where things stand
 
-- **Spec:** approved (`docs/PLAN.md`, answers in §10). Decisions: `docs/DECISIONS.md`, D-1 to D-55.
-- **M1 (foundation):** merged (PR #5, `docs/milestones/M1.md`).
-- **M2 (catalogue, model, storage):** merged (PR #8, `docs/milestones/M2.md`). The type files are on schema v1 with
-  subtypes. The pure `plan`/`apply` sit over an event log and its projection (`TegolaStorage`, sqlite-data).
-- **M3 (core loop):** merged (PR #9, `docs/milestones/M3.md`). The screens are:
-  - Shelf home, Collection, Object (seven slots), the edit form, Add by hand (Scan), photos, Find with saved views,
-    Places;
-  - screenshots in `docs/snapshots/`.
-
-  Two UI journeys pass, including 30 objects in one sitting. A separate review's findings are all fixed (D-53).
-  `scripts/ci.sh` is green on Xcode 27.1, and `linux-core` is green.
+- **Spec:** approved (`docs/PLAN.md`, answers in §10). Decisions: `docs/DECISIONS.md`, D-1 to D-61.
+- **M1, M2, M3:** merged (PRs #5, #8, #9; `docs/milestones/M1.md` to `M3.md`).
+- **M4 (signals):** `docs/milestones/M4.md`. Clocks as signals with their reasons, always **Estimate**; status
+  derivation; the object's status slot with Dismiss and the remedies; the signal feed from the Today strip; status
+  filters; clock notifications offered once; a 105-object seed with exactly one signal (journey 5). The 200-object
+  signal shelf is pinned (`SignalShelfTests`). A separate review's findings are all fixed.
 - **tegola-server** (`mackoj/tegola-server`, D-41): its M1 is done. The app needs it from M6 on.
 
 ## What's next
 
-1. **Owner:** run M3's exit test with people: 30 objects across Video games and Thing in one
-   sitting, without asking how.
-2. **M4, signals** (page 52 P2; exit test: a 200-object shelf gives a signal list a collector agrees with on 8 of 10).
-   Start a branch `m4-signals` from `main`, and break M4 down in `tasks/plan.md` and `tasks/todo.md` first. Roughly:
-   - the clock functions over an object's fields and events, behind the names `ClockLibrary` already has (D-37), each
-     labelled **Estimate** with its reason;
-   - status derivation (`ObjectStatus`, D-15). It feeds:
-     - the object's status slot (today `ObjectView.status`, D-48);
-     - the Today strip's "need attention" (`TodayStrip` takes `statuses:`);
-     - status filters in Collection and Find;
-   - dismissals, logged so clock parameters can be tuned (risk R2): a new command and event;
-   - local notifications (`NotificationsClient`, PLAN §5);
-   - the seed shelf grown toward 120 objects (`Seed.swift`). Growing it changes counts the M3 tests pin; update them
-     knowingly;
-   - journey 5 (the weekly glance) as a UI test;
-   - a separate review agent before the PR.
-3. **Later:** M5 (first piece, launch types), M6 (camera, lookup, import), M7 (people), M8 (keeping, You), M9 (polish).
-   `tasks/plan.md` has them.
+1. **Owner:**
+   - M3's exit test with people (30 objects in one sitting);
+   - M4's: does a collector agree with 8 of 10 signals on a 200-object shelf?
+   - the readings in M4's "For the owner": D-56's thresholds, D-58's backups, D-61's offer card.
+2. **M5, launch types and first piece** (page 52 P3; exit test: 5 of 6 testers finish onboarding with one complete
+   object). Start a branch `m5-first-piece` from `main`, and break M5 down in `tasks/plan.md` and `tasks/todo.md`
+   first. Roughly:
+   - Music, Video games, Board games and Thing as the launch data;
+   - first-piece onboarding (46);
+   - type inference via `ExtractionClient`.
+3. **Later:** M6 (camera, lookup, import), M7 (people), M8 (keeping, You: the `unfinished` toggle lives there), M9
+   (polish). `tasks/plan.md` has them.
 
 ## Run it locally (Mac)
 
@@ -69,6 +58,16 @@ scripts/ci.sh                          # the full gate → build/ci-summary.md (
   `docs/engineering/pointfree.md` and `Tests/DatabaseTests/SchemaTests.swift`, and port what fits. A departure gets a
   D-entry. The known departures are D-39 (JSON `data` columns) and D-51 (pure Swift search; clctn's FTS5
   `objectSearch` is the way back).
+- **Signals** (D-56 to D-61):
+  - a clock is a pure function in `TegolaModel/Signal.swift`;
+  - what it reads beyond the values is the object's `signalState`, kept by `apply`;
+  - screens read `snapshot.signals(at:)` (`TegolaClients/Signals.swift`) so they agree, with the calendar from
+    `\.calendar`;
+  - a new clock needs a function, its inputs in `SignalState.inputs(of:)`, a remedy if it has one, and words in
+    `ShelfViews/SignalText.swift`.
+- **Sync:** storage follows sqlite-data's CloudKit `SyncEngine` rules: UUID keys, no `UNIQUE`, new columns nullable
+  or `NOT NULL ON CONFLICT REPLACE DEFAULT`, no renames or drops. M4 added no table: `signalState` lives in the
+  object's JSON, and settings are rows with fixed ids.
 - **Architecture:**
   - Every shelf write is a `ShelfCommand` through `ShelfClient.perform`. `plan` checks the rules and the values (D-40,
     D-49). Settings are not commands: they go through `SettingsClient`.
@@ -116,4 +115,4 @@ scripts/ci.sh                          # the full gate → build/ci-summary.md (
 
 ## Owner questions
 
-None open. The owner approved M2 and M3's readings (D-35, D-38, D-45, D-50, D-51; D-54).
+M4's readings wait for the owner: D-56 (thresholds), D-58 (backups start a tape's clock), D-61 (the offer card). The owner approved M2 and M3's (D-35, D-38, D-45, D-50, D-51; D-54).

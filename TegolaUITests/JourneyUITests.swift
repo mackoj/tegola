@@ -52,6 +52,33 @@ final class JourneyUITests: XCTestCase {
     XCTAssertTrue(app.staticTexts["Placed · Living room › Record shelf"].waitForExistence(timeout: 5))
   }
 
+  /// Journey 5, the weekly glance (PLAN §4.4, F15): the Today strip says one thing needs attention; it's a Game Boy
+  /// cartridge whose save battery is due; logging a swap clears it, and the line is gone.
+  @MainActor
+  func testTheWeeklyGlance() {
+    let app = XCUIApplication()
+    app.launchArguments = ["--reset", "--seed", "-AppleLanguages", "(en)", "-AppleLocale", "en_GB"]
+    app.launch()
+    let line = app.buttons["today.needAttention"].firstMatch
+    XCTAssertTrue(line.waitForExistence(timeout: 10))
+    XCTAssertTrue(line.label.contains("1 needs attention"), line.label)
+    line.tap()
+
+    let row = app.descendants(matching: .any)["signals.row.Tetris"].firstMatch
+    XCTAssertTrue(row.waitForExistence(timeout: 5))
+    row.tap()
+    XCTAssertTrue(app.staticTexts["signal.estimate"].firstMatch.waitForExistence(timeout: 5))
+    XCTAssertTrue(app.staticTexts["signal.reason.saveBattery"].exists)
+
+    app.buttons["object.remedy.batterySwap"].firstMatch.tap()
+    XCTAssertTrue(app.staticTexts["Serviced"].firstMatch.waitForExistence(timeout: 5))
+
+    // Back to the shelf: tapping the tab you're on returns to its root.
+    app.buttons["tab.shelf"].tap()
+    XCTAssertTrue(app.staticTexts["2 to tidy"].waitForExistence(timeout: 5))
+    XCTAssertFalse(app.buttons["today.needAttention"].firstMatch.exists)
+  }
+
   /// M3's exit test, automated: thirty objects across Video games and Thing in one sitting, without a hint (page 52,
   /// P1). The test with people is the owner's to run; this proves the path has no dead end.
   @MainActor
