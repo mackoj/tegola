@@ -3,32 +3,70 @@
 The state of the work for whoever picks it up next: a new session, another agent, or the owner. Read this first, keep
 it short and current.
 
-**Updated:** 2026-11-01, M4 done on `m4-signals` (PR into `main`). M5 is next.
+**Updated:** 2026-11-01, after M4 finished on `m4-signals`.
+
+**Resume here: two branches diverged from `main` overnight, and only one M4 can merge.** Nothing is merged; nothing
+is uncommitted on either.
+
+| | **PR #13** · `m4-signals` (Mac session) | **PR #12** (draft) · `claude/tegola-rearchitecture-jcq29f` (cloud session) |
+|---|---|---|
+| M4 | All of T4.1–T4.10: model, screens, notifications, seed, journey 5. `scripts/ci.sh` green (app, iOS snapshots, journeys) and `linux-core` green | Model half only (T4.1–T4.4), its own design: `ClockSignal`, `StatusReading`, `latestLog`, `dismissSignal(id, clock:, status:)` |
+| M5 | — | Linux half, T5.1–T5.4: type guess, first-piece rules, testers, payoff |
+| M6 | — | Linux half, T6.1–T6.7: import batches, the Importer API, the three importers, lookup queue, look-alikes |
+| Decisions | D-56 to D-61 | D-56 to D-66: **the same numbers mean different things** |
+| 200-object list | 13 signals, pinned in `SignalShelfTests` | 41 signals, `docs/testing/signals-200.md` |
+
+## The owner's choice, and the recommended path
+
+**Recommended: merge #13, then rebase #12's M5 and M6 onto it.** #13 is the complete, Mac-verified M4. #12's M4 is
+the model half of the same tasks, built differently. Its M5 and M6 work is new and worth keeping. The rebase, for
+whoever does it (a Mac session, since it touches `ValueText` and the seed's tests):
+1. After #13 merges, branch from `main` and cherry-pick #12's commits from "M5 T5.1" on. Drop its six M4 commits
+   (up to "M4: D-57, and the handoff for the Mac half").
+2. **Renumber its decisions.** Its D-58 to D-66 become D-62 onwards. Its D-56 and D-57 are M4's and go with its M4
+   commits. Update every citation in code comments and docs.
+3. **Port it to #13's model:**
+   - `ClockSignal` becomes `Signal`; `StatusReading` becomes `ObjectStatus.derive` with `ShelfSignals`;
+     `latestLog` becomes `signalState`; `CareKind.batterySwapped` becomes a `serviced` log;
+   - M5's `Clocks.firstSignalDate` reads `Signal.changesAt`;
+   - M6's `ValueText` history cases join #13's (`signalDismissed` is already there).
+4. **The 200-object lists disagree:** 41 signals against 13. #12's counts tapes from the year they were made, which
+   #13 found floods the feed (D-58 here). Keep #13's.
+5. Run `scripts/ci.sh` on the Mac, then open one PR for M5 and M6's model halves.
+
+**The alternative** is to keep #12's M4 model and port #13's screens onto it. That's more work, and nothing about
+#12's M4 has run on a Mac.
+
+**One reading in #12 needs the owner either way:** its D-60 makes imported rows **unconfirmed**. That reverses D-38,
+which the owner approved (D-54).
 
 ## Where things stand
 
-- **Spec:** approved (`docs/PLAN.md`, answers in §10). Decisions: `docs/DECISIONS.md`, D-1 to D-61.
+- **Spec:** approved (`docs/PLAN.md`, answers in §10). Decisions on `m4-signals`: D-1 to D-61.
 - **M1, M2, M3:** merged (PRs #5, #8, #9; `docs/milestones/M1.md` to `M3.md`).
-- **M4 (signals):** `docs/milestones/M4.md`. Clocks as signals with their reasons, always **Estimate**; status
-  derivation; the object's status slot with Dismiss and the remedies; the signal feed from the Today strip; status
-  filters; clock notifications offered once; a 105-object seed with exactly one signal (journey 5). The 200-object
-  signal shelf is pinned (`SignalShelfTests`). A separate review's findings are all fixed.
+- **M4 (signals), on `m4-signals`, PR #13:** `docs/milestones/M4.md`.
+  - Clocks as signals with their reasons, always **Estimate**.
+  - Status derivation, and the object's status slot with Dismiss and the remedies.
+  - The signal feed from the Today strip, and status filters.
+  - Clock notifications, offered once.
+  - A 105-object seed with exactly one signal (journey 5).
+  - A separate review's findings, all fixed.
 - **tegola-server** (`mackoj/tegola-server`, D-41): its M1 is done. The app needs it from M6 on.
 
 ## What's next
 
 1. **Owner:**
-   - M3's exit test with people (30 objects in one sitting);
-   - M4's: does a collector agree with 8 of 10 signals on a 200-object shelf?
-   - the readings in M4's "For the owner": D-56's thresholds, D-58's backups, D-61's offer card.
-2. **M5, launch types and first piece** (page 52 P3; exit test: 5 of 6 testers finish onboarding with one complete
-   object). Start a branch `m5-first-piece` from `main`, and break M5 down in `tasks/plan.md` and `tasks/todo.md`
-   first. Roughly:
-   - Music, Video games, Board games and Thing as the launch data;
-   - first-piece onboarding (46);
-   - type inference via `ExtractionClient`.
-3. **Later:** M6 (camera, lookup, import), M7 (people), M8 (keeping, You: the `unfinished` toggle lives there), M9
-   (polish). `tasks/plan.md` has them.
+   - choose between #12 and #13 (above);
+   - M4's readings: D-56's thresholds, D-58 (a tape's clock starts at its first backup), D-61 (the offer is a card);
+   - #12's D-60 against D-38;
+   - the exit tests with people: M3's 30 objects, and M4's 8 of 10 signals.
+2. **The rebase** above, once #13 is merged.
+3. **Then the Mac halves:**
+   - M5: T5.5–T5.7, the first-piece screens;
+   - M6: T6.8–T6.12, the camera, lookup and import screens.
+
+   #12's `tasks/plan.md` and `tasks/todo.md` break them down.
+4. **Later:** M7 (people), M8 (keeping, You: the `unfinished` toggle lives there), M9 (polish).
 
 ## Run it locally (Mac)
 
@@ -115,4 +153,4 @@ scripts/ci.sh                          # the full gate → build/ci-summary.md (
 
 ## Owner questions
 
-M4's readings wait for the owner: D-56 (thresholds), D-58 (backups start a tape's clock), D-61 (the offer card). The owner approved M2 and M3's (D-35, D-38, D-45, D-50, D-51; D-54).
+Open: #12 or #13 for M4; M4's readings (D-56, D-58, D-61); #12's D-60, which reverses the approved D-38. The owner approved M2 and M3's (D-35, D-38, D-45, D-50, D-51; D-54).
