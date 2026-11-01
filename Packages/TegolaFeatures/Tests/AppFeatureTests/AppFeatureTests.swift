@@ -1,4 +1,5 @@
 import AddByHandFeature
+import CaptureFeature
 import CollectionFeature
 import ComposableArchitecture
 import DependenciesTestSupport
@@ -30,9 +31,9 @@ struct AppFeatureTests {
   /// PD-117: the middle slot presents, it never becomes the selected tab.
   @Test func scanPresentsInsteadOfSelecting() async {
     let store = TestStore(initialState: AppFeature.State()) { AppFeature() }
-    await store.send(.view(.tabTapped(.scan))) { $0.addByHand = AddByHandFeature.State() }
+    await store.send(.view(.tabTapped(.scan))) { $0.capture = CaptureFeature.State() }
     #expect(store.state.selectedTab == .shelf)
-    await store.send(\.addByHand.dismiss) { $0.addByHand = nil }
+    await store.send(\.capture.dismiss) { $0.capture = nil }
   }
 
   /// PLAN §5: a child asks for a screen with a route, and only the root pushes it.
@@ -97,6 +98,6 @@ struct AppFirstPieceTests {
     await store.receive(\.firstPiece.presented.delegate.oneAtATime) { $0.firstPiece = nil }
     // Scan waits for the cover to go.
     await clock.advance(by: .milliseconds(600))
-    await store.receive(\.presentScan) { $0.addByHand = AddByHandFeature.State() }
+    await store.receive(\.presentScan) { $0.capture = CaptureFeature.State() }
   }
 }

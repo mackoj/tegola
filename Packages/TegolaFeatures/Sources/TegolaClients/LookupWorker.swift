@@ -16,6 +16,8 @@ public import TegolaStorage
 public struct LookupQueueClient: Sendable {
   public var load: @Sendable () throws -> LookupQueue
   public var record: @Sendable (_ id: UUID, _ outcome: LookupQueue.Outcome, _ at: Date) throws -> Void
+  /// Keeps an answer that came without a queued request (Identify's, D-73).
+  public var answer: @Sendable (_ object: ObjectID, _ candidates: [LookupCandidate], _ at: Date) throws -> Void
 }
 
 extension LookupQueueClient: DependencyKey {
@@ -30,7 +32,11 @@ extension LookupQueueClient: DependencyKey {
   public static func store(_ store: ShelfStore) -> LookupQueueClient {
     LookupQueueClient(
       load: { try store.lookupQueue() },
-      record: { id, outcome, at in try store.recordLookup(id, outcome, at: at) }
+      record: { id, outcome, at in try store.recordLookup(id, outcome, at: at) },
+      answer: { object, candidates, at in
+        @Dependency(\.uuid) var uuid
+        try store.recordAnswer(for: object, candidates, at: at, id: uuid())
+      }
     )
   }
 }

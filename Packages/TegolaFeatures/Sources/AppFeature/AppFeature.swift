@@ -1,4 +1,5 @@
 public import AddByHandFeature
+public import CaptureFeature
 public import CollectionFeature
 public import ComposableArchitecture
 public import FindFeature
@@ -36,8 +37,17 @@ public struct AppFeature {
     public var shelfPath = StackState<AppPath.State>()
     public var find = FindFeature.State()
     public var findPath = StackState<AppPath.State>()
-    /// Scan presents instead of selecting a tab (PD-117): Add by hand in M3, the camera from M6.
+    /// Add by hand: the empty shelf's Type it, and the camera's.
     @Presents public var addByHand: AddByHandFeature.State?
+    /// Scan presents instead of selecting a tab (PD-117): the camera (F6, T6.9).
+    @Presents public var capture: CaptureFeature.State?
+    /// The next sheet, once the one on screen has gone: SwiftUI presents one at a time.
+    public var nextSheet: Sheet?
+
+    public enum Sheet: Hashable, Sendable {
+      case addByHand
+      case capture
+    }
     /// The first piece (PLAN F2): the app opens on it while the shelf is empty and it hasn't been skipped.
     @Presents public var firstPiece: FirstPieceFeature.State?
 
@@ -46,6 +56,7 @@ public struct AppFeature {
 
   public enum Action: ViewAction {
     case addByHand(PresentationAction<AddByHandFeature.Action>)
+    case capture(PresentationAction<CaptureFeature.Action>)
     case find(FindFeature.Action)
     case findPath(StackActionOf<AppPath>)
     case firstPiece(PresentationAction<FirstPieceFeature.Action>)
@@ -95,7 +106,27 @@ public struct AppFeature {
           await send(.presentScan)
         }
       case .presentScan:
-        state.addByHand = AddByHandFeature.State()
+        switch state.nextSheet ?? .capture {
+        case .addByHand: state.addByHand = AddByHandFeature.State()
+        case .capture: state.capture = CaptureFeature.State()
+        }
+        state.nextSheet = nil
+        return .none
+      case .capture(.presented(.delegate(.queued))):
+        return lookups()
+      case .capture(.presented(.delegate(.typeIt))):
+        state.capture = nil
+        state.nextSheet = .addByHand
+        return .run { [clock] send in
+          try await clock.sleep(for: .milliseconds(600))
+          await send(.presentScan)
+        }
+      case .capture(.presented(.delegate(.open(let id)))):
+        state.capture = nil
+        state.selectedTab = .shelf
+        Self.push(.object(id), onto: &state.shelfPath)
+        return .none
+      case .capture:
         return .none
       case .firstPiece:
         return .none
@@ -130,7 +161,7 @@ public struct AppFeature {
         return .none
       case .view(.tabTapped(let tab)):
         if tab.presents {
-          state.addByHand = AddByHandFeature.State()
+          state.capture = CaptureFeature.State()
         } else if tab == state.selectedTab, tab == .shelf {
           // Tapping the tab you're on goes back to its root.
           state.shelfPath.removeAll()
@@ -145,6 +176,7 @@ public struct AppFeature {
     .forEach(\.shelfPath, action: \.shelfPath)
     .forEach(\.findPath, action: \.findPath)
     .ifLet(\.$addByHand, action: \.addByHand) { AddByHandFeature() }
+    .ifLet(\.$capture, action: \.capture) { CaptureFeature() }
     .ifLet(\.$firstPiece, action: \.firstPiece) { FirstPieceFeature() }
   }
 

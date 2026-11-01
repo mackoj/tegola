@@ -1,5 +1,6 @@
 #if canImport(SwiftUI)
   import AddByHandFeature
+  import CaptureFeature
   import CollectionFeature
   import FindFeature
   import FirstPieceFeature
@@ -41,6 +42,9 @@
       .ignoresSafeArea(.container, edges: .bottom)
       .sheet(item: $store.scope(state: \.addByHand, action: \.addByHand)) { add in
         AddByHandView(store: add)
+      }
+      .sheet(item: $store.scope(state: \.capture, action: \.capture)) { capture in
+        CaptureView(store: capture)
       }
       #if os(iOS)
         .fullScreenCover(item: $store.scope(state: \.firstPiece, action: \.firstPiece)) { first in
