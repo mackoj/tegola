@@ -72,6 +72,9 @@
       if !summary.today.lines.isEmpty {
         TodayStripView(lines: summary.today.lines) { send(.needAttentionTapped) }
       }
+      if store.offersNotifications {
+        notificationOffer
+      }
       if summary.showsPlaces {
         Button {
           send(.placesTapped)
@@ -125,6 +128,40 @@
         gradient: manifest?.gradient ?? [],
         mark: manifest?.mark ?? "MIX"
       )
+    }
+  }
+
+  extension ShelfView {
+    /// The clock notification offer (F15): once, in plain words. Either answer puts it away for good.
+    var notificationOffer: some View {
+      VStack(alignment: .leading, spacing: TegolaSpace.s) {
+        Text("A nudge when something's due?", bundle: .module)
+          .tegolaTextStyle(TegolaType.heading).foregroundStyle(TegolaRole.onAccentHighlight)
+        Text(
+          "Some things on your shelf wear out with time, like a game's save battery. Tegola can send a notification when one is probably due.",
+          bundle: .module
+        )
+        .tegolaTextStyle(TegolaType.body).foregroundStyle(TegolaRole.onAccentHighlight)
+        ButtonPair {
+          Button {
+            send(.notificationsAccepted)
+          } label: {
+            Text("Yes, tell me", bundle: .module)
+          }
+          .buttonStyle(.tegola(.primary))
+          .accessibilityIdentifier("shelf.notifications.accept")
+        } trailing: {
+          Button {
+            send(.notificationsDeclined)
+          } label: {
+            Text("No thanks", bundle: .module)
+          }
+          .buttonStyle(.tegola(.secondary))
+          .accessibilityIdentifier("shelf.notifications.decline")
+        }
+      }
+      .padding(TegolaSpace.l)
+      .printed(fill: .accentHighlight, radius: TegolaRadius.card)
     }
   }
 

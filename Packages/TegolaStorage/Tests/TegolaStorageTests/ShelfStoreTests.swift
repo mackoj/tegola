@@ -198,4 +198,17 @@ struct StoreHarness {
     let rows = try harness.store.database.read { db in try SettingRow.fetchCount(db) }
     #expect(rows == 1)
   }
+
+  /// The clock settings (F15, D-20): the offer's answer and the opt-in clocks reach the screens' snapshot.
+  @Test func theClockSettingsReachTheSnapshot() throws {
+    let harness = try StoreHarness()
+    var snapshot = try harness.store.database.read { db in try ShelfRequest().fetch(db) }
+    #expect(snapshot.notificationsOffer == nil)
+    #expect(snapshot.optedInClocks.isEmpty)
+    try harness.store.set(.notificationsOffer, to: "accepted")
+    try harness.store.set(.optedInClocks, to: "unfinished")
+    snapshot = try harness.store.database.read { db in try ShelfRequest().fetch(db) }
+    #expect(snapshot.notificationsOffer == "accepted")
+    #expect(snapshot.optedInClocks == ["unfinished"])
+  }
 }

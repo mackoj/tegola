@@ -163,6 +163,16 @@
         }
       }
     },
+    "A nudge when something's due?" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un rappel quand quelque chose arrive à échéance ?"
+          }
+        }
+      }
+    },
     "Catalogued" : {
       "localizations" : {
         "fr" : {
@@ -199,6 +209,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mes"
+          }
+        }
+      }
+    },
+    "No thanks" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non merci"
           }
         }
       }
@@ -243,6 +263,16 @@
         }
       }
     },
+    "Some things on your shelf wear out with time, like a game's save battery. Tegola can send a notification when one is probably due." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Certaines choses de votre étagère s’usent avec le temps, comme la pile de sauvegarde d’un jeu. Tegola peut vous envoyer une notification quand l’une d’elles arrive probablement à échéance."
+          }
+        }
+      }
+    },
     "Start with one piece you love. Type it in, and the shelf grows from there." : {
       "localizations" : {
         "fr" : {
@@ -279,6 +309,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Envies"
+          }
+        }
+      }
+    },
+    "Worth a look: an estimate says it's due." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "À regarder : une estimation dit que c’est le moment."
+          }
+        }
+      }
+    },
+    "Yes, tell me" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oui, prévenez-moi"
           }
         }
       }

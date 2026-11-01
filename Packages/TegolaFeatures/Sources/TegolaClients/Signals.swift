@@ -10,7 +10,7 @@ extension ShelfSnapshot {
   public func signals(at now: Date) -> ShelfSignals {
     @Dependency(\.catalogue) var catalogue
     @Dependency(\.calendar) var calendar
-    return ShelfSignals(shelf: shelf, catalogue: catalogue, now: now, calendar: calendar)
+    return ShelfSignals(shelf: shelf, catalogue: catalogue, now: now, calendar: calendar, optedIn: optedInClocks)
   }
 
   /// The statuses worth filtering by: the ones some object on the shelf has now, most urgent first. *Fine* is the
@@ -28,6 +28,6 @@ extension ShelfSnapshot {
     guard let object = shelf.objects[id], object.counts,
       let type = try? catalogue.resolve(object.typeID, subtype: object.subtype)
     else { return [] }
-    return TegolaModel.signals(for: object, type: type, now: now, calendar: calendar)
+    return TegolaModel.signals(for: object, type: type, now: now, calendar: calendar, optedIn: optedInClocks)
   }
 }

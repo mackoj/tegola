@@ -56,7 +56,7 @@ Plan: `tasks/plan.md`, M4. Report: `docs/milestones/M4.md`.
 - [x] T4.5 The object's status slot: reason, Estimate, Dismiss, Log a battery swap
 - [x] T4.6 The signal feed from the Today strip
 - [x] T4.7 Status filters in Collection and Find
-- [ ] T4.8 Notifications: `NotificationsClient`, the offer, scheduling
+- [x] T4.8 Notifications: `NotificationsClient`, the offer, scheduling
 - [ ] T4.9 Seed toward 120 objects, and the 200-object signal test
 - [ ] T4.10 Journey 5, docs, review
 

@@ -371,3 +371,13 @@ A clock with nothing to read gives no signal: no year, no date, no known service
 - **The event**, `signalDismissed`, records the clock, the status it read and the library's parameters in force: shape, never the object's content. It steers screens, so it isn't in History's main kinds; where History does show it, it reads "Estimate dismissed".
 - **How long.** A dismissal hides that clock's signal until the reading gets more urgent (*watch* to *act*) or there's new evidence: a service, a backup, or a change to a value the clocks read (year, save battery, code expiry, drinking window, last serviced, play status).
 - **Storage.** The dismissed clocks live in the object's `signalState` (D-59), so there's no new table. clctn's schema has no equivalent to port, and a table would be one more thing for CloudKit sync to carry. The event log keeps every dismissal for tuning.
+
+### D-61 · Clock notifications
+
+**Gap.** F15 says notifications are "offered once, in plain words, when the first clocked object arrives", and PLAN §5 names `NotificationsClient`. Nothing says where the offer appears, when notifications fire, or how they follow the signals.
+
+**Decision.**
+- **The offer** is a card on the Shelf home, not a system prompt out of nowhere. It appears once an owned object runs a clock that isn't held back or opt-in, and it stays until the collector answers. **Yes, tell me** asks the system for permission; **No thanks** puts it away. The answer is a setting (`notificationsOffer`), so it's asked once.
+- **What's scheduled:** one notification per signal's next change (`changesAt`): the day it turns *watch* or *act*, at 10:00 in the collector's calendar. It's titled with the object and says an estimate thinks it's due, nothing more. At most 50, the soonest, because iOS keeps 64 pending.
+- **Following the signals.** With the offer accepted, each time the Shelf home appears the clock notifications are replaced from the signals then. A swap, a backup, a dismissal or an edit since the last time moves or removes them. Other kinds (loan due, M7; the weekly nudge, M8) use their own id prefix and aren't touched.
+- **Opt-in clocks** are a setting too (`optedInClocks`), read with the shelf. Its toggle waits for You (M8).
