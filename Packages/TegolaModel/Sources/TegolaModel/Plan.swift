@@ -67,6 +67,8 @@ public enum ShelfRuleViolation: Error, Hashable, Sendable {
   case unknownPlace(PlaceID)
   /// A place can't merge into itself, or into a place inside it.
   case mergeIntoItself
+  /// Only a signal that needs attention, from a clock the object runs, can be dismissed (D-60).
+  case notDismissable
 }
 
 /// Turns a command into the events that carry it out, or refuses it. Pure: the same command on the same shelf with
@@ -160,6 +162,21 @@ struct Planner {
     case .logEvent(let id, let kind, let note):
       _ = try object(id)
       emit(.logged(id, kind: kind, note: note))
+    case .dismissSignal(let id, let signal):
+      let object = try object(id)
+      guard object.counts, signal.status.needsAttention else { throw .notDismissable }
+      let type: EffectiveType
+      do {
+        type = try context.catalogue.resolve(object.typeID, subtype: object.subtype)
+      } catch {
+        throw .unknownType(object.typeID)
+      }
+      guard let clock = type.clocks.first(where: { $0.name == signal.clock && !$0.isPending })?.definition else {
+        throw .notDismissable
+      }
+      emit(
+        .signalDismissed(id, SignalDismissal(clock: clock.name, status: signal.status, parameters: clock.parameters))
+      )
     case .lend(let id, let choice, let due, let note):
       try lend(id, to: choice, due: due, note: note)
     case .returnLoan(let loanID, let condition):
@@ -597,10 +614,22 @@ extension Shelf {
     case .logged(let id, let kind, _):
       touch(id) { object in
         switch kind {
-        case ShelfEvent.Kind.servicedKind: object.signalState = object.signalState.or().with { $0.lastServiced = at }
-        case ShelfEvent.Kind.backedUpKind: object.signalState = object.signalState.or().with { $0.lastBackedUp = at }
+        case ShelfEvent.Kind.servicedKind:
+          object.signalState = object.signalState.or().with {
+            $0.lastServiced = at
+            $0.dismissed = [:]
+          }
+        case ShelfEvent.Kind.backedUpKind:
+          object.signalState = object.signalState.or().with {
+            $0.lastBackedUp = at
+            $0.dismissed = [:]
+          }
         default: break
         }
+      }
+    case .signalDismissed(let id, let dismissal):
+      touch(id) { object in
+        object.signalState = object.signalState.or().with { $0.dismissed[dismissal.clock] = dismissal.status }
       }
     case .ownershipChanged(let id, let ownership):
       touch(id) { object in

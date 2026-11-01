@@ -151,6 +151,16 @@
         }
       }
     },
+    "Estimate dismissed" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estimation écartée"
+          }
+        }
+      }
+    },
     "First piece · %@" : {
       "localizations" : {
         "fr" : {

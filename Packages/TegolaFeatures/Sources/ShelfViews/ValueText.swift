@@ -59,6 +59,7 @@
       case .gaveBack: Text("Given back", bundle: .module)
       case .logged(_, let kind, let note):
         note.isEmpty ? Text(verbatim: kind.capitalized) : Text(verbatim: "\(kind.capitalized) · \(note)")
+      case .signalDismissed: Text("Estimate dismissed", bundle: .module)
       case .ownershipChanged(_, let ownership):
         ownership == .owned ? Text("It arrived", bundle: .module) : Text(verbatim: ownership.rawValue)
       case .letGo(_, let letGo):

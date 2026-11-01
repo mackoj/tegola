@@ -361,3 +361,13 @@ A clock with nothing to read gives no signal: no year, no date, no known service
 - **Counted once.** The Today strip's *need attention* leaves out objects that are overdue, which have their own line.
 - **What the clocks read** is kept on the object as `signalState` (last service, last backup, playing since), written by `apply` from `logged` and value events. Objects are stored as JSON (D-39), so it needs no migration, and a replay rebuilds it. A whole shelf's signals (`ShelfSignals`) then need no history.
 - **The calendar** is a dependency, like the date: a clock's year boundary comes from `\.calendar`, never `Calendar.current`.
+
+### D-60 · Dismissals
+
+**Gap.** F15 and risk R2 say every signal can be dismissed and the dismissal is logged, so the clocks' parameters can be tuned. Nothing says how long a dismissal lasts, or what it records.
+
+**Decision.**
+- **The command** is `dismissSignal(object, signal)`. `plan` takes it only for an owned, kept object, a signal that needs attention, and a clock the object's type runs and doesn't hold back.
+- **The event**, `signalDismissed`, records the clock, the status it read and the library's parameters in force: shape, never the object's content. It steers screens, so it isn't in History's main kinds; where History does show it, it reads "Estimate dismissed".
+- **How long.** A dismissal hides that clock's signal until the reading gets more urgent (*watch* to *act*) or there's new evidence: a service, a backup, or a change to a value the clocks read (year, save battery, code expiry, drinking window, last serviced, play status).
+- **Storage.** The dismissed clocks live in the object's `signalState` (D-59), so there's no new table. clctn's schema has no equivalent to port, and a table would be one more thing for CloudKit sync to carry. The event log keeps every dismissal for tuning.

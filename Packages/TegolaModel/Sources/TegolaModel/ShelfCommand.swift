@@ -21,6 +21,9 @@ public enum ShelfCommand: Hashable, Sendable {
   case setPlace([ObjectID], PlacePath?)
   /// Story 54.
   case logEvent(ObjectID, kind: String, note: String)
+  /// F15, risk R2: the collector says a signal's wrong or not worth it. It holds until the reading gets worse or what
+  /// the clock reads changes (D-60).
+  case dismissSignal(ObjectID, Signal)
   /// PD-123, PD-148.
   case lend(ObjectID, to: PersonChoice, due: Date?, note: String)
   /// PD-148, PD-160: closed by the collector alone without a backend (D-2).

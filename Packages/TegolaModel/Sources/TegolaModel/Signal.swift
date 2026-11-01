@@ -48,11 +48,35 @@ public struct SignalState: Hashable, Sendable, Codable {
   public var lastBackedUp: Date?
   /// When `playStatus` last turned to Playing, while it still is.
   public var playingSince: Date?
+  /// Dismissed clocks, by name, and the status each read when dismissed (D-60). Empty once what they read changes.
+  public var dismissed: [String: ObjectStatus]
 
-  public init(lastServiced: Date? = nil, lastBackedUp: Date? = nil, playingSince: Date? = nil) {
+  public init(
+    lastServiced: Date? = nil,
+    lastBackedUp: Date? = nil,
+    playingSince: Date? = nil,
+    dismissed: [String: ObjectStatus] = [:]
+  ) {
     self.lastServiced = lastServiced
     self.lastBackedUp = lastBackedUp
     self.playingSince = playingSince
+    self.dismissed = dismissed
+  }
+
+  enum CodingKeys: String, CodingKey { case lastServiced, lastBackedUp, playingSince, dismissed }
+
+  public init(from decoder: any Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    lastServiced = try container.decodeIfPresent(Date.self, forKey: .lastServiced)
+    lastBackedUp = try container.decodeIfPresent(Date.self, forKey: .lastBackedUp)
+    playingSince = try container.decodeIfPresent(Date.self, forKey: .playingSince)
+    dismissed = try container.decodeIfPresent([String: ObjectStatus].self, forKey: .dismissed) ?? [:]
+  }
+
+  /// A dismissed clock shows again once its reading is more urgent than when it was dismissed.
+  func hides(_ signal: Signal) -> Bool {
+    guard let status = dismissed[signal.clock] else { return false }
+    return !(signal.status < status)
   }
 
   func with(_ change: (inout Self) -> Void) -> Self {
@@ -60,6 +84,21 @@ public struct SignalState: Hashable, Sendable, Codable {
     change(&copy)
     return copy
   }
+}
+
+/// What a dismissal records (risk R2): the clock, the status it read, and the parameters in force. Shape, never the
+/// object's content, so the log can say which clocks people disagree with.
+public struct SignalDismissal: Hashable, Sendable, Codable {
+  public let clock: String
+  public let status: ObjectStatus
+  public let parameters: [String: Double]
+
+  public init(clock: String, status: ObjectStatus, parameters: [String: Double]) {
+    self.clock = clock
+    self.status = status
+    self.parameters = parameters
+  }
+
 }
 
 extension SignalState? {
@@ -70,8 +109,19 @@ extension ShelfObject {
   static let playStatus = FieldKey.field("playStatus")
   static let playing = FieldValue.text("Playing")
 
-  /// After a change to its values: note when it started Playing, and forget it once it's anything else.
+  /// The keys the clocks read: a change to any of them is new evidence, so dismissals lapse (D-60).
+  static let clockInputs: [FieldKey] = [
+    .year, .field("saveBattery"), .field("codeExpires"), .field("drinkingWindow"), .field("lastServiced"), playStatus,
+  ]
+
+  /// After a change to its values: dismissals lapse if what the clocks read changed; note when it started Playing,
+  /// and forget it once it's anything else.
   mutating func noteValues(before: [FieldKey: FieldValue], at: Date) {
+    if let state = signalState, !state.dismissed.isEmpty,
+      Self.clockInputs.contains(where: { values[$0] != before[$0] })
+    {
+      signalState = state.with { $0.dismissed = [:] }
+    }
     let now = values[Self.playStatus]
     guard now != before[Self.playStatus] else { return }
     if now == Self.playing {
@@ -102,9 +152,10 @@ public func signals(
   let reading = ClockReading(object: object, now: now, calendar: calendar)
   return type.clocks.compactMap { reference in
     guard !reference.isPending, let definition = reference.definition,
-      !definition.isOptIn || optedIn.contains(definition.name)
+      !definition.isOptIn || optedIn.contains(definition.name),
+      let signal = reading.signal(definition), object.signalState?.hides(signal) != true
     else { return nil }
-    return reading.signal(definition)
+    return signal
   }
 }
 

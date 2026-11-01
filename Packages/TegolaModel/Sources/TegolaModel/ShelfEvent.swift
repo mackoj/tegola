@@ -55,6 +55,8 @@ public struct ShelfEvent: Hashable, Sendable, Codable, Identifiable {
     case gaveBack(LoanID, objectID: ObjectID)
     /// Something done to the object, in the collector's words: serviced, cleaned, played.
     case logged(ObjectID, kind: String, note: String)
+    /// A signal dismissed, with what it read and the parameters in force, so the clocks can be tuned (risk R2, D-60).
+    case signalDismissed(ObjectID, SignalDismissal)
     case ownershipChanged(ObjectID, ShelfObject.Ownership)
     case wanted(ObjectID, priority: Int?, priceCap: Money?)
     case grailChanged(ObjectID, Bool)
@@ -85,6 +87,7 @@ public struct ShelfEvent: Hashable, Sendable, Codable, Identifiable {
       case .returned: "returned"
       case .gaveBack: "gaveBack"
       case .logged: "logged"
+      case .signalDismissed: "signalDismissed"
       case .ownershipChanged: "owned"
       case .wanted: "wanted"
       case .grailChanged: "grail"
@@ -105,7 +108,7 @@ public struct ShelfEvent: Hashable, Sendable, Codable, Identifiable {
         true
       case .collectionCreated, .collectionRenamed, .placeCreated, .personCreated, .workCreated, .placesMerged, .wanted,
         .grailChanged,
-        .mightLetGoChanged, .quantityAdjusted:
+        .mightLetGoChanged, .quantityAdjusted, .signalDismissed:
         false
       }
     }
@@ -115,7 +118,8 @@ public struct ShelfEvent: Hashable, Sendable, Codable, Identifiable {
       case .collectionCreated, .collectionRenamed, .placeCreated, .personCreated, .workCreated, .placesMerged: nil
       case .added(let object, _): object.id
       case .edited(let id, _), .enriched(let id, _), .confirmed(let id), .placed(let id, _), .moved(let id, _),
-        .logged(let id, _, _), .ownershipChanged(let id, _), .wanted(let id, _, _), .grailChanged(let id, _),
+        .logged(let id, _, _), .signalDismissed(let id, _), .ownershipChanged(let id, _), .wanted(let id, _, _),
+        .grailChanged(let id, _),
         .mightLetGoChanged(let id, _), .letGo(let id, _), .quantityAdjusted(let id, _):
         id
       case .lent(let loan), .borrowed(let loan): loan.objectID

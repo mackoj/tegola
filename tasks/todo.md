@@ -52,7 +52,7 @@ Plan: `tasks/plan.md`, M4. Report: `docs/milestones/M4.md`.
 - [x] T4.1 Clock functions: `Signal`, one function per library clock, the save-battery tests
 - [x] T4.2 Type files and the library: `discRot-pending`, `codeExpires` and `codeExpiry`, `unfinished`
 - [x] T4.3 Status derivation, and real statuses for `ShelfSummary` and `TodayStrip`
-- [ ] T4.4 Dismissals: command, event, plan rules, projection
+- [x] T4.4 Dismissals: command, event, plan rules, projection
 - [ ] T4.5 The object's status slot: reason, Estimate, Dismiss, Log a battery swap
 - [ ] T4.6 The signal feed from the Today strip
 - [ ] T4.7 Status filters in Collection and Find
