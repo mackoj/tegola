@@ -144,6 +144,60 @@ struct StoreHarness {
     #expect(try harness.store.shelf().objects[id]?.values[.notes] == .text("second"))
   }
 
+  /// An import is one batch in the log and one row in `importBatches`; its undo soft-deletes what nobody touched,
+  /// keeps the rest, and a rebuild agrees (PD-047, D-12).
+  @Test func anImportAndItsUndoSurviveARebuild() throws {
+    var harness = try StoreHarness()
+    let batch = ImportBatch(
+      importer: "spreadsheet",
+      fileName: "Jeux collection.csv",
+      collectionName: "Jeux",
+      rows: [Self.draft("Tetris", subtype: "game-boy"), Self.draft("Doom")]
+    )
+    let receipt = try harness.perform(.importBatch(batch), as: .import)
+    let batchID = try #require(receipt.batchID)
+    let ids = receipt.createdObjects
+    #expect(ids.count == 2)
+    #expect(try harness.store.shelf().batches[batchID]?.rowCount == 2)
+    try harness.perform(.edit(ids[1], values: [.notes: .text("doublon")]))
+    try harness.perform(.undoBatch(batchID))
+    let live = try harness.store.shelf()
+    #expect(live.objects[ids[0]] == nil && live.objects[ids[1]] != nil)
+    #expect(live.batches[batchID]?.undoneAt != nil)
+    // The removed row is still in the table, marked, never dropped.
+    let rows = try harness.store.database.read { db in try ObjectRow.fetchAll(db) }
+    #expect(rows.count == 2 && rows.filter { $0.deletedAt != nil }.map(\.id) == [ids[0].rawValue])
+    try harness.store.rebuildProjection()
+    #expect(try harness.store.shelf() == live)
+  }
+
+  /// A capture's barcode is queued with its object, in the same write, and the queue keeps what the worker learns.
+  @Test func aCapturedIdentifierWaitsInTheQueue() throws {
+    let harness = try StoreHarness()
+    let receipt = try harness.store.perform(
+      .add(Self.draft("Mario Kart 64", subtype: "n64"), to: .new(name: "Games"), origin: .captured),
+      context: harness.context(.capture),
+      lookup: .barcode("045496870010")
+    )
+    let id = try #require(receipt.createdObjects.first)
+    var queue = try harness.store.lookupQueue()
+    let request = try #require(queue.next(at: harness.clock))
+    #expect(request.objectID == id && request.subtype == "n64" && request.identifier == .barcode("045496870010"))
+    try harness.store.recordLookup(request.id, .failed, at: harness.clock)
+    queue = try harness.store.lookupQueue()
+    #expect(queue.requests.map(\.attempts) == [1])
+    #expect(queue.next(at: harness.clock) == nil)
+    // A refused command queues nothing.
+    #expect(throws: (any Error).self) {
+      try harness.store.perform(
+        .add(Self.draft(""), to: .new(name: "Games"), origin: .captured),
+        context: harness.context(.capture),
+        lookup: .barcode("1")
+      )
+    }
+    #expect(try harness.store.lookupQueue().requests.count == 1)
+  }
+
   /// The replay test (PLAN §3.1): for random command sequences on every v1 type, rebuilding the projection from the
   /// log gives the tables the commands left, and both equal the model's own replay.
   @Test(arguments: Catalogue.enabledInV1)
@@ -254,5 +308,47 @@ struct StoreHarness {
     snapshot = try harness.store.database.read { db in try ShelfRequest().fetch(db) }
     #expect(snapshot.notificationsOffer == "accepted")
     #expect(snapshot.optedInClocks == ["unfinished"])
+  }
+}
+
+/// The first piece's settings and its waiting Thing, as the shelf's query reads them (T5.2, T5.3).
+@Suite struct FirstPieceStorageTests {
+  func snapshot(_ harness: StoreHarness) throws -> ShelfSnapshot {
+    try harness.store.database.read { db in try ShelfRequest().fetch(db) }
+  }
+
+  @Test func theAppOpensOnTheFirstPieceUntilThereIsOneOrItsSkipped() throws {
+    let harness = try StoreHarness()
+    #expect(try snapshot(harness).opensOnFirstPiece)
+    try harness.store.set(.firstPieceSkipped, to: "true")
+    #expect(try !snapshot(harness).opensOnFirstPiece)
+
+    var other = try StoreHarness()
+    let draft = ObjectDraft(type: "video-game", subtype: "n64", values: [.title: .text("Ocarina of Time")])
+    try other.perform(.firstPiece(draft, story: "Had it since I was a kid", catalogue: StoreHarness.catalogue))
+    #expect(try !snapshot(other).opensOnFirstPiece)
+  }
+
+  @Test func countMeInIsKeptAsOneSortedRow() throws {
+    let harness = try StoreHarness()
+    #expect(try snapshot(harness).typeTesters == TypeTesters())
+    try harness.store.set(.typeTesters, to: TypeTesters().adding("wine").adding("watches").setting)
+    #expect(try snapshot(harness).typeTesters == TypeTesters(["watches", "wine"]))
+    let row = try harness.store.database.read { db in try SettingRow.find(SettingKey.typeTesters.id).fetchOne(db) }
+    #expect(row?.value == "watches,wine")
+  }
+
+  /// A watch saved as a Thing still knows it's a watch after the projection is stored and the log replayed.
+  @Test func aWaitingThingSurvivesStorageAndReplay() throws {
+    var harness = try StoreHarness()
+    let draft = ObjectDraft.recognised(
+      as: "watches",
+      values: [.title: .text("Omega Seamaster"), .year: .year(1968)],
+      catalogue: StoreHarness.catalogue
+    )
+    try harness.perform(.firstPiece(draft, story: "From my grandfather", catalogue: StoreHarness.catalogue))
+    let shelf = try harness.store.shelf()
+    #expect(shelf.waiting(for: "watches").map(\.title) == ["Omega Seamaster"])
+    #expect(apply(try harness.store.log(), to: Shelf()) == shelf)
   }
 }

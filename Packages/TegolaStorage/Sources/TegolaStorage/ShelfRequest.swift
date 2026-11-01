@@ -2,7 +2,7 @@ import Foundation
 public import SQLiteData
 public import TegolaModel
 
-/// What the shelf's screens read: the projection and the money setting, in one transaction. Screens hold it in a
+/// What the shelf's screens read: the projection and the settings that steer them, in one transaction. Screens hold it in a
 /// `@Fetch`, so they update whenever a command changes the database, and derive what they show with the pure read
 /// models (`ShelfSummary`, `CollectionMeta`, `ObjectSlots`).
 public struct ShelfSnapshot: Hashable, Sendable {
@@ -14,19 +14,29 @@ public struct ShelfSnapshot: Hashable, Sendable {
   public var notificationsOffer: String?
   /// The opt-in clocks the collector turned on.
   public var optedInClocks: Set<String>
+  public var typeTesters: TypeTesters
+  public var firstPieceSkipped: Bool
+
+  /// The app opens on the first piece while the shelf has never had an object and the collector hasn't chosen to
+  /// look around first (PLAN F2). Letting a piece go doesn't bring onboarding back.
+  public var opensOnFirstPiece: Bool { shelf.objects.isEmpty && !firstPieceSkipped }
 
   public init(
     shelf: Shelf = Shelf(),
     money: MoneyVisibility = .off,
     lastCollection: CollectionID? = nil,
     notificationsOffer: String? = nil,
-    optedInClocks: Set<String> = []
+    optedInClocks: Set<String> = [],
+    typeTesters: TypeTesters = TypeTesters(),
+    firstPieceSkipped: Bool = false
   ) {
     self.shelf = shelf
     self.money = money
     self.lastCollection = lastCollection
     self.notificationsOffer = notificationsOffer
     self.optedInClocks = optedInClocks
+    self.typeTesters = typeTesters
+    self.firstPieceSkipped = firstPieceSkipped
   }
 }
 
@@ -40,12 +50,16 @@ public struct ShelfRequest: FetchKeyRequest {
       .flatMap { UUID(uuidString: $0.value) }.map(CollectionID.init)
     let offer = try SettingRow.find(SettingKey.notificationsOffer.id).fetchOne(db)?.value
     let optedIn = try SettingRow.find(SettingKey.optedInClocks.id).fetchOne(db)?.value ?? ""
+    let testers = try SettingRow.find(SettingKey.typeTesters.id).fetchOne(db)?.value
+    let skipped = try SettingRow.find(SettingKey.firstPieceSkipped.id).fetchOne(db)?.value == "true"
     return ShelfSnapshot(
       shelf: shelf,
       money: money ?? .off,
       lastCollection: last.flatMap { shelf.collections[$0] == nil ? nil : $0 },
       notificationsOffer: offer,
-      optedInClocks: Set(optedIn.split(separator: ",").map(String.init))
+      optedInClocks: Set(optedIn.split(separator: ",").map(String.init)),
+      typeTesters: TypeTesters(setting: testers),
+      firstPieceSkipped: skipped
     )
   }
 }

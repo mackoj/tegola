@@ -4,6 +4,10 @@ name:
   singular: Game
   plural: Games
   collection: Board Games
+# Words that name the type in a photo's description or a typed line: the first piece's
+# type is inferred from them, not asked (PD-166, D-62).
+recognise: [board game, boardgame, tabletop game, card game, catan, carcassonne, monopoly, chess set]
+
 mark: D20
 icon: die.face.5
 gradient: [orange, yellow]

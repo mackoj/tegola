@@ -152,11 +152,14 @@ public struct TypeManifest: Decodable, Hashable, Sendable, Identifiable {
   public let clocks: [String]
   public let subtypes: [Subtype]
   public let supersedes: [Supersession]
+  /// Words that name the type in a description of a photo or a line of text ("wristwatch", "board game"), so the first
+  /// piece's type is inferred rather than asked (PD-166, D-62). Thing has none: it's what's left.
+  public let recognise: [String]
 
   enum CodingKeys: String, CodingKey {
     case id, version, name, mark, icon, gradient, duplicates, consumable, composite, spine, conditions, allowMissing,
       workingState, attribution, lookup, searchable, related, placeLabel, fields, requiredFields, customFields,
-      signatures, clocks, subtypes, supersedes
+      signatures, clocks, subtypes, supersedes, recognise
   }
 
   public init(from decoder: any Decoder) throws {
@@ -187,6 +190,7 @@ public struct TypeManifest: Decodable, Hashable, Sendable, Identifiable {
     clocks = try container.decodeIfPresent([String].self, forKey: .clocks) ?? []
     subtypes = try container.decodeIfPresent([Subtype].self, forKey: .subtypes) ?? []
     supersedes = try container.decodeIfPresent([Supersession].self, forKey: .supersedes) ?? []
+    recognise = try container.decodeIfPresent([String].self, forKey: .recognise) ?? []
   }
 }
 
@@ -206,6 +210,8 @@ extension TypeManifest {
     public let lookup: [String]
     /// Fields only this subtype's collectors care about.
     public let adds: [Field]
+    /// Words that name this subtype ("n64", "nintendo 64"), as the type's `recognise` (D-62).
+    public let recognise: [String]
 
     /// What a preset does to one parent field.
     public enum Preset: Hashable, Sendable {
@@ -220,7 +226,7 @@ extension TypeManifest {
     /// Keys of a `presets` mapping that aren't parent fields.
     static let reservedPresetKeys: Set<String> = ["parts", "clock", "lookup"]
 
-    enum CodingKeys: String, CodingKey { case key, label, presets, adds }
+    enum CodingKeys: String, CodingKey { case key, label, presets, adds, recognise }
 
     public init(from decoder: any Decoder) throws {
       try rejectUnknownKeys(in: decoder, known: Set(CodingKeys.allNames))
@@ -228,6 +234,7 @@ extension TypeManifest {
       key = try container.decode(String.self, forKey: .key)
       label = try container.decode(String.self, forKey: .label)
       adds = try container.decodeIfPresent([Field].self, forKey: .adds) ?? []
+      recognise = try container.decodeIfPresent([String].self, forKey: .recognise) ?? []
       var presets: [String: Preset] = [:]
       var parts: [String] = []
       var clocks: [String] = []

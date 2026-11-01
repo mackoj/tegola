@@ -60,6 +60,36 @@ Plan: `tasks/plan.md`, M4. Report: `docs/milestones/M4.md`.
 - [x] T4.9 Seed toward 120 objects, and the 200-object signal test
 - [x] T4.10 Journey 5, docs, review
 
+## M5 · launch types + first piece
+
+Plan: `tasks/plan.md`, M5. Report: `docs/milestones/M5.md`.
+
+- [x] T5.1 Type guess
+- [x] T5.2 First-piece rules
+- [x] T5.3 Type testers
+- [x] T5.4 The payoff
+- [ ] T5.5 `ExtractionClient` (Mac)
+- [ ] T5.6 Onboarding (Mac)
+- [ ] T5.7 The empty shelf (Mac)
+- [ ] T5.8 Journey and review
+
+## M6 · capture, lookup, import
+
+Plan: `tasks/plan.md`, M6. Report: `docs/milestones/M6.md`.
+
+- [x] T6.1 Import batches: `importBatch`, `undoBatch`, unconfirmed rows
+- [x] T6.2 The Importer API, the registry and `NoteReader`
+- [x] T6.3 `TemplateImporter`
+- [x] T6.4 `SpreadsheetImporter` (exit test stand-in: `Jeux collection.csv`)
+- [x] T6.5 `DiscogsCSVImporter`
+- [x] T6.6 Lookup queue and enrichment proposals
+- [x] T6.7 Matches, look-alikes, the exceptions queue's outcomes
+- [ ] T6.8 `LookupClient` and its middlewares (Mac)
+- [ ] T6.9 Capture (Mac)
+- [ ] T6.10 Import screens and `ExtractionClient`'s cells (Mac)
+- [ ] T6.11 Review queue and match screens (Mac)
+- [ ] T6.12 Journey 2, docs, review
+
 ## Open follow-ups
 
 - Generate App Attest's `appattest-environment` entitlement with M6, when the lookup client first runs on a device.

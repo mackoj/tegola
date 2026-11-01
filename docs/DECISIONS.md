@@ -385,3 +385,208 @@ A clock with nothing to read gives no signal: no year, no date, no known service
 - **What's scheduled:** one notification per signal's next change (`changesAt`): the day it turns *watch* or *act*, at 10:00 in the collector's calendar, or a minute later if that's today and 10:00 has passed. A dismissed signal is scheduled for the day it would get more urgent than when it was dismissed, the day it shows again. It's titled with the object and says an estimate thinks it's due, nothing more. At most 50, the soonest, because iOS keeps 64 pending.
 - **Following the signals.** With the offer accepted, each time the Shelf home appears the clock notifications are replaced from the signals then. A swap, a backup, a dismissal or an edit since the last time moves or removes them. Other kinds (loan due, M7; the weekly nudge, M8) use their own id prefix and aren't touched.
 - **Opt-in clocks** are a setting too (`optedInClocks`), read with the shelf. Its toggle waits for You (M8).
+
+### D-62 · How the first piece's type is guessed
+
+> PD-166: "the type is inferred rather than asked."
+
+**Gap.** PLAN §2 gives the inference to `ExtractionClient` (Foundation Models), but a model that answers with a type
+id can only pick among ids it's told about, and it can't say what a type is called in a description it didn't write.
+Without Apple Intelligence, there's nothing to infer with at all.
+
+**Decision.** The type files say what names them. Each has a `recognise:` list of words ("wristwatch", "board game"),
+and each subtype has its own ("n64", "nintendo 64"). `Catalogue.guess(from:)` scores a description against them: one
+point per word found, matched whole and in order, without case or accents, plus the best subtype's points. The model
+only describes the piece in words. The same guess reads the text a capture recognises, or what a collector types in
+*What is it?*.
+
+- **Nothing named, or two types named equally, is no guess.** The screen asks *What is it?* rather than picking.
+- **Thing is never guessed.** It's what's left when nothing is.
+- **No word names two types.** A shared word would make one of them unguessable; a test refuses it.
+- **Every type is guessable, enabled or not.** A guess says whether its type has shipped, so a watch is recognised
+  as a watch and saved as a Thing that waits for the type (46, 2B; D-63).
+
+### D-63 · The first piece: one write, a waiting Thing, and what the payoff says
+
+> 46: "If the type hasn't shipped yet, the user becomes a tester for it." PD-031: "A shipped type offers migration
+> and never imposes it."
+
+**Gap.** Page 46 says a watch is "saved safely as a Thing" and that testers' "pieces upgrade automatically", but not
+how a Thing remembers what it is, where **Count me in** is kept, or what the payoff says when a clock has nothing to
+say yet.
+
+**Decision.**
+
+- **One write.** `ShelfCommand.firstPiece(draft, story:catalogue:)` is an `add` into a new collection named by the
+  type file (`name.collection`, PD-137), with the `firstPiece(story:)` origin. `plan` refuses it on a shelf that has
+  ever had an object (`notTheFirstPiece`): onboarding happens once. Letting the piece go doesn't bring it back.
+- **The story is the collector's words.** The chip they tapped and the line they typed are stored as one trimmed
+  text, in the language they answered in, like any note. It's the `added` event's origin, so it's the History slot's
+  first line, and it's never `acquired` (PD-165). An empty story is allowed: nothing on the screen is required.
+- **A waiting Thing.** `ObjectDraft.recognised(as:)` turns a guess of a type that hasn't shipped into a Thing with
+  `awaitingType` set. It keeps only what every type means the same way: the title, the maker, the year and the notes.
+  `plan` allows `awaitingType` only on a Thing, and only for a type that exists and isn't enabled
+  (`cantAwaitType`). `Shelf.waiting(for:)` lists those pieces, for the migration a shipped type offers (v1.x).
+- **Count me in** is a setting, not a shelf change (`SettingKey.typeTesters`, read as `TypeTesters`): it describes
+  the collector, not an object, and it has no history. So is **Just look around first** (`firstPieceSkipped`).
+  `ShelfSnapshot.opensOnFirstPiece` is true while the shelf has no object and it hasn't been skipped.
+- **The payoff** (`FirstPiecePayoff`) is the most urgent signal that needs attention (*watch* or *act*). When every
+  clock reads *good*, it's the soonest `changesAt`, the day one turns *watch*: page 46's wine, "Not yet. Soon." A
+  piece with no clock, or none with anything to read, shows its story alone. The clock notifications (D-61) read the
+  same `changesAt`.
+
+### D-64 · An import's rows, and what its undo removes
+
+> PD-047: "Import never overwrites, merges or invents. … Nothing is marked confirmed. The whole batch can be undone
+> for 30 days." PLAN F9: "The import creates **one collection** named after the file."
+
+**Gap.** D-38 read an imported row as confirmed ("the collector's own list, mapped by them") and left M6 to change
+it. D-12 says undo keeps what the collector touched, but not what touching is, and the projection never removed
+anything.
+
+**Decision.**
+
+- **Unconfirmed.** Every imported row lands unconfirmed, as PD-042 and PD-047 say; this replaces D-38's reading for
+  `.imported`. A collector-typed object and the first piece stay confirmed.
+- **One command.** `ShelfCommand.importBatch(ImportBatch)` makes one collection (typed when every row is one type,
+  mixed otherwise), a `batchImported` record, and an `added` per row, all carrying one batch id. A row the rules
+  refuse refuses the batch, so nothing is half-imported: an importer's job is to send only rows `plan` accepts, with
+  anything it couldn't read kept in the note.
+- **Touched** means any event on the object from the collector or a capture after it was added: an edit, a photo, a
+  place, a loan, a confirmation, a care line, a copy taken out of a count. A lookup's answer and the import itself
+  don't count. The object carries it (`ShelfObject.imported`), so `plan` stays a function of the shelf.
+- **Undo** is the collector's, within 30 days of 24 hours (`ImportBatchRecord.undoWindow`), once. It appends one
+  `batchUndone` event naming the objects it removed and the ones it kept, so the summary can say "3 kept because you
+  changed them". The removed objects leave the projection; their rows are marked `deletedAt`, never dropped, and the
+  log keeps every event. The batch's collection goes too once nothing is left in it. This is the one way an object
+  leaves the shelf, and the promise tests check it removes only untouched rows of that batch.
+- **`importBatches`** is clctn's table less the mapping and the report, which are the importer's plan and aren't
+  kept. It has no foreign key to its collection, which an undo can remove.
+
+### D-65 · How a cell's notes are read without the on-device model
+
+> 49, "Cell → item": "It must never invent a value: anything it can't read goes into note, untouched." PLAN F9:
+> "parts and condition from the notes, signed, bundles split by "/", "doublon" as a second copy, digital kept apart."
+
+**Gap.** Page 49 shows what nine of Jeux's cells become, but not the rules behind them, and some of its readings
+invent: "Mario 64 (boite endommagé + cartouche)" gets *manual: missing*, which the cell never says, and a typo is
+"fixed" in the title.
+
+**Decision.** `CellExtracting` is the reader's interface. Foundation Models implement it on the Mac (T6.10);
+`NoteReader` is the rule-based one, used without Apple Intelligence and pinned by the tests. Its readings:
+
+- **The title** is the text outside the brackets, as written: typos are matching's to fix (T6.6), never the reader's.
+- **A listed part** ("cartouche + manuel") fills the type's What's inside slot when it has one, and a cart or disc the
+  media field when no subtype presets it. **An unlisted part is not Missing**: a loose cart isn't written as missing
+  its box. That keeps Jeux's Imperfect count at page 49's three instead of every loose cart.
+- **Damage** ("endommagé", "abîmé", "ko", "HS") grades the part's ladder axis at the scale's worst step (Poor), and
+  **"manque <part>"** grades it Missing. A missing thing that isn't a part ("manque cd audio") is noticed as imperfect
+  and stays in the note.
+- **"dédicace JDG"** is the item level's Signed, by JDG. **"doublon"** marks the cell itself as the second copy:
+  Jeux has "Fantasy zone (cartouche)" and "Fantasy zone (cartouche) doublon", two objects, one noticed as the
+  duplicate (49 §03), so a doublon never makes an object of its own. **"/"** in the title is a bundle (`contains`);
+  "+" in a title isn't ("Tony Hawks 1+2").
+- **"digital"** is noticed and asked about in the exceptions queue (keep, wishlist, leave out; 43 Q4), and stays in
+  the note, since no field says it.
+- **Anything else** ("platinum", "four players", "cartouche x2") goes into the note, as written, joined by " + ".
+
+### D-66 · The two layouts a spreadsheet comes in
+
+> PLAN F9: "the layout (a column per platform, no title header) maps headers to subtypes". PD-048: "Only "name" is
+> required, and any column order, separator, encoding or date format is accepted."
+
+**Decision.** `SpreadsheetImporter` reads each sheet as one of two layouts.
+
+- **A grid** is a sheet where at least two headers each name exactly one subtype of a v1 type, by its key, label or
+  `recognise` words, whole: "Game Boy advence" isn't Game Boy. Every non-empty cell is an object of that type. A
+  header that names a subtype becomes it, and the sentence shows it as a dashed chip when the file spells it
+  differently (Ps1 → PlayStation). Any other header is written, as the file spells it, into the field every subtype
+  presets (video games' platform), and names the row's shelf. Renaming "Game Boy advence" to GBA is matching's job.
+- **A list** is anything else: the first row is headers, mapped with clctn's spine aliases (English and French) and
+  the type's field keys and labels; a text or choice field takes a value only if it fits. The type is the one the
+  file's name and headers name (`Catalogue.guess`), if it ships, or a Thing. Without a title header the first column
+  is the name. A column nothing maps, or a value that doesn't fit, goes into the note as "Header: value", so nothing
+  is dropped. A year is read only as four digits; `acquired` is never read from a list until the mapper assigns it
+  (D-14).
+- **Sheet tabs.** A tab named like a wishlist ("Recherché", "Wanted", "Envies") is wanted objects; their grades stay
+  in the note, since a wanted object has none. A sold tab ("Vendu") needs a let-go row in `ImportBatch`, which T6.10
+  adds with the screens; until then it imports as owned.
+- **Every row is one `plan` takes.** `RowBuilder` dry-runs each draft; one it would refuse falls back to its cell,
+  as written, as the title. Jeux has none.
+
+### D-67 · The `tegola.csv` template's columns
+
+> 49 §03B: "A template we publish, with one row per item and fixed headers. … it's the same format the app exports."
+> Its sample: `type,platform,title,region,parts,condition,signed_by,note`.
+
+**Gap.** Page 49's columns are a video game's. Export (M8) has to write every type's fields, and a template that
+changed per type wouldn't be one template.
+
+**Decision.** `TemplateFormat.columns` are fixed, in this order: `type, subtype, title, subtitle, year, parts,
+condition, signed_by, contains, note`. A file may leave out any of them except `type` and `title`, but keeps the
+order. Every header after them is a field key of the row's type (`region`, `catalogNumber`), so Export adds a column
+for each field it has to write and the importer needs no change. `type` is the type's id and `subtype` its key, never
+a label: the template is for round trips, not for typing by hand. `parts`, `signed_by` and `contains` are lists
+split by `|`; `condition` is the object's grade, or `axis:grade` pairs for a ladder (`boxCondition:Poor`). A value
+that doesn't fit its field goes into the note as `header: value`, nothing is guessed, and nothing goes through the
+cell reader. An unknown type is a Thing with `type: …` in its note; a type that hasn't shipped is a Thing waiting
+for it (D-63). M8 adds what Export needs beyond these (ownership, quantity, place, the money and dates the collector
+typed) as fixed columns after `note`, on both sides at once.
+
+### D-68 · What a Discogs export becomes
+
+> PLAN F9: "`DiscogsCSVImporter`: the CSV file Discogs lets you export." music.yml: "The Goldmine scale, which Discogs
+> returns for every medium here."
+
+**Decision.** A file whose header has Discogs' `Catalog#, Artist, Title, Label, Format, release_id` is certain to be
+an export. Each row is a Music release. The first word of Discogs' format picks the subtype and Music's format
+("2xLP" → Vinyl, 2×LP; "CD" → CD; "Cass" → Cassette; MiniDisc, reel, 8-track and DAT → Other); a format Music doesn't
+name, and the descriptions after it ("Album, RE"), go into the note as `Format: …`. The media grade is the object's
+condition and the sleeve grade its packaging condition, on Goldmine's words; "No Cover" is Missing, and "Good Plus",
+"Generic" and "Not Graded", which Music's scale doesn't have, stay in the note. "Nirvana (2)" is Nirvana: the number
+is how Discogs tells two artists apart. `Released` of 0 and `Catalog#` of "none" are empty. The folder (unless
+Uncategorized), the rating, the release id, the date added and any custom field go into the note: none is a Music
+field, and **Date Added** is when the release was catalogued on Discogs, never `acquired` (D-14). The release id is
+there for matching to use (T6.6).
+
+### D-69 · Candidates, enrichment and the lookup queue in the model
+
+> PLAN §7: "A result never writes. It creates an enrichment proposal … applying it is a `ShelfCommand.applyEnrichment`
+> that only fills empty fields (PD-045)." "At most 5 attempts, then the row goes to "needs details"."
+
+**Decision.**
+
+- **`LookupCandidate`** is the contract's `Candidate` in the model's terms: release id, type and subtype, the values
+  as the object would hold them, confidence, reasons and sources. `TegolaClients` maps one to the other (T6.8), so no
+  screen sees a generated type. Its **strength** is strong from 0.9, likely from 0.6, weak below; only strong is in
+  **Confirm all** (F8). The cut-offs are constants until recorded answers say otherwise.
+- **An enrichment proposal is what `applyLookup` would write**, computed by planning it on the current shelf: so the
+  rule that a lookup fills only empty keys and its own AUTO ones, never a typed or cleared key, `acquired`, money or a
+  grade (promise 1), lives in one place. Keys the object's type doesn't have, and every candidate of another type,
+  are left out: that's not enrichment but a different identity, which F7 asks about. Applying a proposal is
+  `applyLookup` with the keys the collector kept, from the lookup source, so they stay AUTO until touched. There is
+  no separate `applyEnrichment` command.
+- **`LookupQueue`** is pure: oldest first, five attempts with a 30-second backoff that doubles, then *needs details*.
+  A `429` or `503` waits for its `Retry-After` without spending an attempt. Its state isn't shelf history, so it's
+  a `lookupQueue` table, not events. `ShelfStore.perform(_:context:lookup:)` queues a capture's identifier in the
+  same transaction as the object it added; a request goes when its object does.
+
+### D-70 · What counts as "you already own this"
+
+> F7: "Every match says, unprompted, whether you already own it or another print of it, and lists related objects
+> (the manifest's `related` keys). A look-alike offers three choices … It asks only when unsure."
+
+**Decision.** `LookAlikes` compares a draft with what the shelf keeps (let-go objects aside), by type and by title
+without case, accents, width or extra spaces:
+
+- **Owned**: owned, same subtype. This is the only case that asks, with **Open it**, **Another copy** and **Add as
+  new**. Another copy raises a count (PD-020) or adds its own object in the same collection; opening writes nothing.
+  No choice merges (PD-151).
+- **Another print**: owned, another subtype (or none). Said, not asked: the PAL and the Japanese copy are two
+  objects (video-game.yml, `duplicates: rows`).
+- **Wanted**: on the wishlist. The screen offers "it arrived" (D-13) instead of adding a second object.
+- **Related**: up to five owned objects sharing a value of a key the type file lists as `related` (the artist, the
+  publisher, the designer, the series).
+
+The server's match buckets are `MatchOutcome`: matched, ambiguous, unknown. Only ambiguous goes to the exceptions
+queue, never as a gate; matched is an enrichment proposal the collector confirms; unknown stays as written.

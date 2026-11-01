@@ -108,14 +108,49 @@ Four places where the code and the spec disagree today. Each gets a D-entry with
 
 ## M5 · launch types + first piece (P3)
 
-Exit test: 5 of 6 testers finish onboarding with one complete object. Music, Video games, Board games, Thing as data;
-first-piece onboarding (46); type inference via `ExtractionClient`.
+Exit test (page 52): 5 of 6 testers finish onboarding with one complete object and can say what the app will tell
+them. That's a test with people, run by the owner; `docs/UX-FINDINGS.md` is where it's written down. The automated
+stand-in is the first-piece journey as a UI test. The four launch types are data since M2 (D-23).
+
+Branch: `m5-m6-model-halves` for T5.1 to T5.4, on top of M4 (the payoff reads M4's signals). They're pure model
+and storage work, so they build and test on Linux. T5.5 to T5.8 touch the features, the on-device model and the app,
+so they need the Mac.
+
+| Task | Acceptance | Verify |
+|---|---|---|
+| T5.1 Type guess | Each type file names the words that recognise it, and its subtypes theirs (`recognise:`, decoder and schema). `Catalogue.guess(from:)` turns a description ("Omega Seamaster, 1968") into a type and subtype, says whether the type is enabled, and gives nothing on no words or a tie. Thing is never guessed. No word names two types (D-62) | Linux: `TypeGuessTests`; `scripts/validate-types.sh` |
+| T5.2 First-piece rules | A first piece is the shelf's first object; its story is a chip and an optional line, kept as the collector's words, and it's the first history line, never `acquired` (PD-165). A piece of a type that hasn't shipped is saved as a Thing that remembers the type it's waiting for (46, 2B; D-63). It lands in the collection its type names (PD-137) | Linux: `PlanTests`, `FirstPieceTests`, storage replay |
+| T5.3 Type testers | **Count me in** is a setting, the set of types the collector tests (PD-031). The pieces waiting for a type are a read model, so when the type ships they're offered the migration first (the migration is v1.x) | Linux: `ShelfStoreTests`, `ReadModelTests` |
+| T5.4 The payoff | `FirstPiecePayoff`: the piece, the first thing its clocks say (any status, good included: "Not yet. Soon."), and its story. Page 46's two examples are tests | Linux: `FirstPieceTests` |
+| T5.5 `ExtractionClient` | Foundation Models' guided generation describes a photo or a typed line as a name and words; `guess(from:)` maps them. Without Apple Intelligence it's unavailable, and the screen asks *What is it?*. `unimplemented` by default, recorded outputs in tests | Mac: TestStore with recorded outputs |
+| T5.6 Onboarding | `FirstPieceFeature`'s four screens (PLAN F2): one question with the camera, **Type it**, **Library**, **Just look around first**; recognise, then *How did it come to you?*; type not shipped, with **Count me in** / **Not now**; the payoff, **One at a time** and **That's enough for today** (no sweep in v1). The app opens on it while the shelf is empty and it hasn't been skipped | Mac: TestStore, snapshots of every screen and state |
+| T5.7 The empty shelf | **Scan your first object** and **Bring your list** (Add's import, from M6; hidden until then). No sample data (PD-102) | Mac: snapshot |
+| T5.8 Journey and review | The first piece as a UI test (journey 1's first step). DECISIONS, the M5 report, HANDOFF, `docs/UX-FINDINGS.md` set up for the six testers, a separate review agent | Mac: `scripts/test.sh app`; read-through |
 
 ## M6 · capture, lookup, import (P4)
 
-Exit test: `Jeux collection.csv` imports in under 3 minutes with under 5% of rows needing a fix. Camera (VisionKit);
-`LookupClient` with App Attest middleware; lookup queue; review queue; enrichment; Importer API and the three v1
-importers; batch undo.
+Exit test (page 52): `Jeux collection.csv` (485 games) imports in under 3 minutes, with under 5% of rows needing a
+fix. The automated stand-in is `ImportIntegrationTests` over the real file (every cell kept, the counts, the payoff)
+plus journey 2 (*Bring your list*) as a UI test; the 3 minutes are measured on a device with the on-device model.
+
+Branch: `m5-m6-model-halves` for T6.1 to T6.7, with M5's model half. They're model, storage and parser work, so
+they build and test on Linux. T6.8 to T6.12 touch the clients, the camera, the on-device model, the screens and the
+app, so they need the Mac.
+
+| Task | Acceptance | Verify |
+|---|---|---|
+| T6.1 Import batches | `ShelfCommand.importBatch(ImportBatch)`: one collection named after the file, every row `added` with origin `.imported` and the batch id, all **unconfirmed** (PD-042, PD-047; revises D-38's reading), never `acquired` (D-14). `undoBatch(BatchID)` within 30 days (PD-047) appends one `batchUndone` event that removes the rows nobody touched since and names the ones kept (D-12). `importBatches` table; a removed object's row is soft-deleted (`deletedAt`), never dropped | Linux: `PlanTests`, `ImportBatchTests`, storage replay |
+| T6.2 The Importer API | `ImportInput` (bytes, file name, sheet tabs), `Recognition`, `Importer`, `ImporterRegistry` (the most certain wins; the collector can pick another), `ImportPlan` (collection name, typed rows, the one sentence, what was guessed, what was noticed) and `CellExtracting`, with a rule-based reader as the stand-in for the on-device model. Anything not read goes into the note, untouched | Linux: `ImporterRegistryTests` |
+| T6.3 `TemplateImporter` | The `tegola.csv` template's columns, written down once (`TemplateFormat`) for Export (M8) to write. A file with its header imports with nothing guessed | Linux: `TemplateImporterTests` |
+| T6.4 `SpreadsheetImporter` | Any other CSV, TSV or pasted text. A list with headers maps them (clctn's `ColumnMapping` aliases, English and French). A grid with a column per platform maps headers to subtypes, else to the platform field as written. The cell reader takes parts from "(cartouche + manuel)", condition notes from "boite endommagé", "/" as a bundle, "doublon" as a second copy, "dédicace" as signed, "(digital)" apart. **Jeux:** 485 rows, every cell kept, under 5% flagged | Linux: `ImportIntegrationTests` |
+| T6.5 `DiscogsCSVImporter` | Discogs' collection export (Catalog#, Artist, Title, Label, Format, Released, release_id, the two conditions, notes) into Music with the medium as subtype; the grades map to the type's scale or stay in the note | Linux: `DiscogsCSVImporterTests` |
+| T6.6 Lookup queue and enrichment | `LookupQueue` (pure): enqueue with the object, oldest first, exponential backoff, five attempts then "needs details", `Retry-After` honoured. `LookupCandidate` (reasons, confidence, sources, strength); `EnrichmentProposal` is what `applyLookup` would fill, which is only empty fields (PD-045); the `lookupQueue` table, filled in the add's own transaction | Linux: `LookupQueueTests`, `EnrichmentTests` |
+| T6.7 Matches and look-alikes | `LookAlikes` (pure): "you already own this", another print, related objects from the manifest's `related` keys; the three choices; never a merge (PD-151). The exceptions queue as a read model over an import's unmatched and ambiguous rows | Linux: `LookAlikeTests` |
+| T6.8 `LookupClient` | `TegolaClients` wraps the generated client: `AppAttestMiddleware` (`swift-keychain`, debug token on the simulator), `RetryMiddleware`, `ReachabilityClient`, the queue's worker effect; the `appattest-environment` entitlement | Mac: TestStore with recorded responses |
+| T6.9 Capture | The Scan tab's camera (VisionKit barcode and text), the tray, Add to, the shot saved before any network | Mac: TestStore; snapshots |
+| T6.10 Import screens | `ImportFeature`: Add's **Import a list**, the share sheet, the one sentence with rename, **Build my shelf**, **Something's off** (the column mapper), the payoff, undo. `ExtractionClient`'s cell extraction (Foundation Models, 20–30 cells a call) behind `CellExtracting`; the rule-based reader without Apple Intelligence | Mac: TestStore with recorded outputs; snapshots |
+| T6.11 Review queue and matches | F7 and F8's screens: grouped rows with why, **Confirm**, **Fill in**, **Confirm all** for strong matches only; the match sheet's three choices; enrichment asks first | Mac: `ReviewQueueFeatureTests`, `MatchFeatureTests` |
+| T6.12 Journey 2, docs, review | *Bring your list* as a UI test (`--import-fixture`), the empty shelf's **Bring your list** (T5.7), DECISIONS, the M6 report, HANDOFF, `REVIEW.md` (skeleton candidate), a separate review agent | Mac: `scripts/test.sh app`; read-through |
 
 ## M7 · people · M8 · keeping + you · M9 · polish
 

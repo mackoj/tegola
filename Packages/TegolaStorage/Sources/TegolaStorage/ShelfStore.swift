@@ -1,4 +1,4 @@
-import Foundation
+public import Foundation
 public import SQLiteData
 public import TegolaCatalogue
 public import TegolaModel
@@ -47,8 +47,15 @@ public struct ShelfStore: Sendable {
 
   /// Checks a command against the rules, appends its events to the log and applies them to the projection, in one
   /// transaction. A refused command throws `ShelfRuleViolation` and writes nothing.
+  ///
+  /// A capture's identifier, when there is one, is queued for the object it added in the same transaction, so it's
+  /// saved before any network (PLAN §7, PD-046).
   @discardableResult
-  public func perform(_ command: ShelfCommand, context: PlanContext) throws -> CommandReceipt {
+  public func perform(
+    _ command: ShelfCommand,
+    context: PlanContext,
+    lookup: LookupQueue.Request.Identifier? = nil
+  ) throws -> CommandReceipt {
     try database.write { db in
       let before = try Self.loadShelf(db)
       let events = try plan(command, on: before, context: context)
@@ -56,9 +63,45 @@ public struct ShelfStore: Sendable {
       for event in events {
         try EventRow.insert { EventRow(event) }.execute(db)
       }
-      try Self.writeChanges(from: before, to: after, db)
-      return CommandReceipt(events: events, batchID: context.batchID)
+      try Self.writeChanges(from: before, to: after, at: context.at, db)
+      let receipt = CommandReceipt(events: events, batchID: events.first?.batchID ?? context.batchID)
+      if let lookup, let id = receipt.createdObjects.first, let object = after.objects[id] {
+        let request = LookupQueue.Request(
+          id: context.makeID(),
+          objectID: id,
+          type: object.typeID,
+          subtype: object.subtype,
+          identifier: lookup,
+          queuedAt: context.at
+        )
+        try LookupRow.insert { LookupRow(request) }.execute(db)
+      }
+      return receipt
     }
+  }
+
+  /// The lookups waiting, answered or given up, for the worker and the review queue. Those of an object an undo
+  /// removed are gone with it.
+  public func lookupQueue() throws -> LookupQueue {
+    try database.read { db in try Self.loadQueue(db) }
+  }
+
+  /// What happened when the worker tried a request (PLAN §7).
+  public func recordLookup(_ id: UUID, _ outcome: LookupQueue.Outcome, at now: Date) throws {
+    try database.write { db in
+      var queue = try Self.loadQueue(db)
+      queue.record(id, outcome, at: now)
+      if let request = queue.requests.first(where: { $0.id == id }) {
+        try LookupRow.upsert { LookupRow(request) }.execute(db)
+      }
+    }
+  }
+
+  static func loadQueue(_ db: Database) throws -> LookupQueue {
+    let live = Set(try ObjectRow.where { $0.deletedAt.is(nil) }.select(\.id).fetchAll(db))
+    let requests = try LookupRow.fetchAll(db).filter { live.contains($0.objectID) }
+      .map { try StoredJSON.decode(LookupQueue.Request.self, from: $0.data) }
+    return LookupQueue(requests: requests)
   }
 
   /// The projection, as the model sees it.
@@ -106,7 +149,8 @@ public struct ShelfStore: Sendable {
       try WorkRow.delete().execute(db)
       try PlaceRow.delete().execute(db)
       try PersonRow.delete().execute(db)
-      try Self.writeChanges(from: Shelf(), to: apply(log, to: Shelf()), db)
+      try ImportBatchRow.delete().execute(db)
+      try Self.writeChanges(from: Shelf(), to: apply(log, to: Shelf()), at: log.last?.at ?? .distantPast, db)
     }
   }
 
@@ -118,11 +162,11 @@ public struct ShelfStore: Sendable {
 
   static func loadShelf(_ db: Database) throws -> Shelf {
     var shelf = Shelf()
-    for row in try CollectionRow.fetchAll(db) {
+    for row in try CollectionRow.where({ $0.deletedAt.is(nil) }).fetchAll(db) {
       let value = try StoredJSON.decode(ShelfCollection.self, from: row.data)
       shelf.collections[value.id] = value
     }
-    for row in try ObjectRow.fetchAll(db) {
+    for row in try ObjectRow.where({ $0.deletedAt.is(nil) }).fetchAll(db) {
       let value = try StoredJSON.decode(ShelfObject.self, from: row.data)
       shelf.objects[value.id] = value
     }
@@ -146,13 +190,17 @@ public struct ShelfStore: Sendable {
       let value = try StoredJSON.decode(Loan.self, from: row.data)
       shelf.loans[value.id] = value
     }
+    for row in try ImportBatchRow.fetchAll(db) {
+      let value = try StoredJSON.decode(ImportBatchRecord.self, from: row.data)
+      shelf.batches[value.id] = value
+    }
     shelf.lastSeq = try EventRow.select { $0.seq.max() }.fetchOne(db).flatMap { $0 } ?? 0
     return shelf
   }
 
-  /// Upserts every row that differs between two shelves. Nothing is deleted: history only appends, and nothing
-  /// leaves the projection (PD-051, PD-151). Parents before children, for the foreign keys.
-  static func writeChanges(from before: Shelf, to after: Shelf, _ db: Database) throws {
+  /// Upserts every row that differs between two shelves, parents before children for the foreign keys. Nothing is
+  /// deleted (PD-051, PD-151): what an import's undo removes is marked `deletedAt` and no longer read (D-12).
+  static func writeChanges(from before: Shelf, to after: Shelf, at: Date, _ db: Database) throws {
     for (id, value) in after.collections where before.collections[id] != value {
       try CollectionRow.upsert { CollectionRow(value) }.execute(db)
     }
@@ -173,6 +221,15 @@ public struct ShelfStore: Sendable {
     }
     for (id, value) in after.loans where before.loans[id] != value {
       try LoanRow.upsert { LoanRow(value) }.execute(db)
+    }
+    for (id, value) in after.batches where before.batches[id] != value {
+      try ImportBatchRow.upsert { ImportBatchRow(value) }.execute(db)
+    }
+    for id in before.objects.keys where after.objects[id] == nil {
+      try ObjectRow.find(id.rawValue).update { $0.deletedAt = #bind(at) }.execute(db)
+    }
+    for id in before.collections.keys where after.collections[id] == nil {
+      try CollectionRow.find(id.rawValue).update { $0.deletedAt = #bind(at) }.execute(db)
     }
   }
 }
@@ -275,6 +332,34 @@ extension PhotoRow {
       fileName: value.fileName,
       takenAt: value.takenAt,
       deletedAt: nil,
+      data: StoredJSON.encode(value)
+    )
+  }
+}
+
+extension ImportBatchRow {
+  init(_ value: ImportBatchRecord) {
+    self.init(
+      id: value.id.rawValue,
+      importer: value.importer,
+      fileName: value.fileName,
+      collectionID: value.collectionID.rawValue,
+      rowCount: value.rowCount,
+      createdAt: value.at,
+      undoneAt: value.undoneAt,
+      data: StoredJSON.encode(value)
+    )
+  }
+}
+
+extension LookupRow {
+  init(_ value: LookupQueue.Request) {
+    self.init(
+      id: value.id,
+      objectID: value.objectID.rawValue,
+      attempts: value.attempts,
+      lastTriedAt: value.lastTriedAt,
+      state: value.state.rawValue,
       data: StoredJSON.encode(value)
     )
   }

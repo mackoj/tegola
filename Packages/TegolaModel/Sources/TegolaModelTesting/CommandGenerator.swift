@@ -88,7 +88,7 @@ public struct CommandGenerator {
       let source: ShelfEvent.Source = origin == .captured ? .capture : origin == .imported ? .import : .collector
       return (.add(draft, to: collection.map { .existing($0.id) } ?? .new(name: "Mine"), origin: origin), source)
     }
-    switch Int.random(in: 0..<17, using: &random) {
+    switch Int.random(in: 0..<19, using: &random) {
     case 0: return (.confirm([object]), pick([.collector, .lookup]))
     case 1:
       let edits = values(shelf, allowAcquired: true).mapValues { Optional($0) }
@@ -113,6 +113,17 @@ public struct CommandGenerator {
     case 10: return (.adjustQuantity(object, by: pick([-1, 1, 2])), .collector)
     case 11: return (.setGrail(object, chance(50)), .collector)
     case 12: return (.setOwned(object), .collector)
+    case 16:
+      // A short list imported, sometimes with a row the rules refuse, which refuses the whole batch.
+      let rows = (0..<Int.random(in: 1...3, using: &random)).map { _ in
+        ObjectDraft(type: type, values: [.title: .text(chance(90) ? pick(Self.titles) : "")])
+      }
+      let batch = ImportBatch(importer: "spreadsheet", fileName: "list.csv", collectionName: "List", rows: rows)
+      return (.importBatch(batch), pick([.import, .import, .collector]))
+    case 17:
+      let batches = shelf.batches.keys.sorted()
+      guard !batches.isEmpty else { return (.setGrail(object, chance(50)), .collector) }
+      return (.undoBatch(pick(batches)), pick([.collector, .collector, .import]))
     default: return (.logEvent(object, kind: "cleaned", note: ""), .collector)
     }
   }

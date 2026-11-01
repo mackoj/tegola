@@ -112,6 +112,33 @@ struct PhotoRow: Identifiable {
   var data: String
 }
 
+/// An import, so it can be undone for 30 days (PD-047). Its rows carry its id in their events' `batchID`. No foreign
+/// key to its collection: an undo can remove that collection, and a rebuild writes only what's left.
+@Table("importBatches")
+struct ImportBatchRow: Identifiable {
+  let id: UUID
+  var importer: String
+  var fileName: String
+  var collectionID: UUID
+  var rowCount: Int
+  var createdAt: Date
+  var undoneAt: Date?
+  /// The model value as JSON (`StoredJSON`).
+  var data: String
+}
+
+/// An identifier waiting for the network (PLAN §7). Not shelf history, so not an event: the queue's own state.
+@Table("lookupQueue")
+struct LookupRow: Identifiable {
+  let id: UUID
+  var objectID: UUID
+  var attempts: Int
+  var lastTriedAt: Date?
+  var state: String
+  /// The model value as JSON (`StoredJSON`).
+  var data: String
+}
+
 /// A setting the collector changed (PD-161, ADR-0008): only those are stored, so a missing row is the default. Not a
 /// shelf change, so not an event. Each setting has a fixed id, because `SyncEngine` allows no unique constraint on
 /// `key` (D-44).
@@ -132,6 +159,10 @@ public enum SettingKey: String, CaseIterable, Sendable {
   case notificationsOffer
   /// Opt-in clocks the collector turned on, comma-separated (`unfinished`, D-20, D-57).
   case optedInClocks
+  /// `TypeTesters`: the types the collector said **Count me in** to (46, 2B; PD-031).
+  case typeTesters
+  /// "true" once the collector chose **Just look around first**: the app stops opening on the first piece (PLAN F2).
+  case firstPieceSkipped
 
   public var id: UUID {
     switch self {
@@ -139,6 +170,8 @@ public enum SettingKey: String, CaseIterable, Sendable {
     case .lastCollection: UUID(uuidString: "5E771965-0000-4000-8000-000000000002")!
     case .notificationsOffer: UUID(uuidString: "5E771965-0000-4000-8000-000000000003")!
     case .optedInClocks: UUID(uuidString: "5E771965-0000-4000-8000-000000000004")!
+    case .typeTesters: UUID(uuidString: "5E771965-0000-4000-8000-000000000005")!
+    case .firstPieceSkipped: UUID(uuidString: "5E771965-0000-4000-8000-000000000006")!
     }
   }
 }
@@ -305,6 +338,42 @@ extension ShelfStore {
       )
       .execute(db)
       try #sql(#"CREATE INDEX "index_photos_on_objectID" ON "photos"("objectID")"#).execute(db)
+    }
+    // clctn's `importBatches`, less what the event log already holds: the mapping and the report are the importer's
+    // plan, which isn't kept, and the rows are the events with this batch id (D-54).
+    migrator.registerMigration("Create import batches") { db in
+      try #sql(
+        """
+        CREATE TABLE "importBatches" (
+          "id" TEXT PRIMARY KEY NOT NULL ON CONFLICT REPLACE DEFAULT (uuid()),
+          "importer" TEXT NOT NULL,
+          "fileName" TEXT NOT NULL,
+          "collectionID" TEXT NOT NULL,
+          "rowCount" INTEGER NOT NULL ON CONFLICT REPLACE DEFAULT 0,
+          "createdAt" TEXT NOT NULL,
+          "undoneAt" TEXT,
+          "data" TEXT NOT NULL
+        ) STRICT
+        """
+      )
+      .execute(db)
+    }
+    // PLAN §3.2's `lookupQueue`. A row goes when its object does, so no request outlives what it was for.
+    migrator.registerMigration("Create the lookup queue") { db in
+      try #sql(
+        """
+        CREATE TABLE "lookupQueue" (
+          "id" TEXT PRIMARY KEY NOT NULL ON CONFLICT REPLACE DEFAULT (uuid()),
+          "objectID" TEXT NOT NULL REFERENCES "objects"("id") ON DELETE CASCADE,
+          "attempts" INTEGER NOT NULL ON CONFLICT REPLACE DEFAULT 0,
+          "lastTriedAt" TEXT,
+          "state" TEXT NOT NULL,
+          "data" TEXT NOT NULL
+        ) STRICT
+        """
+      )
+      .execute(db)
+      try #sql(#"CREATE INDEX "index_lookupQueue_on_objectID" ON "lookupQueue"("objectID")"#).execute(db)
     }
     return migrator
   }

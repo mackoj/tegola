@@ -4,6 +4,10 @@ name:
   singular: Book
   plural: Books
   collection: Books
+# Words that name the type in a photo's description or a typed line: the first piece's
+# type is inferred from them, not asked (PD-166, D-62).
+recognise: [book, novel, hardcover, hardback, paperback, first edition]
+
 mark: ISBN
 icon: books.vertical
 gradient: [pink, rust]

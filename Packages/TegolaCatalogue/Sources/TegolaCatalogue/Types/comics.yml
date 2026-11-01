@@ -4,6 +4,10 @@ name:
   singular: Issue
   plural: Issues
   collection: Comics
+# Words that name the type in a photo's description or a typed line: the first piece's
+# type is inferred from them, not asked (PD-166, D-62).
+recognise: [comic, comic book, manga, graphic novel, bande dessinee]
+
 mark: CGC
 icon: newspaper
 gradient: [rust, orange]
