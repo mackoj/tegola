@@ -344,3 +344,27 @@ PLAN F15.
     it". In its last year it's watch again, and after it, act.
   - **`serviceRisk`** goes to watch after one service interval, and to act after two.
 - **No basis, no signal.** A clock with nothing to estimate from (no year, no date) says nothing, rather than a guess.
+
+### D-57 · How an object's status is read (D-15, refined for clocks)
+
+> PD-016: "Every derived state maps onto fine · good · watch · act · gone. The only cross-type number is 'needs
+> attention'."
+
+**Gap.** D-15 named the labels but not how clocks, loans and identity combine, or what counts as needing attention
+when the Today strip already counts what's to tidy.
+
+**Decision.** `StatusReading.derive` picks the most urgent candidate, the earlier one between equals:
+
+1. **Gone.** Let go: nothing else is said.
+2. **Act.** An overdue loan, then a clock at act.
+3. **Watch.** A clock at watch, then needs details, then unconfirmed.
+4. **Good.** A clock's good moment ("Drink it").
+5. **Fine.** Lent and not due ("Out"), or settled.
+
+- **Need attention counts signals only**: clocks at watch or act, and overdue loans. An unconfirmed object's chip is
+  watch, but it's counted by "N to tidy", never twice.
+- **Clocks run only on objects the collector owns and keeps.** A wanted or borrowed object's care isn't theirs.
+- **A dismissal** (`dismissSignal`) records the status the collector saw. The clock stays hidden until it says
+  something more urgent, so a battery dismissed at watch comes back when it reaches act.
+- **Wording.** `SignalListTests.phrase` words every reason in English for the golden list. The screens' String
+  Catalog keys follow the same cases (T4.5).

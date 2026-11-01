@@ -3,43 +3,46 @@
 The state of the work for whoever picks it up next: a new session, another agent, or the owner. Read this first, keep
 it short and current.
 
-**Updated:** 2026-11-01, M3 merged into `main` (PR #9). M4 is next.
+**Updated:** 2026-11-01, M4's model half done (T4.1–T4.4); the screens half waits for the Mac.
 
 ## Where things stand
 
-- **Spec:** approved (`docs/PLAN.md`, answers in §10). Decisions: `docs/DECISIONS.md`, D-1 to D-55.
-- **M1 (foundation):** merged (PR #5, `docs/milestones/M1.md`).
-- **M2 (catalogue, model, storage):** merged (PR #8, `docs/milestones/M2.md`). The type files are on schema v1 with
-  subtypes. The pure `plan`/`apply` sit over an event log and its projection (`TegolaStorage`, sqlite-data).
-- **M3 (core loop):** merged (PR #9, `docs/milestones/M3.md`). The screens are:
-  - Shelf home, Collection, Object (seven slots), the edit form, Add by hand (Scan), photos, Find with saved views,
-    Places;
-  - screenshots in `docs/snapshots/`.
-
-  Two UI journeys pass, including 30 objects in one sitting. A separate review's findings are all fixed (D-53).
-  `scripts/ci.sh` is green on Xcode 27.1, and `linux-core` is green.
+- **Spec:** approved (`docs/PLAN.md`, answers in §10). Decisions: `docs/DECISIONS.md`, D-1 to D-57.
+- **M1–M3:** merged (PRs #5, #8, #9; reports in `docs/milestones/`).
+- **M4 (signals):** in progress on `claude/tegola-rearchitecture-jcq29f`, as a draft PR. The model half is done and
+  verified on Linux (190 tests across the seven pure packages, zero warnings):
+  - **T4.1 clock functions** (`Clocks`, `ClockSignal`). Care is kept on the object (`ShelfObject.latestLog`), and
+    video games' disc rot is held pending (D-56).
+  - **T4.2 status readings** (`StatusReading.derive` / `.all`, D-57). `TodayStrip` and `ShelfSummary` take
+    `readings:`.
+  - **T4.3 dismissals** (`ShelfCommand.dismissSignal`, `signalDismissed`).
+  - **T4.4 the 200-object `SignalShelf`** and its golden list, `docs/testing/signals-200.md`: 41 signals.
+- **Waiting for the Mac:** T4.4b, T4.5, T4.6 and T4.7 touch the features, snapshots and the app.
 - **tegola-server** (`mackoj/tegola-server`, D-41): its M1 is done. The app needs it from M6 on.
 
 ## What's next
 
-1. **Owner:** run M3's exit test with people: 30 objects across Video games and Thing in one
-   sitting, without asking how.
-2. **M4, signals** (page 52 P2; exit test: a 200-object shelf gives a signal list a collector agrees with on 8 of 10).
-   Start a branch `m4-signals` from `main`, and break M4 down in `tasks/plan.md` and `tasks/todo.md` first. Roughly:
-   - the clock functions over an object's fields and events, behind the names `ClockLibrary` already has (D-37), each
-     labelled **Estimate** with its reason;
-   - status derivation (`ObjectStatus`, D-15). It feeds:
-     - the object's status slot (today `ObjectView.status`, D-48);
-     - the Today strip's "need attention" (`TodayStrip` takes `statuses:`);
-     - status filters in Collection and Find;
-   - dismissals, logged so clock parameters can be tuned (risk R2): a new command and event;
-   - local notifications (`NotificationsClient`, PLAN §5);
-   - the seed shelf grown toward 120 objects (`Seed.swift`). Growing it changes counts the M3 tests pin; update them
-     knowingly;
-   - journey 5 (the weekly glance) as a UI test;
-   - a separate review agent before the PR.
+1. **Owner:** M4's exit test. Read `docs/testing/signals-200.md`, mark the signals you agree with (8 of 10 passes),
+   and say whether anything is missing. The cassette clock (every 2 years, counted from the release year when nothing's
+   logged) is the one most likely to feel noisy; its parameter is in `ClockLibrary` (D-37).
+2. **M4 on the Mac**, on the M4 branch (`tasks/plan.md`, M4):
+   - **T4.5 status in the screens.**
+     - `ShelfFeature` computes `StatusReading.all(shelf:catalogue:now:calendar:)` and passes `readings:` to
+       `ShelfSummary`, so "N need attention" appears.
+     - `ObjectView`'s status slot (D-48) shows the object's reading, with **ESTIMATE** when the reason is `.clock`, and
+       a Dismiss action that sends `.dismissSignal(id, clock:, status:)` with the status shown.
+     - Collection and Find filter by `status`.
+     - Words: one String Catalog key per `StatusReading.Reason` and `ClockSignal.Reason` case, starting from
+       `SignalListTests.phrase`, with French.
+   - **T4.6 local notifications.** `NotificationsClient`. A clock's notifications are offered once, when the first
+     clocked object arrives (PD-153), at most one per object per year (PD-017), from `ClockSignal.changesAt`. A loan
+     reminder fires on the due date (PD-148).
+   - **T4.7 journey 5 as a UI test.** Today → *1 needs attention* → a Game Boy cartridge whose battery is due → Log a
+     battery swap (`.logEvent(id, kind: CareKind.batterySwapped, …)`) → the line is gone.
+   - **T4.4b.** Grow `Seed.swift` toward 120 objects with clocks in every state, re-record the snapshots, and update
+     the M3 counts knowingly.
+   - **T4.8.** The M4 report, a separate review agent, and the carried skeleton candidates (`tasks/todo.md`).
 3. **Later:** M5 (first piece, launch types), M6 (camera, lookup, import), M7 (people), M8 (keeping, You), M9 (polish).
-   `tasks/plan.md` has them.
 
 ## Run it locally (Mac)
 
