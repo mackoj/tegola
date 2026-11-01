@@ -2,11 +2,14 @@ public import AddByHandFeature
 public import CollectionFeature
 public import ComposableArchitecture
 public import FindFeature
+public import FirstPieceFeature
 public import ObjectFeature
 public import PlacesFeature
+import SQLiteData
 public import ShelfFeature
 public import SignalsFeature
 public import TegolaModel
+import TegolaStorage
 
 /// Every screen a tab's stack can push (PLAN §5). One enum for every tab, defined here: only the root pushes.
 @Reducer
@@ -34,6 +37,8 @@ public struct AppFeature {
     public var findPath = StackState<AppPath.State>()
     /// Scan presents instead of selecting a tab (PD-117): Add by hand in M3, the camera from M6.
     @Presents public var addByHand: AddByHandFeature.State?
+    /// The first piece (PLAN F2): the app opens on it while the shelf is empty and it hasn't been skipped.
+    @Presents public var firstPiece: FirstPieceFeature.State?
 
     public init() {}
   }
@@ -42,15 +47,21 @@ public struct AppFeature {
     case addByHand(PresentationAction<AddByHandFeature.Action>)
     case find(FindFeature.Action)
     case findPath(StackActionOf<AppPath>)
+    case firstPiece(PresentationAction<FirstPieceFeature.Action>)
+    /// Scan, once the first piece's cover has gone: SwiftUI can't present a sheet while a cover is dismissing.
+    case presentScan
     case shelf(ShelfFeature.Action)
     case shelfPath(StackActionOf<AppPath>)
     case view(View)
 
     @CasePathable
     public enum View: Equatable, Sendable {
+      case onAppear
       case tabTapped(AppTab)
     }
   }
+
+  @Dependency(\.continuousClock) var clock
 
   public init() {}
 
@@ -64,6 +75,34 @@ public struct AppFeature {
         return .none
       case .shelf(.delegate(.addByHand)):
         state.addByHand = AddByHandFeature.State()
+        return .none
+      case .shelf(.delegate(.scanFirstObject)):
+        state.firstPiece = FirstPieceFeature.State()
+        return .none
+      case .firstPiece(.presented(.delegate(.skipped))), .firstPiece(.presented(.delegate(.finished))),
+        .firstPiece(.presented(.delegate(.closed))):
+        state.firstPiece = nil
+        return .none
+      case .firstPiece(.presented(.delegate(.oneAtATime))):
+        // The next piece goes through Scan, like every piece after the first.
+        state.firstPiece = nil
+        return .run { [clock] send in
+          try await clock.sleep(for: .milliseconds(600))
+          await send(.presentScan)
+        }
+      case .presentScan:
+        state.addByHand = AddByHandFeature.State()
+        return .none
+      case .firstPiece:
+        return .none
+      case .view(.onAppear):
+        @Dependency(\.defaultDatabase) var database
+        do {
+          let snapshot = try database.read { db in try ShelfRequest().fetch(db) }
+          if snapshot.opensOnFirstPiece, state.firstPiece == nil { state.firstPiece = FirstPieceFeature.State() }
+        } catch {
+          reportIssue(error)
+        }
         return .none
       case .addByHand:
         return .none
@@ -107,6 +146,7 @@ public struct AppFeature {
     .forEach(\.shelfPath, action: \.shelfPath)
     .forEach(\.findPath, action: \.findPath)
     .ifLet(\.$addByHand, action: \.addByHand) { AddByHandFeature() }
+    .ifLet(\.$firstPiece, action: \.firstPiece) { FirstPieceFeature() }
   }
 
   /// The one place a route becomes a screen. Routes whose screen arrives later in M3 do nothing yet.

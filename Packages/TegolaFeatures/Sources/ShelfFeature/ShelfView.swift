@@ -39,18 +39,30 @@
       .onAppear { send(.onAppear) }
     }
 
+    /// Board 02, as F2 has it: **Scan your first object**, the first piece's camera, and **Bring your list**, Add's
+    /// import, which waits for M6. **Type it** stays for a collector who'd rather not use the camera. No sample data
+    /// (PD-102).
     var empty: some View {
       EmptyState(
         title: [Text("Nothing on the", bundle: .module), Text("shelf yet", bundle: .module)],
-        message: Text("Start with one piece you love. Type it in, and the shelf grows from there.", bundle: .module)
+        message: Text("Start with one piece you love, and the shelf grows from there.", bundle: .module)
       ) {
-        Button {
-          send(.typeItTapped)
-        } label: {
-          Text("Type it", bundle: .module)
+        VStack(spacing: TegolaSpace.s) {
+          Button {
+            send(.scanFirstObjectTapped)
+          } label: {
+            Text("Scan your first object", bundle: .module)
+          }
+          .buttonStyle(.tegola(.accent))
+          .accessibilityIdentifier("shelf.scanFirst")
+          Button {
+            send(.typeItTapped)
+          } label: {
+            Text("Type it", bundle: .module)
+          }
+          .buttonStyle(.tegola(.secondary))
+          .accessibilityIdentifier("shelf.typeIt")
         }
-        .buttonStyle(.tegola(.accent))
-        .accessibilityIdentifier("shelf.typeIt")
       }
     }
 

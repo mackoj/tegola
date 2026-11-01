@@ -14,6 +14,8 @@ public struct FirstPiecePayoff: Hashable, Sendable {
   /// Nil for a piece with no clock, or none with a basis to estimate from: the payoff is then its story alone.
   public let line: Line?
 
+  public init(line: Line?) { self.line = line }
+
   public init(object: ShelfObject, type: EffectiveType, now: Date, calendar: Calendar) {
     let readings = signals(for: object, type: type, now: now, calendar: calendar)
     // `min` keeps the type's order between equally urgent clocks.

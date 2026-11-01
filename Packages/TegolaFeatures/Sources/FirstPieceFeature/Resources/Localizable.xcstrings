@@ -1,0 +1,426 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "%@ aren't a full type yet. It's saved safely as a Thing." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les %@ ne sont pas encore un type complet. C’est rangé en sûreté comme un objet."
+          }
+        }
+      }
+    },
+    "A gift" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un cadeau"
+          }
+        }
+      }
+    },
+    "A line about it, if you like" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Une ligne sur lui, si vous voulez"
+          }
+        }
+      }
+    },
+    "Around %@. We'll tell you when it's time." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vers %@. On vous dira quand ce sera le moment."
+          }
+        }
+      }
+    },
+    "Close" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fermer"
+          }
+        }
+      }
+    },
+    "come to you?" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "arrivé chez vous ?"
+          }
+        }
+      }
+    },
+    "Count me in" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "J’en suis"
+          }
+        }
+      }
+    },
+    "Give it a name to go on." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Donnez-lui un nom pour continuer."
+          }
+        }
+      }
+    },
+    "Had it since I was a kid" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je l’ai depuis l’enfance"
+          }
+        }
+      }
+    },
+    "Handed down" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transmis"
+          }
+        }
+      }
+    },
+    "Having a look…" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "On regarde…"
+          }
+        }
+      }
+    },
+    "How did it" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comment est-il"
+          }
+        }
+      }
+    },
+    "I bought it" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je l’ai acheté"
+          }
+        }
+      }
+    },
+    "I found it" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je l’ai trouvé"
+          }
+        }
+      }
+    },
+    "Is this it?" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "C’est bien ça ?"
+          }
+        }
+      }
+    },
+    "It's on the shelf." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il est sur l’étagère."
+          }
+        }
+      }
+    },
+    "It's the first line of its history. It isn't when you got it." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "C’est la première ligne de son histoire, pas la date où vous l’avez eu."
+          }
+        }
+      }
+    },
+    "It's…" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "C’est…"
+          }
+        }
+      }
+    },
+    "Its name, as you'd say it" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Son nom, comme vous le diriez"
+          }
+        }
+      }
+    },
+    "Just look around first" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Juste jeter un œil d’abord"
+          }
+        }
+      }
+    },
+    "Just one thing, the one with a story. Hold it up." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Une seule chose, celle qui a une histoire. Montrez-la."
+          }
+        }
+      }
+    },
+    "Library" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photothèque"
+          }
+        }
+      }
+    },
+    "Next" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suivant"
+          }
+        }
+      }
+    },
+    "No camera here. Type it, or pick a photo." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pas d’appareil photo ici. Tapez son nom, ou choisissez une photo."
+          }
+        }
+      }
+    },
+    "Not now" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pas maintenant"
+          }
+        }
+      }
+    },
+    "Not quite" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pas tout à fait"
+          }
+        }
+      }
+    },
+    "Not yet. Soon." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pas encore. Bientôt."
+          }
+        }
+      }
+    },
+    "One at a time" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un à la fois"
+          }
+        }
+      }
+    },
+    "Put it on the shelf" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le poser sur l’étagère"
+          }
+        }
+      }
+    },
+    "Show us" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Montrez-nous"
+          }
+        }
+      }
+    },
+    "something" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "quelque chose"
+          }
+        }
+      }
+    },
+    "Take the photo" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prendre la photo"
+          }
+        }
+      }
+    },
+    "That didn't save. Try once more." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ça n’a pas été enregistré. Réessayez."
+          }
+        }
+      }
+    },
+    "That's enough for today" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ça suffit pour aujourd’hui"
+          }
+        }
+      }
+    },
+    "That's it" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "C’est ça"
+          }
+        }
+      }
+    },
+    "Type it" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La taper"
+          }
+        }
+      }
+    },
+    "Want to test %@ when they're ready? Your pieces will be the first offered the upgrade." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tester les %@ quand ils seront prêts ? Vos pièces seront les premières à passer au nouveau type."
+          }
+        }
+      }
+    },
+    "Welcome to Tegola" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bienvenue dans Tegola"
+          }
+        }
+      }
+    },
+    "What is it?" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Qu’est-ce que c’est ?"
+          }
+        }
+      }
+    },
+    "Year, if you know it" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L’année, si vous la connaissez"
+          }
+        }
+      }
+    },
+    "you love" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "que vous aimez"
+          }
+        }
+      }
+    },
+    "Your shelf · 1 piece" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Votre étagère · 1 pièce"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

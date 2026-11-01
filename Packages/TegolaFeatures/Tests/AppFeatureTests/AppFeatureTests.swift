@@ -3,6 +3,7 @@ import CollectionFeature
 import ComposableArchitecture
 import DependenciesTestSupport
 import FeatureTestSupport
+import FirstPieceFeature
 import ObjectFeature
 import ShelfFeature
 import SignalsFeature
@@ -14,6 +15,12 @@ import Testing
 @MainActor
 @Suite(.dependencies { try $0.seededShelf() })
 struct AppFeatureTests {
+  /// A shelf with objects never opens on the first piece.
+  @Test func aShelfWithObjectsOpensOnTheShelf() async {
+    let store = TestStore(initialState: AppFeature.State()) { AppFeature() }
+    await store.send(.view(.onAppear))
+  }
+
   @Test func tappingATabSelectsIt() async {
     let store = TestStore(initialState: AppFeature.State()) { AppFeature() }
     await store.send(.view(.tabTapped(.find))) { $0.selectedTab = .find }
@@ -57,5 +64,39 @@ struct AppFeatureTests {
     let store = TestStore(initialState: AppFeature.State()) { AppFeature() }
     await store.send(\.shelf.view, .typeItTapped)
     await store.receive(\.shelf.delegate.addByHand) { $0.addByHand = AddByHandFeature.State() }
+  }
+}
+
+/// PLAN F2: the app opens on the first piece while the shelf is empty and it hasn't been skipped.
+@MainActor
+@Suite(.dependencies { try $0.seededShelf(seed: false) })
+struct AppFirstPieceTests {
+  @Test func anEmptyShelfOpensOnTheFirstPiece() async {
+    let store = TestStore(initialState: AppFeature.State()) { AppFeature() }
+    await store.send(.view(.onAppear)) { $0.firstPiece = FirstPieceFeature.State() }
+    await store.send(\.firstPiece.presented.view, .lookAroundTapped)
+    await store.receive(\.firstPiece.presented.delegate.skipped) { $0.firstPiece = nil }
+    // Skipped: the next launch opens on the empty shelf, which offers the camera again.
+    let next = TestStore(initialState: AppFeature.State()) { AppFeature() }
+    await next.send(.view(.onAppear))
+    await next.send(\.shelf.view, .scanFirstObjectTapped)
+    await next.receive(\.shelf.delegate.scanFirstObject) { $0.firstPiece = FirstPieceFeature.State() }
+  }
+
+  /// **One at a time**: the next piece goes through Scan.
+  @Test func oneAtATimeOpensScan() async {
+    var state = AppFeature.State()
+    state.firstPiece = FirstPieceFeature.State()
+    let clock = TestClock()
+    let store = TestStore(initialState: state) {
+      AppFeature()
+    } withDependencies: {
+      $0.continuousClock = clock
+    }
+    await store.send(\.firstPiece.presented.view, .oneAtATimeTapped)
+    await store.receive(\.firstPiece.presented.delegate.oneAtATime) { $0.firstPiece = nil }
+    // Scan waits for the cover to go.
+    await clock.advance(by: .milliseconds(600))
+    await store.receive(\.presentScan) { $0.addByHand = AddByHandFeature.State() }
   }
 }

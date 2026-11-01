@@ -9,6 +9,12 @@ public struct TypeGuess: Hashable, Sendable {
   public let subtype: String?
   /// False for a type that ships as data only (D-23): the piece is saved as a Thing that waits for it (46, 2B).
   public let isEnabled: Bool
+
+  public init(type: TypeManifest.ID, subtype: String?, isEnabled: Bool) {
+    self.type = type
+    self.subtype = subtype
+    self.isEnabled = isEnabled
+  }
 }
 
 extension Catalogue {

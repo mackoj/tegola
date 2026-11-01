@@ -9,6 +9,8 @@ final class AppShellUITests: XCTestCase {
     app.launchArguments = ["--reset", "-AppleLanguages", "(en)"]
     app.launch()
 
+    // An empty shelf opens on the first piece; looking around first leaves it.
+    app.buttons["firstPiece.lookAround"].tap()
     for tab in ["find", "activity", "you", "shelf"] {
       app.buttons["tab.\(tab)"].tap()
     }

@@ -3,19 +3,18 @@
 The state of the work for whoever picks it up next: a new session, another agent, or the owner. Read this first, keep
 it short and current.
 
-**Updated:** 2026-11-01, after M4 merged and M5 and M6's model halves were brought onto it.
+**Updated:** 2026-11-01, after M5 finished on `m5-first-piece`.
 
-**Resume here: M5's screens (T5.5–T5.7), on the Mac.** M4 is merged (PR #13). The model halves of M5 and M6, first
-built in the cloud on top of a different M4 (draft PR #12), were replayed onto it on `m5-m6-model-halves`:
-- #12's six M4 commits were dropped;
-- its decisions were renumbered: its D-58 to D-66 are now **D-62 to D-70**;
-- its code was ported to M4's names: `Signal`, `signalState`, `serviced` logs, `ObjectStatus.derive`.
+**Resume here: M6's Mac half (T6.8–T6.12), after M5's PR merges.** M5 is done on `m5-first-piece`
+(`docs/milestones/M5.md`). Lookup contract 0.2.0 (D-71) is merged (PR #15); tegola-server takes that work on.
 
 ## Where things stand
 
 - **Spec:** approved (`docs/PLAN.md`, answers in §10). Decisions: D-1 to D-70.
 - **M1 to M4:** merged (PRs #5, #8, #9, #13; `docs/milestones/M1.md` to `M4.md`).
-- **M5 (launch types, first piece): the model half** is done (T5.1–T5.4):
+- **M5 (launch types, first piece):** done. The Mac half: `ExtractionClient` (T5.5), `FirstPieceFeature`'s four
+  screens and the app opening on it (T5.6), the empty shelf's **Scan your first object** (T5.7), journey 1 and the
+  review (T5.8). D-72 records the readings. The model half (T5.1–T5.4):
   - **T5.1 type guess.** Type files have `recognise:` words; `Catalogue.guess(from:)` (D-62).
   - **T5.2 first-piece rules.** `ShelfCommand.firstPiece(draft, story:catalogue:)`, `notTheFirstPiece`. A type that
     hasn't shipped becomes a Thing with `awaitingType`, through `ObjectDraft.recognised(as:)` (D-63).
@@ -43,22 +42,9 @@ built in the cloud on top of a different M4 (draft PR #12), were replayed onto i
 1. **Owner:**
    - M4's readings: D-56's thresholds, D-58 (a tape's clock starts at its first backup), D-61 (the offer is a card);
    - D-64: imported rows are unconfirmed, which takes up the option D-38 left open (keep or reverse);
-   - the exit tests with people: M3's 30 objects, M4's 8 of 10 signals.
-2. **M5 on the Mac** (`tasks/plan.md`, M5):
-   - **T5.5 `ExtractionClient`** in `TegolaClients`. Foundation Models' guided generation describes a photo or a typed
-     line as a name and words, and `catalogue.guess(from:)` maps the words to a type. It's unavailable without Apple
-     Intelligence. Its test value is `unimplemented`.
-   - **T5.6 `FirstPieceFeature`**, PLAN F2's four screens. `AppFeature` opens on it when
-     `snapshot.opensOnFirstPiece`.
-     - **Just look around first** sets `firstPieceSkipped` to `"true"`.
-     - The write is `.firstPiece(ObjectDraft.recognised(as: guess.type, …), story:, catalogue:)`.
-     - **Count me in** sets `typeTesters` to `snapshot.typeTesters.adding(type).setting`.
-     - The payoff reads `FirstPiecePayoff(object:type:now:calendar:)`, with the calendar from `\.calendar`, and its
-       words come from `ShelfViews/SignalText.swift`.
-     - History's line for the `firstPiece` origin needs a key for an empty story.
-   - **T5.7** the empty shelf's two offers. **T5.8** the first-piece UI test, `docs/UX-FINDINGS.md`, the report and the
-     review.
-3. **M6 on the Mac** (`tasks/plan.md`, M6), after M5's screens:
+   - D-72: the first piece's story chips, *What is it?*'s type chips, and the sync fallback;
+   - the exit tests with people: M3's 30 objects, M4's 8 of 10 signals, M5's 5 of 6 testers (`docs/UX-FINDINGS.md`).
+2. **M6 on the Mac** (`tasks/plan.md`, M6):
    - **T6.8 `LookupClient`** in `TegolaClients`:
      - it maps the generated `Candidate` to `LookupCandidate`, and the match buckets to `MatchOutcome`;
      - it needs `AppAttestMiddleware`, `RetryMiddleware` (`LookupQueue.Outcome.retryAfter`) and `ReachabilityClient`;
@@ -75,7 +61,7 @@ built in the cloud on top of a different M4 (draft PR #12), were replayed onto i
      - Matching sends rows to `POST /types/{type}/match`, 50 a call.
    - **T6.11** the review queue (`LookupCandidate.strength`, `EnrichmentProposal.apply(_:)`) and the match sheet
      (`LookAlikes.choices`). **T6.12** journey 2, the report, `REVIEW.md`, the review.
-4. **Later:** M7 (people), M8 (keeping, You: the `unfinished` toggle lives there), M9 (polish).
+3. **Later:** M7 (people), M8 (keeping, You: the `unfinished` toggle lives there), M9 (polish).
 
 ## Run it locally (Mac)
 
@@ -166,5 +152,5 @@ scripts/ci.sh                          # the full gate → build/ci-summary.md (
 
 ## Owner questions
 
-Open: M4's readings (D-56, D-58, D-61); D-64's unconfirmed imports. The owner approved M2 and M3's (D-35, D-38,
+Open: M4's readings (D-56, D-58, D-61); D-64's unconfirmed imports; D-72. The owner approved M2 and M3's (D-35, D-38,
 D-45, D-50, D-51; D-54).

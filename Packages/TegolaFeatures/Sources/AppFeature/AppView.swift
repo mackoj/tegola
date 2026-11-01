@@ -2,6 +2,7 @@
   import AddByHandFeature
   import CollectionFeature
   import FindFeature
+  import FirstPieceFeature
   import ObjectFeature
   import PlacesFeature
   import SignalsFeature
@@ -41,6 +42,16 @@
       .sheet(item: $store.scope(state: \.addByHand, action: \.addByHand)) { add in
         AddByHandView(store: add)
       }
+      #if os(iOS)
+        .fullScreenCover(item: $store.scope(state: \.firstPiece, action: \.firstPiece)) { first in
+          FirstPieceView(store: first)
+        }
+      #else
+        .sheet(item: $store.scope(state: \.firstPiece, action: \.firstPiece)) { first in
+          FirstPieceView(store: first)
+        }
+      #endif
+      .onAppear { send(.onAppear) }
     }
 
     var shelfStack: some View {
